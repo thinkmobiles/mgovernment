@@ -4,8 +4,9 @@
 module.exports = function(db){
     //"use strict";
     //
-    //require('./user')(db);
-    //require('./sessions')(db);
+    require('./user')(db);
+    require('./profile')(db);
+    require('./sessions')(db);
     //require('./lesson')(db);
     //require('./plan')(db);
     //require('./questions')(db);
