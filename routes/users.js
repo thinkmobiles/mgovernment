@@ -5,19 +5,22 @@
 var express = require( 'express' );
 var router = express.Router();
 var UserHandler = require('../handlers/users');
-//var SessionHandler = require('../handlers/sessions');
+var SessionHandler = require('../handlers/sessions');
 //var SchedulHandler = require('../handlers/schedule');
 
 module.exports = function(db){
 
     var users = new UserHandler(db);
-    //var session = new SessionHandler(db);
+    var session = new SessionHandler(db);
     //var schedule = new SchedulHandler(db);
 
 
     router.post('/signIn', users.signInClient );
     router.post('/create', users.createAccount);
     router.get('/signOut', users.signOutClient);
+    router.get('/profile', session.authenticatedUser, function(req, res, next){
+        res.status(200).send("Autorithation succes, getting profile");
+    });
 
 
     return router;
