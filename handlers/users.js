@@ -89,7 +89,7 @@ var User = function(db) {
         var pass = body.pass;
         var userType = body.userType;
         var user = new User(body);
-        var profile = new Profile(body);
+        var profile;
 
         var err;
         console.log('createAccount rout started');
@@ -104,6 +104,9 @@ var User = function(db) {
                 return res.status(500).send(err)
             }
             console.log('User save');
+
+            body.owner = user._id;
+            profile = new Profile(body);
 
             profile.save(function (err, profile) {
                 if (err) {

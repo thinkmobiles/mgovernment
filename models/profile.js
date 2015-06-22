@@ -10,7 +10,7 @@ module.exports = function (db){
         firstName: {type: String, unique: true},
         lastName: String,
         dateOfCreating: {type: Date, default: Date.now},
-        owner: {type: ObjectId, ref: 'user'}
+        owner: String
     }, {
         collection: 'Profiles'
     });
