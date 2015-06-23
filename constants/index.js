@@ -9,5 +9,11 @@ module.exports = {
     DEVICE_TYPE: {
         IOS: 'ios',
         ANDROID: 'android'
+    },
+
+    MODELS: {
+        USER: 'User',
+        PROFILE: 'Profile',
+        LAYOUT: 'Layout'
     }
 };

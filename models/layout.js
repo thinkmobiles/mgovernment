@@ -7,7 +7,7 @@ module.exports = function () {
             items: [{
                 order: Number,
                 name: String,
-                type: String,
+                itemType: String,
                 action: String
             }],
             lastChange: {type: Date}
