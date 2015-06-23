@@ -20,7 +20,7 @@ module.exports = function(db){
 
     router.post('/signIn', users.signInClient );
     router.post('/create', users.createAccount);
-    router.get('/signOut', users.signOutClient);
+    router.post('/signOut', users.signOutClient);
     router.get('/profile', session.authenticatedUser,  profiles.getProfileBySession);
     router.get('/profile/:id', users.isAdminBySession,  profiles.getProfileByIdForAdmin);
 

@@ -39,7 +39,6 @@ var User = function(db) {
                 err.status = 403;
                 return next(err);
 
-
         });
     };
 
@@ -111,12 +110,7 @@ var User = function(db) {
                              });
                         }
                     }
-
-
-
-
                     return session.register(req, res, model._id.toString(), model.userType);
-
 
                 } else {
                     console.log('No one was found');
@@ -129,6 +123,47 @@ var User = function(db) {
     };
 
     this.signOutClient = function (req, res, next) {
+        var body = req.body;
+        var device ={};
+        var userId = req.session.uId;
+        var found;
+
+        device.deviceOs = body.deviceOs;
+        device.deviceToken = body.deviceToken;
+
+        if( req.session && req.session.uId && req.session.loggedIn ) {
+            if (device.deviceToken) {
+
+                getUserById(userId, function (err, model) {
+                    console.dir(model);
+                    if (model) {
+                        console.log(' Admine acces -> Next');
+                        for(var i = model.devices.length-1; i>=0; i-- ){
+                            if (model.devices[i].deviceToken === device.deviceToken){
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            console.log('update Device');
+                            User.update({_id:model._id},{ $push:{ 'devices':device}},{upsert:true}, function(err, data) {
+                                if(err){
+                                    return next(err);
+                                }
+                            });
+                        }
+                        return next();
+                    }
+
+                    err = new Error('model whith _id: '+ userId + ' not found');
+                    err.status = 403;
+                    return next(err);
+
+                });
+
+
+            }
+        };
+
         session.kill(req, res, next);
         console.log('signOutClient rout started');
     };
