@@ -24,6 +24,26 @@ var User = function(db) {
     var ObjectId = mongoose.Types.ObjectId;
     var numberPattern = /[^0-9]/;
 
+    function userTypeValidate(userType) {
+        var validate = false;
+        for (var k in CONST.USER_TYPE) {
+            if  (CONST.USER_TYPE[k] === userType) {
+                validate = true;
+            }
+        }
+        console.log('userType validate:',validate)
+    }
+
+    function deviceTypeValidate(deviceOs){
+        var validate = false;
+        for (var k in CONST. DEVICE_TYPE) {
+            if  (CONST. DEVICE_TYPE[k] === deviceOs) {
+                validate = true;
+            }
+        }
+        console.log('DeviceOS validate:',validate)
+    }
+
     this.isAdminBySession = function ( req, res, next ) {
 
         var userId = req.session.uId;
@@ -35,9 +55,9 @@ var User = function(db) {
                 return next();
             }
 
-                err = new Error('permission denied');
-                err.status = 403;
-                return next(err);
+            err = new Error('permission denied');
+            err.status = 403;
+            return next(err);
 
         });
     };
@@ -56,7 +76,7 @@ var User = function(db) {
 
                 if (model) {
                     console.log('find succesful ');
-                //    console.log( model);
+                    //    console.log( model);
 
                     return callback(null, model.toJSON());
                 } else {
@@ -64,7 +84,7 @@ var User = function(db) {
                     return callback(new Error('No one was found with such _id '));
                 }
             });
-    };
+    }
 
     this.signInClient = function (req, res, next) {
         var body = req.body;
@@ -96,6 +116,7 @@ var User = function(db) {
                     console.log( model._id.toString(),' userType: ', model.userType);
 
                     if (device.deviceToken) {
+                        deviceTypeValidate(device.deviceOs);
                         for(var i = model.devices.length-1; i>=0; i-- ){
                             if (model.devices[i].deviceToken === device.deviceToken){
                                 found = true;
@@ -107,7 +128,7 @@ var User = function(db) {
                                 if(err){
                                     return next(err);
                                 }
-                             });
+                            });
                         }
                     }
                     return session.register(req, res, model._id.toString(), model.userType);
@@ -134,10 +155,12 @@ var User = function(db) {
         if( req.session && req.session.uId && req.session.loggedIn ) {
             if (device.deviceToken) {
 
+                deviceTypeValidate(device.deviceOs);
+
                 getUserById(userId, function (err, model) {
                     console.dir(model);
                     if (model) {
-                        console.log(' Admine acces -> Next');
+
                         for(var i = model.devices.length-1; i>=0; i-- ){
                             if (model.devices[i].deviceToken === device.deviceToken){
                                 found = true;
@@ -180,14 +203,19 @@ var User = function(db) {
 
 
 
+
         device.deviceOs = body.deviceOs;
         device.deviceToken = body.deviceToken;
         console.log(device);
 
+        userTypeValidate(userType);
+
         if (!device.deviceOs||!device.deviceToken) {
             user = new User({login: login, pass: pass, userType: userType});
+
         }
         else {
+            deviceTypeValidate(device.deviceOs);
             user = new User({login: login, pass: pass, userType: userType, devices: device});
         }
 
