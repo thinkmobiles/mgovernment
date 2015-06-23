@@ -1,11 +1,9 @@
-/**
- * Created by User on 28.04.2015.
- */
 var CONST = require('../constants');
+var RESPONSE = require('../constants/response');
 var ProfileHandler = require('./profiles');
 
 var Session = function ( db ) {
-var profile = new ProfileHandler(db);
+
 
     this.register = function ( req, res, userId, userType ) {
         req.session.loggedIn = true;
@@ -26,7 +24,7 @@ var profile = new ProfileHandler(db);
         if( req.session && req.session.uId && req.session.loggedIn ) {
             next();
         } else {
-            var err = new Error('UnAuthorized');
+            var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
             err.status = 401;
             next(err);
         }
@@ -41,21 +39,21 @@ var profile = new ProfileHandler(db);
             return next()
         }
 
-        err = new Error('permission denied');
+        err = new Error(RESPONSE.AUTH.NO_PERMISSIONS);
         err.status = 403;
 
         next(err);
     };
 
     this.isAdminApi = function( req, res, next ) {
-        res.status( 403).send({ error: "unauthorized"});
+        res.status( 401).send(RESPONSE.AUTH.UN_AUTHORIZED);
     };
 
     this.isAuthenticatedUser = function ( req, res, next ) {
         if( req.session && req.session.uId && req.session.loggedIn ) {
             res.status( 200 ).send( { success: "Is authenticated", uId: req.session.uId } );
         } else {
-            var err = new Error('UnAuthorized');
+            var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
             err.status = 401;
             next(err);
         }

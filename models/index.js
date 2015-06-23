@@ -1,16 +1,10 @@
 
 module.exports = function(db) {
-    //"use strict";
-    //
+    "use strict";
+
     require('./user')(db);
     require('./profile')(db);
     require('./sessions')(db);
     require('./layout')();
-    //require('./plan')(db);
-    //require('./questions')(db);
-    //require('./answers')(db);
-    //require('./taxonomys')(db);
-    //require('./push')(db);
-    //require('./msgHistory')(db);
-    //require('./admin')(db);
+
 };

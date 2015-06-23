@@ -1,6 +1,6 @@
 module.exports = function () {
     var mongoose = require('mongoose');
-    var ObjectId = mongoose.Schema.Types.ObjectId;
+
 
     var layoutSchema = mongoose.Schema({
             name: {type: String, unique: true},

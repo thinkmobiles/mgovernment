@@ -1,6 +1,4 @@
-/**
- * Created by User on 27.04.2015.
- */
+
 var logWriter = function () {
     var fs = require('fs');
     function erfunc(destination, errorString) {

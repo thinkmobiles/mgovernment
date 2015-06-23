@@ -1,9 +1,5 @@
-/**
- * Created by User on 28.04.2015.
- */
-
 module.exports = function(db){
-    'use strict'
+    'use strict';
     var mongoose = require('mongoose');
     var schema = mongoose.Schema;
 
@@ -11,5 +7,5 @@ module.exports = function(db){
         sessionId: String
     }, {collection : 'Sessions'});
 
-    var sessionModel = db.model('session', session);
-}
+    db.model('session', session);
+};
