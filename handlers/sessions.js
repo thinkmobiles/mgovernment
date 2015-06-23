@@ -46,7 +46,7 @@ var profile = new ProfileHandler(db);
 
         next(err);
     };
- 
+
     this.isAdminApi = function( req, res, next ) {
         res.status( 403).send({ error: "unauthorized"});
     };
