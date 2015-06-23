@@ -2,7 +2,7 @@
  * Created by User on 27.04.2015.
  */
 module.exports = function(app, db){
-    var logWriter = require('../modules/logWriter')();
+    var logWriter = require('../helpers/logWriter')();
     var models = require('../models/index')(db);
     var usersRouter = require('./users')(db);
 
