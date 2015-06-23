@@ -3,7 +3,7 @@
  */
 
 var SessionHandler = require('./sessions');
-
+var CONST = require('../constants');
 
 var User = function(db) {
 

@@ -1,13 +1,13 @@
 /**
  * Created by User on 28.04.2015.
  */
-
+var CONST = require('../constants')
 var Session = function ( db ) {
 
-    this.register = function ( req, res, userId, isAdmin ) {
+    this.register = function ( req, res, userId, userType ) {
         req.session.loggedIn = true;
         req.session.uId = userId;
-        req.session.admin = isAdmin ? true : false;
+        req.session.type = userType;
         res.status( 200 ).send( { success: "Login successful" } );
     };
 
@@ -33,14 +33,14 @@ var Session = function ( db ) {
     this.isAdmin = function ( req, res, next ) {
         var err;
 
-        if ( req.session && req.session.admin ) {
+        if (req.session && req.session.type === CONST.USER_TYPE.CLIENT) {
             return next()
         }
 
         err = new Error('permission denied');
         err.status = 403;
 
-        next( err );
+        next(err);
     };
 
     this.isAdminApi = function( req, res, next ) {
