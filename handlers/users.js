@@ -24,6 +24,48 @@ var User = function(db) {
     var ObjectId = mongoose.Types.ObjectId;
     var numberPattern = /[^0-9]/;
 
+    this.isAdminBySession = function ( req, res, next ) {
+
+        var userId = req.session.uId;
+
+        getUserById(userId, function (err, profile) {
+            console.dir(profile);
+            if (profile.userType === CONST.USER_TYPE.ADMIN) {
+                console.log(' Admine acces -> Next');
+                return next();
+            }
+
+                err = new Error('permission denied');
+                err.status = 403;
+                return next(err);
+
+
+        });
+    };
+
+    function getUserById (userId, callback){
+        console.log('Profiles Handlers started');
+
+        User
+            .findOne({_id: userId})
+            .exec(function (err, model) {
+                if (err) {
+                    return callback(err);
+                }
+
+                console.log('User find by id', userId);
+
+                if (model) {
+                    console.log('find succesful ');
+                //    console.log( model);
+
+                    return callback(null, model.toJSON());
+                } else {
+                    console.log('No one was found');
+                    return callback(new Error('No one was found with such _id '));
+                }
+            });
+    };
 
     this.signInClient = function (req, res, next) {
         var body = req.body;
@@ -55,11 +97,12 @@ var User = function(db) {
 
                 if (model) {
                     console.log('find succesful ');
+                    console.log( model._id.toString(),' userType: ', model.userType);
 
                     /// - не зрозуміло для чого зберігає модель, !!!!!!!!!!!!!!!!!!!
                     ///запускає реєстрацію сесії.. !!!!!!!!!!!!!!!!!!!!!!!
 
-                    return session.register(req, res, model._id.toString());
+                    return session.register(req, res, model._id.toString(), model.userType);
 
                     //model.save(function(err){
                     //    if (err){

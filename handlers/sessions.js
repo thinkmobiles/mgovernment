@@ -1,8 +1,11 @@
 /**
  * Created by User on 28.04.2015.
  */
-var CONST = require('../constants')
+var CONST = require('../constants');
+var ProfileHandler = require('./profiles');
+
 var Session = function ( db ) {
+var profile = new ProfileHandler(db);
 
     this.register = function ( req, res, userId, userType ) {
         req.session.loggedIn = true;
@@ -33,7 +36,8 @@ var Session = function ( db ) {
     this.isAdmin = function ( req, res, next ) {
         var err;
 
-        if (req.session && req.session.type === CONST.USER_TYPE.CLIENT) {
+
+        if (req.session && req.session.type === CONST.USER_TYPE.ADMIN) {
             return next()
         }
 
