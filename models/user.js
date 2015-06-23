@@ -1,6 +1,3 @@
-/**
- * Created by User on 27.04.2015.
- */
 
 module.exports = function (db){
     'use strict';
@@ -31,6 +28,7 @@ module.exports = function (db){
 
 };
 
+//TODO remove comments
 //visualisation = new schema({
 //    id: {
 //        type: String,

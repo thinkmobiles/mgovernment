@@ -4,6 +4,7 @@
 
 var SessionHandler = require('./sessions');
 var CONST = require('../constants');
+var RESPONSE = require('../constants/response');
 
 var User = function(db) {
 
@@ -35,7 +36,7 @@ var User = function(db) {
         return validate;
     }
 
-    function deviceTypeValidate(deviceOs){
+    function isValidDeviceOs(deviceOs){
         var validate = false;
         for (var k in CONST. DEVICE_TYPE) {
             if  (CONST. DEVICE_TYPE[k] === deviceOs) {
@@ -57,7 +58,7 @@ var User = function(db) {
                 return next();
             }
 
-            err = new Error('permission denied');
+            err = new Error(RESPONSE.AUTH.NO_PERMISSIONS);
             err.status = 403;
             return next(err);
 
@@ -93,10 +94,10 @@ var User = function(db) {
         var login = body.login;
         var pass = body.pass;
         var err;
-        var found;
-        var device ={};
-        device.deviceOs = body.deviceOs;
-        device.deviceToken = body.deviceToken;
+        var device = { //TODO same for such objects
+            deviceOs: body.deviceOs,
+            deviceToken: body.deviceToken
+        };
 
         if (!body || !login || !pass) {
             err = new Error('Bad Request');
@@ -113,63 +114,78 @@ var User = function(db) {
 
                 console.log('signInClient rout started ');
 
-                if (model) {
-                    console.log('find succesful ');
-                    console.log( model._id.toString(),' userType: ', model.userType);
-
-                    if (device.deviceToken&&deviceTypeValidate(device.deviceOs)) {
-
-                        for(var i = model.devices.length-1; i>=0; i-- ){
-                            if (model.devices[i].deviceToken === device.deviceToken){
-                                found = true;
-                            }
-                        }
-                        if (!found) {
-                            console.log('update Device');
-                            User.update({_id:model._id},{ $push:{ 'devices':device}},{upsert:true}, function(err, data) {
-                                if(err){
-                                    return next(err);
-                                }
-                            });
-                        }
-                    }
-                    return session.register(req, res, model._id.toString(), model.userType);
-
-                } else {
+                if (!model) {
                     console.log('No one was found');
-                    res.status(400).send('No one was found with sach login and pass');
-
-
+                    return res.status(400).send('No one was found with sach login and pass');
                 }
 
+                console.log('find succesful ');
+                console.log(model._id.toString(), ' userType: ', model.userType);
+
+                var deviceOptions = {
+                    model: model,
+                    device: device
+                };
+
+                processDeviceToken(deviceOptions, function () {
+                    return session.register(req, res, model._id.toString(), model.userType);
+                });
             });
     };
 
+    function processDeviceToken(options, callback) {
+        var found = false;
+        var model = options.model;
+
+        if (!options.device.deviceToken || !isValidDeviceOs(options.device.deviceOs)) {
+            callback();
+        }
+
+        for (var i = model.devices.length - 1; i >= 0; i--) {
+            if (model.devices[i].deviceToken === device.deviceToken) {
+                found = true;
+            }
+        }
+
+        if (found) {
+            return callback();
+        }
+
+        console.log('update Device');
+        model
+            .update({_id: model._id}, {$push: {'devices': device}}, function (err, data) {
+                if (err) {
+                    console.log(err.stack);
+                }
+                return callback();
+            });
+    }
+
     this.signOutClient = function (req, res, next) {
         var body = req.body;
-        var device ={};
+        var device = {};
         var userId = req.session.uId;
         var found;
 
         device.deviceOs = body.deviceOs;
         device.deviceToken = body.deviceToken;
 
-        if( req.session && req.session.uId && req.session.loggedIn ) {
-            if (device.deviceToken&&deviceTypeValidate(device.deviceOs)) {
+        if (req.session && req.session.uId && req.session.loggedIn) {
+            if (device.deviceToken && isValidDeviceOs(device.deviceOs)) {
 
                 getUserById(userId, function (err, model) {
                     console.dir(model);
                     if (model) {
 
-                        for(var i = model.devices.length-1; i>=0; i-- ){
-                            if (model.devices[i].deviceToken === device.deviceToken){
+                        for (var i = model.devices.length - 1; i >= 0; i--) {
+                            if (model.devices[i].deviceToken === device.deviceToken) {
                                 found = true;
                             }
                         }
                         if (!found) {
                             console.log('update Device');
-                            User.update({_id:model._id},{ $push:{ 'devices':device}},{upsert:true}, function(err, data) {
-                                if(err){
+                            User.update({_id: model._id}, {$push: {'devices': device}}, {upsert: true}, function (err, data) {
+                                if (err) {
                                     return next(err);
                                 }
                             });
@@ -177,15 +193,13 @@ var User = function(db) {
                         return next();
                     }
 
-                    err = new Error('model whith _id: '+ userId + ' not found');
+                    err = new Error('model whith _id: ' + userId + ' not found');
                     err.status = 403;
                     return next(err);
 
                 });
-
-
             }
-        };
+        }
 
         session.kill(req, res, next);
         console.log('signOutClient rout started');
@@ -213,11 +227,9 @@ var User = function(db) {
 
         }
 
-        if (!device.deviceOs||!device.deviceToken||!deviceTypeValidate(device.deviceOs)) {
+        if (!device.deviceOs || !device.deviceToken || !isValidDeviceOs(device.deviceOs)) {
             user = new User({login: login, pass: pass, userType: userType});
-
-        }
-        else {
+        } else {
             user = new User({login: login, pass: pass, userType: userType, devices: device});
         }
 
@@ -241,7 +253,6 @@ var User = function(db) {
                 if (err) {
                     return res.status(500).send(err)
                 }
-
 
                 res.status(200).send(" " + user + " " + profile);
             });

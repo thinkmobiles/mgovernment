@@ -5,6 +5,7 @@ module.exports = {
 
     AUTH: {
         UN_AUTHORIZED: 'Un Authorized',
-        INVALID_CREDENTIALS: 'Invalid login or password'
+        INVALID_CREDENTIALS: 'Invalid login or password',
+        NO_PERMISSIONS: 'Access denied'
     }
 };
