@@ -1,13 +1,11 @@
-/**
- * Created by User on 27.04.2015.
- */
-module.exports = function(db){
+
+module.exports = function(db) {
     //"use strict";
     //
     require('./user')(db);
     require('./profile')(db);
     require('./sessions')(db);
-    //require('./lesson')(db);
+    require('./layout')();
     //require('./plan')(db);
     //require('./questions')(db);
     //require('./answers')(db);
