@@ -15,7 +15,8 @@ module.exports = function (db){
     var user = new schema({
         login: {type: String, unique: true},
         pass: String,
-        userType:String
+        userType:String,
+        devices: []
         }, {
             collection: 'Users'
             //toJSON: {

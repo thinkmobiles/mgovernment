@@ -131,10 +131,21 @@ var User = function(db) {
         var login = body.login;
         var pass = body.pass;
         var userType = body.userType;
-        var user = new User(body);
+        var user;
         var profile;
-
         var err;
+        var device ={};
+
+        device.deviceOs = body.deviceOs;
+        device.deviceToken = body.deviceToken;
+
+        if (!device.deviceOs||!device.deviceToken) {
+            user = new User({login: login, pass: pass, userType: userType});
+        }
+        else {
+            user = new User({login: login, pass: pass, userType: userType, devices: device});
+        }
+
         console.log('createAccount rout started');
 
         if (!body || !login || !pass) {
