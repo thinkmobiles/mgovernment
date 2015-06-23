@@ -7,7 +7,7 @@ module.exports = function (db){
     var ObjectId = mongoose.Schema.Types.ObjectId;
 
     var profile = new schema({
-        firstName: {type: String, unique: true},
+        firstName: {type: String},
         lastName: String,
         dateOfCreating: {type: Date, default: Date.now},
         owner: String
