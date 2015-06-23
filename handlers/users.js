@@ -24,6 +24,28 @@ var User = function(db) {
     var ObjectId = mongoose.Types.ObjectId;
     var numberPattern = /[^0-9]/;
 
+    function userTypeValidate(userType) {
+        var validate = false;
+        for (var k in CONST.USER_TYPE) {
+            if  (CONST.USER_TYPE[k] === userType) {
+                validate = true;
+            }
+        }
+        console.log('userType validate:',validate);
+        return validate;
+    }
+
+    function deviceTypeValidate(deviceOs){
+        var validate = false;
+        for (var k in CONST. DEVICE_TYPE) {
+            if  (CONST. DEVICE_TYPE[k] === deviceOs) {
+                validate = true;
+            }
+        }
+        console.log('DeviceOS validate:',validate);
+        return validate;
+    }
+
     this.isAdminBySession = function ( req, res, next ) {
 
         var userId = req.session.uId;
@@ -35,10 +57,9 @@ var User = function(db) {
                 return next();
             }
 
-                err = new Error('permission denied');
-                err.status = 403;
-                return next(err);
-
+            err = new Error('permission denied');
+            err.status = 403;
+            return next(err);
 
         });
     };
@@ -57,7 +78,7 @@ var User = function(db) {
 
                 if (model) {
                     console.log('find succesful ');
-                //    console.log( model);
+                    //    console.log( model);
 
                     return callback(null, model.toJSON());
                 } else {
@@ -65,20 +86,17 @@ var User = function(db) {
                     return callback(new Error('No one was found with such _id '));
                 }
             });
-    };
+    }
 
     this.signInClient = function (req, res, next) {
         var body = req.body;
         var login = body.login;
         var pass = body.pass;
-        var isWeekEnd;
-
-        //var options = {
-        //    deviceId: deviceId,
-        //    timeZone: timeZone
-        //};
-
         var err;
+        var found;
+        var device ={};
+        device.deviceOs = body.deviceOs;
+        device.deviceToken = body.deviceToken;
 
         if (!body || !login || !pass) {
             err = new Error('Bad Request');
@@ -99,17 +117,23 @@ var User = function(db) {
                     console.log('find succesful ');
                     console.log( model._id.toString(),' userType: ', model.userType);
 
-                    /// - не зрозуміло для чого зберігає модель, !!!!!!!!!!!!!!!!!!!
-                    ///запускає реєстрацію сесії.. !!!!!!!!!!!!!!!!!!!!!!!
+                    if (device.deviceToken&&deviceTypeValidate(device.deviceOs)) {
 
+                        for(var i = model.devices.length-1; i>=0; i-- ){
+                            if (model.devices[i].deviceToken === device.deviceToken){
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            console.log('update Device');
+                            User.update({_id:model._id},{ $push:{ 'devices':device}},{upsert:true}, function(err, data) {
+                                if(err){
+                                    return next(err);
+                                }
+                            });
+                        }
+                    }
                     return session.register(req, res, model._id.toString(), model.userType);
-
-                    //model.save(function(err){
-                    //    if (err){
-                    //        return next(err);
-                    //    }
-                    //    return session.register(req, res, model._id.toString());
-                    //});
 
                 } else {
                     console.log('No one was found');
@@ -122,6 +146,47 @@ var User = function(db) {
     };
 
     this.signOutClient = function (req, res, next) {
+        var body = req.body;
+        var device ={};
+        var userId = req.session.uId;
+        var found;
+
+        device.deviceOs = body.deviceOs;
+        device.deviceToken = body.deviceToken;
+
+        if( req.session && req.session.uId && req.session.loggedIn ) {
+            if (device.deviceToken&&deviceTypeValidate(device.deviceOs)) {
+
+                getUserById(userId, function (err, model) {
+                    console.dir(model);
+                    if (model) {
+
+                        for(var i = model.devices.length-1; i>=0; i-- ){
+                            if (model.devices[i].deviceToken === device.deviceToken){
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            console.log('update Device');
+                            User.update({_id:model._id},{ $push:{ 'devices':device}},{upsert:true}, function(err, data) {
+                                if(err){
+                                    return next(err);
+                                }
+                            });
+                        }
+                        return next();
+                    }
+
+                    err = new Error('model whith _id: '+ userId + ' not found');
+                    err.status = 403;
+                    return next(err);
+
+                });
+
+
+            }
+        };
+
         session.kill(req, res, next);
         console.log('signOutClient rout started');
     };
@@ -131,10 +196,31 @@ var User = function(db) {
         var login = body.login;
         var pass = body.pass;
         var userType = body.userType;
-        var user = new User(body);
+        var user;
         var profile;
-
         var err;
+        var device ={};
+
+
+
+
+        device.deviceOs = body.deviceOs;
+        device.deviceToken = body.deviceToken;
+        console.log(device);
+
+        if (!userTypeValidate(userType)) {
+            return res.status(400).send("Bad userType")
+
+        }
+
+        if (!device.deviceOs||!device.deviceToken||!deviceTypeValidate(device.deviceOs)) {
+            user = new User({login: login, pass: pass, userType: userType});
+
+        }
+        else {
+            user = new User({login: login, pass: pass, userType: userType, devices: device});
+        }
+
         console.log('createAccount rout started');
 
         if (!body || !login || !pass) {
