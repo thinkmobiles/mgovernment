@@ -31,7 +31,8 @@ var User = function(db) {
                 validate = true;
             }
         }
-        console.log('userType validate:',validate)
+        console.log('userType validate:',validate);
+        return validate;
     }
 
     function deviceTypeValidate(deviceOs){
@@ -41,7 +42,8 @@ var User = function(db) {
                 validate = true;
             }
         }
-        console.log('DeviceOS validate:',validate)
+        console.log('DeviceOS validate:',validate);
+        return validate;
     }
 
     this.isAdminBySession = function ( req, res, next ) {
@@ -115,8 +117,8 @@ var User = function(db) {
                     console.log('find succesful ');
                     console.log( model._id.toString(),' userType: ', model.userType);
 
-                    if (device.deviceToken) {
-                        deviceTypeValidate(device.deviceOs);
+                    if (device.deviceToken&&deviceTypeValidate(device.deviceOs)) {
+
                         for(var i = model.devices.length-1; i>=0; i-- ){
                             if (model.devices[i].deviceToken === device.deviceToken){
                                 found = true;
@@ -153,9 +155,7 @@ var User = function(db) {
         device.deviceToken = body.deviceToken;
 
         if( req.session && req.session.uId && req.session.loggedIn ) {
-            if (device.deviceToken) {
-
-                deviceTypeValidate(device.deviceOs);
+            if (device.deviceToken&&deviceTypeValidate(device.deviceOs)) {
 
                 getUserById(userId, function (err, model) {
                     console.dir(model);
@@ -208,14 +208,16 @@ var User = function(db) {
         device.deviceToken = body.deviceToken;
         console.log(device);
 
-        userTypeValidate(userType);
+        if (!userTypeValidate(userType)) {
+            return res.status(400).send("Bad userType")
 
-        if (!device.deviceOs||!device.deviceToken) {
+        }
+
+        if (!device.deviceOs||!device.deviceToken||!deviceTypeValidate(device.deviceOs)) {
             user = new User({login: login, pass: pass, userType: userType});
 
         }
         else {
-            deviceTypeValidate(device.deviceOs);
             user = new User({login: login, pass: pass, userType: userType, devices: device});
         }
 
