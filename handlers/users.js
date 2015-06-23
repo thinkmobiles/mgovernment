@@ -71,14 +71,11 @@ var User = function(db) {
         var body = req.body;
         var login = body.login;
         var pass = body.pass;
-        var isWeekEnd;
-
-        //var options = {
-        //    deviceId: deviceId,
-        //    timeZone: timeZone
-        //};
-
         var err;
+        var found;
+        var device ={};
+        device.deviceOs = body.deviceOs;
+        device.deviceToken = body.deviceToken;
 
         if (!body || !login || !pass) {
             err = new Error('Bad Request');
@@ -99,17 +96,27 @@ var User = function(db) {
                     console.log('find succesful ');
                     console.log( model._id.toString(),' userType: ', model.userType);
 
-                    /// - не зрозуміло для чого зберігає модель, !!!!!!!!!!!!!!!!!!!
-                    ///запускає реєстрацію сесії.. !!!!!!!!!!!!!!!!!!!!!!!
+                    if (device.deviceToken) {
+                        for(var i = model.devices.length-1; i>=0; i-- ){
+                            if (model.devices[i].deviceToken === device.deviceToken){
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            console.log('update Device');
+                            User.update({_id:model._id},{ $push:{ 'devices':device}},{upsert:true}, function(err, data) {
+                                if(err){
+                                    return next(err);
+                                }
+                             });
+                        }
+                    }
+
+
+
 
                     return session.register(req, res, model._id.toString(), model.userType);
 
-                    //model.save(function(err){
-                    //    if (err){
-                    //        return next(err);
-                    //    }
-                    //    return session.register(req, res, model._id.toString());
-                    //});
 
                 } else {
                     console.log('No one was found');
@@ -136,8 +143,11 @@ var User = function(db) {
         var err;
         var device ={};
 
+
+
         device.deviceOs = body.deviceOs;
         device.deviceToken = body.deviceToken;
+        console.log(device);
 
         if (!device.deviceOs||!device.deviceToken) {
             user = new User({login: login, pass: pass, userType: userType});
