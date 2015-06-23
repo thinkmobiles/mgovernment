@@ -15,9 +15,6 @@ var mainDb;
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')( session );
-//var MainSchedule = require('./handlers/schedule');
-//var scheduler;
-
 
 app.use(logger('dev'));
 app.use( express.static( path.join(__dirname, 'public') ) );
@@ -26,9 +23,12 @@ app.use( bodyParser.urlencoded( { extended: false } ) );
 app.use( cookieParser());
 
 
-// todo for production
+// TODO change NODE_ENV for production server
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'development';
+}
 
-require('./config/development');
+require('./config/' + process.env.NODE_ENV);
 
 connectOptions = {
     //db: { native_parser: true },
@@ -64,11 +64,10 @@ mainDb.once( 'open', function callback() {
 
     require('./routes')(app, mainDb);
 
-    //scheduler = new MainSchedule(mainDb);
-    //scheduler.startMainCron();
-
-    server.listen(8831, function(){
-        console.log('Server up successfully');
+    server.listen(process.env.PORT, function(){
+        console.log('Express server listening on port ' + process.env.PORT);
+        console.log('HOST: ' + process.env.HOST);
+        console.log('DB_HOST: ' + process.env.DB_HOST);
     });
 });
 
