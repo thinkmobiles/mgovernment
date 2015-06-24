@@ -8,10 +8,16 @@ module.exports = function (db){
         login: {type: String, unique: true},
         pass: String,
         userType:String,
-        devices: []
-        }, {
-            collection: 'Users'
-        });
+        devices: [],
+        profile:{
+            firstName: {type: String},
+            lastName: String,
+            dateOfCreating: {type: Date, default: Date.now}
+        },
+        accounts:[]
+    }, {
+        collection: 'Users'
+    });
     db.model('user', user);
 
 };

@@ -83,7 +83,7 @@ var User = function(db) {
         var login = body.login;
         var pass = body.pass;
         var err;
-        var device = { //TODO same for such objects
+        var device = {
             deviceOs: body.deviceOs,
             deviceToken: body.deviceToken
         };
@@ -104,8 +104,8 @@ var User = function(db) {
                 console.log('signInClient rout started ');
 
                 if (!model) {
-                    console.log('No one was found');
-                    return res.status(400).send(RESPONSE.AUTH.INVALID_CREDENTIALS);
+                    console.log('No one model was found');
+                    return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
                 console.log('find succesful ');
@@ -125,6 +125,7 @@ var User = function(db) {
     function processDeviceToken(options, callback) {
         var found = false;
         var model = options.model;
+        var device = options.device;
 
         if (!options.device.deviceToken || !isValidDeviceOs(options.device.deviceOs)) {
             return callback();
@@ -140,8 +141,8 @@ var User = function(db) {
             return callback();
         }
 
-        console.log('update Device');
-        model
+        console.log('update Device',model._id );
+        User
             .update({_id: model._id}, {$push: {'devices': device}}, function (err, data) {
                 if (err) {
                     console.log(err.stack);
@@ -152,47 +153,46 @@ var User = function(db) {
 
     this.signOutClient = function (req, res, next) {
         var body = req.body;
-        var device = {};
-        var userId = req.session.uId;
+        var device = {
+            deviceOs: body.deviceOs,
+            deviceToken: body.deviceToken
+        };
+
         var found;
 
-        device.deviceOs = body.deviceOs;
-        device.deviceToken = body.deviceToken;
-
-        if (req.session && req.session.uId && req.session.loggedIn) {
-            if (device.deviceToken && isValidDeviceOs(device.deviceOs)) {
-
-                getUserById(userId, function (err, model) {
-                    console.dir(model);
-                    if (model) {
-
-                        for (var i = model.devices.length - 1; i >= 0; i--) {
-                            if (model.devices[i].deviceToken === device.deviceToken) {
-                                found = true;
-                            }
-                        }
-                        if (!found) {
-                            console.log('update Device');
-                            User.update({_id: model._id}, {$push: {'devices': device}}, {upsert: true}, function (err, data) {
-                                if (err) {
-                                    return next(err);
-                                }
-                            });
-                        }
-                        return next();
-                    }
-
-                    err = new Error('model whith _id: ' + userId + ' not found');
-                    err.status = 404;
-                    return next(err);
-
-                });
-            }
+        if (!isLoginedAndValidDeviceToken(req, device)) {
+            return session.kill(req, res, next);
         }
+        var userId = req.session.uId;
 
-        session.kill(req, res, next);
+        getUserById(userId, function (err, model) {
+            console.dir(model);
+
+            if (!model) {
+                console.log('No one model was found');
+                return session.kill(req, res, next);
+            }
+
+            console.log('find succesful ');
+            console.log(model._id.toString(), ' userType: ', model.userType);
+
+            var deviceOptions = {
+                model: model,
+                device: device
+            };
+
+            processDeviceToken(deviceOptions, function () {
+                return session.kill(req, res, next);
+            });
+
+        });
+
         console.log('signOutClient rout started');
     };
+
+    function isLoginedAndValidDeviceToken (req, device){
+        return req.session && req.session.uId && req.session.loggedIn && device.deviceToken && isValidDeviceOs(device.deviceOs);
+    }
 
     this.createAccount = function (req, res, next) {
         var body = req.body;
@@ -202,17 +202,15 @@ var User = function(db) {
         var user;
         var profile;
         var err;
-        var device ={};
+        var device = {
+            deviceOs: body.deviceOs,
+            deviceToken: body.deviceToken
+        };
 
-
-
-
-        device.deviceOs = body.deviceOs;
-        device.deviceToken = body.deviceToken;
         console.log(device);
 
         if (!userTypeValidate(userType)) {
-            return res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
 
         }
 
@@ -246,9 +244,9 @@ var User = function(db) {
                 res.status(200).send({userId: user._id});
             });
         });
-
-
     };
+
+
 
     /*TODO remove*/
     /*TEST BLOCK*/

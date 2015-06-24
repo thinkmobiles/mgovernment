@@ -14,7 +14,7 @@ var Layout = function(db) {
         var options = req.body;
 
         if (!options.name || !options.items) {
-            return res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
         }
 
         var layout = new Layout({name: options.name, items: options.items});
@@ -32,7 +32,7 @@ var Layout = function(db) {
         var searchName = req.query.name;
 
         if (!searchName) {
-            return res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         findLayoutByName(searchName, function (err, layout) {
