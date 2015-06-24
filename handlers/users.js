@@ -10,11 +10,8 @@ var User = function(db) {
     var lodash = require('lodash');
     var async = require('async');
     var User = db.model('user');
-    var Profile = db.model('profile');
 
-
-
-    function userTypeValidate(userType) {
+    function isValidUserType(userType) {
         var validate = false;
         for (var k in CONST.USER_TYPE) {
             if  (CONST.USER_TYPE[k] === userType) {
@@ -35,6 +32,105 @@ var User = function(db) {
         console.log('DeviceOS validate:',validate);
         return validate;
     }
+
+    this.updateServicesAccount = function ( req, res, next ) {
+        var body = req.body;
+        var userId = req.session.uId;
+        var found = false;
+        var foundPosition= -1;
+        var account = {
+            seviceName: body.seviceName,
+            seviceOptions:body.seviceOptions,
+            serviceLogin: body.serviceLogin,
+            servicePass: body.servicePass
+        };
+
+        getUserById(userId, function (err, user) {
+            console.dir(user);
+
+            for (var i = user.accounts.length - 1; i >= 0; i--) {
+                if (user.accounts[i].seviceName === account.seviceName) {
+                    found = true;
+                    foundPosition = i;
+                }
+            }
+            if (!found) {
+                return res.status(400).send({ err: 'Not find such serviceName'});
+            }
+           // user.accounts[i] = account
+
+            console.log('update Account',user._id,' update store fo service: ', account.seviceName);
+
+            User
+                .update({'_id': user._id, 'accounts.seviceName': account.seviceName }, {$set: {
+                    'accounts.$': account}}, function (err, data) {
+                    if (err) {
+                        console.log(err.stack);
+                    }
+                    return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful updating'});
+                });
+        });
+    };
+
+    this.getUserProfileByIdForAdmin = function ( req, res, next ) {
+
+        var userId = req.params.id;
+        console.log ('userId: ',userId);
+
+        getUserById(userId, function (err, profile) {
+            if (err) {
+                return next(err);
+            }
+            return res.status(200).send(profile);
+        });
+    };
+
+    this.getUserProfileBySession = function ( req, res, next ) {
+
+        var userId = req.session.uId;
+        getUserById(userId, function (err, profile) {
+            if (err) {
+                return next(err);
+            }
+            return res.status(200).send(profile);
+        });
+    };
+
+    this.createServicesAccount = function ( req, res, next ) {
+        var body = req.body;
+        var userId = req.session.uId;
+        var found = false;
+        var account = {
+            seviceName: body.seviceName,
+            seviceOptions:body.seviceOptions,
+            serviceLogin: body.serviceLogin,
+            servicePass: body.servicePass
+        };
+
+        getUserById(userId, function (err, user) {
+            console.dir(user);
+
+            for (var i = user.accounts.length - 1; i >= 0; i--) {
+                if (user.accounts[i].seviceName === account.seviceName) {
+                    found = true;
+                }
+            }
+            if (found) {
+                return res.status(400).send({ err: 'You already have same service'});
+            }
+
+            console.log('update Account',user._id,' create store fo service: ', account.seviceName);
+            User
+                .update({_id: user._id}, {$push: {'accounts': account}}, function (err, data) {
+                    if (err) {
+                        console.log(err.stack);
+                    }
+                    return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful created'});
+                });
+        });
+
+    };
+
 
     this.isAdminBySession = function ( req, res, next ) {
 
@@ -122,12 +218,14 @@ var User = function(db) {
             });
     };
 
+    
     function processDeviceToken(options, callback) {
         var found = false;
         var model = options.model;
         var device = options.device;
+        console.log(device);
 
-        if (!options.device.deviceToken || !isValidDeviceOs(options.device.deviceOs)) {
+        if (!device.deviceToken || !isValidDeviceOs(device.deviceOs)) {
             return callback();
         }
 
@@ -200,24 +298,27 @@ var User = function(db) {
         var pass = body.pass;
         var userType = body.userType;
         var user;
-        var profile;
         var err;
         var device = {
             deviceOs: body.deviceOs,
             deviceToken: body.deviceToken
         };
+        var profile = {
+            firstName: body.firstName,
+            lastName: body.lastName
+        };
+        var account = {
+            seviceName: body.seviceName,
+            seviceOptions:body.seviceName,
+            serviceLogin: body.serviceLogin,
+            servicePass: body.servicePass
+        };
 
-        console.log(device);
+        // console.log(device);
 
-        if (!userTypeValidate(userType)) {
+        if (!isValidUserType(userType)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
 
-        }
-
-        if (!device.deviceOs || !device.deviceToken || !isValidDeviceOs(device.deviceOs)) {
-            user = new User({login: login, pass: pass, userType: userType});
-        } else {
-            user = new User({login: login, pass: pass, userType: userType, devices: device});
         }
 
         console.log('createAccount rout started');
@@ -227,22 +328,28 @@ var User = function(db) {
             err.status = 400;
             return next(err);
         }
+
+        var userData ={login: login, pass: pass, userType: userType, profile: profile};
+
+        if (device.deviceOs && device.deviceToken && isValidDeviceOs(device.deviceOs)) {
+            userData.devices = [device];
+        }
+
+        if (account.seviceName && account.serviceLogin && account.servicePass) {
+            userData.accounts = [account];
+        }
+
+
+        user = new User(userData);
+        console.log(userData);
         user.save(function (err, user) {
             if (err) {
                 return res.status(500).send(err)
             }
             console.log('User save');
 
-            body.owner = user._id;
-            profile = new Profile(body);
 
-            profile.save(function (err, profile) {
-                if (err) {
-                    return res.status(500).send(err)
-                }
-
-                res.status(200).send(" " + user + " " + profile);
-            });
+            res.status(200).send(user);
         });
     };
 
