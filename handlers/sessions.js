@@ -9,14 +9,14 @@ var Session = function ( db ) {
         req.session.loggedIn = true;
         req.session.uId = userId;
         req.session.type = userType;
-        res.status( 200 ).send( { success: "Login successful" } );
+        res.status( 200 ).send( { success: RESPONSE.AUTH.LOG_IN } );
     };
 
     this.kill = function ( req, res, next ) {
         if(req.session) {
             req.session.destroy();
         }
-        res.status(200).send({ success: "Logout successful" });
+        res.status(200).send({ success: RESPONSE.AUTH.LOG_OUT });
     };
 
     this.authenticatedUser = function ( req, res, next ) {
@@ -46,12 +46,12 @@ var Session = function ( db ) {
     };
 
     this.isAdminApi = function( req, res, next ) {
-        res.status( 401).send(RESPONSE.AUTH.UN_AUTHORIZED);
+        res.status( 401).send({err: RESPONSE.AUTH.UN_AUTHORIZED });
     };
 
     this.isAuthenticatedUser = function ( req, res, next ) {
         if( req.session && req.session.uId && req.session.loggedIn ) {
-            res.status( 200 ).send( { success: "Is authenticated", uId: req.session.uId } );
+            res.status( 200 ).send( {success: "Is authenticated", uId: req.session.uId } );
         } else {
             var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
             err.status = 401;
