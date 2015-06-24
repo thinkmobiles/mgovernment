@@ -18,8 +18,7 @@ var User = function(db) {
                 validate = true;
             }
         }
-        console.log('userType validate:',validate);
-        return validate;
+         return validate;
     }
 
     function isValidDeviceOs(deviceOs){
@@ -29,8 +28,7 @@ var User = function(db) {
                 validate = true;
             }
         }
-        console.log('DeviceOS validate:',validate);
-        return validate;
+         return validate;
     }
 
     this.updateServicesAccount = function ( req, res, next ) {
@@ -59,13 +57,12 @@ var User = function(db) {
             }
            // user.accounts[i] = account
 
-            console.log('update Account',user._id,' update store fo service: ', account.seviceName);
 
             User
                 .update({'_id': user._id, 'accounts.seviceName': account.seviceName }, {$set: {
                     'accounts.$': account}}, function (err, data) {
                     if (err) {
-                        console.log(err.stack);
+                        return res.status(400).send({ err: err});
                     }
                     return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful updating'});
                 });
@@ -75,7 +72,6 @@ var User = function(db) {
     this.getUserProfileByIdForAdmin = function ( req, res, next ) {
 
         var userId = req.params.id;
-        console.log ('userId: ',userId);
 
         getUserById(userId, function (err, profile) {
             if (err) {
@@ -119,11 +115,9 @@ var User = function(db) {
                 return res.status(400).send({ err: 'You already have same service'});
             }
 
-            console.log('update Account',user._id,' create store fo service: ', account.seviceName);
             User
                 .update({_id: user._id}, {$push: {'accounts': account}}, function (err, data) {
                     if (err) {
-                        console.log(err.stack);
                     }
                     return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful created'});
                 });
@@ -139,7 +133,6 @@ var User = function(db) {
         getUserById(userId, function (err, profile) {
             console.dir(profile);
             if (profile.userType === CONST.USER_TYPE.ADMIN) {
-                console.log(' Admine acces -> Next');
                 return next();
             }
 
@@ -151,7 +144,6 @@ var User = function(db) {
     };
 
     function getUserById (userId, callback){
-        console.log('Profiles Handlers started');
 
         User
             .findOne({_id: userId})
@@ -160,16 +152,11 @@ var User = function(db) {
                     return callback(err);
                 }
 
-                console.log('User find by id', userId);
-
                 if (model) {
-                    console.log('find succesful ');
-                    //    console.log( model);
 
                     return callback(null, model.toJSON());
                 } else {
-                    console.log('No one was found');
-                    return callback(new Error('No one was found with such _id '));
+                     return callback(new Error('No one was found with such _id '));
                 }
             });
     }
@@ -197,15 +184,12 @@ var User = function(db) {
                     return next(err)
                 }
 
-                console.log('signInClient rout started ');
+                             if (!model) {
 
-                if (!model) {
-                    console.log('No one model was found');
                     return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
-                console.log('find succesful ');
-                console.log(model._id.toString(), ' userType: ', model.userType);
+
 
                 var deviceOptions = {
                     model: model,
@@ -218,12 +202,12 @@ var User = function(db) {
             });
     };
 
-    
+
     function processDeviceToken(options, callback) {
         var found = false;
         var model = options.model;
         var device = options.device;
-        console.log(device);
+
 
         if (!device.deviceToken || !isValidDeviceOs(device.deviceOs)) {
             return callback();
@@ -239,11 +223,10 @@ var User = function(db) {
             return callback();
         }
 
-        console.log('update Device',model._id );
-        User
+                User
             .update({_id: model._id}, {$push: {'devices': device}}, function (err, data) {
                 if (err) {
-                    console.log(err.stack);
+
                 }
                 return callback();
             });
@@ -267,12 +250,9 @@ var User = function(db) {
             console.dir(model);
 
             if (!model) {
-                console.log('No one model was found');
+
                 return session.kill(req, res, next);
             }
-
-            console.log('find succesful ');
-            console.log(model._id.toString(), ' userType: ', model.userType);
 
             var deviceOptions = {
                 model: model,
@@ -285,7 +265,6 @@ var User = function(db) {
 
         });
 
-        console.log('signOutClient rout started');
     };
 
     function isLoginedAndValidDeviceToken (req, device){
@@ -314,14 +293,10 @@ var User = function(db) {
             servicePass: body.servicePass
         };
 
-        // console.log(device);
-
         if (!isValidUserType(userType)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
 
         }
-
-        console.log('createAccount rout started');
 
         if (!body || !login || !pass) {
             err = new Error(RESPONSE.NOT_ENOUGH_PARAMS);
@@ -341,13 +316,10 @@ var User = function(db) {
 
 
         user = new User(userData);
-        console.log(userData);
         user.save(function (err, user) {
             if (err) {
                 return res.status(500).send(err)
             }
-            console.log('User save');
-
 
             res.status(200).send(user);
         });
