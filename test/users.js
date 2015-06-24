@@ -42,7 +42,7 @@ describe('user', function () {
         };
 
         agent
-            .post('/user/create')
+            .post('/user/')
             .send(data)
             .expect(200)
             .end(function (err, res) {
@@ -52,6 +52,7 @@ describe('user', function () {
                 expect(res.body).to.have.property('login');
                 expect(res.body).to.have.property('pass');
                 expect(res.body).to.have.property('userType');
+                expect(res.body.login).to.equal('client123');
                 done();
             });
     });
@@ -60,6 +61,7 @@ describe('user', function () {
         var loginData = {
             login: 'client123',
             pass: 'pass1234'
+
         };
 
         agent
@@ -93,23 +95,242 @@ describe('user', function () {
             });
     });
 
-    it('Get user by ID', function (done) {
+    it('SignOut if Logined (client123, pass1234)', function (done) {
+        var loginData = {
+            login: 'client123',
+            pass: 'pass1234',
+            deviceOs: "android",
+            deviceToken: "Pilesos Token12343"
+        };
+
+        var loginData2 = {
+            login: 'client123',
+            pass: 'pass1234',
+            deviceOs: "android",
+            deviceToken: "Skovoroda Token12343"
+        };
 
         agent
-            .get('/users/' + userId)
+            .post('/user/signIn')
+            .send(loginData)
             .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/user/signOut')
+                    .send(loginData2)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        done();
+                    });
+            });
+    });
+
+    it('SignOut if Unauthorized (client123, pass1234)', function (done) {
+        var loginData = {
+            login: 'client123',
+            pass: 'pass1234',
+            deviceOs: "ois--- bad IoS",
+            deviceToken: "IClock  Token-----------------"
+        };
+
+
+        agent
+            .post('/user/signOut')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
+            });
+
+    });
+
+    it('Get UserProfile By Session if Unauthorized (client123, pass1234)', function (done) {
+        var loginData = {
+            login: 'client123',
+            pass: 'pass1234',
+            deviceOs: "ois",
+            deviceToken: "IClock  Token----"
+        };
+
+
+        agent
+            .get('/user/profile')
+            .send(loginData)
+            .expect(401)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
+            });
+
+
+    });
+
+    it('Get UserProfile By Session after logIn  (client123, pass1234)', function (done) {
+        var loginData = {
+            login: 'client123',
+            pass: 'pass1234',
+            deviceOs: "windows",
+            deviceToken: "Nokia  Token----"
+        };
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/user/profile')
+                    .send(loginData)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        done();
+                    });
+            });
+    });
+
+    it('Get user by ID with client userType (client123, pass1234)', function (done) {
+
+        agent
+            .get('/user/profile/545465465464654')
+            .expect(403)
             .end(function (err, res) {
                 if (err) {
                     return done(err);
                 } else {
-                    expect(res.body).to.have.property('firstname');
-                    expect(res.body).to.have.property('lastname');
-                    expect(res.body).to.have.property('username');
-                    expect(res.body).to.have.property('email');
+
                     done();
 
                 }
             });
     });
 
+    it('Get user by ID with admin userType (admin123, pass1234)', function (done) {
+        var data = {
+            login: 'admin123',
+            pass: 'pass1234',
+            userType: 'admin'
+        };
+
+        agent
+            .post('/user/')
+            .send(data)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                agent
+                    .post('/user/signIn')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        agent
+                            .get('/user/profile/545465465464654')
+                            .expect(500)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                } else {
+                                    done();
+                                }
+                            });
+                    });
+            });
+    });
+
+
+    it('POST Service account (client123, pass1234)', function (done) {
+        var loginData = {
+            login: 'client123',
+            pass: 'pass1234',
+            "seviceName": "love.mail.ru",
+            "seviceOptions": "love, meet, chat",
+            "serviceLogin": "loveIs",
+            "servicePass": "gtgtgtgt"
+        };
+
+        agent
+            .post('/user/account')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
+            });
+    });
+
+    it('POST duplicate Service account (client123, pass1234)', function (done) {
+        var loginData = {
+            login: 'client123',
+            pass: 'pass1234',
+            "seviceName": "love.mail.ru",
+            "seviceOptions": "love, meet, chat",
+            "serviceLogin": "loveIs",
+            "servicePass": "gtgtgtgt"
+        };
+
+        agent
+            .post('/user/account')
+            .send(loginData)
+            .expect(400)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
+            });
+    });
+
+    it('PUT  Service account (client123, pass1234)', function (done) {
+        var loginData = {
+            login: 'client123',
+            pass: 'pass1234',
+            "seviceName": "love.mail.ru",
+            "seviceOptions": "Game",
+            "serviceLogin": "Client1",
+            "servicePass": "Client2"
+        };
+
+        agent
+            .put('/user/account')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
+            });
+    });
 });

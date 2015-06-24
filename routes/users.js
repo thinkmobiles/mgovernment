@@ -11,12 +11,13 @@ module.exports = function(db){
 
 
     router.post('/signIn', users.signInClient );
-    router.post('/create', users.createAccount);
+    router.post('/', users.createAccount);
     router.post('/signOut', users.signOutClient);
     router.get('/profile', session.authenticatedUser,  users.getUserProfileBySession);
     router.get('/profile/:id', users.isAdminBySession,  users.getUserProfileByIdForAdmin);
-    router.post('/account', session.authenticatedUser, users.createServicesAccount);
-    router.put('/account', session.authenticatedUser, users.updateServicesAccount);
+    router.route('/account')
+        .post(session.authenticatedUser, users.createServicesAccount)
+        .put(session.authenticatedUser, users.updateServicesAccount);
 
 
     return router;
