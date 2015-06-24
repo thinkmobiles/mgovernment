@@ -49,8 +49,9 @@ describe('user', function () {
                 if (err) {
                     return done(err)
                 }
-
-                //userId = res.body.userId;
+                expect(res.body).to.have.property('login');
+                expect(res.body).to.have.property('pass');
+                expect(res.body).to.have.property('userType');
                 done();
             });
     });
@@ -69,6 +70,7 @@ describe('user', function () {
                 if (err) {
                     return done(err)
                 }
+
                 done();
             });
     });
