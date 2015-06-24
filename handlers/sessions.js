@@ -1,6 +1,5 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
-var ProfileHandler = require('./profiles');
 
 var Session = function ( db ) {
 

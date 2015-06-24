@@ -3,7 +3,6 @@ var router = express.Router();
 var UserHandler = require('../handlers/users');
 
 var SessionHandler = require('../handlers/sessions');
-var profileHandler = require('../handlers/profiles');
 
 module.exports = function(db){
 

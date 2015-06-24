@@ -50,7 +50,7 @@ describe('user', function () {
                     return done(err)
                 }
 
-                userId = res.body.userId;
+                //userId = res.body.userId;
                 done();
             });
     });
