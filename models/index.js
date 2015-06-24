@@ -5,6 +5,6 @@ module.exports = function(db) {
     require('./user')(db);
     require('./profile')(db);
     require('./sessions')(db);
-    require('./layout')();
+    require('./layout')(db);
 
 };

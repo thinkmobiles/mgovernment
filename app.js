@@ -67,3 +67,5 @@ mainDb.once( 'open', function callback() {
     });
 });
 
+module.exports = app;
+

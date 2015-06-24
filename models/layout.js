@@ -1,6 +1,7 @@
-module.exports = function () {
-    var mongoose = require('mongoose');
+var CONST = require('../constants');
 
+module.exports = function (db) {
+    var mongoose = require('mongoose');
 
     var layoutSchema = mongoose.Schema({
             name: {type: String, unique: true},
@@ -14,7 +15,7 @@ module.exports = function () {
         },
         {collection: 'Layouts'});
 
-    mongoose.model('Layout', layoutSchema);
+    db.model(CONST.MODELS.LAYOUT, layoutSchema);
 
     if (!mongoose.Schemas) {
         mongoose.Schemas = {};

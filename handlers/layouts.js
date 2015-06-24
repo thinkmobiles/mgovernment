@@ -6,7 +6,7 @@ var Layout = function(db) {
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();
     var async = require('async');
-    var Layout = mongoose.model(CONST.MODELS.LAYOUT);
+    var Layout = db.model(CONST.MODELS.LAYOUT);
 
     var ObjectId = mongoose.Types.ObjectId;
 
@@ -17,7 +17,8 @@ var Layout = function(db) {
             return res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
         }
 
-        var layout = new Layout(options);
+        var layout = new Layout({name: options.name, items: options.items});
+
         layout
             .save(function (err, layoutModel) {
                 if (err) {

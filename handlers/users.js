@@ -127,7 +127,7 @@ var User = function(db) {
         var model = options.model;
 
         if (!options.device.deviceToken || !isValidDeviceOs(options.device.deviceOs)) {
-            callback();
+            return callback();
         }
 
         for (var i = model.devices.length - 1; i >= 0; i--) {
@@ -243,7 +243,7 @@ var User = function(db) {
                     return res.status(500).send(err)
                 }
 
-                res.status(200).send(" " + user + " " + profile);
+                res.status(200).send({userId: user._id});
             });
         });
 
