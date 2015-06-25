@@ -10,6 +10,7 @@ var User = function(db) {
     var lodash = require('lodash');
     var async = require('async');
     var User = db.model('user');
+    var crypto = require('crypto');
 
     function isValidUserType(userType) {
         var validate = false;
@@ -177,6 +178,10 @@ var User = function(db) {
             return next(err);
         }
 
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
+
         User
             .findOne({login: login, pass: pass})
             .exec(function (err, model) {
@@ -303,6 +308,10 @@ var User = function(db) {
             err.status = 400;
             return next(err);
         }
+
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
 
         var userData ={login: login, pass: pass, userType: userType, profile: profile};
 
