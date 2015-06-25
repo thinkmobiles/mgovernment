@@ -14,7 +14,7 @@ module.exports = function(db){
     router.post('/', users.createAccount);
     router.post('/signOut', users.signOutClient);
     router.get('/profile', session.authenticatedUser,  users.getUserProfileBySession);
-    router.get('/profile/:id', users.isAdminBySession,  users.getUserProfileByIdForAdmin);
+    router.get('/profile/:id', session.isAdminBySession,  users.getUserProfileByIdForAdmin);
     router.route('/account')
         .post(session.authenticatedUser, users.createServicesAccount)
         .put(session.authenticatedUser, users.updateServicesAccount);

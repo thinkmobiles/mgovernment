@@ -2,7 +2,8 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 
 var Session = function ( db ) {
-
+    var mongoose = require('mongoose');
+    var User = db.model('user');
 
     this.register = function ( req, res, userId, userType ) {
         req.session.loggedIn = true;
@@ -29,6 +30,42 @@ var Session = function ( db ) {
         }
 
     };
+
+    this.isAdminBySession = function ( req, res, next ) {
+
+        var userId = req.session.uId;
+
+        getUserTypeById(userId, function (err, userType) {
+
+            if (userType === CONST.USER_TYPE.ADMIN) {
+                return next();
+            }
+
+            err = new Error(RESPONSE.AUTH.NO_PERMISSIONS);
+            err.status = 403;
+            return next(err);
+
+        });
+    };
+
+
+    function getUserTypeById (userId, callback){
+
+        User
+            .findOne({_id: userId})
+            .exec(function (err, model) {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (model) {
+
+                    return callback(null, model.userType);
+                } else {
+                    return callback(new Error('No one was found with such _id '));
+                }
+            });
+    }
 
     this.isAdmin = function ( req, res, next ) {
         var err;
