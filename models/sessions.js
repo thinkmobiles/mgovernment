@@ -1,3 +1,4 @@
+var CONST = require('../constants');
 module.exports = function(db){
     'use strict';
     var mongoose = require('mongoose');
@@ -7,5 +8,5 @@ module.exports = function(db){
         sessionId: String
     }, {collection : 'Sessions'});
 
-    db.model('session', session);
+    db.model(CONST.MODELS.SESSION, session);
 };

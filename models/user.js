@@ -1,4 +1,4 @@
-
+var CONST = require('../constants');
 module.exports = function (db){
     'use strict';
 
@@ -18,6 +18,6 @@ module.exports = function (db){
     }, {
         collection: 'Users'
     });
-    db.model('user', user);
+    db.model(CONST.MODELS.USER, user);
 
 };

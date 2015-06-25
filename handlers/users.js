@@ -9,7 +9,7 @@ var User = function(db) {
 
     var lodash = require('lodash');
     var async = require('async');
-    var User = db.model('user');
+    var User = db.model(CONST.MODELS.USER);
     var crypto = require('crypto');
 
     function isValidUserType(userType) {

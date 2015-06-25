@@ -4,12 +4,16 @@ module.exports = function (db) {
     var mongoose = require('mongoose');
 
     var layoutSchema = mongoose.Schema({
-            name: {type: String, unique: true},
+            layoutName: {type: String, unique: true},
+            layoutType: {type: String},
+            screenOptions:{},
             items: [{
                 order: Number,
                 name: String,
                 itemType: String,
-                action: String
+                dataSource: String,
+                id:String,
+                action: {}
             }],
             lastChange: {type: Date}
         },
@@ -23,3 +27,4 @@ module.exports = function (db) {
 
     mongoose.Schemas['Layout'] = layoutSchema;
 };
+

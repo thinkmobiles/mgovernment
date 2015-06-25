@@ -1,10 +1,14 @@
+var SessionHandler = require('../handlers/sessions');
+
 module.exports = function(app, db){
 
     var logWriter = require('../helpers/logWriter')();
     var models = require('../models/index')(db);
 
     var usersRouter = require('./users')(db);
-    var layoutsRouter = require('./layouts')(db);
+    var clientLayoutsRouter = require('./clientLayouts')(db);
+    var adminLayoutsRouter = require('./adminLayouts')(db);
+    var session = new SessionHandler(db);
 
 
     app.get('/', function(req, res, next){
@@ -12,7 +16,8 @@ module.exports = function(app, db){
     });
 
     app.use('/user', usersRouter);
-    app.use('/layout', layoutsRouter);
+    app.use('/clientLayout', clientLayoutsRouter);
+    app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);
 
 
     function notFound(req, res, next){

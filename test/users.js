@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 
 var url = 'http://localhost:7791';
 
-describe('user', function () {
+describe('User create/ logIn / logOut / getProfile / Device, Accpunt (CRUD) ,', function () {
     var userId;
     var agent = request.agent(url);
 

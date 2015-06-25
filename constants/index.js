@@ -14,6 +14,7 @@ module.exports = {
     MODELS: {
         USER: 'User',
         PROFILE: 'Profile',
-        LAYOUT: 'Layout'
+        LAYOUT: 'Layout',
+        SESSION: 'Session'
     }
 };

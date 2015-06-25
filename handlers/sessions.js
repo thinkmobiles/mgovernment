@@ -3,7 +3,7 @@ var RESPONSE = require('../constants/response');
 
 var Session = function ( db ) {
     var mongoose = require('mongoose');
-    var User = db.model('user');
+    var User = db.model(CONST.MODELS.USER);
 
     this.register = function ( req, res, userId, userType ) {
         req.session.loggedIn = true;
