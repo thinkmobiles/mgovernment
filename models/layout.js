@@ -4,8 +4,9 @@ module.exports = function (db) {
     var mongoose = require('mongoose');
 
     var layoutSchema = mongoose.Schema({
-            layoutName: {type: String, unique: true},
+            layoutName: {type: String},
             layoutType: {type: String},
+            id:{type: String, unique: true},
             screenOptions:{},
             items: [{
                 order: Number,
