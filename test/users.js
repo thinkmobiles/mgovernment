@@ -5,7 +5,8 @@ var expect = require('chai').expect;
 var app = require('../app');
 var mongoose = require('mongoose');
 var CONST = require('../constants');
-var LAYUOTS = require('../config/layouts');
+var LAYUOTS = require('./config/layoutsTemplates');
+var USERS = require('./config/layoutsTemplates');
 
 
 
@@ -356,7 +357,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             mongos: true
         };
 
-        var dbConnection = mongoose.createConnection(process.evn.DB_HOST, process.evn.DB_NAME, process.evn.DB_PORT, connectOptions);
+        var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
 
         dbConnection.once('open', function callback() {
             dbConnection.db.dropCollection('Layouts', function (err, result) {
