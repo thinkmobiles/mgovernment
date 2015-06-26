@@ -11,13 +11,14 @@ var Layout = function(db) {
     var ObjectId = mongoose.Types.ObjectId;
 
     this.createLayout = function (req, res, next) {
-        var options = req.body;
+        var body = req.body;
 
-        if (!options.name || !options.items) {
+        if (!body.layoutName || !body.layoutId) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
         }
 
-        var layout = new Layout({name: options.name, items: options.items});
+        var layout = new Layout(body);
+        console.log(body);
 
         layout
             .save(function (err, layoutModel) {

@@ -4,12 +4,12 @@ module.exports = {
     START_SCREEN_LAYOUT: {
         layoutName: 'startScreeLayout',
         layoutType: 'login',
-        id: 'startScreeLayoutl11122',
+        layoutId: 'startScreeLayoutl11122',
 
         screenOptions:{
             headerType:'header',
             title: 'Please input authorization info',
-            backgorundImg:'uri:\img\background.jpg',
+            backgorundImg:'uri:/img/background.jpg',
             backgorundColor:'white',
             footterBarType:'3button'
         },
@@ -63,9 +63,6 @@ module.exports = {
 
             }
 
-        ],
-        lastChange: {type: Date, default: Date.now}
-    }
-
+        ]}
 
 };

@@ -6,7 +6,7 @@ module.exports = function (db) {
     var layoutSchema = mongoose.Schema({
             layoutName: {type: String},
             layoutType: {type: String},
-            id:{type: String, unique: true},
+            layoutId:{type: String, unique: true},
             screenOptions:{},
             items: [{
                 order: Number,
@@ -16,7 +16,7 @@ module.exports = function (db) {
                 id:String,
                 action: {}
             }],
-            lastChange: {type: Date}
+            lastChange: {type: Date,  default: Date.now}
         },
         {collection: 'Layouts'});
 

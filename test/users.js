@@ -6,7 +6,7 @@ var app = require('../app');
 var mongoose = require('mongoose');
 var CONST = require('../constants');
 var LAYUOTS = require('./config/layoutsTemplates');
-var USERS = require('./config/layoutsTemplates');
+var USERS = require('./config/usersTemplates');
 
 
 
@@ -29,7 +29,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             mongos: true
         };
 
-        var dbConnection = mongoose.createConnection('localhost', 'mgovermentDB', 27017, connectOptions);
+        var dbConnection = mongoose.createConnection(process.env.DB_HOST , process.env.DB_NAME, process.env.DB_PORT, connectOptions);
 
         dbConnection.once('open', function callback() {
             dbConnection.db.dropCollection('Users', function (err, result) {
@@ -340,6 +340,8 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     });
 });
 
+/* --------------------------------------------------------------- LAYOUT TEST------------------------------------------------------*/
+
 describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
     var userId;
     var agent = request.agent(url);
@@ -368,24 +370,39 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
     });
 
     it('Create Layout', function (done) {
+
+
+
+        var loginData = USERS.ADMIN;
         var data = LAYUOTS.START_SCREEN_LAYOUT;
 
+        //console.log(loginData);
+
         agent
-            .post('/adminLayout/startScreeLayout')
-            .send(data)
+            .post('/user/signIn')
+            .send(loginData)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
-                //expect(res.body).to.have.property('login');
-                //expect(res.body).to.have.property('pass');
-                //expect(res.body).to.have.property('userType');
-                //expect(res.body.login).to.equal('client123');
-                done();
+
+                agent
+                    .post('/adminLayout/startScreeLayout')
+                    .send(data)
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+
+                        done();
+                    });
             });
     });
+
+
 
     //it('Login with GOOD credentials (client123, pass1234)', function (done) {
     //    var loginData = {
