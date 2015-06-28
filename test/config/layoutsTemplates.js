@@ -86,7 +86,21 @@ module.exports = {
             }
         ]},
 
-    SERVICES_LIST_SCREEN_LAYOUT: {
+    SERVICES_LIST_SCREEN_LAYOUT_BEFORE_UPDATING: {
+        layoutName: 'ServicesListScreeLayout',
+        layoutType: 'servicesList',
+        layoutId: 'servicesListLayout222222',
+
+        screenOptions: {
+            headerType: 'bad',
+            title: 'bad LIST OF SERVICES',
+            backgorundImg: ' bad uri:/img/backgroundServices.jpg',
+            backgorundColor: 'bad blue',
+            footterBarType: 'bad 4button'
+        }
+    },
+
+    SERVICES_LIST_SCREEN_LAYOUT_FOR_UPDATING: {
         layoutName: 'ServicesListScreeLayout',
         layoutType: 'servicesList',
         layoutId: 'servicesListLayout222222',

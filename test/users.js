@@ -383,7 +383,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
                 }
 
                 agent
-                    .post('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT.layoutName)
+                    .post('/adminLayout/' + data.layoutName)
                     .send(data)
                     .expect(201)
                     .end(function (err, res) {
@@ -396,11 +396,12 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Admin Get Layout by layoutName', function (done) {
+
+    it('Admin GET Layout by layoutName', function (done) {
 
 
         agent
-            .get('/adminLayout/' +  LAYUOTS.START_SCREEN_LAYOUT.layoutName)
+            .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT.layoutName)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -413,8 +414,32 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
     });
 
 
+    it('Admin PUT Layout by layoutName', function (done) {
+        var data = LAYUOTS.SERVICES_LIST_SCREEN_LAYOUT_BEFORE_UPDATING;
+        var dataForUpdate = LAYUOTS.SERVICES_LIST_SCREEN_LAYOUT_FOR_UPDATING;
 
+        agent
+            .post('/adminLayout/' + data.layoutName)
+            .send(data)
+            .expect(201)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
 
+                agent
+                    .put('/adminLayout/' + dataForUpdate.layoutName)
+                    .send(dataForUpdate)
+                    .expect(202)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        done();
+                    });
+            });
+    });
 
 });
 

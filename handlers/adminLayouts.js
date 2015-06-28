@@ -18,16 +18,25 @@ var Layout = function(db) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
         }
 
-        var layout = new Layout(body);
-       // console.log(body);
+        findLayoutByName(body.layoutName , function (err, layout) {
+            if (err) {
+                return next(err);
+            }
+            //  return res.status(200).send(layout);
+            layout.layoutType = body.layoutType;
+            layout.layoutId = body.layoutId;
+            layout.screenOptions = body.screenOptions;
+            layout.items = body.items;
 
-        layout
-            .update({layoutName:layoutName}, function (err, layoutModel) {
-                if (err) {
-                    return next(err);
-                }
-                res.status(201).send(layoutModel);
-            })
+
+            layout
+                .save(function (err, layoutModel) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.status(202).send(layoutModel);
+                });
+        });
     };
 
     this.createLayout = function (req, res, next) {
@@ -37,6 +46,8 @@ var Layout = function(db) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
         }
 
+        //var layout = new Layout(body);
+        //console.log(body);
         var layout = new Layout(body);
         //console.log(body);
 
@@ -49,6 +60,8 @@ var Layout = function(db) {
             })
     };
 
+
+
     this.getLayoutByName = function (req, res, next) {
         var searchName = req.params.layoutName;
 
@@ -60,7 +73,7 @@ var Layout = function(db) {
             if (err) {
                 return next(err);
             }
-            return res.status(200).send(layout);
+            return res.status(200).send(layout.toJSON());
         })
     };
 
@@ -77,7 +90,7 @@ var Layout = function(db) {
                     err.status = 404;
                     return callback(err);
                 }
-                return callback(null, model.toJSON());
+                return callback(null, model);
             });
     }
 };
