@@ -369,14 +369,9 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
         });
     });
 
-    it('Create Layout', function (done) {
-
-
-
+    it('Admin Create Layout', function (done) {
         var loginData = USERS.ADMIN;
         var data = LAYUOTS.START_SCREEN_LAYOUT;
-
-        //console.log(loginData);
 
         agent
             .post('/user/signIn')
@@ -388,18 +383,35 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
                 }
 
                 agent
-                    .post('/adminLayout/startScreeLayout')
+                    .post('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT.layoutName)
                     .send(data)
                     .expect(201)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
+
                         done();
                     });
             });
     });
+
+    it('Admin Get Layout by layoutName', function (done) {
+
+
+        agent
+            .get('/adminLayout/' +  LAYUOTS.START_SCREEN_LAYOUT.layoutName)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('Layout was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
 
 
 

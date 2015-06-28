@@ -10,6 +10,26 @@ var Layout = function(db) {
 
     var ObjectId = mongoose.Types.ObjectId;
 
+
+    this.updateLayoutByName = function (req, res, next) {
+        var body = req.body;
+
+        if (!body.layoutName || !body.layoutId) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
+        }
+
+        var layout = new Layout(body);
+       // console.log(body);
+
+        layout
+            .update({layoutName:layoutName}, function (err, layoutModel) {
+                if (err) {
+                    return next(err);
+                }
+                res.status(201).send(layoutModel);
+            })
+    };
+
     this.createLayout = function (req, res, next) {
         var body = req.body;
 
@@ -18,7 +38,7 @@ var Layout = function(db) {
         }
 
         var layout = new Layout(body);
-        console.log(body);
+        //console.log(body);
 
         layout
             .save(function (err, layoutModel) {
@@ -30,7 +50,7 @@ var Layout = function(db) {
     };
 
     this.getLayoutByName = function (req, res, next) {
-        var searchName = req.query.name;
+        var searchName = req.params.layoutName;
 
         if (!searchName) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
@@ -46,7 +66,7 @@ var Layout = function(db) {
 
     function findLayoutByName(layoutName, callback) {
         Layout
-            .findOne({name: layoutName})
+            .findOne({layoutName: layoutName})
             .exec(function (err, model) {
                 if (err) {
                     return callback(err);
