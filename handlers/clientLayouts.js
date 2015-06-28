@@ -13,13 +13,15 @@ var Layout = function(db) {
 
 
     this.getLayout = function (req, res, next) {
-        //var searchName = req.query.name;
+        var searchQuery = {
+            'layoutName': req.params.layoutName
+        };
 
-        //if (!searchName) {
-        //    return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
-        //}
+        if (!searchQuery.layoutName) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
 
-        findLayoutByName('startScreen', function (err, layout) {
+        findLayoutByQuery(searchQuery, function (err, layout) {
             if (err) {
                 return next(err);
             }
@@ -27,20 +29,20 @@ var Layout = function(db) {
         })
     };
 
-    function findLayoutByName(layoutName, callback) {
+    function findLayoutByQuery(Query, callback) {
         Layout
-            .findOne({name: layoutName})
+            .findOne(Query)
             .exec(function (err, model) {
                 if (err) {
                     return callback(err);
                 }
 
                 if (!model) {
-                    var err = new Error('Not found Layout by name: ' + layoutName);
+                    var err = new Error('Not found Layout by query: ' + Query);
                     err.status = 404;
                     return callback(err);
                 }
-                return callback(null, model.toJSON());
+                return callback(null, model);
             });
     }
 };

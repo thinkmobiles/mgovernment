@@ -7,7 +7,7 @@ module.exports = function(db){
     var router = express.Router();
     var layoutsHandler = new LayoutHandler(db);
 
-    router.route('/startScreen')
+    router.route('/:layoutName')
         //.post(layoutsHandler.createLayoutByName)
         .get(layoutsHandler.getLayout);
 

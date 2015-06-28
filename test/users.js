@@ -457,5 +457,22 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
+    it('Client GET Layout by layoutName', function (done) {
+
+
+        agent
+            .get('/clientLayout/' + LAYUOTS.START_SCREEN_LAYOUT.layoutName)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('Layout was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
+
 });
 
