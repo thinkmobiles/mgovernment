@@ -8,7 +8,7 @@ module.exports = function(db){
     var layoutsHandler = new LayoutHandler(db);
 
     router.route('/startScreen')
-        //.post(layoutsHandler.createLayout)
+        //.post(layoutsHandler.createLayoutByName)
         .get(layoutsHandler.getLayout);
 
     return router;

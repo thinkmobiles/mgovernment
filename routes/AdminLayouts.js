@@ -8,13 +8,13 @@ module.exports = function(db){
     var router = express.Router();
     var layoutsHandler = new LayoutHandler(db);
 
-    router.route('/:layoutName/:titleId')
+    router.route('/:layoutName/:itemId')
         //.post(layoutsHandler.createTitleInLayout)
         //.put(layoutsHandler.updateLayout)
-        .get(layoutsHandler.getLayoutByName);
+        .get(layoutsHandler.getItemByIdAndLayoutName);
 
     router.route('/:layoutName')
-        .post(layoutsHandler.createLayout)
+        .post(layoutsHandler.createLayoutByName)
         .put(layoutsHandler.updateLayoutByName)
         .get(layoutsHandler.getLayoutByName);
 

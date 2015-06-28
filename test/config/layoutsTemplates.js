@@ -73,6 +73,7 @@ module.exports = {
         ]},
 
     START_SCREEN_LAYOUT_ITEM_FOR_UPDATE: {
+        layoutName: 'startScreeLayout',
         layoutId: 'startScreeLayoutl11122',
 
         items: [

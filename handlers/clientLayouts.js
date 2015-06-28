@@ -10,23 +10,7 @@ var Layout = function(db) {
 
     var ObjectId = mongoose.Types.ObjectId;
 
-    this.createLayout = function (req, res, next) {
-        var options = req.body;
 
-        if (!options.name || !options.items) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
-        }
-
-        var layout = new Layout({name: options.name, items: options.items});
-
-        layout
-            .save(function (err, layoutModel) {
-                if (err) {
-                    return next(err);
-                }
-                res.status(201).send(layoutModel);
-            })
-    };
 
     this.getLayout = function (req, res, next) {
         //var searchName = req.query.name;

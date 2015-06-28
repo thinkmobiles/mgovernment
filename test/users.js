@@ -441,5 +441,21 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
+    it('Admin GET Item by ID an layoutName', function (done) {
+
+
+        agent
+            .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT.layoutName + '/' + 'loginButton')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('Item was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
 });
 

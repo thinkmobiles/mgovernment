@@ -39,7 +39,7 @@ var Layout = function(db) {
         });
     };
 
-    this.createLayout = function (req, res, next) {
+    this.createLayoutByName = function (req, res, next) {
         var body = req.body;
 
         if (!body.layoutName || !body.layoutId) {
@@ -77,6 +77,35 @@ var Layout = function(db) {
         })
     };
 
+    this.getItemByIdAndLayoutName = function (req, res, next) {
+        var searchQuery = {
+            'layoutName': req.params.layoutName,
+           'items.id': req.params.itemId
+        };
+        var responseItem = {};
+
+        if (!searchQuery) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        findLayoutByQuery(searchQuery, function (err, layout) {
+            if (err) {
+                return next(err);
+            }
+            for (var i = layout.items.length-1; i>=0; i-- ){
+                if(layout.items[i].id == req.params.itemId ){
+                    responseItem.order = layout.items[i].order;
+                    responseItem.name = layout.items[i].name;
+                    responseItem.itemType = layout.items[i].itemType;
+                    responseItem.dataSource = layout.items[i].dataSource;
+                    responseItem.id = layout.items[i].id;
+                    responseItem.action = layout.action;
+                }
+            }
+            return res.status(200).send(responseItem);
+        })
+    };
+
     function findLayoutByName(layoutName, callback) {
         Layout
             .findOne({layoutName: layoutName})
@@ -87,6 +116,23 @@ var Layout = function(db) {
 
                 if (!model) {
                     var err = new Error('Not found Layout by name: ' + layoutName);
+                    err.status = 404;
+                    return callback(err);
+                }
+                return callback(null, model);
+            });
+    }
+
+    function findLayoutByQuery(Query, callback) {
+        Layout
+            .findOne(Query)
+            .exec(function (err, model) {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (!model) {
+                    var err = new Error('Not found Layout by query: ' + Query);
                     err.status = 404;
                     return callback(err);
                 }
