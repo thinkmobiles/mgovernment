@@ -23,12 +23,13 @@ module.exports = {
                 id:'@loginLable',
                 action: {}
             },
+
             {
                 order: 113,
                 name: '',
                 itemType: 'textInput',
                 dataSource: 'username@exemple.com',
-                id: 'loginInput',
+                id: '@loginInput',
                 action: {
                     onChange: 'checkLogin()'
                 }
@@ -36,9 +37,17 @@ module.exports = {
             {
                 order: 114,
                 name: '',
+                itemType: 'label',
+                dataSource: 'Pass',
+                id:'@passLable',
+                action: {}
+            },
+            {
+                order: 115,
+                name: '',
                 itemType: 'textInput',
                 dataSource: '*********',
-                id:'passInput',
+                id:'@passInput',
                 action: {
                     onChange: 'checkPass()'
                 }
@@ -60,9 +69,79 @@ module.exports = {
                         }
                     }
                 }
-
             }
+        ]},
 
+    START_SCREEN_LAYOUT_ITEM_FOR_UPDATE: {
+        layoutId: 'startScreeLayoutl11122',
+
+        items: [
+            {
+                order: 114,
+                name: 'Password updated',
+                itemType: 'label',
+                dataSource: 'Password',
+                id:'@passLable',
+                action: {}
+            }
+        ]},
+
+    SERVICES_LIST_SCREEN_LAYOUT: {
+        layoutName: 'ServicesListScreeLayout',
+        layoutType: 'servicesList',
+        layoutId: 'servicesListLayout222222',
+
+        screenOptions:{
+            headerType:'header',
+            title: 'LIST OF SERVICES',
+            backgorundImg:'uri:/img/backgroundServices.jpg',
+            backgorundColor:'blue',
+            footterBarType:'4button'
+        },
+
+        items: [
+            {
+                order: 221,
+                name: '',
+                itemType: 'label',
+                dataSource: 'Service1',
+                id:'@Service1Lable',
+                action: {}
+            },
+
+            {
+                order: 222,
+                name: 'button',
+                itemType: 'button',
+                dataSource: 'Open Service1',
+                id: '@openService1',
+                action: {
+                    onClick: {
+                        method: 'POST',
+                        uri: '/services1/open',
+                        options: {
+                            //logon: '@loginInput',
+                            //pass: '@passInput'
+                        }
+                    }
+                }
+            },
+            {
+                order: 223,
+                name: 'button',
+                itemType: 'button',
+                dataSource: 'Change Settings',
+                id:'@changeService1',
+                action: {
+                    onClick: {
+                        method: 'POST',
+                        uri: '/services1/change',
+                        options: {
+                            //logon: '@loginInput',
+                            //pass: '@passInput'
+                        }
+                    }
+                }
+            }
         ]}
-
 };
