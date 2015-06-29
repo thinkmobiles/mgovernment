@@ -9,8 +9,8 @@ module.exports = function(db){
     var layoutsHandler = new LayoutHandler(db);
 
     router.route('/:layoutName/:itemId')
-        //.post(layoutsHandler.createTitleInLayout)
-        //.put(layoutsHandler.updateLayout)
+        .post(layoutsHandler.createItemByIdAndLayoutName)
+        //.put(layoutsHandler.createItemByIdAndLayoutName)
         .get(layoutsHandler.getItemByIdAndLayoutName);
 
     router.route('/:layoutName')

@@ -80,7 +80,7 @@ var Layout = function(db) {
     this.getItemByIdAndLayoutName = function (req, res, next) {
         var searchQuery = {
             'layoutName': req.params.layoutName,
-           'items.id': req.params.itemId
+            'items.id': req.params.itemId
         };
         var responseItem = {};
 
@@ -103,6 +103,34 @@ var Layout = function(db) {
                 }
             }
             return res.status(200).send(responseItem);
+        })
+    };
+
+    this.createItemByIdAndLayoutName = function (req, res, next) {
+        var searchQuery = {
+            'layoutName': req.params.layoutName
+            //'items.id': req.params.itemId
+        };
+        var data = req.body.items[0];
+
+        //var responseItem = {};
+
+        if (!searchQuery) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        findLayoutByQuery(searchQuery, function (err, layout) {
+            if (err) {
+                return next(err);
+            }
+
+            Layout
+                .update(searchQuery, {$push: {'items': data}}, function (err, model) {
+                    if (err) {
+                        return next(err);
+                    }
+                    return res.status(201).send(model);
+                });
         })
     };
 

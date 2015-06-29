@@ -87,6 +87,21 @@ module.exports = {
             }
         ]},
 
+    START_SCREEN_LAYOUT_ITEM_FOR_POST: {
+        layoutName: 'startScreeLayout',
+        layoutId: 'startScreeLayoutl11122',
+
+        items: [
+            {
+                order: 117,
+                name: 'Password POSTED',
+                itemType: 'label POSTED',
+                dataSource: 'Password POSTED',
+                id:'@passLable POSTED',
+                action: {}
+            }
+        ]},
+
     SERVICES_LIST_SCREEN_LAYOUT_BEFORE_UPDATING: {
         layoutName: 'ServicesListScreeLayout',
         layoutType: 'servicesList',

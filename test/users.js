@@ -5,8 +5,8 @@ var expect = require('chai').expect;
 var app = require('../app');
 var mongoose = require('mongoose');
 var CONST = require('../constants');
-var LAYUOTS = require('./config/layoutsTemplates');
-var USERS = require('./config/usersTemplates');
+var LAYUOTS = require('./testHelpers/layoutsTemplates');
+var USERS = require('./testHelpers/usersTemplates');
 
 
 
@@ -441,7 +441,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Admin GET Item by ID an layoutName', function (done) {
+    it('Admin GET Item by layoutName and ID ', function (done) {
 
 
         agent
@@ -468,6 +468,24 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
                     return done(err)
                 }
                 console.log('Layout was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
+    it('Admin POST Item  by layoutName and ID', function (done) {
+        var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_POST;
+
+
+        agent
+            .post('/adminLayout/' + data.layoutName + '/' + data.items[0].id)
+            .send(data)
+            .expect(201)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('Item was post:');
                 console.dir(res.body);
                 done();
             });
