@@ -8,6 +8,9 @@ module.exports = function (db) {
             layoutType: {type: String},
             layoutId:{type: String, unique: true},
             _id:{type: String, unique: true},
+            updatedAt: {type: Date},
+            createdAt: {type: Date,  default: Date.now},
+
 
             screenOptions:{},
             items: [{
@@ -17,8 +20,8 @@ module.exports = function (db) {
                 dataSource: String,
                 id:String,
                 action: {}
-            }],
-            lastChange: {type: Date,  default: Date.now}
+            }]
+
         },
         {collection: 'Layouts'});
 
@@ -27,6 +30,9 @@ module.exports = function (db) {
     if (!mongoose.Schemas) {
         mongoose.Schemas = {};
     }
+
+
+
 
     mongoose.Schemas['Layout'] = layoutSchema;
 };

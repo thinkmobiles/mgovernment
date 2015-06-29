@@ -16,6 +16,8 @@ var Layout = function(db) {
             '_id': req.params.id
         };
         var body = req.body;
+         body.updatedAt = new Date();
+
 
         if (!body.layoutName || !body.layoutId || !body._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
@@ -24,7 +26,7 @@ var Layout = function(db) {
 
 
         Layout
-            .findOneAndUpdate(searchQuery,body, function (err, layoutModel) {
+            .findOneAndUpdate(searchQuery, body, function (err, layoutModel) {
                 if (err) {
                     return next(err);
                 }
@@ -35,6 +37,7 @@ var Layout = function(db) {
 
     this.createLayout = function (req, res, next) {
         var body = req.body;
+        body.updatedAt = new Date();
 
         if (!body.layoutName || !body.layoutId ||!body._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
@@ -122,6 +125,7 @@ var Layout = function(db) {
             '_id': req.params.id
             //'items.id': req.params.itemId
         };
+        var updatedAt = new Date();
         var data = req.body.items[0];
 
         //var responseItem = {};
@@ -135,8 +139,8 @@ var Layout = function(db) {
                 return next(err);
             }
 
-            Layout
-                .update(searchQuery, {$push: {'items': data}}, function (err, model) {
+            layout
+                .update(searchQuery, {$push: {'items': data}, $set: {updatedAt: updatedAt}}, function (err, model) {
                     if (err) {
                         return next(err);
                     }
@@ -152,6 +156,7 @@ var Layout = function(db) {
             'items.id': req.params.itemId
         };
         var data = req.body.items[0];
+        var updatedAt = new Date();
 
         //var responseItem = {};
 
@@ -166,7 +171,7 @@ var Layout = function(db) {
 
             Layout
                 .update(searchQuery, {$set: {
-                    'items.$': data}}, function (err,dataResponse) {
+                    'items.$': data}, $set:{ updatedAt: updatedAt}}, function (err,dataResponse) {
                     if (err) {
                         return res.status(400).send({ err: err});
                     }
@@ -175,22 +180,6 @@ var Layout = function(db) {
         })
     };
 
-    function findLayoutByName(layoutName, callback) {
-        Layout
-            .findOne({layoutName: layoutName})
-            .exec(function (err, model) {
-                if (err) {
-                    return callback(err);
-                }
-
-                if (!model) {
-                    var err = new Error('Not found Layout by name: ' + layoutName);
-                    err.status = 404;
-                    return callback(err);
-                }
-                return callback(null, model);
-            });
-    }
 
     function findLayoutByQuery(Query, callback) {
         Layout

@@ -494,6 +494,9 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
 
     it('Admin Update (PUT) Item  by layout _id and ItemId', function (done) {
         var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_UPDATE;
+        var currDate = new Date();
+
+        while (new Date() - currDate < 1000) {}
 
 
         agent
