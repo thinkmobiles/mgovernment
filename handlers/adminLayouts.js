@@ -88,14 +88,14 @@ var Layout = function(db) {
             });
     };
 
-    this.getItemByIdAndLayoutName = function (req, res, next) {
+    this.getItemByIdAndLayoutId = function (req, res, next) {
         var searchQuery = {
-            'layoutName': req.params.layoutName,
+            '_id': req.params.id,
             'items.id': req.params.itemId
         };
         var responseItem = {};
 
-        if (!searchQuery) {
+        if (!searchQuery._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
@@ -117,16 +117,16 @@ var Layout = function(db) {
         })
     };
 
-    this.createItemByIdAndLayoutName = function (req, res, next) {
+    this.createItemByIdAndLayoutId = function (req, res, next) {
         var searchQuery = {
-            'layoutName': req.params.layoutName
+            '_id': req.params.id
             //'items.id': req.params.itemId
         };
         var data = req.body.items[0];
 
         //var responseItem = {};
 
-        if (!searchQuery) {
+        if (!searchQuery._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
@@ -146,16 +146,16 @@ var Layout = function(db) {
     };
 
 
-    this.updateItemByIdAndLayoutName = function (req, res, next) {
+    this.updateItemByIdAndLayoutId = function (req, res, next) {
         var searchQuery = {
-            'layoutName': req.params.layoutName,
+            '_id': req.params.id,
             'items.id': req.params.itemId
         };
         var data = req.body.items[0];
 
         //var responseItem = {};
 
-        if (!searchQuery.layoutName || !searchQuery['items.id']) {
+        if (!searchQuery._id || !searchQuery['items.id']) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 

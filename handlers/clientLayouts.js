@@ -12,12 +12,12 @@ var Layout = function(db) {
 
 
 
-    this.getLayout = function (req, res, next) {
+    this.getLayoutById = function (req, res, next) {
         var searchQuery = {
-            'layoutName': req.params.layoutName
+            '_id': req.params.id
         };
 
-        if (!searchQuery.layoutName) {
+        if (!searchQuery._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 

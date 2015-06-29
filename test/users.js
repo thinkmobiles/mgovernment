@@ -458,11 +458,11 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Client GET Layout by layoutName', function (done) {
+    it('Client GET Layout by layout _id', function (done) {
 
 
         agent
-            .get('/clientLayout/' + LAYUOTS.START_SCREEN_LAYOUT.layoutName)
+            .get('/clientLayout/' + LAYUOTS.START_SCREEN_LAYOUT._id)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -474,12 +474,12 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Admin Create (POST) Item  by layoutName and ID', function (done) {
+    it('Admin Create (POST) Item  by layout _id and ItemId', function (done) {
         var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_POST;
 
 
         agent
-            .post('/adminLayout/' + data.layoutName + '/' + data.items[0].id)
+            .post('/adminLayout/' + data._id+ '/' + data.items[0].id)
             .send(data)
             .expect(201)
             .end(function (err, res) {
@@ -492,12 +492,12 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Admin Update (PUT) Item  by layoutName and ID', function (done) {
+    it('Admin Update (PUT) Item  by layout _id and ItemId', function (done) {
         var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_UPDATE;
 
 
         agent
-            .put('/adminLayout/' + data.layoutName + '/' + data.items[0].id)
+            .put('/adminLayout/' + data._id + '/' + data.items[0].id)
             .send(data)
             .expect(202)
             .end(function (err, res) {

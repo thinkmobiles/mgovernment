@@ -12,10 +12,10 @@ module.exports = function(db){
         .post(layoutsHandler.createLayout)
         .get(layoutsHandler.getLayouts);
 
-    router.route('/:layoutName/:itemId')
-        .post(layoutsHandler.createItemByIdAndLayoutName)
-        .put(layoutsHandler.updateItemByIdAndLayoutName)
-        .get(layoutsHandler.getItemByIdAndLayoutName);
+    router.route('/:id/:itemId')
+        .post(layoutsHandler.createItemByIdAndLayoutId)
+        .put(layoutsHandler.updateItemByIdAndLayoutId)
+        .get(layoutsHandler.getItemByIdAndLayoutId);
 
 
 
