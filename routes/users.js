@@ -20,6 +20,5 @@ module.exports = function(db){
         .post(session.authenticatedUser, users.createServicesAccount)
         .put(session.authenticatedUser, users.updateServicesAccount);
 
-
     return router;
 };

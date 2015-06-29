@@ -10,8 +10,6 @@ module.exports = function (db) {
             _id:{type: String, unique: true},
             updatedAt: {type: Date},
             createdAt: {type: Date,  default: Date.now},
-
-
             screenOptions:{},
             items: [{
                 order: Number,
@@ -30,9 +28,6 @@ module.exports = function (db) {
     if (!mongoose.Schemas) {
         mongoose.Schemas = {};
     }
-
-
-
 
     mongoose.Schemas['Layout'] = layoutSchema;
 };

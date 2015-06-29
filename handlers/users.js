@@ -1,6 +1,7 @@
 var SessionHandler = require('./sessions');
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
+var HistoryHandler = require('./historyLog');
 
 var User = function(db) {
 
@@ -11,6 +12,7 @@ var User = function(db) {
     var async = require('async');
     var User = db.model(CONST.MODELS.USER);
     var crypto = require('crypto');
+    var historyHandler = new HistoryHandler(db);
 
     function isValidUserType(userType) {
         var validate = false;
@@ -19,7 +21,7 @@ var User = function(db) {
                 validate = true;
             }
         }
-         return validate;
+        return validate;
     }
 
     function isValidDeviceOs(deviceOs){
@@ -29,7 +31,7 @@ var User = function(db) {
                 validate = true;
             }
         }
-         return validate;
+        return validate;
     }
 
     this.updateServicesAccount = function ( req, res, next ) {
@@ -56,7 +58,7 @@ var User = function(db) {
             if (!found) {
                 return res.status(400).send({ err: 'Not find such serviceName'});
             }
-           // user.accounts[i] = account
+            // user.accounts[i] = account
 
 
             User
@@ -157,7 +159,7 @@ var User = function(db) {
 
                     return callback(null, model.toJSON());
                 } else {
-                     return callback(new Error('No one was found with such _id '));
+                    return callback(new Error('No one was found with such _id '));
                 }
             });
     }
@@ -189,7 +191,7 @@ var User = function(db) {
                     return next(err)
                 }
 
-                             if (!model) {
+                if (!model) {
 
                     return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
@@ -228,7 +230,7 @@ var User = function(db) {
             return callback();
         }
 
-                User
+        User
             .update({_id: model._id}, {$push: {'devices': device}}, function (err, data) {
                 if (err) {
 
@@ -325,10 +327,21 @@ var User = function(db) {
 
 
         user = new User(userData);
-        user.save(function (err, user) {
+        user.
+            save(function (err, user) {
             if (err) {
                 return res.status(500).send(err)
             }
+
+                var log = {
+                    userId: req.session.uId,
+                    action: 'createAccount',
+                    model: CONST.MODELS.USER,
+                    modelId: user._id,
+                    description:'Create users account'
+                };
+
+                historyHandler.pushlog(log);
 
             res.status(200).send(user);
         });

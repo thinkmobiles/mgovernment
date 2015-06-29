@@ -15,6 +15,7 @@ module.exports = {
         USER: 'User',
         PROFILE: 'Profile',
         LAYOUT: 'Layout',
-        SESSION: 'Session'
+        SESSION: 'Session',
+        HISTORY: 'HistoryLog'
     }
 };

@@ -1,16 +1,14 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
+var HistoryHandler = require('./historyLog');
 
 var Layout = function(db) {
 
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();
-    var async = require('async');
     var Layout = db.model(CONST.MODELS.LAYOUT);
-
-    var ObjectId = mongoose.Types.ObjectId;
-
-
+    var historyHandler = new HistoryHandler(db);
+  
     this.updateLayoutById = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id
@@ -37,6 +35,9 @@ var Layout = function(db) {
 
     this.createLayout = function (req, res, next) {
         var body = req.body;
+
+
+
         body.updatedAt = new Date();
 
         if (!body.layoutName || !body.layoutId ||!body._id) {
@@ -50,6 +51,14 @@ var Layout = function(db) {
                 if (err) {
                     return next(err);
                 }
+                var log = {
+                    userId: req.session.uId,
+                    action: 'createLayout',
+                    model: CONST.MODELS.LAYOUT,
+                    modelId: layoutModel._id,
+                    description:'Create new Layout'
+                };
+                historyHandler.pushlog(log);
                 res.status(201).send(layoutModel);
             })
     };
@@ -134,16 +143,27 @@ var Layout = function(db) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        findLayoutByQuery(searchQuery, function (err, layout) {
+        findLayoutByQuery(searchQuery, function (err, layoutModel) {
             if (err) {
                 return next(err);
             }
 
-            layout
+            layoutModel
                 .update(searchQuery, {$push: {'items': data}, $set: {updatedAt: updatedAt}}, function (err, model) {
                     if (err) {
                         return next(err);
                     }
+
+                    var log = {
+                        userId: req.session.uId,
+                        action: 'createItemByIdAndLayoutId',
+                        model: CONST.MODELS.LAYOUT,
+                        modelId: searchQuery._id,
+                        description:'Create new  Item'
+                    };
+
+                    historyHandler.pushlog(log);
+
                     return res.status(201).send(model);
                 });
         })
@@ -175,6 +195,17 @@ var Layout = function(db) {
                     if (err) {
                         return res.status(400).send({ err: err});
                     }
+
+                    var log = {
+                        userId: req.session.uId,
+                        action: 'updateItemByIdAndLayoutId',
+                        model: CONST.MODELS.LAYOUT,
+                        modelId: searchQuery._id,
+                        description:'Update Item with id: ' +  searchQuery['items.id']
+                    };
+
+                    historyHandler.pushlog(log);
+
                     return res.status(202).send(dataResponse);
                 });
         })
