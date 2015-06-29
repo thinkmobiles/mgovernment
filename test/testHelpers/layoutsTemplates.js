@@ -5,6 +5,7 @@ module.exports = {
         layoutName: 'startScreeLayout',
         layoutType: 'login',
         layoutId: 'startScreeLayoutl11122',
+        '_id':'5590e91132fd46600722f6f3',
 
         screenOptions:{
             headerType:'header',
@@ -75,6 +76,7 @@ module.exports = {
     START_SCREEN_LAYOUT_ITEM_FOR_UPDATE: {
         layoutName: 'startScreeLayout',
         layoutId: 'startScreeLayoutl11122',
+        '_id':'5590e91132fd46600722f6f3',
 
         items: [
             {
@@ -90,6 +92,7 @@ module.exports = {
     START_SCREEN_LAYOUT_ITEM_FOR_POST: {
         layoutName: 'startScreeLayout',
         layoutId: 'startScreeLayoutl11122',
+        '_id':'5590e91132fd46600722f6f3',
 
         items: [
             {
@@ -106,6 +109,7 @@ module.exports = {
         layoutName: 'ServicesListScreeLayout',
         layoutType: 'servicesList',
         layoutId: 'servicesListLayout222222',
+        '_id':'5590e91132fd46600722f6f5',
 
         screenOptions: {
             headerType: 'bad',
@@ -120,6 +124,7 @@ module.exports = {
         layoutName: 'ServicesListScreeLayout',
         layoutType: 'servicesList',
         layoutId: 'servicesListLayout222222',
+        '_id':'5590e91132fd46600722f6f5',
 
         screenOptions:{
             headerType:'header',

@@ -7,6 +7,8 @@ module.exports = function (db) {
             layoutName: {type: String},
             layoutType: {type: String},
             layoutId:{type: String, unique: true},
+            _id:{type: String, unique: true},
+
             screenOptions:{},
             items: [{
                 order: Number,

@@ -11,45 +11,36 @@ var Layout = function(db) {
     var ObjectId = mongoose.Types.ObjectId;
 
 
-    this.updateLayoutByName = function (req, res, next) {
+    this.updateLayoutBy_id = function (req, res, next) {
+        var searchQuery = {
+            '_id': req.params.id
+        };
         var body = req.body;
 
-        if (!body.layoutName || !body.layoutId) {
+        if (!body.layoutName || !body.layoutId || !body._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
         }
 
-        findLayoutByName(body.layoutName , function (err, layout) {
-            if (err) {
-                return next(err);
-            }
-            //  return res.status(200).send(layout);
-            layout.layoutType = body.layoutType;
-            layout.layoutId = body.layoutId;
-            layout.screenOptions = body.screenOptions;
-            layout.items = body.items;
 
 
-            layout
-                .save(function (err, layoutModel) {
-                    if (err) {
-                        return next(err);
-                    }
-                    res.status(202).send(layoutModel);
-                });
-        });
+        Layout
+            .findOneAndUpdate(searchQuery,body, function (err, layoutModel) {
+                if (err) {
+                    return next(err);
+                }
+                res.status(202).send(layoutModel);
+            });
+
     };
 
-    this.createLayoutByName = function (req, res, next) {
+    this.createLayout = function (req, res, next) {
         var body = req.body;
 
-        if (!body.layoutName || !body.layoutId) {
+        if (!body.layoutName || !body.layoutId ||!body._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
         }
 
-        //var layout = new Layout(body);
-        //console.log(body);
         var layout = new Layout(body);
-        //console.log(body);
 
         layout
             .save(function (err, layoutModel) {
@@ -62,19 +53,39 @@ var Layout = function(db) {
 
 
 
-    this.getLayoutByName = function (req, res, next) {
-        var searchName = req.params.layoutName;
+    this.getLayoutBy_id = function (req, res, next) {
+        var searchQuery = {
+            '_id': req.params.id
+        };
 
-        if (!searchName) {
+        if (!searchQuery._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        findLayoutByName(searchName, function (err, layout) {
+        findLayoutByQuery(searchQuery, function (err, layout) {
             if (err) {
                 return next(err);
             }
             return res.status(200).send(layout.toJSON());
         })
+    };
+
+    this.getLayouts = function (req, res, next) {
+
+
+        Layout
+            .find({}, function (err, collection) {
+                if (err) {
+                    return next(err);
+                }
+
+                if (!collection) {
+                    var err = new Error('Not found Layouts: ');
+                    err.status = 404;
+                    return next(err);
+                }
+                return res.status(200).send(collection);
+            });
     };
 
     this.getItemByIdAndLayoutName = function (req, res, next) {

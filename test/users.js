@@ -383,7 +383,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
                 }
 
                 agent
-                    .post('/adminLayout/' + data.layoutName)
+                    .post('/adminLayout/')
                     .send(data)
                     .expect(201)
                     .end(function (err, res) {
@@ -397,11 +397,12 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
     });
 
 
-    it('Admin GET Layout by layoutName', function (done) {
+
+    it('Admin GET Layout by layout _id', function (done) {
 
 
         agent
-            .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT.layoutName)
+            .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT._id)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -414,12 +415,12 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
     });
 
 
-    it('Admin PUT Layout by layoutName', function (done) {
+    it('Admin PUT Layout by layout _id', function (done) {
         var data = LAYUOTS.SERVICES_LIST_SCREEN_LAYOUT_BEFORE_UPDATING;
         var dataForUpdate = LAYUOTS.SERVICES_LIST_SCREEN_LAYOUT_FOR_UPDATING;
 
         agent
-            .post('/adminLayout/' + data.layoutName)
+            .post('/adminLayout/')
             .send(data)
             .expect(201)
             .end(function (err, res) {
@@ -428,7 +429,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
                 }
 
                 agent
-                    .put('/adminLayout/' + dataForUpdate.layoutName)
+                    .put('/adminLayout/' + dataForUpdate._id)
                     .send(dataForUpdate)
                     .expect(202)
                     .end(function (err, res) {
@@ -504,6 +505,22 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
                     return done(err)
                 }
                 console.log('Update Item result:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
+    it('Admin GET ALL Layouts', function (done) {
+
+
+        agent
+            .get('/adminLayout/')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('All Layouts was get:');
                 console.dir(res.body);
                 done();
             });
