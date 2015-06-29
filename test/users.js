@@ -473,7 +473,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Admin POST Item  by layoutName and ID', function (done) {
+    it('Admin Create (POST) Item  by layoutName and ID', function (done) {
         var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_POST;
 
 
@@ -486,6 +486,24 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
                     return done(err)
                 }
                 console.log('Item was post:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
+    it('Admin Update (PUT) Item  by layoutName and ID', function (done) {
+        var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_UPDATE;
+
+
+        agent
+            .put('/adminLayout/' + data.layoutName + '/' + data.items[0].id)
+            .send(data)
+            .expect(202)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('Update Item result:');
                 console.dir(res.body);
                 done();
             });

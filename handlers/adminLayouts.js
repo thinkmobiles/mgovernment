@@ -134,6 +134,36 @@ var Layout = function(db) {
         })
     };
 
+
+    this.updateItemByIdAndLayoutName = function (req, res, next) {
+        var searchQuery = {
+            'layoutName': req.params.layoutName,
+            'items.id': req.params.itemId
+        };
+        var data = req.body.items[0];
+
+        //var responseItem = {};
+
+        if (!searchQuery.layoutName || !searchQuery['items.id']) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        findLayoutByQuery(searchQuery, function (err, layout) {
+            if (err) {
+                return next(err);
+            }
+
+            Layout
+                .update(searchQuery, {$set: {
+                    'items.$': data}}, function (err,dataResponse) {
+                    if (err) {
+                        return res.status(400).send({ err: err});
+                    }
+                    return res.status(202).send(dataResponse);
+                });
+        })
+    };
+
     function findLayoutByName(layoutName, callback) {
         Layout
             .findOne({layoutName: layoutName})

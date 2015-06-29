@@ -10,7 +10,7 @@ module.exports = function(db){
 
     router.route('/:layoutName/:itemId')
         .post(layoutsHandler.createItemByIdAndLayoutName)
-        //.put(layoutsHandler.createItemByIdAndLayoutName)
+        .put(layoutsHandler.updateItemByIdAndLayoutName)
         .get(layoutsHandler.getItemByIdAndLayoutName);
 
     router.route('/:layoutName')

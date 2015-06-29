@@ -54,7 +54,7 @@ module.exports = {
 
             },
             {
-                order: 115,
+                order: 116,
                 name: 'button',
                 itemType: 'button',
                 dataSource: 'Login',
@@ -80,8 +80,8 @@ module.exports = {
             {
                 order: 114,
                 name: 'Password updated',
-                itemType: 'label',
-                dataSource: 'Password',
+                itemType: 'label updated',
+                dataSource: 'Password updated',
                 id:'@passLable',
                 action: {}
             }
