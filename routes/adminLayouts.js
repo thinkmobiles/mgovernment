@@ -21,8 +21,8 @@ module.exports = function(db){
 
     router.route('/:id')
       //  .post(layoutsHandler.createLayoutByName)
-        .put(layoutsHandler.updateLayoutBy_id)
-        .get(layoutsHandler.getLayoutBy_id);
+        .put(layoutsHandler.updateLayoutById)
+        .get(layoutsHandler.getLayoutById);
 
 
 

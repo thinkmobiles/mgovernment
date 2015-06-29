@@ -11,7 +11,7 @@ var Layout = function(db) {
     var ObjectId = mongoose.Types.ObjectId;
 
 
-    this.updateLayoutBy_id = function (req, res, next) {
+    this.updateLayoutById = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id
         };
@@ -53,7 +53,7 @@ var Layout = function(db) {
 
 
 
-    this.getLayoutBy_id = function (req, res, next) {
+    this.getLayoutById = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id
         };

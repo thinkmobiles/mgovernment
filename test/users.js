@@ -442,11 +442,11 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Admin GET Item by layoutName and ID ', function (done) {
+    it('Admin GET Item by layout _id and ItemId ', function (done) {
 
 
         agent
-            .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT.layoutName + '/' + 'loginButton')
+            .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT._id + '/' + 'loginButton')
             .expect(200)
             .end(function (err, res) {
                 if (err) {
