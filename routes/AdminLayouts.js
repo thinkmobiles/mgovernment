@@ -13,10 +13,15 @@ module.exports = function(db){
         .put(layoutsHandler.updateItemByIdAndLayoutName)
         .get(layoutsHandler.getItemByIdAndLayoutName);
 
-    router.route('/:layoutName')
-        .post(layoutsHandler.createLayoutByName)
-        .put(layoutsHandler.updateLayoutByName)
-        .get(layoutsHandler.getLayoutByName);
+    //router.route('/:layoutName')
+        //.post(layoutsHandler.createLayoutByName)
+        //.put(layoutsHandler.updateLayoutByName)
+        //.get(layoutsHandler.getLayoutByName);
+
+    router.route('/')
+        .post(layoutsHandler.createLayout)
+        .get(layoutsHandler.getLayouts);
+
 
     return router;
 };
