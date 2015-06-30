@@ -4,13 +4,8 @@ var RESPONSE = require('../constants/response');
 var Layout = function(db) {
 
     var mongoose = require('mongoose');
-    var logWriter = require('../helpers/logWriter')();
     var async = require('async');
     var Layout = db.model(CONST.MODELS.LAYOUT);
-
-    var ObjectId = mongoose.Types.ObjectId;
-
-
 
     this.getLayoutById = function (req, res, next) {
         var searchQuery = {
@@ -29,16 +24,16 @@ var Layout = function(db) {
         })
     };
 
-    function findLayoutByQuery(Query, callback) {
+    function findLayoutByQuery(query, callback) {
         Layout
-            .findOne(Query)
+            .findOne(query)
             .exec(function (err, model) {
                 if (err) {
                     return callback(err);
                 }
 
                 if (!model) {
-                    var err = new Error('Not found Layout by query: ' + Query);
+                    var err = new Error('Not found Layout by query: ' + query);
                     err.status = 404;
                     return callback(err);
                 }

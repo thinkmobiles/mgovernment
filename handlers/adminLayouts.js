@@ -13,15 +13,13 @@ var Layout = function(db) {
         var searchQuery = {
             '_id': req.params.id
         };
-        var body = req.body;
-         body.updatedAt = new Date();
 
+        var body = req.body;
+        body.updatedAt = new Date();
 
         if (!body.layoutName || !body.layoutId || !body._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
-
 
         Layout
             .findOneAndUpdate(searchQuery, body, function (err, layoutModel) {
@@ -30,18 +28,14 @@ var Layout = function(db) {
                 }
                 res.status(202).send(layoutModel);
             });
-
     };
 
     this.createLayout = function (req, res, next) {
         var body = req.body;
-
-
-
         body.updatedAt = new Date();
 
-        if (!body.layoutName || !body.layoutId ||!body._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS });
+        if (!body.layoutName || !body.layoutId || !body._id) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         var layout = new Layout(body);
@@ -56,14 +50,12 @@ var Layout = function(db) {
                     action: 'createLayout',
                     model: CONST.MODELS.LAYOUT,
                     modelId: layoutModel._id,
-                    description:'Create new Layout'
+                    description: 'Create new Layout'
                 };
                 historyHandler.pushlog(log);
                 res.status(201).send(layoutModel);
             })
     };
-
-
 
     this.getLayoutById = function (req, res, next) {
         var searchQuery = {
@@ -84,16 +76,9 @@ var Layout = function(db) {
 
     this.getLayouts = function (req, res, next) {
 
-
         Layout
             .find({}, function (err, collection) {
                 if (err) {
-                    return next(err);
-                }
-
-                if (!collection) {
-                    var err = new Error('Not found Layouts: ');
-                    err.status = 404;
                     return next(err);
                 }
                 return res.status(200).send(collection);
