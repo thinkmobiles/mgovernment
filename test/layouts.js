@@ -198,33 +198,36 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
 
     it('Admin Create 100 Layouts', function (done) {
 
-        var loginData = USERS.ADMIN;
-        var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_UPDATE;
         var layoutsCount = 0;
+        var creatrLayoutArray = [];
 
+        for (var i = 100; i > 0; i--) {
+            creatrLayoutArray.push(saveLayout({_id: '100_Layouts_number__' + i, layoutName: i + ' ScreeLayout', layoutId: i + '__ScreeLayoutID'  }));
+        }
 
-        for (var i = 100; i >=0; i--) {
-            data.layoutName = i + ' ScreeLayout';
-            data._id = '100_Layouts_number_' + i;
-            data.layoutId = i + '_ScreeLayoutID '
+        async.series(creatrLayoutArray, function (err,results)   {
+            if (err) {
+                return done(err)
+            }
+            console.log('ASYNC layoutsCount: ', layoutsCount);
+            done();
+        });
+    });
+
+    function saveLayout(data) {
+        return function (callback) {
             agent
                 .post('/adminLayout/')
                 .send(data)
                 .expect(201)
                 .end(function (err, res) {
                     if (err) {
-                        return done(err)
+                        return  callback(err)
                     }
-                    layoutsCount++;
-                    if (layoutsCount == 100) {
-                        console.log('layoutsCount: ',layoutsCount);
-                        done();
-                    }
+                    callback();
                 });
         }
-
-
-    });
+    }
 
     it('Admin GET Count of Layouts', function (done) {
 
@@ -241,8 +244,8 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    // GET /shoes?order=desc&shoe[color]=blue&shoe[type]=converse
-    //req.query.order
+// GET /shoes?order=desc&shoe[color]=blue&shoe[type]=converse
+//req.query.order
 // => "desc"
 
     it('Admin GET ALL Layouts with Query', function (done) {
