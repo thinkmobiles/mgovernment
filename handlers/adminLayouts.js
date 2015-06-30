@@ -83,21 +83,21 @@ var Layout = function(db) {
     };
 
     this.getLayouts = function (req, res, next) {
-        var sortField = req.query.orderBy;
-        var sortDerection = req.query.order;
+        var sortField = req.query.orderBy || 'createdAt';
+        var sortDirection = +req.query.order || 1;
+        var sortOrder = {};
+        sortOrder[sortField] = sortDirection;
 
-        var searchOptions = {
-            page : req.query.page,
-            limit: req.query.count,
-            sort: {
-              ///  [sortField]:[sortDerection]
-    }
-
-        };
+        var skipCount = ((req.query.page - 1) * req.query.count) || 0;
+        var limitCount = req.query.count || 20;
 
         Layout
-            .find({}, function (err, collection) {
-                if (err) {
+            .find({})
+            .sort(sortOrder)
+            .skip(skipCount)
+            .limit(limitCount)
+            .exec(function (err, collection) {
+                          if (err) {
                     return next(err);
                 }
                 return res.status(200).send(collection);

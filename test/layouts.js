@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var CONST = require('../constants');
 var LAYUOTS = require('./testHelpers/layoutsTemplates');
 var USERS = require('./testHelpers/usersTemplates');
+var async =  require('async');
 
 var url = 'http://localhost:7791';
 
@@ -201,10 +202,11 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
         var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_UPDATE;
         var layoutsCount = 0;
 
+
         for (var i = 100; i >=0; i--) {
-            data.layoutName = '¹' + i + ' ScreeLayout';
+            data.layoutName = i + ' ScreeLayout';
             data._id = '100_Layouts_number_' + i;
-            data.layoutId = '¹' + i + '_ScreeLayoutID '
+            data.layoutId = i + '_ScreeLayoutID '
             agent
                 .post('/adminLayout/')
                 .send(data)
@@ -220,6 +222,8 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
                     }
                 });
         }
+
+
     });
 
     it('Admin GET Count of Layouts', function (done) {
@@ -244,7 +248,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
     it('Admin GET ALL Layouts with Query', function (done) {
 
         agent
-            .get('/adminLayout/?orderBy=layoutName&order=-1&page=2&count=20')
+            .get('/adminLayout/?orderBy=_id&order=-1&page=1&count=20')
             .expect(200)
             .end(function (err, res) {
                 if (err) {
