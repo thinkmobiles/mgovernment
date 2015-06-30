@@ -4,7 +4,6 @@ var LayoutHandler = require('../handlers/adminLayouts');
 
 module.exports = function(db){
 
-
     var router = express.Router();
     var layoutsHandler = new LayoutHandler(db);
 
@@ -17,15 +16,10 @@ module.exports = function(db){
         .put(layoutsHandler.updateItemByIdAndLayoutId)
         .get(layoutsHandler.getItemByIdAndLayoutId);
 
-
-
     router.route('/:id')
       //  .post(layoutsHandler.createLayoutByName)
         .put(layoutsHandler.updateLayoutById)
         .get(layoutsHandler.getLayoutById);
-
-
-
 
     return router;
 };

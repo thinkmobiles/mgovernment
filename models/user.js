@@ -16,7 +16,7 @@ module.exports = function (db){
         },
         accounts:[]
     }, {
-        collection: 'Users'
+        collection: CONST.MODELS.USER + 's'
     });
     db.model(CONST.MODELS.USER, user);
 

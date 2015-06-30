@@ -56,7 +56,7 @@ var User = function(db) {
                 }
             }
             if (!found) {
-                return res.status(400).send({ err: 'Not find such serviceName'});
+                return res.status(400).send({ err: RESPONSE.ON_ACTION.NOT_FOUND});
             }
             // user.accounts[i] = account
 
@@ -159,12 +159,13 @@ var User = function(db) {
 
                     return callback(null, model.toJSON());
                 } else {
-                    return callback(new Error('No one was found with such _id '));
+                    return callback(new Error( RESPONSE.ON_ACTION.NOT_FOUND + ' with such _id '));
                 }
             });
     }
 
     this.signInClient = function (req, res, next) {
+
         var body = req.body;
         var login = body.login;
         var pass = body.pass;
@@ -175,7 +176,7 @@ var User = function(db) {
         };
 
         if (!body || !login || !pass) {
-            err = new Error('Bad Request');
+            err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
             err.status = 400;
             return next(err);
         }
@@ -196,8 +197,6 @@ var User = function(db) {
                     return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
-
-
                 var deviceOptions = {
                     model: model,
                     device: device
@@ -209,12 +208,11 @@ var User = function(db) {
             });
     };
 
-
     function processDeviceToken(options, callback) {
+
         var found = false;
         var model = options.model;
         var device = options.device;
-
 
         if (!device.deviceToken || !isValidDeviceOs(device.deviceOs)) {
             return callback();
@@ -240,6 +238,7 @@ var User = function(db) {
     }
 
     this.signOutClient = function (req, res, next) {
+
         var body = req.body;
         var device = {
             deviceOs: body.deviceOs,
@@ -269,9 +268,7 @@ var User = function(db) {
             processDeviceToken(deviceOptions, function () {
                 return session.kill(req, res, next);
             });
-
         });
-
     };
 
     function isLoginedAndValidDeviceToken (req, device){
@@ -279,6 +276,7 @@ var User = function(db) {
     }
 
     this.createAccount = function (req, res, next) {
+
         var body = req.body;
         var login = body.login;
         var pass = body.pass;
@@ -302,7 +300,6 @@ var User = function(db) {
 
         if (!isValidUserType(userType)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
-
         }
 
         if (!body || !login || !pass) {
@@ -325,7 +322,6 @@ var User = function(db) {
             userData.accounts = [account];
         }
 
-
         user = new User(userData);
         user.
             save(function (err, user) {
@@ -335,7 +331,7 @@ var User = function(db) {
 
                 var log = {
                     userId: req.session.uId,
-                    action: 'createAccount',
+                    action: CONST.ACTION.CREATE,
                     model: CONST.MODELS.USER,
                     modelId: user._id,
                     description:'Create users account'
@@ -346,8 +342,6 @@ var User = function(db) {
             res.status(200).send(user);
         });
     };
-
-
 
     /*TODO remove*/
     /*TEST BLOCK*/

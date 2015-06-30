@@ -10,7 +10,6 @@ module.exports = function(db){
     var users = new UserHandler(db);
     var session = new SessionHandler(db);
 
-
     router.post('/signIn', users.signInClient );
     router.post('/', users.createAccount);
     router.post('/signOut', users.signOutClient);

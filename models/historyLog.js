@@ -11,13 +11,15 @@ module.exports = function (db) {
             createdAt: {type: Date,  default: Date.now},
             description: {type: String}
         },
-        {collection: 'HistoryLog'});
+        {
+            collection: CONST.MODELS.HISTORY + 's'
+        });
 
     db.model(CONST.MODELS.HISTORY, historyLogSchema);
 
     if (!mongoose.Schemas) {
         mongoose.Schemas = {};
     }
-    mongoose.Schemas['HistoryLog'] = historyLogSchema;
+    mongoose.Schemas[CONST.MODELS.HISTORY] = historyLogSchema;
 };
 

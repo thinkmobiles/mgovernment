@@ -17,5 +17,13 @@ module.exports = {
         LAYOUT: 'Layout',
         SESSION: 'Session',
         HISTORY: 'HistoryLog'
+    },
+
+    ACTION: {
+        CREATE: 'Create',
+        UPDATE: 'Update',
+        FIND: 'Find',
+        READ: 'Read',
+        DELETE: 'Delete'
     }
 };

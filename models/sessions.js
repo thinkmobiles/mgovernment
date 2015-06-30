@@ -6,7 +6,9 @@ module.exports = function(db){
 
     var session = new schema({
         sessionId: String
-    }, {collection : 'Sessions'});
+    }, {
+        collection : CONST.MODELS.SESSION + 's'
+    });
 
     db.model(CONST.MODELS.SESSION, session);
 };

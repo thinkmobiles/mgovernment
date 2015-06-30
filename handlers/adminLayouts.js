@@ -26,6 +26,14 @@ var Layout = function(db) {
                 if (err) {
                     return next(err);
                 }
+                var log = {
+                    userId: req.session.uId,
+                    action: CONST.ACTION.UPDATE,
+                    model: CONST.MODELS.LAYOUT,
+                    modelId: searchQuery._id,
+                    description: 'Update Layout by _id'
+                };
+                historyHandler.pushlog(log);
                 res.status(202).send(layoutModel);
             });
     };
@@ -47,7 +55,7 @@ var Layout = function(db) {
                 }
                 var log = {
                     userId: req.session.uId,
-                    action: 'createLayout',
+                    action: CONST.ACTION.CREATE,
                     model: CONST.MODELS.LAYOUT,
                     modelId: layoutModel._id,
                     description: 'Create new Layout'
@@ -141,10 +149,10 @@ var Layout = function(db) {
 
                     var log = {
                         userId: req.session.uId,
-                        action: 'createItemByIdAndLayoutId',
+                        action: CONST.ACTION.CREATE,
                         model: CONST.MODELS.LAYOUT,
                         modelId: searchQuery._id,
-                        description:'Create new  Item'
+                        description:'Create new Item'
                     };
 
                     historyHandler.pushlog(log);
@@ -183,7 +191,7 @@ var Layout = function(db) {
 
                     var log = {
                         userId: req.session.uId,
-                        action: 'updateItemByIdAndLayoutId',
+                        action: CONST.ACTION.UPDATE,
                         model: CONST.MODELS.LAYOUT,
                         modelId: searchQuery._id,
                         description:'Update Item with id: ' +  searchQuery['items.id']
@@ -206,7 +214,7 @@ var Layout = function(db) {
                 }
 
                 if (!model) {
-                    var err = new Error('Not found Layout by query: ' + Query);
+                    var err = new Error(RESPONSE.ON_ACTION.NOT_FOUND + Query);
                     err.status = 404;
                     return callback(err);
                 }

@@ -10,7 +10,6 @@ module.exports = function(app, db){
     var adminLayoutsRouter = require('./adminLayouts')(db);
     var session = new SessionHandler(db);
 
-
     app.get('/', function(req, res, next){
         res.status(200).send( 'Express start succeed' );
     });
@@ -18,7 +17,6 @@ module.exports = function(app, db){
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);
     app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);
-
 
     function notFound(req, res, next){
         next();

@@ -21,7 +21,9 @@ module.exports = function (db) {
             }]
 
         },
-        {collection: 'Layouts'});
+        {
+            collection: CONST.MODELS.LAYOUT + 's'
+        });
 
     db.model(CONST.MODELS.LAYOUT, layoutSchema);
 
@@ -29,6 +31,6 @@ module.exports = function (db) {
         mongoose.Schemas = {};
     }
 
-    mongoose.Schemas['Layout'] = layoutSchema;
+    mongoose.Schemas[CONST.MODELS.LAYOUT] = layoutSchema;
 };
 

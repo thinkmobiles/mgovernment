@@ -3,7 +3,6 @@ var RESPONSE = require('../constants/response');
 
 var Layout = function(db) {
 
-    var mongoose = require('mongoose');
     var async = require('async');
     var Layout = db.model(CONST.MODELS.LAYOUT);
 
@@ -33,7 +32,7 @@ var Layout = function(db) {
                 }
 
                 if (!model) {
-                    var err = new Error('Not found Layout by query: ' + query);
+                    var err = new Error(RESPONSE.ON_ACTION.NOT_FOUND + query);
                     err.status = 404;
                     return callback(err);
                 }
