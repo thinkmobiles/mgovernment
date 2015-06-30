@@ -11,6 +11,7 @@ var USERS = require('./testHelpers/usersTemplates');
 var url = 'http://localhost:7791';
 
 describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
+
     var userId;
     var agent = request.agent(url);
 
@@ -38,6 +39,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
     });
 
     it('Admin Create Layout', function (done) {
+
         var loginData = USERS.ADMIN;
         var data = LAYUOTS.START_SCREEN_LAYOUT;
 
@@ -68,7 +70,6 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
 
     it('Admin GET Layout by layout _id', function (done) {
 
-
         agent
             .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT._id)
             .expect(200)
@@ -84,6 +85,7 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
 
 
     it('Admin PUT Layout by layout _id', function (done) {
+
         var data = LAYUOTS.SERVICES_LIST_SCREEN_LAYOUT_BEFORE_UPDATING;
         var dataForUpdate = LAYUOTS.SERVICES_LIST_SCREEN_LAYOUT_FOR_UPDATING;
 
@@ -112,7 +114,6 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
 
     it('Admin GET Item by layout _id and ItemId ', function (done) {
 
-
         agent
             .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT._id + '/' + 'loginButton')
             .expect(200)
@@ -127,7 +128,6 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
     });
 
     it('Client GET Layout by layout _id', function (done) {
-
 
         agent
             .get('/clientLayout/' + LAYUOTS.START_SCREEN_LAYOUT._id)
@@ -144,7 +144,6 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
 
     it('Admin Create (POST) Item  by layout _id and ItemId', function (done) {
         var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_POST;
-
 
         agent
             .post('/adminLayout/' + data._id+ '/' + data.items[0].id)
@@ -166,7 +165,6 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
 
         while (new Date() - currDate < 1000) {}
 
-
         agent
             .put('/adminLayout/' + data._id + '/' + data.items[0].id)
             .send(data)
@@ -181,11 +179,72 @@ describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Admin GET ALL Layouts', function (done) {
 
+    it('Admin GET ALL Layouts', function (done) {
 
         agent
             .get('/adminLayout/')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('All Layouts was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
+    it('Admin Create 100 Layouts', function (done) {
+
+        var loginData = USERS.ADMIN;
+        var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_UPDATE;
+        var layoutsCount = 0;
+
+        for (var i = 100; i >=0; i--) {
+            data.layoutName = '¹' + i + ' ScreeLayout';
+            data._id = '100_Layouts_number_' + i;
+            data.layoutId = '¹' + i + '_ScreeLayoutID '
+            agent
+                .post('/adminLayout/')
+                .send(data)
+                .expect(201)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err)
+                    }
+                    layoutsCount++;
+                    if (layoutsCount == 100) {
+                        console.log('layoutsCount: ',layoutsCount);
+                        done();
+                    }
+                });
+        }
+    });
+
+    it('Admin GET Count of Layouts', function (done) {
+
+        agent
+            .get('/adminLayout/getCount')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('Count of Layouts was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
+    // GET /shoes?order=desc&shoe[color]=blue&shoe[type]=converse
+    //req.query.order
+// => "desc"
+
+    it('Admin GET ALL Layouts with Query', function (done) {
+
+        agent
+            .get('/adminLayout/?orderBy=layoutName&order=-1&page=2&count=20')
             .expect(200)
             .end(function (err, res) {
                 if (err) {

@@ -83,6 +83,17 @@ var Layout = function(db) {
     };
 
     this.getLayouts = function (req, res, next) {
+        var sortField = req.query.orderBy;
+        var sortDerection = req.query.order;
+
+        var searchOptions = {
+            page : req.query.page,
+            limit: req.query.count,
+            sort: {
+                [sortField]:[sortDerection]
+    }
+
+        };
 
         Layout
             .find({}, function (err, collection) {
@@ -90,6 +101,17 @@ var Layout = function(db) {
                     return next(err);
                 }
                 return res.status(200).send(collection);
+            });
+    };
+
+    this.getCount = function (req, res, next) {
+
+        Layout
+            .count({}, function (err, count) {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).send({count: count});
             });
     };
 

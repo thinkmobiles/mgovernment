@@ -11,6 +11,7 @@ var USERS = require('./testHelpers/usersTemplates');
 var url = 'http://localhost:7791';
 
 describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
+
     var userId;
     var agent = request.agent(url);
 
@@ -32,7 +33,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
         dbConnection.once('open', function callback() {
             dbConnection.db.dropCollection('Users', function (err, result) {
                 console.log('Collection Users dropped');
-
             });
 
             dbConnection.db.dropCollection('HistoryLog', function (err, result) {
@@ -45,6 +45,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     });
 
     it('Create user', function (done) {
+
         var data = {
             login: 'client123',
             pass: 'pass1234',
@@ -68,6 +69,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     });
 
     it('Login with GOOD credentials (client123, pass1234)', function (done) {
+
         var loginData = {
             login: 'client123',
             pass: 'pass1234'
@@ -82,12 +84,12 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 if (err) {
                     return done(err)
                 }
-
                 done();
             });
     });
 
     it('Login with BAD credentials - wrong pass (client123, 123456)', function (done) {
+
         var loginData = {
             login: 'client123',
             pass: '123456'
@@ -106,6 +108,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     });
 
     it('SignOut if Logined (client123, pass1234)', function (done) {
+
         var loginData = {
             login: 'client123',
             pass: 'pass1234',
@@ -137,7 +140,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                         if (err) {
                             return done(err)
                         }
-
                         done();
                     });
             });
@@ -151,7 +153,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             deviceToken: "IClock  Token-----------------"
         };
 
-
         agent
             .post('/user/signOut')
             .send(loginData)
@@ -160,20 +161,19 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 if (err) {
                     return done(err)
                 }
-
                 done();
             });
 
     });
 
     it('Get UserProfile By Session if Unauthorized (client123, pass1234)', function (done) {
+
         var loginData = {
             login: 'client123',
             pass: 'pass1234',
             deviceOs: "ois",
             deviceToken: "IClock  Token----"
         };
-
 
         agent
             .get('/user/profile')
@@ -183,14 +183,12 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 if (err) {
                     return done(err)
                 }
-
                 done();
             });
-
-
     });
 
     it('Get UserProfile By Session after logIn  (client123, pass1234)', function (done) {
+
         var loginData = {
             login: 'client123',
             pass: 'pass1234',
@@ -215,7 +213,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                         if (err) {
                             return done(err)
                         }
-
                         done();
                     });
             });
@@ -230,14 +227,13 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 if (err) {
                     return done(err);
                 } else {
-
                     done();
-
                 }
             });
     });
 
     it('Get user by ID with admin userType (admin123, pass1234)', function (done) {
+
         var data = {
             login: 'admin123',
             pass: 'pass1234',
@@ -276,6 +272,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
 
     it('POST Service account (client123, pass1234)', function (done) {
+
         var loginData = {
             login: 'client123',
             pass: 'pass1234',
@@ -293,12 +290,12 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 if (err) {
                     return done(err)
                 }
-
                 done();
             });
     });
 
     it('POST duplicate Service account (client123, pass1234)', function (done) {
+
         var loginData = {
             login: 'client123',
             pass: 'pass1234',
@@ -316,12 +313,12 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 if (err) {
                     return done(err)
                 }
-
                 done();
             });
     });
 
     it('PUT  Service account (client123, pass1234)', function (done) {
+
         var loginData = {
             login: 'client123',
             pass: 'pass1234',
@@ -339,7 +336,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 if (err) {
                     return done(err)
                 }
-
                 done();
             });
     });

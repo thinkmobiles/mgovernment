@@ -11,6 +11,9 @@ module.exports = function(db){
         .post(layoutsHandler.createLayout)
         .get(layoutsHandler.getLayouts);
 
+    router.route('/getCount/')
+        .get(layoutsHandler.getCount);
+
     router.route('/:id/:itemId')
         .post(layoutsHandler.createItemByIdAndLayoutId)
         .put(layoutsHandler.updateItemByIdAndLayoutId)
