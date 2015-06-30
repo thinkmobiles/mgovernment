@@ -90,7 +90,7 @@ var Layout = function(db) {
             page : req.query.page,
             limit: req.query.count,
             sort: {
-                [sortField]:[sortDerection]
+              ///  [sortField]:[sortDerection]
     }
 
         };
