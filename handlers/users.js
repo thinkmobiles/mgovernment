@@ -75,6 +75,7 @@ var User = function(db) {
         };
 
         getUserById(userId, function (err, user) {
+            user = user.toJSON();
             console.dir(user);
 
             for (var i = user.accounts.length - 1; i >= 0; i--) {
@@ -105,6 +106,8 @@ var User = function(db) {
         var userId = req.params.id;
 
         getUserById(userId, function (err, profile) {
+
+            profile = profile.toJSON();
             if (err) {
                 return next(err);
             }
@@ -116,6 +119,7 @@ var User = function(db) {
 
         var userId = req.session.uId;
         getUserById(userId, function (err, profile) {
+            profile = profile.toJSON();
             if (err) {
                 return next(err);
             }
@@ -136,6 +140,7 @@ var User = function(db) {
 
         getUserById(userId, function (err, user) {
             console.dir(user);
+            user = user.toJSON();
 
             for (var i = user.accounts.length - 1; i >= 0; i--) {
                 if (user.accounts[i].seviceName === account.seviceName) {
@@ -162,6 +167,7 @@ var User = function(db) {
         var userId = req.session.uId;
 
         getUserById(userId, function (err, profile) {
+            profile = profile.toJSON();
             console.dir(profile);
             if (profile.userType === CONST.USER_TYPE.ADMIN) {
                 return next();
@@ -210,7 +216,7 @@ var User = function(db) {
 
                 if (model) {
 
-                    return callback(null, model.toJSON());
+                    return callback(null, model);
                 } else {
                     return callback(new Error( RESPONSE.ON_ACTION.NOT_FOUND + ' with such _id '));
                 }
@@ -306,6 +312,7 @@ var User = function(db) {
         var userId = req.session.uId;
 
         getUserById(userId, function (err, model) {
+            model = model.toJSON();
             console.dir(model);
 
             if (!model) {
