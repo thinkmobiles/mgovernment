@@ -27,12 +27,27 @@ module.exports = {
         deviceToken: "Pilesos Token12343"
     },
 
+    CLIENT_GOOD_DEVICE_OS_DIFFERENT_DEVICE_TOKEN: {
+        login: 'client123',
+        pass: 'pass1234',
+        userType: 'client',
+        deviceOs: "android",
+        deviceToken: "Skovoroda Token Skovoroda  "
+    },
+
     CLIENT_BAD_DEVICE_OS: {
         login: 'client123',
         pass: 'pass1234',
         userType: 'client',
         deviceOs: "ios bad os",
         deviceToken: " Skovorodka Token12343"
+    },
+
+    CLIENT_GOOD_DIFFERENT_DEVICE_OS: {
+        login: 'client123',
+        pass: 'pass1234',
+        deviceOs: "windows",
+        deviceToken: "Nokia  Token----"
     },
 
     ADMIN: {

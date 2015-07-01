@@ -2,10 +2,8 @@
 
 var request = require('supertest');
 var expect = require('chai').expect;
-var app = require('../app');
 var mongoose = require('mongoose');
 var CONST = require('../constants');
-var LAYUOTS = require('./testHelpers/layoutsTemplates');
 var USERS = require('./testHelpers/usersTemplates');
 var async = require ('async');
 
@@ -13,7 +11,6 @@ var url = 'http://localhost:7791';
 
 describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
 
-    var userId;
     var agent = request.agent(url);
 
     before(function (done) {
@@ -28,7 +25,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             j: true,
             mongos: true
         };
-
         var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
 
         dbConnection.once('open', function callback() {
@@ -41,8 +37,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 done();
             });
         });
-
-
     });
 
     it('Create user', function (done) {
@@ -74,7 +68,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                         done();
                     });
             });
-
     });
 
     it('Login with GOOD credentials (client123, pass1234)', function (done) {
@@ -111,19 +104,8 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('SignOut if Logined (client123, pass1234)', function (done) {
 
-        var loginData = {
-            login: 'client123',
-            pass: 'pass1234',
-            deviceOs: "android",
-            deviceToken: "Pilesos Token12343"
-        };
-
-        var loginData2 = {
-            login: 'client123',
-            pass: 'pass1234',
-            deviceOs: "android",
-            deviceToken: "Skovoroda Token12343"
-        };
+        var loginData = USERS.CLIENT_GOOD_DEVICE_OS;
+        var loginData2 = USERS.CLIENT_GOOD_DEVICE_OS_DIFFERENT_DEVICE_TOKEN;
 
         agent
             .post('/user/signIn')
@@ -148,12 +130,8 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     });
 
     it('SignOut if Unauthorized (client123, pass1234)', function (done) {
-        var loginData = {
-            login: 'client123',
-            pass: 'pass1234',
-            deviceOs: "ois--- bad IoS",
-            deviceToken: "IClock  Token-----------------"
-        };
+
+        var loginData = USERS.CLIENT_BAD_DEVICE_OS;
 
         agent
             .post('/user/signOut')
@@ -165,17 +143,11 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 }
                 done();
             });
-
     });
 
     it('Get UserProfile By Session if Unauthorized (client123, pass1234)', function (done) {
 
-        var loginData = {
-            login: 'client123',
-            pass: 'pass1234',
-            deviceOs: "ois",
-            deviceToken: "IClock  Token----"
-        };
+        var loginData = USERS.CLIENT_GOOD_DEVICE_OS;
 
         agent
             .get('/user/profile')
@@ -191,12 +163,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('Get UserProfile By Session after logIn  (client123, pass1234)', function (done) {
 
-        var loginData = {
-            login: 'client123',
-            pass: 'pass1234',
-            deviceOs: "windows",
-            deviceToken: "Nokia  Token----"
-        };
+        var loginData = USERS.CLIENT_GOOD_DIFFERENT_DEVICE_OS;
 
         agent
             .post('/user/signIn')
@@ -352,7 +319,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                     }));
                 }
 
-                async.parallel(createUsersArray, function (err,results)   {
+                async.parallel(createUsersArray, function (err, results)   {
                     if (err) {
                         return done(err)
                     }
@@ -361,8 +328,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 });
             });
     });
-
-
 
     it('Admin GET ALL USER with Query', function (done) {
 
@@ -408,5 +373,4 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 });
         }
     }
-
 });
