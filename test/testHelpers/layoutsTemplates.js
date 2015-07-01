@@ -2,9 +2,9 @@
 module.exports = {
 
     START_SCREEN_LAYOUT: {
-        layoutName: 'startScreeLayout',
+        layoutName: 'startScreenLayout',
         layoutType: 'login',
-        layoutId: 'startScreeLayoutl11122',
+        layoutId: 'startScreenLayoutl11122',
         '_id':'5590e91132fd46600722f6f3',
 
         screenOptions:{
@@ -74,8 +74,8 @@ module.exports = {
         ]},
 
     START_SCREEN_LAYOUT_ITEM_FOR_UPDATE: {
-        layoutName: 'startScreeLayout',
-        layoutId: 'startScreeLayoutl11122',
+        layoutName: 'startScreenLayout',
+        layoutId: 'startScreenLayoutl11122',
         '_id':'5590e91132fd46600722f6f3',
 
         items: [
@@ -90,8 +90,8 @@ module.exports = {
         ]},
 
     START_SCREEN_LAYOUT_ITEM_FOR_POST: {
-        layoutName: 'startScreeLayout',
-        layoutId: 'startScreeLayoutl11122',
+        layoutName: 'startScreenLayout',
+        layoutId: 'startScreenLayoutl11122',
         '_id':'5590e91132fd46600722f6f3',
 
         items: [
