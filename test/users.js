@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var CONST = require('../constants');
 var LAYUOTS = require('./testHelpers/layoutsTemplates');
 var USERS = require('./testHelpers/usersTemplates');
+var async = require ('async');
 
 var url = 'http://localhost:7791';
 
@@ -46,35 +47,39 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('Create user', function (done) {
 
-        var data = {
-            login: 'client123',
-            pass: 'pass1234',
-            userType: 'client'
-        };
+        var loginData = USERS.ADMIN_DEFAULT;
+        var data = USERS.CLIENT_GOOD_USER_TYPE;
 
         agent
-            .post('/user/')
-            .send(data)
+            .post('/user/signIn')
+            .send(loginData)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-                expect(res.body).to.have.property('login');
-                expect(res.body).to.have.property('pass');
-                expect(res.body).to.have.property('userType');
-                expect(res.body.login).to.equal('client123');
-                done();
+
+                agent
+                    .post('/user/')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        expect(res.body).to.have.property('login');
+                        expect(res.body).to.have.property('pass');
+                        expect(res.body).to.have.property('userType');
+                        expect(res.body.login).to.equal('client123');
+                        done();
+                    });
             });
+
     });
 
     it('Login with GOOD credentials (client123, pass1234)', function (done) {
 
-        var loginData = {
-            login: 'client123',
-            pass: 'pass1234'
-
-        };
+        var loginData = USERS.CLIENT_GOOD_USER_TYPE;
 
         agent
             .post('/user/signIn')
@@ -90,10 +95,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('Login with BAD credentials - wrong pass (client123, 123456)', function (done) {
 
-        var loginData = {
-            login: 'client123',
-            pass: '123456'
-        };
+        var loginData = USERS.CLIENT_BAD_PASSWORD;
 
         agent
             .post('/user/signIn')
@@ -232,24 +234,22 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
     });
 
-    it('Get user by ID with admin userType (admin123, pass1234)', function (done) {
+    it('Get user by BAD ID with admin userType (admin123, pass1234)', function (done) {
 
-        var data = {
-            login: 'admin123',
-            pass: 'pass1234',
-            userType: 'admin'
-        };
+        var data = USERS.ADMIN;
+        var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/')
-            .send(data)
+            .post('/user/signIn')
+            .send(loginData)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
+
                 agent
-                    .post('/user/signIn')
+                    .post('/user/')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -257,14 +257,23 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                             return done(err)
                         }
                         agent
-                            .get('/user/profile/545465465464654')
-                            .expect(500)
+                            .post('/user/signIn')
+                            .send(data)
+                            .expect(200)
                             .end(function (err, res) {
                                 if (err) {
-                                    return done(err);
-                                } else {
-                                    done();
+                                    return done(err)
                                 }
+                                agent
+                                    .get('/user/profile/545465465464654')
+                                    .expect(500)
+                                    .end(function (err, res) {
+                                        if (err) {
+                                            return done(err);
+                                        } else {
+                                            done();
+                                        }
+                                    });
                             });
                     });
             });
@@ -273,14 +282,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('POST Service account (client123, pass1234)', function (done) {
 
-        var loginData = {
-            login: 'client123',
-            pass: 'pass1234',
-            "seviceName": "love.mail.ru",
-            "seviceOptions": "love, meet, chat",
-            "serviceLogin": "loveIs",
-            "servicePass": "gtgtgtgt"
-        };
+        var loginData = USERS.CLIENT_PLUS_ACCOUNT;
 
         agent
             .post('/user/account')
@@ -296,14 +298,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('POST duplicate Service account (client123, pass1234)', function (done) {
 
-        var loginData = {
-            login: 'client123',
-            pass: 'pass1234',
-            "seviceName": "love.mail.ru",
-            "seviceOptions": "love, meet, chat",
-            "serviceLogin": "loveIs",
-            "servicePass": "gtgtgtgt"
-        };
+        var loginData =  USERS.CLIENT_PLUS_ACCOUNT;
 
         agent
             .post('/user/account')
@@ -319,14 +314,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('PUT  Service account (client123, pass1234)', function (done) {
 
-        var loginData = {
-            login: 'client123',
-            pass: 'pass1234',
-            "seviceName": "love.mail.ru",
-            "seviceOptions": "Game",
-            "serviceLogin": "Client1",
-            "servicePass": "Client2"
-        };
+        var loginData =  USERS.CLIENT_CHANGE_ACCOUNT;
 
         agent
             .put('/user/account')
@@ -339,4 +327,86 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 done();
             });
     });
+
+    it('Admin Create 40 Users', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                var layoutsCount = 0;
+                var createUsersArray = [];
+
+                for (var i = 40; i > 0; i--) {
+                    createUsersArray.push(saveUser({
+                        login: 'client123_' + i,
+                        pass: 'pass1234_' + i,
+                        userType: 'client'
+                    }));
+                }
+
+                async.parallel(createUsersArray, function (err,results)   {
+                    if (err) {
+                        return done(err)
+                    }
+                    console.log('ASYNC layoutsCount: ', layoutsCount);
+                    done();
+                });
+            });
+    });
+
+
+
+    it('Admin GET ALL USER with Query', function (done) {
+
+        agent
+            .get('/user/?orderBy=login&order=1&page=1&count=2')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('All users was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
+    it('Admin GET Count of Users', function (done) {
+
+        agent
+            .get('/user/getCount')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('Count of  Users was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
+
+    function saveUser(data) {
+        return function (callback) {
+            agent
+                .post('/user/')
+                .send(data)
+                .expect(200)
+                .end(function (err, res) {
+                    if (err) {
+                        return  callback(err)
+                    }
+                    callback();
+                });
+        }
+    }
+
 });

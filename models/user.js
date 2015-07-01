@@ -12,7 +12,7 @@ module.exports = function (db){
         profile:{
             firstName: {type: String},
             lastName: String,
-            dateOfCreating: {type: Date, default: Date.now}
+            createdAt: {type: Date, default: Date.now}
         },
         accounts:[]
     }, {

@@ -41,6 +41,11 @@ module.exports = {
         userType: 'admin'
     },
 
+    ADMIN_DEFAULT: {
+        login: 'defaultAdmin',
+        pass: 'defaultAdmin'
+          },
+
     CLIENT_PLUS_ACCOUNT: {
         login: 'client123',
         pass: 'pass1234',

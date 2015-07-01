@@ -13,6 +13,34 @@ var User = function(db) {
     var User = db.model(CONST.MODELS.USER);
     var crypto = require('crypto');
     var historyHandler = new HistoryHandler(db);
+    createDefaultAdmin();
+
+    function createDefaultAdmin() {
+        User
+            .findOne({userType:'admin'})
+            .exec(function (err, model) {
+                if (!model) {
+                    var pass = 'defaultAdmin';
+
+                    var shaSum = crypto.createHash('sha256');
+                    shaSum.update(pass);
+                    pass = shaSum.digest('hex');
+
+                    var admin = new User({
+                        login: 'defaultAdmin',
+                        pass: pass,
+                        userType: 'admin'
+                    });
+
+                    admin
+                        .save(function (err, user) {
+                            if (user) {
+                                console.log('Default Admin Created');
+                            }
+                        });
+                }
+            });
+    }
 
     function isValidUserType(userType) {
         var validate = false;
@@ -146,10 +174,35 @@ var User = function(db) {
         });
     };
 
+    this.getUserProfiles = function (req, res, next) {
+        var sortField = req.query.orderBy || 'createdAt';
+        var sortDirection = +req.query.order || 1;
+        var sortOrder = {};
+        sortOrder[sortField] = sortDirection;
+
+        var skipCount = ((req.query.page - 1) * req.query.count) || 0;
+        var limitCount = req.query.count || 20;
+
+        User
+            .find({})
+            .select( 'login userType devices profile accounts')
+            .sort(sortOrder)
+            .skip(skipCount)
+            .limit(limitCount)
+            .exec(function (err, collection) {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.status(200).send(collection);
+            });
+    };
+
     function getUserById (userId, callback){
 
         User
             .findOne({_id: userId})
+            .select( 'login userType devices profile accounts')
             .exec(function (err, model) {
                 if (err) {
                     return callback(err);
@@ -325,9 +378,9 @@ var User = function(db) {
         user = new User(userData);
         user.
             save(function (err, user) {
-            if (err) {
-                return res.status(500).send(err)
-            }
+                if (err) {
+                    return res.status(500).send(err)
+                }
 
                 var log = {
                     userId: req.session.uId,
@@ -339,10 +392,20 @@ var User = function(db) {
 
                 historyHandler.pushlog(log);
 
-            res.status(200).send(user);
-        });
+                res.status(200).send(user);
+            });
     };
 
+    this.getCount = function (req, res, next) {
+
+        User
+            .count({}, function (err, count) {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).send({count: count});
+            });
+    };
     /*TODO remove*/
     /*TEST BLOCK*/
 };
