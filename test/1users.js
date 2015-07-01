@@ -9,6 +9,7 @@ var async = require ('async');
 
 var url = 'http://localhost:7791';
 
+
 describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
 
     var agent = request.agent(url);
@@ -30,7 +31,42 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
         dbConnection.once('open', function callback() {
             dbConnection.db.dropCollection('Users', function (err, result) {
                 console.log('Collection Users dropped');
+
+                var models = require('../models/index')(dbConnection);
+                var User = dbConnection.model(CONST.MODELS.USER);
+                var crypto = require('crypto');
+                createDefaultAdmin();
+
+                function createDefaultAdmin() {
+                    User
+                        .findOne({userType:'admin'})
+                        .exec(function (err, model) {
+                            if (!model) {
+                                var pass = 'defaultAdmin';
+
+                                var shaSum = crypto.createHash('sha256');
+                                shaSum.update(pass);
+                                pass = shaSum.digest('hex');
+
+                                var admin = new User({
+                                    login: 'defaultAdmin',
+                                    pass: pass,
+                                    userType: 'admin'
+                                });
+
+                                admin
+                                    .save(function (err, user) {
+                                        if (user) {
+                                            console.log('Default Admin Created');
+                                        }
+                                    });
+                            }
+                        });
+                }
             });
+
+            var UserHandler = require('../handlers/users');
+
 
             dbConnection.db.dropCollection('HistoryLog', function (err, result) {
                 console.log('Collection HistoryLog dropped');
