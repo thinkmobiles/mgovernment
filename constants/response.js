@@ -13,7 +13,6 @@ module.exports = {
 
     ON_ACTION: {
         NOT_FOUND: 'Not found ',
-        BAD_REQUEST: 'Bad Request',
-
+        BAD_REQUEST: 'Bad Request'
     }
 };

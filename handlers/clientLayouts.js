@@ -32,7 +32,7 @@ var Layout = function(db) {
                 }
 
                 if (!model) {
-                    var err = new Error(RESPONSE.ON_ACTION.NOT_FOUND + query);
+                    var err = new Error(RESPONSE.ON_ACTION.NOT_F + query);
                     err.status = 404;
                     return callback(err);
                 }

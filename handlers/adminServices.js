@@ -6,12 +6,12 @@ var Service = function(db) {
 
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();
-    var i = CONST.MODELS.SERVICE;
+
     var Service = db.model(CONST.MODELS.SERVICE);
-    var Layout = db.model(CONST.MODELS.SERVICE);
+    var Layout = db.model(CONST.MODELS.LAYOUT);
     var historyHandler = new HistoryHandler(db);
   
-    this.updateLayoutById = function (req, res, next) {
+    this.updateServiceById = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id
         };
@@ -19,24 +19,20 @@ var Service = function(db) {
         var body = req.body;
         body.updatedAt = new Date();
 
-        if (!body.layoutName || !body.layoutId || !body._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
-        Layout
-            .findOneAndUpdate(searchQuery, body, function (err, layoutModel) {
+        Service
+            .findOneAndUpdate(searchQuery, body, function (err, model) {
                 if (err) {
                     return next(err);
                 }
                 var log = {
                     userId: req.session.uId,
                     action: CONST.ACTION.UPDATE,
-                    model: CONST.MODELS.LAYOUT,
+                    model: CONST.MODELS.SERVICE,
                     modelId: searchQuery._id,
-                    description: 'Update Layout by _id'
+                    description: 'Update Service by _id'
                 };
                 historyHandler.pushlog(log);
-                res.status(202).send(layoutModel);
+                res.status(202).send(model);
             });
     };
 
@@ -65,7 +61,7 @@ var Service = function(db) {
                     description: 'Create new Service'
                 };
                 historyHandler.pushlog(log);
-                res.status(201).send(model);
+                res.status(201).send(model.toJSON());
             })
     };
 
@@ -78,15 +74,15 @@ var Service = function(db) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        findLayoutByQuery(searchQuery, function (err, layout) {
+        findLayoutByQuery(searchQuery, function (err, model) {
             if (err) {
                 return next(err);
             }
-            return res.status(200).send(layout.toJSON());
+            return res.status(200).send(model.toJSON());
         })
     };
 
-    this.getLayouts = function (req, res, next) {
+    this.getServices = function (req, res, next) {
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
         var sortOrder = {};
@@ -95,7 +91,7 @@ var Service = function(db) {
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
 
-        Layout
+        Service
             .find({})
             .sort(sortOrder)
             .skip(skipCount)
@@ -162,12 +158,12 @@ var Service = function(db) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        findLayoutByQuery(searchQuery, function (err, layoutModel) {
+        findLayoutByQuery(searchQuery, function (err, model) {
             if (err) {
                 return next(err);
             }
 
-            layoutModel
+            model
                 .update(searchQuery, {$push: {'items': data}, $set: {updatedAt: updatedAt}}, function (err, model) {
                     if (err) {
                         return next(err);
@@ -232,7 +228,7 @@ var Service = function(db) {
 
 
     function findLayoutByQuery(Query, callback) {
-        Layout
+        Service
             .findOne(Query)
             .exec(function (err, model) {
                 if (err) {

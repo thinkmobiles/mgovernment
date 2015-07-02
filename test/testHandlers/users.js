@@ -28,7 +28,9 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
         var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
 
         dbConnection.once('open', function callback() {
+            dbConnection.db.dropCollection('HistoryLogs', function (err, result) {});
             dbConnection.db.dropCollection('Users', function (err, result) {
+
                 console.log('Collection Users dropped');
 
                 var models = require('../../models/index')(dbConnection);

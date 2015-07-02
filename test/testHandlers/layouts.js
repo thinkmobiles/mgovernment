@@ -11,7 +11,6 @@ var url = 'http://localhost:7791';
 
 describe('Layout create(POST) /  GET / PUT  / (CRUD) ,', function () {
 
-    var userId;
     var agent = request.agent(url);
 
     before(function (done) {
