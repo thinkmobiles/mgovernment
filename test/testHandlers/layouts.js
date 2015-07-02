@@ -1,12 +1,10 @@
 'use strict';
 
 var request = require('supertest');
-var expect = require('chai').expect;
-var app = require('../app');
 var mongoose = require('mongoose');
-var CONST = require('../constants');
-var LAYUOTS = require('./testHelpers/layoutsTemplates');
-var USERS = require('./testHelpers/usersTemplates');
+var CONST = require('../../constants/index');
+var LAYUOTS = require('./../testHelpers/layoutsTemplates');
+var USERS = require('./../testHelpers/usersTemplates');
 var async =  require('async');
 
 var url = 'http://localhost:7791';
