@@ -3,12 +3,11 @@
 var request = require('supertest');
 var expect = require('chai').expect;
 var mongoose = require('mongoose');
-var CONST = require('../constants');
-var USERS = require('./testHelpers/usersTemplates');
+var CONST = require('../../constants/index');
+var USERS = require('./../testHelpers/usersTemplates');
 var async = require ('async');
 
 var url = 'http://localhost:7791';
-
 
 describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
 
@@ -32,7 +31,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             dbConnection.db.dropCollection('Users', function (err, result) {
                 console.log('Collection Users dropped');
 
-                var models = require('../models/index')(dbConnection);
+                var models = require('../../models/index')(dbConnection);
                 var User = dbConnection.model(CONST.MODELS.USER);
                 var crypto = require('crypto');
                 createDefaultAdmin();
@@ -65,7 +64,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 }
             });
 
-            var UserHandler = require('../handlers/users');
+            var UserHandler = require('../../handlers/users');
 
 
             dbConnection.db.dropCollection('HistoryLog', function (err, result) {
