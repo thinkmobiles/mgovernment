@@ -81,7 +81,7 @@ describe('Service create(POST) /  GET / PUT  / (CRUD) ,', function () {
             });
     });
 
-    it('Admin PUT Service by layout _id', function (done) {
+    it('Admin PUT Service by service _id', function (done) {
 
         var data = SERVICES.SERVICE_GOLD_BANCOMAT;
         var dataForUpdate = SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE;
