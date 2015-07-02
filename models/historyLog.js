@@ -1,8 +1,8 @@
 var CONST = require('../constants');
 
 module.exports = function (db) {
+    'use strict';
     var mongoose = require('mongoose');
-
     var historyLogSchema = mongoose.Schema({
             userId: {type: String},
             action: {type: String},

@@ -1,4 +1,3 @@
-
 module.exports = {
 
     START_SCREEN_LAYOUT: {

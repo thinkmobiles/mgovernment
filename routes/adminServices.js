@@ -8,8 +8,8 @@ module.exports = function(db){
     var servicesHandler = new ServicesHandler(db);
 
     router.route('/')
-        .post(servicesHandler.createService);
-    //    .get(servicesHandler.getLayouts);
+        .post(servicesHandler.createService)
+        .get(servicesHandler.getServices);
     //
     //router.route('/getCount/')
     //    .get(servicesHandler.getCount);
@@ -19,10 +19,10 @@ module.exports = function(db){
     //    .put(servicesHandler.updateItemByIdAndLayoutId)
     //    .get(servicesHandler.getItemByIdAndLayoutId);
     //
-    //router.route('/:id')
+    router.route('/:id')
     //  //  .post(servicesHandler.createLayoutByName)
-    //    .put(servicesHandler.updateLayoutById)
-    //    .get(servicesHandler.getLayoutById);
+        .put(servicesHandler.updateServiceById)
+        .get(servicesHandler.getLayoutById);
 
     return router;
 };
