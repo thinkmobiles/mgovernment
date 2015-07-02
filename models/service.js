@@ -4,33 +4,34 @@ module.exports = function (db) {
     var mongoose = require('mongoose');
 
     var serviceSchema = mongoose.Schema({
-        serviceProvider: {type: String},
-        serviceType: {type: String},
-        baseUrl:{type: String},
-        profile:{},
-        updatedAt: {type: Date},
-        createdAt: {type: Date,  default: Date.now},
-        forUserType:[],
-        inputItems: [{
-            order: Number,
-            name: String,
-            type: String,
-            options:[]
-        }],
-        method: {type: String},
-        url: {type: String},
-        params: []
-},
-{
-    collection: CONST.MODELS.SERVICE + 's'
-});
+            serviceProvider: {type: String, required: true},
+            serviceName: {type: String, required: true},
+            serviceType: {type: String, required: true},
+            baseUrl:{type: String, equired: true},
+            profile:{},
+            updatedAt: {type: Date},
+            createdAt: {type: Date,  default: Date.now},
+            forUserType: {type:[],required: true},
+            inputItems: [{
+                order: Number,
+                name: String,
+                type: String,
+                options:[]
+            }],
+            method: {type: String,required: true},
+            url: {type: String,required: true},
+            params: []
+        },
+        {
+            collection: CONST.MODELS.SERVICE + 's'
+        });
 
-db.model(CONST.MODELS.LAYOUT, serviceSchema);
+    db.model(CONST.MODELS.SERVICE, serviceSchema);
 
-if (!mongoose.Schemas) {
-    mongoose.Schemas = {};
-}
+    if (!mongoose.Schemas) {
+        mongoose.Schemas = {};
+    }
 
-mongoose.Schemas[CONST.MODELS.SERVICE] = serviceSchema;
+    mongoose.Schemas[CONST.MODELS.SERVICE] = serviceSchema;
 };
 

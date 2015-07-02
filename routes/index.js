@@ -8,6 +8,8 @@ module.exports = function(app, db){
     var usersRouter = require('./users')(db);
     var clientLayoutsRouter = require('./clientLayouts')(db);
     var adminLayoutsRouter = require('./adminLayouts')(db);
+    var adminServicessRouter = require('./adminServices')(db);
+
     var session = new SessionHandler(db);
 
     app.get('/', function(req, res, next){
@@ -17,6 +19,7 @@ module.exports = function(app, db){
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);
     app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);
+    app.use('/adminService',session.isAdminBySession, adminServicessRouter);
 
     function notFound(req, res, next){
         next();
