@@ -3,6 +3,8 @@ module.exports = {
     USER_TYPE: {
         ADMIN: 'admin',
         CLIENT: 'client',
+        COMPANY: 'company',
+        GOVERNMENT: 'government',
         GUEST: 'guest'
     },
 
@@ -16,7 +18,8 @@ module.exports = {
         PROFILE: 'Profile',
         LAYOUT: 'Layout',
         SESSION: 'Session',
-        HISTORY: 'HistoryLog'
+        HISTORY: 'HistoryLog',
+        SERVICE: 'Service'
     },
 
     ACTION: {

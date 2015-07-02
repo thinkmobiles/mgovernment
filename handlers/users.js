@@ -87,8 +87,6 @@ var User = function(db) {
             if (!found) {
                 return res.status(400).send({ err: RESPONSE.ON_ACTION.NOT_FOUND});
             }
-            // user.accounts[i] = account
-
 
             User
                 .update({'_id': user._id, 'accounts.seviceName': account.seviceName }, {$set: {
@@ -303,8 +301,6 @@ var User = function(db) {
             deviceOs: body.deviceOs,
             deviceToken: body.deviceToken
         };
-
-        var found;
 
         if (!isLoginedAndValidDeviceToken(req, device)) {
             return session.kill(req, res, next);
