@@ -41,7 +41,7 @@ var AccessHandler = function (db) {
                 if (err) {
                     return callback(err);
                 }
-                var inAvailableTypes = availableTypes.indexOf(userType) > -1;
+                var inAvailableTypes = availableTypes.indexOf(userType) > -1 || availableTypes.indexOf('All');
                 callback(null, inAvailableTypes);
             })
         });
