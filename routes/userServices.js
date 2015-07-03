@@ -1,14 +1,16 @@
 var express = require('express');
 var UserServicesHandler = require('../handlers/userServices');
+var AccessHandler = require('../handlers/accessHandler')
 
 module.exports = function(db){
 
     var router = express.Router();
     var servicesHandler = new UserServicesHandler(db);
+    var accessHandler = new AccessHandler(db);
 
-    router.route('/:provider/:service')
+    router.route('/:serviceId')
         .get(servicesHandler.getServiceOptions)
-        .post(servicesHandler.sendServiceRequest);
+        .post(accessHandler.isAccessAvailable, servicesHandler.sendServiceRequest);
 
     return router;
 };

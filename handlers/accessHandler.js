@@ -9,11 +9,8 @@ var AccessHandler = function (db) {
     this.isAccessAvailable = function (req, res, next) {
 
         var checkOptions = {
-            userId: req.session.uId,
-            serviceOptions: {
-                serviceProvider: req.params.provider,
-                serviceName: req.params.name
-            }
+            userId: req.session ? req.session.uId : null,
+            serviceId: req.params.serviceId
         };
 
         getAccessAvailability(checkOptions, function (err, available) {
@@ -30,24 +27,26 @@ var AccessHandler = function (db) {
     };
 
     function getAccessAvailability(options, callback) {
-        var userId = options.userId;
-        var serviceOptions = options.serviceOptions;
 
-        getUserTypeById(userId, function (err, userType) {
+        getUserTypeById(options.userId, function (err, userType) {
             if (err) {
                 return callback(err);
             }
-            getServiceForTypes(serviceOptions, function (err, availableTypes) {
+            getServiceForTypes(options.serviceId, function (err, availableTypes) {
                 if (err) {
                     return callback(err);
                 }
-                var inAvailableTypes = availableTypes.indexOf(userType) > -1 || availableTypes.indexOf('All');
-                callback(null, inAvailableTypes);
+                var inAvailableTypes = availableTypes.indexOf(userType) > -1;
+                return callback(null, inAvailableTypes);
             })
         });
     }
 
     function getUserTypeById(userId, callback) {
+
+        if (!userId) {
+            return callback(null, CONST.USER_TYPE.GUEST);
+        }
 
         User
             .findOne({_id: userId})
@@ -65,10 +64,10 @@ var AccessHandler = function (db) {
             });
     }
 
-    function getServiceForTypes(queryOpt, callback) {
+    function getServiceForTypes(serviceId, callback) {
 
         Service
-            .findOne(queryOpt)
+            .findOne({_id: serviceId})
             .select('forUserType')
             .exec(function (err, model) {
                 if (err) {
