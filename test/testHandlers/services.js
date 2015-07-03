@@ -110,123 +110,53 @@ describe('Service create(POST) /  GET / PUT  / (CRUD) ,', function () {
                     });
             });
     });
-    //
-    //it('Admin GET Item by layout _id and ItemId ', function (done) {
-    //
-    //    agent
-    //        .get('/adminLayout/' + LAYUOTS.START_SCREEN_LAYOUT._id + '/' + 'loginButton')
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //            console.log('Item was get:');
-    //            console.dir(res.body);
-    //            done();
-    //        });
-    //});
-    //
-    //it('Client GET Layout by layout _id', function (done) {
-    //
-    //    agent
-    //        .get('/clientLayout/' + LAYUOTS.START_SCREEN_LAYOUT._id)
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //            console.log('Layout was get:');
-    //            console.dir(res.body);
-    //            done();
-    //        });
-    //});
-    //
-    //it('Admin Create (POST) Item  by layout _id and ItemId', function (done) {
-    //    var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_POST;
-    //
-    //    agent
-    //        .post('/adminLayout/' + data._id+ '/' + data.items[0].id)
-    //        .send(data)
-    //        .expect(201)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //            console.log('Item was post:');
-    //            console.dir(res.body);
-    //            done();
-    //        });
-    //});
-    //
-    //it('Admin Update (PUT) Item  by layout _id and ItemId', function (done) {
-    //    var data = LAYUOTS.START_SCREEN_LAYOUT_ITEM_FOR_UPDATE;
-    //    var currDate = new Date();
-    //
-    //    while (new Date() - currDate < 1000) {}
-    //
-    //    agent
-    //        .put('/adminLayout/' + data._id + '/' + data.items[0].id)
-    //        .send(data)
-    //        .expect(202)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //            console.log('Update Item result:');
-    //            console.dir(res.body);
-    //            done();
-    //        });
-    //});
-    //
-    //
-    //it('Admin GET ALL Layouts', function (done) {
-    //
-    //    agent
-    //        .get('/adminLayout/')
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //            console.log('All Layouts was get:');
-    //            console.dir(res.body);
-    //            done();
-    //        });
-    //});
-    //
-    //it('Admin Create 100 Layouts', function (done) {
-    //
-    //    var layoutsCount = 0;
-    //    var createLayoutArray = [];
-    //
-    //    for (var i = 100; i > 0; i--) {
-    //        createLayoutArray.push(saveLayout({_id: '100_Layouts_number__' + i, layoutName: i + ' ScreeLayout', layoutId: i + '__ScreeLayoutID'  }));
-    //    }
-    //
-    //    async.parallel(createLayoutArray, function (err,results)   {
-    //        if (err) {
-    //            return done(err)
-    //        }
-    //        console.log('ASYNC layoutsCount: ', layoutsCount);
-    //        done();
-    //    });
-    //});
-    //
-    //function saveLayout(data) {
-    //    return function (callback) {
-    //        agent
-    //            .post('/adminLayout/')
-    //            .send(data)
-    //            .expect(201)
-    //            .end(function (err, res) {
-    //                if (err) {
-    //                    return  callback(err)
-    //                }
-    //                callback();
-    //            });
-    //    }
-    //}
-    //
+    it('Admin Create 20 Services', function (done) {
+
+        var createLayoutArray = [];
+        var dataObj ={};
+
+        for (var i = 20; i > 0; i--) {
+            dataObj[i] = SERVICES.SERVICE_OIL;
+            dataObj[i].baseUrl = 'http://www.oil' + i + '.net/';
+            dataObj[i].serviceProvider = 'Oil retail' + i;
+            dataObj[i].serviceProvider = 'OIL INVESTMENT' + i;
+
+            //createLayoutArray.push(saveLayout( dataObj[i]));
+            createLayoutArray.push(saveLayout({
+                serviceProvider: 'Oil retail' + i,
+                serviceName: 'OIL INVESTMENT' + i,
+                baseUrl: 'http://www.oil' + i + '.net/',
+                serviceType: 'Payment',
+                forUserType: [CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+                method: 'POST',
+                url: '/oil',
+                params: [{onClick: ''}]
+            }));
+        }
+
+        async.parallel(createLayoutArray, function (err,results)   {
+            if (err) {
+                return done(err)
+            }
+            done();
+        });
+    });
+
+    function saveLayout(data) {
+        return function (callback) {
+            agent
+                .post('/adminService/')
+                .send(data)
+                .expect(201)
+                .end(function (err, res) {
+                    if (err) {
+                        return  callback(err)
+                    }
+                    callback();
+                });
+        }
+    }
+
     //it('Admin GET Count of Layouts', function (done) {
     //
     //    agent

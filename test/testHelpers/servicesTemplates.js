@@ -126,6 +126,35 @@ module.exports = {
         url: '/gold/',
         params: [{onClick: '/sdadsadsa sadasdas'}]
     },
+    SERVICE_OIL: {
+        serviceProvider: 'Oil retail',
+        serviceName: 'OIL INVESTMENT',
+        serviceType: 'Payment',
+        baseUrl: 'http://www.oil.net/',
+        profile: {
+            description: 'Oil wells wholesale and retail'},
+
+        forUserType: [CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        inputItems: [{
+            order: 22,
+            name: 'eeee',
+            inputType: 'IMG',
+            placeHolder: '  base 64 sfldsfjf .;ldjf ;lj dsfg-0fd9h-0df9 -0df9g-d',
+            options: []
+        },
+            {
+                order: 23,
+                name: 'Buy 1 well ',
+                type: 'Button',
+                placeHolder: '',
+                options: [{onClick: '/buy'}]
+            }
+        ],
+        method: 'POST',
+        url: '/oil',
+        params: [{onClick: ''}]
+    }
+
 };
 
 
