@@ -9,6 +9,7 @@ module.exports = function(db){
 
     var users = new UserHandler(db);
     var session = new SessionHandler(db);
+
     router.route('/')
         .post(session.isAdminBySession,users.createAccount)
         .get(session.isAdminBySession,users.getUserProfiles);

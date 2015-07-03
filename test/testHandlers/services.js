@@ -200,5 +200,20 @@ describe('Service create(POST) /  GET / PUT  / (CRUD) ,', function () {
                 done();
             });
     });
+
+    it('Admin GET Count of Services', function (done) {
+
+        agent
+            .get('/adminService/getCount')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.log('Count of Services was get:');
+                console.dir(res.body);
+                done();
+            });
+    });
 });
 
