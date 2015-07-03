@@ -10,19 +10,14 @@ module.exports = function(db){
     router.route('/')
         .post(servicesHandler.createService)
         .get(servicesHandler.getServices);
-    //
-    //router.route('/getCount/')
-    //    .get(servicesHandler.getCount);
-    //
-    //router.route('/:id/:itemId')
-    //    .post(servicesHandler.createItemByIdAndLayoutId)
-    //    .put(servicesHandler.updateItemByIdAndLayoutId)
-    //    .get(servicesHandler.getItemByIdAndLayoutId);
-    //
+
+    router.route('/getCount/')
+        .get(servicesHandler.getCount);
+
     router.route('/:id')
-    //  //  .post(servicesHandler.createLayoutByName)
         .put(servicesHandler.updateServiceById)
-        .get(servicesHandler.getLayoutById);
+        .get(servicesHandler.getServiceById)
+        .delete(servicesHandler.deleteServiceById);
 
     return router;
 };

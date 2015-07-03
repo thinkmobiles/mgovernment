@@ -9,6 +9,7 @@ module.exports = function(db){
 
     var users = new UserHandler(db);
     var session = new SessionHandler(db);
+
     router.route('/')
         .post(session.isAdminBySession,users.createAccount)
         .get(session.isAdminBySession,users.getUserProfiles);
@@ -17,10 +18,12 @@ module.exports = function(db){
         .get(users.getCount);
 
     router.post('/signIn', users.signInClient );
-
     router.post('/signOut', users.signOutClient);
     router.get('/profile', session.authenticatedUser,  users.getUserProfileBySession);
-    router.get('/profile/:id', session.isAdminBySession,  users.getUserProfileByIdForAdmin);
+    router.route('/profile/:id')
+        .get(session.isAdminBySession,  users.getUserProfileByIdForAdmin)
+        .delete(session.isAdminBySession,  users.deleteUserProfileByIdForAdmin);
+
     router.route('/account')
         .post(session.authenticatedUser, users.createServicesAccount)
         .put(session.authenticatedUser, users.updateServicesAccount);

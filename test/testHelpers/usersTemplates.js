@@ -7,6 +7,12 @@ module.exports = {
         userType: 'client'
     },
 
+    CLIENT_GOOD_USER_TYPE_FOR_DELETING: {
+        login: 'clientForDeleting',
+        pass: 'clientForDeleting',
+        userType: 'client'
+    },
+
     CLIENT_BAD_USER_TYPE: {
         login: 'client123',
         pass: 'pass1234',

@@ -409,6 +409,29 @@ var User = function(db) {
                 return res.status(200).send({count: count});
             });
     };
+
+    this.deleteUserProfileByIdForAdmin = function (req, res, next) {
+        var searchQuery = {
+            '_id': req.params.id
+        };
+
+        if (!searchQuery._id) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        User
+            .findOne(searchQuery)
+            .remove()
+            .exec(function (err, model) {
+
+                if (err) {
+                    return next(err);
+                }
+
+                return res.status(200).send({result: RESPONSE.ON_ACTION.SUCCESS});
+            });
+    };
+
     /*TODO remove*/
     /*TEST BLOCK*/
 };
