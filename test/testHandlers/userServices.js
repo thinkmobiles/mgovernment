@@ -7,6 +7,7 @@ var async = require('async');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var PreparingBd = require('./preparingDb');
 
 var url = 'http://localhost:7791';
 
@@ -16,72 +17,12 @@ describe('Service User: GET options, POST send request', function () {
     var agent = request.agent(url);
 
     before(function (done) {
-        console.log('>>> before');
+      console.log('>>> before');
 
-        var connectOptions = {
-            db: {native_parser: false},
-            server: {poolSize: 5},
-            user: process.env.DB_USER,
-            pass: process.env.DB_PASS,
-            w: 1,
-            j: true,
-            mongos: true
-        };
+        var preparingDb = new PreparingBd();
 
-        var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
+            preparingDb.toFillUsers(done,3);
 
-        dbConnection.once('open', function callback() {
-
-            async.series([
-                    function (callback) {
-                        dbConnection.db.dropCollection(CONST.MODELS.USER + 's', callback);
-                    },
-                    function (callback) {
-                        dbConnection.db.dropCollection(CONST.MODELS.SERVICE + 's', callback);
-                    },
-                    function (callback) {
-                        var models = require('../../models/index')(dbConnection);
-                        var User = dbConnection.model(CONST.MODELS.USER);
-                        var crypto = require('crypto');
-                        createDefaultAdmin();
-
-                        function createDefaultAdmin() {
-                            User
-                                .findOne({userType: CONST.USER_TYPE.ADMIN})
-                                .exec(function (err, model) {
-                                    if (model) {
-                                        return callback();
-                                    }
-                                    var pass = USERS.ADMIN_DEFAULT.pass;
-
-                                    var shaSum = crypto.createHash('sha256');
-                                    shaSum.update(pass);
-                                    pass = shaSum.digest('hex');
-
-                                    var admin = new User({
-                                        login: USERS.ADMIN_DEFAULT.login,
-                                        pass: pass,
-                                        userType: CONST.USER_TYPE.ADMIN
-                                    });
-
-                                    admin
-                                        .save(function (err, user) {
-                                            if(err){
-                                                return callback(err);
-                                            }
-                                            callback();
-                                        });
-                                });
-                        }
-                    }
-                ],
-                function (err, result) {
-                    if (err) {
-                        return done(err);
-                    }
-                    done();
-                });
-        });
     });
 
     it('Admin Create Service For ALL', function (done) {
@@ -220,5 +161,7 @@ describe('Service User: GET options, POST send request', function () {
             });
 
     });
+
+
 
 });

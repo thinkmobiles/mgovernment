@@ -8,6 +8,19 @@ var UserService = function(db) {
 
     this.getServiceOptions = function(req, res, next) {
 
+        var searchQuery = {
+            _id: req.params.serviceId
+        };
+
+        Service
+            .find(searchQuery)
+            .exec(function (err, model) {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).send(model);
+            });
+
     };
 
     this.sendServiceRequest = function(req, res, next) {
