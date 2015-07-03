@@ -12,6 +12,7 @@ var url = 'http://localhost:7791';
 describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
 
     var agent = request.agent(url);
+    var userId;
 
     before(function (done) {
         console.log('>>> before');
@@ -26,6 +27,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             mongos: true
         };
         var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
+
 
         dbConnection.once('open', function callback() {
             dbConnection.db.dropCollection('HistoryLogs', function (err, result) {});
@@ -393,6 +395,34 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 console.log('Count of  Users was get:');
                 console.dir(res.body);
                 done();
+            });
+    });
+
+    it('Admin Delete User by _id', function (done) {
+
+        var data = USERS.CLIENT_GOOD_USER_TYPE_FOR_DELETING;
+
+        agent
+            .post('/user/')
+            .send(data)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                userId = res.body._id;
+                console.log('id fo deleting: ',userId);
+
+                agent
+                    .delete('/user/profile/' + userId)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
             });
     });
 
