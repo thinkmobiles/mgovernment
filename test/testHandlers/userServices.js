@@ -21,6 +21,7 @@ describe('Service User: GET options, POST send request', function () {
 
         var preparingDb = new PreparingBd();
 
+        preparingDb.dropCollection(CONST.MODELS.USER + 's');
             preparingDb.toFillUsers(done,3);
 
     });

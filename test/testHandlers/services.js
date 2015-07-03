@@ -116,7 +116,7 @@ describe('Service create(POST) /  GET / PUT  / (CRUD) ,', function () {
         var dataObj ={};
 
         for (var i = 20; i > 0; i--) {
-            dataObj[i] = SERVICES.SERVICE_OIL;
+            dataObj[i] =(JSON.parse(JSON.stringify(SERVICES.SERVICE_OIL)));
             dataObj[i].baseUrl = 'http://www.oil' + i + '.net/';
             dataObj[i].serviceProvider = 'Oil retail' + i;
             dataObj[i].serviceProvider = 'OIL INVESTMENT' + i;
