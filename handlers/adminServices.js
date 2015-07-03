@@ -46,7 +46,6 @@ var Service = function(db) {
         }
 
         body.updatedAt = new Date();
-
         var service = new Service(body);
 
         service
@@ -144,6 +143,7 @@ var Service = function(db) {
     };
 
     function findServiceByQuery(Query, callback) {
+
         Service
             .findOne(Query)
             .exec(function (err, model) {
