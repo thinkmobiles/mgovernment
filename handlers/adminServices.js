@@ -10,7 +10,7 @@ var Service = function(db) {
     var Service = db.model(CONST.MODELS.SERVICE);
     var Layout = db.model(CONST.MODELS.LAYOUT);
     var historyHandler = new HistoryHandler(db);
-  
+
     this.updateServiceById = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id
@@ -65,7 +65,7 @@ var Service = function(db) {
             })
     };
 
-    this.getLayoutById = function (req, res, next) {
+    this.getServiceById = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id
         };
@@ -74,13 +74,36 @@ var Service = function(db) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        findLayoutByQuery(searchQuery, function (err, model) {
+        findServiceByQuery(searchQuery, function (err, model) {
             if (err) {
                 return next(err);
             }
             return res.status(200).send(model.toJSON());
         })
     };
+
+    this.deleteServiceById = function (req, res, next) {
+        var searchQuery = {
+            '_id': req.params.id
+        };
+
+        if (!searchQuery._id) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        Service
+            .findOne(searchQuery)
+            .remove()
+            .exec(function (err, model) {
+
+                if (err) {
+                    return next(err);
+                }
+
+                return res.status(200).send({result: RESPONSE.ON_ACTION.SUCCESS});
+            });
+    };
+
 
     this.getServices = function (req, res, next) {
         var sortField = req.query.orderBy || 'createdAt';
@@ -97,7 +120,7 @@ var Service = function(db) {
             .skip(skipCount)
             .limit(limitCount)
             .exec(function (err, collection) {
-                          if (err) {
+                if (err) {
                     return next(err);
                 }
                 return res.status(200).send(collection);
@@ -227,7 +250,7 @@ var Service = function(db) {
     };
 
 
-    function findLayoutByQuery(Query, callback) {
+    function findServiceByQuery(Query, callback) {
         Service
             .findOne(Query)
             .exec(function (err, model) {

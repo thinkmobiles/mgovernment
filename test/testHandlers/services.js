@@ -157,21 +157,34 @@ describe('Service create(POST) /  GET / PUT  / (CRUD) ,', function () {
         }
     }
 
-    //it('Admin GET Count of Layouts', function (done) {
-    //
-    //    agent
-    //        .get('/adminLayout/getCount')
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //            console.log('Count of Layouts was get:');
-    //            console.dir(res.body);
-    //            done();
-    //        });
-    //});
-    //
+    it('Admin Delete Service by _id', function (done) {
+
+        var data = SERVICES.SERVICE_GOLD_BANCOMAT;
+
+        agent
+            .post('/adminService/')
+            .send(data)
+            .expect(201)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                serviceId = res.body._id;
+                console.log('id fo deleting: ',serviceId);
+
+                agent
+                    .delete('/adminService/' + serviceId)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
 
     it('Admin GET ALL Services with Query', function (done) {
 

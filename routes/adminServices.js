@@ -22,7 +22,8 @@ module.exports = function(db){
     router.route('/:id')
     //  //  .post(servicesHandler.createLayoutByName)
         .put(servicesHandler.updateServiceById)
-        .get(servicesHandler.getLayoutById);
+        .get(servicesHandler.getServiceById)
+        .delete(servicesHandler.deleteServiceById);
 
     return router;
 };
