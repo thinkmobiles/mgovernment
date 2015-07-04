@@ -1,6 +1,24 @@
 
 module.exports = {
 
+    CLIENT: {
+        login: 'client777',
+        pass: 'pass1234',
+        userType: 'client'
+    },
+
+    COMPANY: {
+        login: 'company777',
+        pass: 'pass1234',
+        userType: 'company'
+    },
+
+    GOVERNMENT: {
+        login: 'government777',
+        pass: 'pass1234',
+        userType: 'government'
+    },
+
     CLIENT_GOOD_USER_TYPE: {
         login: 'client123',
         pass: 'pass1234',

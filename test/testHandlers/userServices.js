@@ -21,9 +21,20 @@ describe('Service User: GET options, POST send request', function () {
 
         var preparingDb = new PreparingBd();
 
-        preparingDb.dropCollection(CONST.MODELS.USER + 's');
-            preparingDb.toFillUsers(done,3);
+        async.series([
+            preparingDb.dropCollection(CONST.MODELS.USER + 's'),
+            preparingDb.toFillUsers(done,3),
+            preparingDb.createUsersByTemplate(USERS.CLIENT,3),
+            preparingDb.createUsersByTemplate(USERS.GOVERNMENT,2),
+            preparingDb.createUsersByTemplate(USERS.COMPANY,3),
 
+
+        ], function (err,results)   {
+            if (err) {
+                return done(err)
+            }
+            done();
+        });
     });
 
     it('Admin Create Service For ALL', function (done) {

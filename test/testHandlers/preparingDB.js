@@ -23,55 +23,79 @@ PreparingDb = function (){
     var models = require('../../models/index')(dbConnection);
     var User = dbConnection.model(CONST.MODELS.USER);
 
-    this.dropCollection = function (collection){
-        var test = collection;
+    this.dropCollection = function (collection) {
+        return function (callback) {
 
-        dbConnection.collections[collection].drop(function(err,res) {
-            if (err) {
-                console.log(err)
-            }
+            var test = collection;
 
-            console.log(res)
-
-        });
+            dbConnection.collections[collection].drop(function (err) {
+                if (err) {
+                    return callback(err)
+                }
+                callback();
+            });
+        };
     };
-
 
     this.toFillUsers = function (done, count) {
-        createDefaultAdmin(function(err) {
-            if (err) {
-                return done(err);
-            }
+        return function (callback) {
 
-            for (var i = count-1; i>=0; i--) {
+            createDefaultAdmin(function (err) {
 
-                var pass = 'pass1234'+i;
+                if (err) {
+                    callback(err);
+                }
+
+                for (var i = count - 1; i >= 0; i--) {
+
+                    var pass = 'pass1234' + i;
+                    var shaSum = crypto.createHash('sha256');
+                    shaSum.update(pass);
+                    pass = shaSum.digest('hex');
+
+                    saveUser({
+                        login: CONST.USER_TYPE.CLIENT + '_' + i,
+                        pass: pass,
+                        userType: CONST.USER_TYPE.CLIENT
+                    });
+
+                    saveUser({
+                        login: CONST.USER_TYPE.COMPANY + '_' + i,
+                        pass: pass,
+                        userType: CONST.USER_TYPE.COMPANY
+                    });
+                    saveUser({
+                        login: CONST.USER_TYPE.GOVERNMENT + '_' + i,
+                        pass: pass,
+                        userType: CONST.USER_TYPE.GOVERNMENT
+                    });
+                }
+                return callback();
+            });
+
+        };
+    };
+
+    this.createUsersByTemplate = function(userTemplate, count) {
+        return function (callback) {
+            var count1 = count || 1;
+
+            for (var i = count1 - 1; i >= 0; i--) {
+
+                var pass = userTemplate.pass + 'auto' + i;
                 var shaSum = crypto.createHash('sha256');
                 shaSum.update(pass);
-                pass = shaSum.digest('hex');
+                userTemplate.pass = shaSum.digest('hex');
 
                 saveUser({
-                    login: CONST.USER_TYPE.CLIENT + '_' + i,
+                    login: userTemplate.login + 'auto' + i,
                     pass: pass,
-                    userType: CONST.USER_TYPE.CLIENT
-                });
-
-                saveUser({
-                    login: CONST.USER_TYPE.COMPANY + '_' + i,
-                    pass: pass,
-                    userType: CONST.USER_TYPE.COMPANY
-                });
-                saveUser({
-                    login: CONST.USER_TYPE.GOVERNMENT + '_' + i,
-                    pass: pass,
-                    userType: CONST.USER_TYPE.GOVERNMENT
+                    userType:  userTemplate.userType
                 });
             }
-            return done();
-        });
-
-
-    };
+            callback();
+        }
+    }
 
     function saveUser (userTemplate) {
 
