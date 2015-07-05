@@ -4,10 +4,9 @@ var request = require('supertest');
 
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
-var async = require ('async');
+
 
 PreparingDb = function (){
-    var count = count || 0;
     var crypto = require('crypto');
     var connectOptions = {
         db: {native_parser: false},
@@ -22,11 +21,10 @@ PreparingDb = function (){
     var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
     var models = require('../../models/index')(dbConnection);
     var User = dbConnection.model(CONST.MODELS.USER);
+    var Service = dbConnection.model(CONST.MODELS.SERVICE);
 
     this.dropCollection = function (collection) {
         return function (callback) {
-
-            var test = collection;
 
             dbConnection.collections[collection].drop(function (err) {
                 if (err) {
@@ -95,10 +93,20 @@ PreparingDb = function (){
             }
             callback();
         }
-    }
+    };
+
+    this.createServiceByTemplate = function(serviceTemplate, forUserType) {
+        return function (callback) {
+            var serviceData = (JSON.parse(JSON.stringify(serviceTemplate)));
+            serviceData.forUserType = forUserType || serviceData.forUserType;
+            serviceData.serviceName = serviceData.serviceName + serviceData.forUserType;
+
+            saveService(serviceData);
+            callback();
+        }
+    };
 
     function saveUser (userTemplate) {
-
         var user = new User(userTemplate);
 
         user
@@ -109,8 +117,18 @@ PreparingDb = function (){
             });
     }
 
-    function createDefaultAdmin(callback) {
+    function saveService (serviceTemplate) {
+        var service = new Service(serviceTemplate);
 
+        service
+            .save(function (err, user) {
+                if(err){
+                    return next(err);
+                }
+            });
+    }
+
+    function createDefaultAdmin(callback) {
         var pass = USERS.ADMIN_DEFAULT.pass;
 
         var shaSum = crypto.createHash('sha256');
@@ -131,7 +149,6 @@ PreparingDb = function (){
                 callback();
             });
     }
-
 };
 
 module.exports = PreparingDb;

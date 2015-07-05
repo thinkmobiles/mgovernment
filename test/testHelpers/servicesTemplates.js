@@ -106,7 +106,7 @@ module.exports = {
         profile: {
             description : 'Gold 0.1-1 Kg, in Bankomat or by delivery by courier '},
 
-        forUserType: [ CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        forUserType: [CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.ADMIN, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
         inputItems: [{
             order: 11,
             name: 'eeee',
