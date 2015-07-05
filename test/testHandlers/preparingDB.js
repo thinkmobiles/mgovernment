@@ -40,9 +40,12 @@ PreparingDb = function (){
 
             createDefaultAdmin(function (err) {
 
+                var count = count || 1;
+
                 if (err) {
                     callback(err);
                 }
+
 
                 for (var i = count - 1; i >= 0; i--) {
 
@@ -76,9 +79,10 @@ PreparingDb = function (){
 
     this.createUsersByTemplate = function(userTemplate, count) {
         return function (callback) {
-            var count1 = count || 1;
+            var count = count  || 1;
 
-            for (var i = count1 - 1; i >= 0; i--) {
+
+            for (var i = count - 1; i >= 0; i--) {
 
                 var pass = userTemplate.pass + 'auto' + i;
                 var shaSum = crypto.createHash('sha256');

@@ -8,6 +8,9 @@ module.exports = function(db){
     var servicesHandler = new UserServicesHandler(db);
     var accessHandler = new AccessHandler(db);
 
+    router.route('/')
+        .get(servicesHandler.getServices)
+
     router.route('/:serviceId')
         .get(servicesHandler.getServiceOptions)
         .post(accessHandler.isAccessAvailable, servicesHandler.sendServiceRequest);

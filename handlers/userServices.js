@@ -20,11 +20,24 @@ var UserService = function(db) {
                 }
                 return res.status(200).send(model);
             });
-
     };
 
-    this.sendServiceRequest = function(req, res, next) {
+    this.getServices = function(req, res, next) {
 
+        Service
+            .find()
+            .select( 'serviceProvider serviceName serviceType profile forUserType method baseUrl')
+            .exec(function (err, collection) {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).send(collection);
+            });
+    };
+
+
+    this.sendServiceRequest = function(req, res, next) {
+        return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
     };
 };
 
