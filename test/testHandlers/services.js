@@ -6,7 +6,7 @@ var CONST = require('../../constants/index');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var USERS = require('./../testHelpers/usersTemplates');
 var async =  require('async');
-
+var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:7791';
 
 describe('Service create(POST) /  GET / PUT  / (CRUD) ,', function () {
@@ -17,23 +17,20 @@ describe('Service create(POST) /  GET / PUT  / (CRUD) ,', function () {
     before(function (done) {
         console.log('>>> before');
 
-        var connectOptions = {
-            db: {native_parser: false},
-            server: {poolSize: 5},
-            user: process.env.DB_USER,
-            pass: process.env.DB_PASS,
-            w: 1,
-            j: true,
-            mongos: true
-        };
+        var preparingDb = new PreparingBd();
 
-        var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
-
-        dbConnection.once('open', function callback() {
-            dbConnection.db.dropCollection(CONST.MODELS.SERVICE + 's', function (err, result) {
-                console.log('Collection ',CONST.MODELS.SERVICE + 's',' dropped');
-                done();
-            });
+        async.series([
+            preparingDb.dropCollection(CONST.MODELS.USER + 's'),
+            //preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
+            preparingDb.toFillUsers(done,3),
+            preparingDb.createUsersByTemplate(USERS.CLIENT),
+            preparingDb.createUsersByTemplate(USERS.GOVERNMENT),
+            preparingDb.createUsersByTemplate(USERS.COMPANY)
+        ], function (err,results)   {
+            if (err) {
+                return done(err)
+            }
+            done();
         });
     });
 

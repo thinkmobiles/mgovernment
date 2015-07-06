@@ -79,21 +79,24 @@ PreparingDb = function (){
 
     this.createUsersByTemplate = function(userTemplate, count) {
         return function (callback) {
+
             var count = count  || 1;
+            var str =""
 
 
             for (var i = count - 1; i >= 0; i--) {
 
-                var pass = userTemplate.pass + 'auto' + i;
+                var pass = userTemplate.pass;
                 var shaSum = crypto.createHash('sha256');
                 shaSum.update(pass);
-                userTemplate.pass = shaSum.digest('hex');
+                pass = shaSum.digest('hex');
 
                 saveUser({
-                    login: userTemplate.login + 'auto' + i,
+                    login: userTemplate.login + str,
                     pass: pass,
                     userType:  userTemplate.userType
                 });
+                str = 'auto' + i;
             }
             callback();
         }
