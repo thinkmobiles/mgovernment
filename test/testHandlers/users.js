@@ -23,6 +23,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
             preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
+            preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
             preparingDb.toFillUsers(done)
         ], function (err,results)   {
             if (err) {

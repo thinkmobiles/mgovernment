@@ -32,8 +32,7 @@ describe('Service User: GET options, POST send request', function () {
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.GOVERNMENT]),
             preparingDb.createUsersByTemplate(USERS.CLIENT,3),
             preparingDb.createUsersByTemplate(USERS.GOVERNMENT,2),
-            preparingDb.createUsersByTemplate(USERS.COMPANY,3),
-
+            preparingDb.createUsersByTemplate(USERS.COMPANY,3)
 
         ], function (err,results)   {
             if (err) {
@@ -147,7 +146,7 @@ describe('Service User: GET options, POST send request', function () {
                 }
 
                 agent
-                    .post('/service/' + data._id)
+                    .get('/service/' + data._id)
                     .send()
                     .expect(200)
                     .end(function (err, res) {
@@ -155,8 +154,19 @@ describe('Service User: GET options, POST send request', function () {
                         if (err) {
                             return done(err)
                         }
-                        //console.dir(res.body);
-                        done()
+
+                        agent
+                            .post('/service/' + data._id)
+                            .send()
+                            .expect(200)
+                            .end(function (err, res) {
+
+                                if (err) {
+                                    return done(err)
+                                }
+                                //console.dir(res.body);
+                                done()
+                            });
                     });
             });
     });
@@ -176,16 +186,26 @@ describe('Service User: GET options, POST send request', function () {
                 }
 
                 agent
-                    .post('/service/' + data._id)
+                    .get('/service/' + data._id)
                     .send()
-                    .expect(403)
+                    .expect(200)
                     .end(function (err, res) {
 
                         if (err) {
                             return done(err)
                         }
-                        //console.dir(res.body);
-                        done()
+                        agent
+                            .post('/service/' + data._id)
+                            .send()
+                            .expect(403)
+                            .end(function (err, res) {
+
+                                if (err) {
+                                    return done(err)
+                                }
+                                //console.dir(res.body);
+                                done()
+                            });
                     });
             });
     });
