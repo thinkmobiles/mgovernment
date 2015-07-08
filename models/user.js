@@ -26,8 +26,7 @@ module.exports = function (db) {
             userCookie: String,
             cookieUpdatedAt: Date,
             accountUpdatedAt: Date
-        }]
-        
+        }],
         avatar: {type: ObjectId, ref: CONST.MODELS.IMAGE + 's', default: null},
     }, {
         collection: CONST.MODELS.USER + 's'

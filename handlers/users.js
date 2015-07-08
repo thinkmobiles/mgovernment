@@ -68,8 +68,8 @@ var User = function(db) {
         var found = false;
         var foundPosition= -1;
         var account = {
-            seviceName: body.seviceName,
-            seviceOptions:body.seviceOptions,
+            serviceName: body.serviceName,
+            serviceOptions:body.serviceOptions,
             serviceLogin: body.serviceLogin,
             servicePass: body.servicePass
         };
