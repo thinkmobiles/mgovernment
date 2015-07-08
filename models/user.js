@@ -13,7 +13,21 @@ module.exports = function (db){
             lastName: String,
             createdAt: {type: Date, default: Date.now}
         },
-        accounts:[]
+        accounts:[{
+            serviceProvider: String,
+            serviceId: String,
+            login: String,
+            pass: String,
+            lastSignInAt: Date,
+            userCookie: String,
+            cookieUpdatedAt: Date,
+            accountUpdatedAt: Date
+        }]
+
+
+
+
+
     }, {
         collection: CONST.MODELS.USER + 's'
     });

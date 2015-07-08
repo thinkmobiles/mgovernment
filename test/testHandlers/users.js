@@ -24,10 +24,10 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
             preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
             preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
-            preparingDb.toFillUsers(done)
+            preparingDb.toFillUsers(1)
         ], function (err,results)   {
             if (err) {
-                //return done(err)
+                return done(err)
             }
             done();
         });
@@ -244,7 +244,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('POST Service account (client123, pass1234)', function (done) {
 
-        var loginData = USERS.CLIENT_PLUS_ACCOUNT;
+        var loginData = USERS.CLIENT;
 
         agent
             .post('/user/account')
@@ -260,7 +260,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('POST duplicate Service account (client123, pass1234)', function (done) {
 
-        var loginData =  USERS.CLIENT_PLUS_ACCOUNT;
+        var loginData =  USERS.CLIENT;
 
         agent
             .post('/user/account')
@@ -290,7 +290,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
     });
 
-    it('Admin Create 40 Users', function (done) {
+    it('Admin Create 1 Users', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
 
@@ -306,7 +306,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 var layoutsCount = 0;
                 var createUsersArray = [];
 
-                for (var i = 40; i > 0; i--) {
+                for (var i = 1; i > 0; i--) {
                     createUsersArray.push(saveUser({
                         login: 'client123_' + i,
                         pass: 'pass1234_' + i,

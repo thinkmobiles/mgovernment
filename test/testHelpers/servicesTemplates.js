@@ -2,6 +2,28 @@ var CONST = require('../../constants/index');
 
 module.exports = {
 
+    SERVICE_CAPALABA: {
+        serviceProvider: 'CAPALABA',
+        serviceName: 'CAPALABA',
+        serviceType: 'XZ WTF ?',
+        baseUrl: 'http://134.249.164.53:7788/',
+        profile: {
+            description : 'bla bla bla'},
+
+        forUserType: [CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.ADMIN, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        inputItems: [{
+            order: 11,
+            name: 'eeee',
+            inputType: 'IMG',
+            placeHolder: 'base64 sdasd sfdsd fkjjbkzbhkzashe2kj421u34hejrb lkj32  ',
+            options: []
+        }
+        ],
+        method: 'POST',
+        url: 'signIn/',
+        params: [{onClick: '/sdadsadsa sadasdas'}]
+    },
+
     SERVICE_SPEDTEST_INET: {
         serviceProvider: 'Ookla',
         serviceName: 'SpeedTest',
@@ -30,7 +52,6 @@ module.exports = {
         url: '/speedtest/',
         params: [{onClick: '/sdadsadsa sadasdas'}]
     },
-
 
     SERVICE_SPEDTEST_INET_FOR_UPDATING: {
         serviceProvider: 'Ookla',

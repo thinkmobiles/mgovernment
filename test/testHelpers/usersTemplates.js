@@ -4,7 +4,17 @@ module.exports = {
     CLIENT: {
         login: 'client777',
         pass: 'pass1234',
-        userType: 'client'
+        userType: 'client',
+        accounts:[{
+            serviceProvider: 'CAPALABA',
+            serviceId: '559ccf6abb74dd001f2d0c75',
+            login: 'admin',
+            pass: '1q2w3e4r',
+            lastSignInAt:'',
+            userCookie: 'String String',
+            cookieUpdatedAt: '',
+            accountUpdatedAt: ''
+        }]
     },
 
     COMPANY: {

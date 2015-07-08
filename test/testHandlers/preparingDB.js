@@ -17,25 +17,27 @@ PreparingDb = function (){
         j: true,
         mongos: true
     };
-
     var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
     var models = require('../../models/index')(dbConnection);
     var User = dbConnection.model(CONST.MODELS.USER);
     var Service = dbConnection.model(CONST.MODELS.SERVICE);
+
 
     this.dropCollection = function (collection) {
         return function (callback) {
 
             dbConnection.collections[collection].drop(function (err) {
                 if (err) {
-                    return callback(err)
+                    if (err.errmsg != 'ns not found') {
+                        return callback(err)
+                    }
                 }
                 callback();
             });
         };
     };
 
-    this.toFillUsers = function (done, count) {
+    this.toFillUsers = function ( count) {
         return function (callback) {
 
             createDefaultAdmin(function (err) {
@@ -79,23 +81,20 @@ PreparingDb = function (){
 
     this.createUsersByTemplate = function(userTemplate, count) {
         return function (callback) {
-
+            var userTemplateCopy = JSON.parse(JSON.stringify(userTemplate));
             var count = count  || 1;
-            var str =""
+            var str ="";
 
 
             for (var i = count - 1; i >= 0; i--) {
 
-                var pass = userTemplate.pass;
+                var pass = userTemplateCopy.pass;
                 var shaSum = crypto.createHash('sha256');
                 shaSum.update(pass);
-                pass = shaSum.digest('hex');
+                userTemplateCopy.pass = shaSum.digest('hex');
+                userTemplateCopy.login = userTemplateCopy.login + str;
 
-                saveUser({
-                    login: userTemplate.login + str,
-                    pass: pass,
-                    userType:  userTemplate.userType
-                });
+                saveUser(userTemplateCopy);
                 str = 'auto' + i;
             }
             callback();
@@ -104,6 +103,7 @@ PreparingDb = function (){
 
     this.createServiceByTemplate = function(serviceTemplate, forUserType) {
         return function (callback) {
+
             var serviceData = (JSON.parse(JSON.stringify(serviceTemplate)));
             serviceData.forUserType = forUserType || serviceData.forUserType;
             serviceData.serviceName = serviceData.serviceName + serviceData.forUserType;

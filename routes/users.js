@@ -24,7 +24,11 @@ module.exports = function(db){
         .get(session.isAdminBySession,  users.getUserProfileByIdForAdmin)
         .delete(session.isAdminBySession,  users.deleteUserProfileByIdForAdmin);
 
+    router.route('/account/:serviceId')
+        .get(session.authenticatedUser, users.getServicesAccountById);
+
     router.route('/account')
+      //  .get(session.authenticatedUser, users.getServicesAccounts)
         .post(session.authenticatedUser, users.createServicesAccount)
         .put(session.authenticatedUser, users.updateServicesAccount);
 

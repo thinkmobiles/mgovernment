@@ -22,7 +22,7 @@ describe('Service create(POST) /  GET / PUT  / (CRUD) ,', function () {
         async.series([
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
             //preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-            preparingDb.toFillUsers(done,3),
+            preparingDb.toFillUsers(3),
             preparingDb.createUsersByTemplate(USERS.CLIENT),
             preparingDb.createUsersByTemplate(USERS.GOVERNMENT),
             preparingDb.createUsersByTemplate(USERS.COMPANY)
