@@ -78,43 +78,135 @@ var UserService = function(db) {
         var foundNumber = -1;
         var serviceOptions;
         var serviceAccount;
+        var tasks =[];
 
 
         /// GET SERVICE Options BY ID
-        getServiceOptionsById(serviceId, function (err, model){
-            if (err) {
-                return res.status(400).send({err: 'Service Options not found '});
+        tasks.push(getServiceOptions());
+
+        function getServiceOptions() {
+            return function (callback) {
+
+                getServiceOptionsById(serviceId, function (err, model) {
+
+                    if (err) {
+                        //return res.status(400).send({err: 'Service Options not found '});
+                        return callback(err);
+                    }
+                    serviceOptions = model.toJSON();
+                    return callback();
+
+                })
+            };
+        }
+
+        /// GET UserAccountFor Service by session id
+        tasks.push(getServiceAccesOptions());
+
+        function getServiceAccesOptions() {
+            return function (callback) {
+
+                getUserById(userId, function (err, user) {
+                    user = user.toJSON();
+
+                    for (var i = user.accounts.length - 1; i >= 0; i--) {
+                        if (user.accounts[i].serviceProvider == serviceOptions.serviceProvider) {
+                            foundNumber = i;
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        //return res.status(400).send({err: 'Service Account not found'});
+                        return callback('Service Account not found');
+                    }
+                    serviceAccount = user.accounts[foundNumber];
+                    //  return res.status(200).send(user.accounts[foundNumber]);
+                    return callback();
+                });
             }
-            serviceOptions = model.toJSON();
-            var i;
-        });
+        }
+
+/// Outside Server process Handler
+        tasks.push(sendDataToCapalaba());
+
+        function sendDataToCapalaba() {
+            return function (callback) {
+
+                var userCookiesObject;
+                var userCookies;
+                var userCookiesString;
+
+                // Check cookie
+
+                // good cookie & date, then function sendData
+
+                // bad cookie, then sugnin, and  function sendData
+
+                // SignIn
+
+                async.series([userSignIn()], function (err,results){
+                    if (err) {
+                        console.log(err)
+                        return callback(err);
+                    }
+                    return callback(null, results);
+                });
+
+                function userSignIn(){
+                    return function (callback){
+
+                        var SignInData = {
+                            password: serviceAccount.pass,
+                            username: serviceAccount.login
+                        };
+
+                        var serviceUrl = 'http://134.249.164.53:7788/signIn';
+                        // var url = res.body.url;
+
+                        userCookiesObject = request.jar();
+                        request.post(serviceUrl, { headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true, body: SignInData }, function (err, res, body) {
+                            //request.post(serviceUrl, {'content-type': 'application/json', body:JSON.stringify(loginData)}, function (error, response, body) {
+                            if (!err && res.statusCode == 200) {
+                                console.log(' ----------------------------------------------------------- User LogIn:',body);
+                                userCookiesString = userCookiesObject.getCookieString(serviceUrl); // "key1=value1; key2=value2; ..."
+                                userCookies = userCookiesObject.getCookies(serviceUrl);
+                                console.log('Cookies USER REQUEST:',userCookiesString );
+
+                                return  callback(null,res.body)
+                            }
+                            return callback(err)
+                        });
+                    }
+                }
+            }
+        }
+
+
+
 
         /// Choose service Handlers
+        async.series(tasks, function (err,results){
+            if (err) {
+                return res.status(400).send(err);
 
-
-
-    /// GET UserAccountFor Service by session id
-
-    getUserById(userId, function (err, user) {
-        // console.dir(user);
-        user = user.toJSON();
-
-        for (var i = user.accounts.length - 1; i >= 0; i--) {
-            if (user.accounts[i].serviceProvider == serviceOptions.serviceProvider) {
-                foundNumber = i;
-                found = true;
             }
-        }
-        if (!found) {
-            return res.status(400).send({err: 'Service Account not found'});
-        }
-        serviceAccount = user.accounts[foundNumber];
-       //  return res.status(200).send(user.accounts[foundNumber]);
-        capalabaHandler(serviceAccount, serviceOptions, body);
-    });
+
+            var log = {
+                //     userId: req.session.uId || 'Unauthorized',
+                action: CONST.ACTION.POST,
+                model: CONST.MODELS.SERVICE,
+                modelId: '',
+                ///       req: {params: req.params, body: req.params},
+                res: {success: RESPONSE.ON_ACTION.SUCCESS},
+                description: 'sendServiceRequest'
+            };
+            userHistoryHandler.pushlog(log);
+            return res.status(200).send(results);
 
 
-       
+        });
+
+
     };
 
     function getUserById(userId, callback) {
@@ -148,65 +240,7 @@ var UserService = function(db) {
             });
     }
 
-    function capalabaHandler(accountOptions, serviceOptions, uploadData) {
-///USER LOGIN
-        var userCookiesObject;
-        var userCookies;
-        var userCookiesString;
 
-        // Check cookie
-
-        // good cookie & date, then function sendData
-
-        // bad cookie, then sugnin, and  function sendData
-
-        // SignIn
-
-        async.series([userSignIn(uploadData)], function (err,results){
-            if (err) {
-                console.log(err)
-            }
-
-            var log = {
-           //     userId: req.session.uId || 'Unauthorized',
-                action: CONST.ACTION.POST,
-                model: CONST.MODELS.SERVICE,
-                modelId: '',
-         ///       req: {params: req.params, body: req.params},
-                res: {success: RESPONSE.ON_ACTION.SUCCESS},
-                description: 'sendServiceRequest'
-            };
-            userHistoryHandler.pushlog(log);
-            return {success:results };
-
-        });
-
-        function userSignIn(uploadData){
-            return function (callback){
-                var SignInData = {
-                    password: accountOptions.pass,
-                    username: accountOptions.login
-                };
-
-                var serviceUrl = 'http://134.249.164.53:7788/signIn';
-               // var url = res.body.url;
-
-                userCookiesObject = request.jar();
-                request.post(serviceUrl, { headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true, body: SignInData }, function (err, res, body) {
-                    //request.post(serviceUrl, {'content-type': 'application/json', body:JSON.stringify(loginData)}, function (error, response, body) {
-                    if (!err && res.statusCode == 200) {
-                        console.log(' ----------------------------------------------------------- User LogIn:',body);
-                        userCookiesString = userCookiesObject.getCookieString(serviceUrl); // "key1=value1; key2=value2; ..."
-                        userCookies = userCookiesObject.getCookies(serviceUrl);
-                        console.log('Cookies USER REQUEST:',userCookiesString );
-
-                        return  callback(null,res.body)
-                    }
-                    return callback(err)
-                });
-            }
-        }
-    }
 };
 
 module.exports = UserService;
