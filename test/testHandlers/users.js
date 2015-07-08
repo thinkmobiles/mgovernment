@@ -7,7 +7,7 @@ var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var IMAGES = require('./../testHelpers/imageTemplates');
 var async = require ('async');
-
+var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:7791';
 
 describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
@@ -18,66 +18,22 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     before(function (done) {
         console.log('>>> before');
 
-        var connectOptions = {
-            db: {native_parser: false},
-            server: {poolSize: 5},
-            user: process.env.DB_USER,
-            pass: process.env.DB_PASS,
-            w: 1,
-            j: true,
-            mongos: true
-        };
-        var dbConnection = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
+        var preparingDb = new PreparingBd();
 
-
-        dbConnection.once('open', function callback() {
-            dbConnection.db.dropCollection('HistoryLogs', function (err, result) {});
-            dbConnection.db.dropCollection('Users', function (err, result) {
-
-                console.log('Collection Users dropped');
-
-                var models = require('../../models/index')(dbConnection);
-                var User = dbConnection.model(CONST.MODELS.USER);
-                var crypto = require('crypto');
-                createDefaultAdmin();
-
-                function createDefaultAdmin() {
-                    User
-                        .findOne({userType:'admin'})
-                        .exec(function (err, model) {
-                            if (!model) {
-                                var pass = 'defaultAdmin';
-
-                                var shaSum = crypto.createHash('sha256');
-                                shaSum.update(pass);
-                                pass = shaSum.digest('hex');
-
-                                var admin = new User({
-                                    login: 'defaultAdmin',
-                                    pass: pass,
-                                    userType: 'admin'
-                                });
-
-                                admin
-                                    .save(function (err, user) {
-                                        if (user) {
-                                            console.log('Default Admin Created');
-                                        }
-                                    });
-                            }
-                        });
-                }
-            });
-
-            var UserHandler = require('../../handlers/users');
-
-
-            dbConnection.db.dropCollection('HistoryLog', function (err, result) {
-                console.log('Collection HistoryLog dropped');
-                done();
-            });
+        async.series([
+            preparingDb.dropCollection(CONST.MODELS.USER + 's'),
+            preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
+            preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
+            preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
+            preparingDb.toFillUsers(1)
+        ], function (err,results)   {
+            if (err) {
+                return done(err)
+            }
+            done();
         });
     });
+
 
     it('Create user', function (done) {
 
@@ -289,7 +245,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('POST Service account (client123, pass1234)', function (done) {
 
-        var loginData = USERS.CLIENT_PLUS_ACCOUNT;
+        var loginData = USERS.CLIENT;
 
         agent
             .post('/user/account')
@@ -305,7 +261,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('POST duplicate Service account (client123, pass1234)', function (done) {
 
-        var loginData =  USERS.CLIENT_PLUS_ACCOUNT;
+        var loginData =  USERS.CLIENT;
 
         agent
             .post('/user/account')
@@ -335,7 +291,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
     });
 
-    it('Admin Create 40 Users', function (done) {
+    it('Admin Create 1 Users', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
 
@@ -351,7 +307,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 var layoutsCount = 0;
                 var createUsersArray = [];
 
-                for (var i = 40; i > 0; i--) {
+                for (var i = 1; i > 0; i--) {
                     createUsersArray.push(saveUser({
                         login: 'client123_' + i,
                         pass: 'pass1234_' + i,

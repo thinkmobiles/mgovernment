@@ -159,6 +159,31 @@ var User = function(db) {
 
     };
 
+    this.getServicesAccountById = function ( req, res, next ) {
+        var body = req.body;
+        var userId = req.session.uId;
+        var serviceId= req.params.serviceId;
+        var found = false;
+        var foundNumber = -1;
+
+        getUserById(userId, function (err, user) {
+            console.dir(user);
+            user = user.toJSON();
+
+            for (var i = user.accounts.length - 1; i >= 0; i--) {
+                if (user.accounts[i].serviceId === serviceId) {
+                    foundNumber = i;
+                    found = true;
+                }
+            }
+            if (!found) {
+                return res.status(400).send({ err: RESPONSE.ON_ACTION.NOT_FOUND});
+            }
+
+            return res.status(200).send(user.accounts[foundNumber]);
+        });
+
+    };
 
     this.isAdminBySession = function ( req, res, next ) {
 

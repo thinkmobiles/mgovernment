@@ -6,3 +6,4 @@ require('./testHandlers/users');
 //require('./testHandlers/layouts');
 //require('./testHandlers/services');
 //require('./testHandlers/userServices');
+require('./testHandlers/userServices');

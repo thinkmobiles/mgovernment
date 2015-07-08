@@ -8,7 +8,7 @@ var Layout = function(db) {
     var logWriter = require('../helpers/logWriter')();
     var Layout = db.model(CONST.MODELS.LAYOUT);
     var historyHandler = new HistoryHandler(db);
-  
+
     this.updateLayoutById = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id
@@ -97,7 +97,7 @@ var Layout = function(db) {
             .skip(skipCount)
             .limit(limitCount)
             .exec(function (err, collection) {
-                          if (err) {
+                if (err) {
                     return next(err);
                 }
                 return res.status(200).send(collection);
@@ -151,8 +151,6 @@ var Layout = function(db) {
         };
         var updatedAt = new Date();
         var data = req.body.items[0];
-
-        //var responseItem = {};
 
         if (!searchQuery._id) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});

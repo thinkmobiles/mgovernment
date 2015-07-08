@@ -1,6 +1,34 @@
 
 module.exports = {
 
+    CLIENT: {
+        login: 'client777',
+        pass: 'pass1234',
+        userType: 'client',
+        accounts:[{
+            serviceProvider: 'CAPALABA',
+            serviceId: '559ccf6abb74dd001f2d0c75',
+            login: 'admin',
+            pass: '1q2w3e4r',
+            lastSignInAt:'',
+            userCookie: 'String String',
+            cookieUpdatedAt: '',
+            accountUpdatedAt: ''
+        }]
+    },
+
+    COMPANY: {
+        login: 'company777',
+        pass: 'pass1234',
+        userType: 'company'
+    },
+
+    GOVERNMENT: {
+        login: 'government777',
+        pass: 'pass1234',
+        userType: 'government'
+    },
+
     CLIENT_GOOD_USER_TYPE: {
         login: 'client123',
         pass: 'pass1234',

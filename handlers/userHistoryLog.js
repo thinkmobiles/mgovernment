@@ -4,14 +4,15 @@ var RESPONSE = require('../constants/response');
 var HistoryHandler = function(db) {
 
     var mongoose = require('mongoose');
-    var History = db.model(CONST.MODELS.HISTORY);
+    var History = db.model(CONST.MODELS.USER_HISTORY);
 
     this.pushlog = function(log) {
         var history = new History(log);
         history
             .save(function (err, user) {
                 if (err) {
-                    return res.status(500).send(err)
+                    //return res.status(500).send(err)
+                 console.log(err)
                 }
             });
     }

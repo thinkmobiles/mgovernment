@@ -22,7 +22,7 @@ var AccessHandler = function (db) {
                 err.status = 403;
                 return next(err);
             }
-            next();
+            return  next();
         });
     };
 
