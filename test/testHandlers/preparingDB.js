@@ -6,7 +6,7 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 
-PreparingDb = function (){
+var PreparingDb = function (){
 
 
 

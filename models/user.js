@@ -1,22 +1,27 @@
 var CONST = require('../constants');
-module.exports = function (db){
+
+module.exports = function (db) {
     'use strict';
+
     var mongoose = require('mongoose');
+    var ObjectId = mongoose.Schema.Types.ObjectId;
     var schema = mongoose.Schema;
+
     var user = new schema({
         login: {type: String, unique: true},
         pass: String,
-        userType:String,
+        userType: String,
         devices: [],
-        profile:{
+        profile: {
             firstName: {type: String},
             lastName: String,
             createdAt: {type: Date, default: Date.now}
         },
-        accounts:[]
+        avatar: {type: ObjectId, ref: CONST.MODELS.IMAGE + 's', default: null},
+        accounts: []
     }, {
         collection: CONST.MODELS.USER + 's'
     });
-    db.model(CONST.MODELS.USER, user);
 
+    db.model(CONST.MODELS.USER, user);
 };

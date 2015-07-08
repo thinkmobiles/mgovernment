@@ -432,8 +432,14 @@ var User = function(db) {
             });
     };
 
-    /*TODO remove*/
-    /*TEST BLOCK*/
+    //TODO REMOVE - test image upload
+    this.updateUserImage = function(req, res, next) {
+
+    };
+
+    this.getUserImage = function(req, res, next) {
+
+    }
 };
 
 module.exports = User;

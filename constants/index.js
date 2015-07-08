@@ -19,7 +19,8 @@ module.exports = {
         LAYOUT: 'Layout',
         SESSION: 'Session',
         HISTORY: 'HistoryLog',
-        SERVICE: 'Service'
+        SERVICE: 'Service',
+        IMAGE: 'Image'
     },
 
     ACTION: {

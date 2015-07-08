@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
+var IMAGES = require('./../testHelpers/imageTemplates');
 var async = require ('async');
 
 var url = 'http://localhost:7791';
@@ -423,6 +424,73 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                         console.dir(res.body);
                         done();
                     });
+            });
+    });
+
+    it('POST upload image', function (done) {
+
+        var imageBase64 = IMAGES.avatar;
+        var postData = {
+            imageBase64: imageBase64
+        };
+
+        agent
+            .post('/user/account/image/')
+            .send(postData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                expect(res.body).to.have.property('imageId');
+                tempImageId = res.body.imageId;
+
+                done();
+            });
+    });
+
+    var tempImageId;
+
+    it('GET image by url', function (done) {
+
+        agent
+            .get('/user/account/image/' + tempImageId)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
+            });
+    });
+
+    it('GET image by url (fake imageId)', function (done) {
+
+        agent
+            .get('/user/account/image/551137c2f9e1fac808a5f572')
+            .expect(404)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
+            });
+    });
+
+    it('REMOVE image by url', function (done) {
+
+        agent
+            .delete('/user/account/image/' + tempImageId)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
             });
     });
 
