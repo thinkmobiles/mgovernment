@@ -84,19 +84,6 @@ describe('Service User: GET options, POST send request', function () {
                 if (err) {
                     return done(err)
                 }
-                //console.dir(res.body);
-
-                //    agent
-                //        .post('/service/' + data._id)
-                //        .send()
-                //        .expect(200)
-                //        .end(function (err, res) {
-                //            if (err) {
-                //                return done(err)
-                //            }
-                //            //console.dir(res.body);
-                //            done()
-                //        });
                 done()
             });
     });
@@ -258,6 +245,4 @@ describe('Service User: GET options, POST send request', function () {
                 done();
             });
     });
-
-
 });
