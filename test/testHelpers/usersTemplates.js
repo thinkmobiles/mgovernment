@@ -11,7 +11,7 @@ module.exports = {
             login: 'admin',
             pass: '1q2w3e4r',
             lastSignInAt:'',
-            userCookie: 'String String',
+            userCookie: '',
             cookieUpdatedAt: '',
             accountUpdatedAt: ''
         }]

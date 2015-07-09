@@ -79,10 +79,38 @@ var UserService = function(db) {
         var serviceOptions;
         var serviceAccount;
         var tasks =[];
+        var userCookiesObject = request.jar();
+        var userCookies;
+        var userCookiesString;
 
 
         /// GET SERVICE Options BY ID
         tasks.push(getServiceOptions());
+
+        /// GET UserAccountFor Service by session id
+        tasks.push(getServiceAccesOptions());
+
+        /// Outside Server process Handler
+        tasks.push(sendDataToCapalaba());
+
+        /// Async main process service Handlers
+        async.series(tasks, function (err,results){
+            if (err) {
+                return res.status(400).send(err);
+            }
+
+            var log = {
+                userId: req.session.uId || 'Unauthorized',
+                action: CONST.ACTION.POST,
+                model: CONST.MODELS.SERVICE,
+                modelId: '',
+                req: {params: req.params, body: req.params},
+                res: {success: RESPONSE.ON_ACTION.SUCCESS},
+                description: 'sendServiceRequest'
+            };
+            userHistoryHandler.pushlog(log);
+            return res.status(200).send(results);
+        });
 
         function getServiceOptions() {
             return function (callback) {
@@ -99,9 +127,6 @@ var UserService = function(db) {
                 })
             };
         }
-
-        /// GET UserAccountFor Service by session id
-        tasks.push(getServiceAccesOptions());
 
         function getServiceAccesOptions() {
             return function (callback) {
@@ -126,31 +151,82 @@ var UserService = function(db) {
             }
         }
 
-/// Outside Server process Handler
-        tasks.push(sendDataToCapalaba());
+        function saveCookie() {
+            return function (callback) {
+
+                User
+                    .update({'_id': userId, 'accounts.serviceProvider': serviceOptions.serviceProvider}, {
+                        $set: {
+                            'accounts.$.userCookie': userCookiesString,
+                            'accounts.$.cookieUpdatedAt': new Date()
+                        }
+                    }, function (err, data) {
+                        if (err) {
+                            return callback(err);
+                            //return res.status(400).send({ err: err});
+                        }
+                       // console.log('Cookies saved in User');
+                        return callback(null, 'Cookies saved in User');
+                        //return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful updating'});
+                    });
+            }
+        }
 
         function sendDataToCapalaba() {
             return function (callback) {
 
-                var userCookiesObject;
-                var userCookies;
-                var userCookiesString;
+                var tasks = [];
+                var cookie;
 
                 // Check cookie
+                if (!serviceAccount.userCookie) {
+                    tasks.push(userSignIn());
+                    tasks.push(sendRequest());
+                    tasks.push(saveCookie());
+                    // save cookie
+
+                } else {
+
+                    cookie = request.cookie(serviceAccount.userCookie);
+                    //userCookiesObject.setCookie(cookie, serviceOptions.baseUrl + serviceOptions.url);
+                    userCookiesObject.setCookie(cookie, serviceOptions.baseUrl);
+                    tasks.push(sendRequest());
+                    /// send Requst
+                }
 
                 // good cookie & date, then function sendData
 
-                // bad cookie, then sugnin, and  function sendData
 
                 // SignIn
 
-                async.series([userSignIn()], function (err,results){
+                async.series(tasks, function (err,results){
                     if (err) {
-                        console.log(err)
+                        console.log(err);
                         return callback(err);
                     }
                     return callback(null, results);
                 });
+
+                function sendRequest(){
+                    return function (callback){
+
+                        var serviceUrl = serviceOptions.baseUrl + serviceOptions.url;
+
+                        // userCookiesObject = request.jar();
+                        request(serviceUrl, {  method: serviceOptions.method, headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true }, function (err, res, body) {
+                            //request.post(serviceUrl, {'content-type': 'application/json', body:JSON.stringify(loginData)}, function (error, response, body) {
+                            if (!err && res.statusCode == 200) {
+                                console.log(' ----------------------------------------------------------- User:',serviceOptions.method,': ', serviceUrl,' ', body);
+                                userCookiesString = userCookiesObject.getCookieString(serviceUrl); // "key1=value1; key2=value2; ..."
+                                userCookies = userCookiesObject.getCookies(serviceUrl);
+                                console.log('Cookies USER REQUEST:',userCookiesString );
+
+                                return  callback(null,res.body)
+                            }
+                            return callback(err)
+                        });
+                    }
+                }
 
                 function userSignIn(){
                     return function (callback){
@@ -161,7 +237,6 @@ var UserService = function(db) {
                         };
 
                         var serviceUrl = 'http://134.249.164.53:7788/signIn';
-                        // var url = res.body.url;
 
                         userCookiesObject = request.jar();
                         request.post(serviceUrl, { headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true, body: SignInData }, function (err, res, body) {
@@ -180,31 +255,6 @@ var UserService = function(db) {
                 }
             }
         }
-
-
-
-
-        /// Choose service Handlers
-        async.series(tasks, function (err,results){
-            if (err) {
-                return res.status(400).send(err);
-
-            }
-
-            var log = {
-                //     userId: req.session.uId || 'Unauthorized',
-                action: CONST.ACTION.POST,
-                model: CONST.MODELS.SERVICE,
-                modelId: '',
-                ///       req: {params: req.params, body: req.params},
-                res: {success: RESPONSE.ON_ACTION.SUCCESS},
-                description: 'sendServiceRequest'
-            };
-            userHistoryHandler.pushlog(log);
-            return res.status(200).send(results);
-
-
-        });
 
 
     };
@@ -239,8 +289,6 @@ var UserService = function(db) {
                 return callback(null, model);
             });
     }
-
-
 };
 
 module.exports = UserService;

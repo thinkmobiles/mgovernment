@@ -19,8 +19,8 @@ module.exports = {
             options: []
         }
         ],
-        method: 'POST',
-        url: 'signIn/',
+        method: 'GET',
+        url: 'retailer?count=10&page=1&orderBy=name&order=ASC',
         params: [{onClick: '/sdadsadsa sadasdas'}]
     },
 
