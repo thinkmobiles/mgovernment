@@ -1,7 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var UserHistoryHandler = require('./userHistoryLog');
-//var UserHandler = require('./users');
 var SessionHandler = require('./sessions');
 var request = require('request');
 var request = request.defaults({jar: true});
@@ -34,6 +33,7 @@ var UserService = function(db) {
                 res: model,
                 description: 'getServiceOptions'
             };
+
             userHistoryHandler.pushlog(log);
 
             if (err) {
@@ -48,7 +48,6 @@ var UserService = function(db) {
         Service
             .find()
             .select('_id serviceProvider serviceName serviceType profile forUserType method baseUrl')
-            //.select()
             .exec(function (err, collection) {
                 if (err) {
                     return next(err);
@@ -107,6 +106,7 @@ var UserService = function(db) {
                 res: results,
                 description: 'sendServiceRequest'
             };
+
             userHistoryHandler.pushlog(log);
             return res.status(200).send(results);
         });
@@ -119,6 +119,7 @@ var UserService = function(db) {
                     if (err) {
                         return callback(err);
                     }
+
                     serviceOptions = model.toJSON();
                     return callback();
                 })
@@ -169,7 +170,6 @@ var UserService = function(db) {
 
                 var cookie;
 
-                // Check cookie
                 if (!serviceAccount.userCookie) {
                     requestWithSignIn();
 
@@ -213,7 +213,7 @@ var UserService = function(db) {
                             if (!err && res.statusCode == 200) {
 
                                 console.log(' ----------------------------------------------------------- User:',serviceOptions.method,': ', serviceUrl,' ', body);
-                                userCookiesString = userCookiesObject.getCookieString(serviceUrl); // "key1=value1; key2=value2; ..."
+                                userCookiesString = userCookiesObject.getCookieString(serviceUrl);
                                 userCookies = userCookiesObject.getCookies(serviceUrl);
                                 console.log('Cookies USER REQUEST:',userCookiesString );
                                 return  callback(null,res.body)
@@ -235,11 +235,11 @@ var UserService = function(db) {
 
                         userCookiesObject = request.jar();
                         request.post(serviceUrl, { headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true, body: SignInData }, function (err, res, body) {
-                            //request.post(serviceUrl, {'content-type': 'application/json', body:JSON.stringify(loginData)}, function (error, response, body) {
+
                             if (!err && res.statusCode == 200) {
 
                                 console.log(' ----------------------------------------------------------- User LogIn:',body);
-                                userCookiesString = userCookiesObject.getCookieString(serviceUrl); // "key1=value1; key2=value2; ..."
+                                userCookiesString = userCookiesObject.getCookieString(serviceUrl);
                                 userCookies = userCookiesObject.getCookies(serviceUrl);
                                 console.log('Cookies USER REQUEST:',userCookiesString );
                                 return  callback(null,res.body)
