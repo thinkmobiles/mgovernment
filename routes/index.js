@@ -8,7 +8,7 @@ module.exports = function(app, db){
     var usersRouter = require('./users')(db);
     var clientLayoutsRouter = require('./clientLayouts')(db);
     var adminLayoutsRouter = require('./adminLayouts')(db);
-    var adminServicessRouter = require('./adminServices')(db);
+    var adminServicesRouter = require('./adminServices')(db);
     var userServicesRouter = require('./userServices')(db);
 
     var session = new SessionHandler(db);
@@ -19,8 +19,8 @@ module.exports = function(app, db){
 
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);
-    app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);
-    app.use('/adminService',session.isAdminBySession, adminServicessRouter);
+    app.use('/adminLayout', session.isAdminBySession, adminLayoutsRouter);
+    app.use('/adminService', session.isAdminBySession, adminServicesRouter);
     app.use('/service', userServicesRouter);
 
     function notFound(req, res, next){
