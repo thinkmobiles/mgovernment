@@ -70,7 +70,7 @@ var UserService = function(db) {
 
     this.sendServiceRequest = function (req, res, next) {
 
-        var body = req.body;
+        var userRequestBody = req.body;
         var userId = req.session.uId;
         var serviceId = req.params.serviceId;
         var found = false;
@@ -102,7 +102,7 @@ var UserService = function(db) {
                 action: CONST.ACTION.POST,
                 model: CONST.MODELS.SERVICE,
                 modelId: serviceId,
-                req: {params: req.params, body: req.params},
+                req: {params: req.params, userRequestBody: req.params},
                 res: results,
                 description: 'sendServiceRequest'
             };
@@ -209,7 +209,7 @@ var UserService = function(db) {
 
                         var serviceUrl = serviceOptions.baseUrl + serviceOptions.url;
 
-                        request(serviceUrl, {method: serviceOptions.method, headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true }, function (err, res, body) {
+                        request(serviceUrl, {method: serviceOptions.method, headers: {'User-Agent': 'Kofevarka'}, body: userRequestBody, jar: userCookiesObject, json: true }, function (err, res, body) {
                             if (!err && res.statusCode == 200) {
 
                                 console.log(' ----------------------------------------------------------- User:',serviceOptions.method,': ', serviceUrl,' ', body);

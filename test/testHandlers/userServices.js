@@ -26,7 +26,9 @@ describe('Service User: GET options, POST send request', function () {
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
             preparingDb.toFillUsers(3),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_GET),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_POST),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT]),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT]),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT]),
@@ -101,7 +103,7 @@ describe('Service User: GET options, POST send request', function () {
 
     it('Unauthorized GET and POST FORBIDDEN service', function (done) {
 
-        var data = serviceCollection[3];
+        var data = serviceCollection[5];
 
         agent
             .get('/service/' + data._id)
@@ -201,7 +203,7 @@ describe('Service User: GET options, POST send request', function () {
             });
     });
 
-    it('Authorized Send Request to CAPALABA service (using  Users Cookies)', function (done) {
+    it('Authorized Send Request to CAPALABA for get Riteils (using  Users Cookies)', function (done) {
 
         var data = serviceCollection[1];
         var loginData = USERS.CLIENT;
@@ -209,6 +211,45 @@ describe('Service User: GET options, POST send request', function () {
         agent
             .post('/service/' + data._id)
             .send({text : 'Hello Capalaba' })
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                done();
+            });
+    });
+
+    it('Authorized Send Request to CAPALABA for GET Communication (using  Users Cookies)', function (done) {
+
+        var data = serviceCollection[2];
+        var loginData = USERS.CLIENT;
+
+        agent
+            .post('/service/' + data._id)
+            .send({text : 'Hello Capalaba' })
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                done();
+            });
+    });
+
+    it('Authorized Send Request to CAPALABA for POST Communication', function (done) {
+
+        var data = serviceCollection[3];
+        var sendData = {
+            distance: null,
+            end_datetime: "2019-01-02T14:24:46.834Z",
+            message: 'WTF ...PILESOS TOLKEN',
+            start_datetime: null
+        };
+
+        agent
+            .post('/service/' + data._id)
+            .send(sendData)
             .expect(200)
             .end(function (err, res) {
                 if (err) {

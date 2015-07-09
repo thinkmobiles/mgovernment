@@ -2,9 +2,9 @@ var CONST = require('../../constants/index');
 
 module.exports = {
 
-    SERVICE_CAPALABA: {
+    SERVICE_CAPALABA_RITEILS: {
         serviceProvider: 'CAPALABA',
-        serviceName: 'CAPALABA',
+        serviceName: 'Riteils',
         serviceType: 'XZ WTF ?',
         baseUrl: 'http://134.249.164.53:7788/',
         profile: {
@@ -21,6 +21,49 @@ module.exports = {
         ],
         method: 'GET',
         url: 'retailer?count=10&page=1&orderBy=name&order=ASC',
+        params: [{onClick: '/sdadsadsa sadasdas'}]
+    },
+
+    SERVICE_CAPALABA_COMMUNICATIONS_GET: {
+        serviceProvider: 'CAPALABA',
+        serviceName: 'communications',
+        serviceType: 'XZ WTF ?',
+        baseUrl: 'http://134.249.164.53:7788/',
+        profile: {
+            description : 'bla bla bla'},
+
+        forUserType: [CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.ADMIN, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        inputItems: [{
+            order: 11,
+            name: 'eeee',
+            inputType: 'IMG',
+            placeHolder: 'base64 sdasd sfdsd fkjjbkzbhkzashe2kj421u34hejrb lkj32  ',
+            options: []
+        }
+        ],
+        method: 'GET',
+        url: 'pushMessage?count=10&page=1&orderBy=end_datetime&order=DESC',
+        params: [{onClick: '/sdadsadsa sadasdas'}]
+    },
+    SERVICE_CAPALABA_COMMUNICATIONS_POST: {
+        serviceProvider: 'CAPALABA',
+        serviceName: 'communications',
+        serviceType: 'XZ WTF ?',
+        baseUrl: 'http://134.249.164.53:7788/',
+        profile: {
+            description : 'bla bla bla'},
+
+        forUserType: [CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.ADMIN, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        inputItems: [{
+            order: 11,
+            name: 'eeee',
+            inputType: 'IMG',
+            placeHolder: 'base64 sdasd sfdsd fkjjbkzbhkzashe2kj421u34hejrb lkj32  ',
+            options: []
+        }
+        ],
+        method: 'POST',
+        url: 'pushMessage/',
         params: [{onClick: '/sdadsadsa sadasdas'}]
     },
 
