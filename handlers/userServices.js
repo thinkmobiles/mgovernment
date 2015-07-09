@@ -83,7 +83,6 @@ var UserService = function(db) {
         var userCookies;
         var userCookiesString;
 
-
         /// GET SERVICE Options BY ID
         tasks.push(getServiceOptions());
 
@@ -103,9 +102,9 @@ var UserService = function(db) {
                 userId: req.session.uId || 'Unauthorized',
                 action: CONST.ACTION.POST,
                 model: CONST.MODELS.SERVICE,
-                modelId: '',
+                modelId: serviceId,
                 req: {params: req.params, body: req.params},
-                res: {success: RESPONSE.ON_ACTION.SUCCESS},
+                res: results,
                 description: 'sendServiceRequest'
             };
             userHistoryHandler.pushlog(log);
@@ -118,12 +117,10 @@ var UserService = function(db) {
                 getServiceOptionsById(serviceId, function (err, model) {
 
                     if (err) {
-                        //return res.status(400).send({err: 'Service Options not found '});
                         return callback(err);
                     }
                     serviceOptions = model.toJSON();
                     return callback();
-
                 })
             };
         }
@@ -141,11 +138,9 @@ var UserService = function(db) {
                         }
                     }
                     if (!found) {
-                        //return res.status(400).send({err: 'Service Account not found'});
                         return callback('Service Account not found');
                     }
                     serviceAccount = user.accounts[foundNumber];
-                    //  return res.status(200).send(user.accounts[foundNumber]);
                     return callback();
                 });
             }
@@ -163,11 +158,8 @@ var UserService = function(db) {
                     }, function (err, data) {
                         if (err) {
                             return callback(err);
-                            //return res.status(400).send({ err: err});
                         }
-                       // console.log('Cookies saved in User');
                         return callback(null, 'Cookies saved in User');
-                        //return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful updating'});
                     });
             }
         }
@@ -183,21 +175,16 @@ var UserService = function(db) {
                     tasks.push(userSignIn());
                     tasks.push(sendRequest());
                     tasks.push(saveCookie());
-                    // save cookie
-
                 } else {
 
                     cookie = request.cookie(serviceAccount.userCookie);
-                    //userCookiesObject.setCookie(cookie, serviceOptions.baseUrl + serviceOptions.url);
                     userCookiesObject.setCookie(cookie, serviceOptions.baseUrl);
                     tasks.push(sendRequest());
-                    /// send Requst
+
+                    /// check answer
+
+                    // SingnIn or not?
                 }
-
-                // good cookie & date, then function sendData
-
-
-                // SignIn
 
                 async.series(tasks, function (err,results){
                     if (err) {
@@ -212,15 +199,13 @@ var UserService = function(db) {
 
                         var serviceUrl = serviceOptions.baseUrl + serviceOptions.url;
 
-                        // userCookiesObject = request.jar();
-                        request(serviceUrl, {  method: serviceOptions.method, headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true }, function (err, res, body) {
-                            //request.post(serviceUrl, {'content-type': 'application/json', body:JSON.stringify(loginData)}, function (error, response, body) {
+                        request(serviceUrl, {method: serviceOptions.method, headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true }, function (err, res, body) {
                             if (!err && res.statusCode == 200) {
+
                                 console.log(' ----------------------------------------------------------- User:',serviceOptions.method,': ', serviceUrl,' ', body);
                                 userCookiesString = userCookiesObject.getCookieString(serviceUrl); // "key1=value1; key2=value2; ..."
                                 userCookies = userCookiesObject.getCookies(serviceUrl);
                                 console.log('Cookies USER REQUEST:',userCookiesString );
-
                                 return  callback(null,res.body)
                             }
                             return callback(err)
@@ -242,11 +227,11 @@ var UserService = function(db) {
                         request.post(serviceUrl, { headers: {'User-Agent': 'Kofevarka'}, jar: userCookiesObject, json: true, body: SignInData }, function (err, res, body) {
                             //request.post(serviceUrl, {'content-type': 'application/json', body:JSON.stringify(loginData)}, function (error, response, body) {
                             if (!err && res.statusCode == 200) {
+
                                 console.log(' ----------------------------------------------------------- User LogIn:',body);
                                 userCookiesString = userCookiesObject.getCookieString(serviceUrl); // "key1=value1; key2=value2; ..."
                                 userCookies = userCookiesObject.getCookies(serviceUrl);
                                 console.log('Cookies USER REQUEST:',userCookiesString );
-
                                 return  callback(null,res.body)
                             }
                             return callback(err)
@@ -255,8 +240,6 @@ var UserService = function(db) {
                 }
             }
         }
-
-
     };
 
     function getUserById(userId, callback) {
@@ -270,7 +253,6 @@ var UserService = function(db) {
                 }
 
                 if (model) {
-
                     return callback(null, model);
                 } else {
                     return callback(new Error(RESPONSE.ON_ACTION.NOT_FOUND + ' with such _id '));
