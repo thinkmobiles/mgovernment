@@ -164,7 +164,7 @@ describe('Service User: GET options, POST send request', function () {
     //        });
     //});
 
-    it('Authorized GET and POST CAPALABA service', function (done) {
+    it('Authorized GET and POST  CAPALABA service (with signIn)', function (done) {
 
         var data = serviceCollection[1];
         var loginData = USERS.CLIENT;
@@ -201,7 +201,7 @@ describe('Service User: GET options, POST send request', function () {
             });
     });
 
-    it('Authorized Send Request using  User Cookies to CAPALABA service', function (done) {
+    it('Authorized Send Request to CAPALABA service (using  Users Cookies)', function (done) {
 
         var data = serviceCollection[1];
         var loginData = USERS.CLIENT;
