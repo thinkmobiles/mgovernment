@@ -1,18 +1,18 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var UserHistoryHandler = require('./userHistoryLog');
-var UserHandler = require('./users');
+//var UserHandler = require('./users');
 var SessionHandler = require('./sessions');
 var request = require('request');
 var request = request.defaults({jar: true});
 var async = require('async');
+var mongoose = require('mongoose');
 
 var UserService = function(db) {
+    'use strict';
 
-    var mongoose = require('mongoose');
     var Service = db.model(CONST.MODELS.SERVICE);
     var session = new SessionHandler(db);
-    // var users = new UserHandler(db);
     var User = db.model(CONST.MODELS.USER);
 
     var userHistoryHandler = new UserHistoryHandler(db);
@@ -84,13 +84,13 @@ var UserService = function(db) {
         var userCookiesString;
 
         /// GET SERVICE Options BY ID
-        tasks.push(getServiceOptions());
+        tasks.push(createGetServiceOptionsFunction());
 
         /// GET UserAccountFor Service by session id
-        tasks.push(getServiceAccesOptions());
+        tasks.push(createGetServiceAccesOptionsFunction());
 
         /// Outside Server process Handler
-        tasks.push(sendDataToCapalaba());
+        tasks.push(createSendDataToCapalabaFunction());
 
         /// Async main process service Handlers
         async.series(tasks, function (err,results){
@@ -111,7 +111,7 @@ var UserService = function(db) {
             return res.status(200).send(results);
         });
 
-        function getServiceOptions() {
+        function createGetServiceOptionsFunction() {
             return function (callback) {
 
                 getServiceOptionsById(serviceId, function (err, model) {
@@ -125,7 +125,7 @@ var UserService = function(db) {
             };
         }
 
-        function getServiceAccesOptions() {
+        function createGetServiceAccesOptionsFunction() {
             return function (callback) {
 
                 getUserById(userId, function (err, user) {
@@ -146,7 +146,7 @@ var UserService = function(db) {
             }
         }
 
-        function saveCookie() {
+        function createSaveCookieFunction() {
             return function (callback) {
 
                 User
@@ -164,37 +164,47 @@ var UserService = function(db) {
             }
         }
 
-        function sendDataToCapalaba() {
+        function createSendDataToCapalabaFunction() {
             return function (callback) {
 
-                var tasks = [];
                 var cookie;
 
                 // Check cookie
                 if (!serviceAccount.userCookie) {
-                    tasks.push(userSignIn());
-                    tasks.push(sendRequest());
-                    tasks.push(saveCookie());
+                    requestWithSignIn();
+
                 } else {
 
                     cookie = request.cookie(serviceAccount.userCookie);
                     userCookiesObject.setCookie(cookie, serviceOptions.baseUrl);
-                    tasks.push(sendRequest());
 
-                    /// check answer
-
-                    // SingnIn or not?
+                    async.series([createSendRequestFunction()],function (err,results) {
+                        if (err) {
+                            console.log(err);
+                            //return callback(err);
+                            return requestWithSignIn();
+                        }
+                        return callback(null, results);
+                    });
                 }
 
-                async.series(tasks, function (err,results){
-                    if (err) {
-                        console.log(err);
-                        return callback(err);
-                    }
-                    return callback(null, results);
-                });
+                function requestWithSignIn() {
+                    var tasks = [];
 
-                function sendRequest(){
+                    tasks.push(createUserSignInFunction());
+                    tasks.push(createSendRequestFunction());
+                    tasks.push(createSaveCookieFunction());
+
+                    async.series(tasks, function (err,results){
+                        if (err) {
+                            console.log(err);
+                            return callback(err);
+                        }
+                        return callback(null, results);
+                    });
+                }
+
+                function createSendRequestFunction(){
                     return function (callback){
 
                         var serviceUrl = serviceOptions.baseUrl + serviceOptions.url;
@@ -208,12 +218,12 @@ var UserService = function(db) {
                                 console.log('Cookies USER REQUEST:',userCookiesString );
                                 return  callback(null,res.body)
                             }
-                            return callback(err)
+                            return callback(err + res.statusMessage)
                         });
                     }
                 }
 
-                function userSignIn(){
+                function createUserSignInFunction(){
                     return function (callback){
 
                         var SignInData = {
