@@ -172,24 +172,60 @@ var User = function(db) {
         var favorite = ObjectId(serviceId);
 
         getUserById(userId, function (err, user) {
-            console.dir(user);
+           // console.dir(user);
             user = user.toJSON();
 
             if (user.favorites) {
 
                 for (var i = user.favorites.length - 1; i >= 0; i--) {
-                    if (user.favorites[i].id == favorite) {
+                    if (user.favorites[i].id == favorite.id) {
                         found = true;
                     }
                 }
             }
 
             if (found) {
-                return res.status(400).send({ err: 'You already have same service'});
+                return res.status(400).send(RESPONSE.ON_ACTION.NOT_FOUND);
             }
 
             User
                 .update({_id: user._id}, {$push: {'favorites': favorite}}, function (err, data) {
+                    if (err) {
+                        return res.status(400).send(err);
+                    }
+                    return res.status(200).send(RESPONSE.ON_ACTION.SUCCESS);
+                });
+        });
+    };
+
+    this.deleteServiceToFavorites = function ( req, res, next ) {
+        var serviceId= req.params.serviceId;
+        var userId = req.session.uId;
+        var found = false;
+        var favorite = ObjectId(serviceId);
+        var foundPosition = -1;
+
+        getUserById(userId, function (err, user) {
+           // console.dir(user);
+            user = user.toJSON();
+
+            if (user.favorites) {
+
+                for (var i = user.favorites.length - 1; i >= 0; i--) {
+                    if (user.favorites[i].id == favorite.id) {
+                        found = true;
+                        foundPosition = i;
+                    }
+                }
+            }
+
+            if (!found) {
+                return res.status(400).send(RESPONSE.ON_ACTION.NOT_FOUND);
+            }
+
+            User
+                .update({_id: user._id, favorites: favorite }, {$pull: {
+                    'favorites': favorite}}, function (err, data) {
                     if (err) {
                         return res.status(400).send(err);
                     }
@@ -225,7 +261,7 @@ var User = function(db) {
         var foundNumber = -1;
 
         getUserById(userId, function (err, user) {
-            console.dir(user);
+          //  console.dir(user);
             user = user.toJSON();
 
             for (var i = user.accounts.length - 1; i >= 0; i--) {
@@ -288,7 +324,7 @@ var User = function(db) {
 
         User
             .findOne({_id: userId})
-            .select( 'login userType devices profile accounts')
+            .select( 'login userType devices profile favorites accounts')
             .exec(function (err, model) {
                 if (err) {
                     return callback(err);

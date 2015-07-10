@@ -276,7 +276,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                     return done(err)
                 }
                 serviceCollection = res.body;
-                console.dir(res.body);
+                //console.dir(res.body);
                 done()
 
             });
@@ -306,19 +306,35 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     it('Delete service from Favorites', function (done) {
 
-        var loginData = USERS.CLIENT;
 
-        //agent
-        //    .post('/user/account')
-        //    .send(loginData)
-        //    .expect(200)
-        //    .end(function (err, res) {
-        //        if (err) {
-        //            return done(err)
-        //        }
-        //        done();
-        //    });
-        done();
+        var loginData = USERS.CLIENT;
+        var serviceId = serviceCollection[1]._id;
+
+        agent
+            .post('/user/favorites/'+ serviceId)
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+
+                var loginData = USERS.CLIENT;
+                var serviceId = serviceCollection[1]._id;
+
+                agent
+                    .delete('/user/favorites/'+ serviceId)
+                    .send(loginData)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        done();
+                    });
+            });
     });
 
     it('Get  Favorites Services', function (done) {

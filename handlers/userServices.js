@@ -110,8 +110,6 @@ var UserService = function(db) {
             return res.status(200).send(results);
         });
 
-
-
         function createGetServiceOptionsFunction() {
             return function (callback) {
 
