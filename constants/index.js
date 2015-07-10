@@ -32,5 +32,10 @@ module.exports = {
         FIND: 'Find',
         READ: 'Read',
         DELETE: 'Delete'
-    }
+    },
+
+    SERVICE_PROVIDERS: {
+        CAPALABA: 'Capalaba'
+}
+
 };

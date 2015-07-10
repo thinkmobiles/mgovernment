@@ -3,7 +3,7 @@ var CONST = require('../../constants/index');
 module.exports = {
 
     SERVICE_CAPALABA_RITEILS: {
-        serviceProvider: 'CAPALABA',
+        serviceProvider: 'Capalaba',
         serviceName: 'Riteils',
         serviceType: 'XZ WTF ?',
         baseUrl: 'http://134.249.164.53:7788/',
@@ -25,7 +25,7 @@ module.exports = {
     },
 
     SERVICE_CAPALABA_COMMUNICATIONS_GET: {
-        serviceProvider: 'CAPALABA',
+        serviceProvider: 'Capalaba',
         serviceName: 'communications',
         serviceType: 'XZ WTF ?',
         baseUrl: 'http://134.249.164.53:7788/',
@@ -46,7 +46,7 @@ module.exports = {
         params: [{onClick: '/sdadsadsa sadasdas'}]
     },
     SERVICE_CAPALABA_COMMUNICATIONS_POST: {
-        serviceProvider: 'CAPALABA',
+        serviceProvider: 'Capalaba',
         serviceName: 'communications',
         serviceType: 'XZ WTF ?',
         baseUrl: 'http://134.249.164.53:7788/',

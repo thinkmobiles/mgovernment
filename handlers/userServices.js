@@ -12,8 +12,9 @@ var UserService = function(db) {
     var Service = db.model(CONST.MODELS.SERVICE);
     var session = new SessionHandler(db);
     var User = db.model(CONST.MODELS.USER);
-    var capalaba = new Capalaba(db);
 
+    var serviceWrappers =  {};
+    serviceWrappers[CONST.SERVICE_PROVIDERS.CAPALABA] = new Capalaba(db);
 
     var userHistoryHandler = new UserHistoryHandler(db);
 
@@ -87,11 +88,10 @@ var UserService = function(db) {
         tasks.push(createGetServiceAccesOptionsFunction());
 
         /// Outside Server process Handler
-        //tasks.push(capalaba.createSendDataToCapalabaFunction(serviceOptions, serviceAccount, userRequestBody, userId));
-        tasks.push(capalaba.createSendDataToCapalabaFunction());
+        tasks.push(createChooseProviderAndSendRequest());
 
         /// Async main process service Handlers
-        async.waterfall(tasks, function (err,results){
+        async.series(tasks, function (err,results){
             if (err) {
                 return res.status(400).send(err);
             }
@@ -110,6 +110,8 @@ var UserService = function(db) {
             return res.status(200).send(results);
         });
 
+
+
         function createGetServiceOptionsFunction() {
             return function (callback) {
 
@@ -120,13 +122,29 @@ var UserService = function(db) {
                     }
 
                     serviceOptions = model.toJSON();
-                    return callback(null, serviceOptions);
+                    return callback();
                 })
             };
         }
 
+        function createChooseProviderAndSendRequest() {
+            return function (callback) {
+
+                var specificService = serviceWrappers[serviceOptions.serviceProvider];
+
+                specificService.sendRequest(serviceOptions, serviceAccount,userRequestBody, userId, function (err, result)
+                {
+                    if (err) {
+                        return callback(err);
+                    }
+
+                    return callback(null, result);
+                });
+            };
+        }
+
         function createGetServiceAccesOptionsFunction() {
-            return function (arg1, callback) {
+            return function (callback) {
 
                 getUserById(userId, function (err, user) {
                     user = user.toJSON();
@@ -141,7 +159,7 @@ var UserService = function(db) {
                         return callback('Service Account not found');
                     }
                     serviceAccount = user.accounts[foundNumber];
-                    return callback(null, serviceOptions, serviceAccount, userRequestBody, userId);
+                    return callback();
                 });
             }
         }
