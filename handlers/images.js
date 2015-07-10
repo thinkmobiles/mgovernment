@@ -2,12 +2,12 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 
 var Image = function(db) {
+    'use strict';
 
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
 
     var Image = db.model(CONST.MODELS.IMAGE);
-
     var self = this;
 
     this.uploadImageReq = function (req, res, next) {

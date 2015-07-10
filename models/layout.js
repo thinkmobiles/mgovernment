@@ -2,6 +2,7 @@ var CONST = require('../constants');
 
 module.exports = function (db) {
     'use strict';
+
     var mongoose = require('mongoose');
 
     var layoutSchema = mongoose.Schema({
@@ -20,7 +21,6 @@ module.exports = function (db) {
                 id:String,
                 action: {}
             }]
-
         },
         {
             collection: CONST.MODELS.LAYOUT + 's'

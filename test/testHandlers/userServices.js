@@ -114,45 +114,6 @@ describe('Service User: GET options, POST send request', function () {
             });
     });
 
-    //it('Authorized GET and POST ALLOWED service', function (done) {
-    //
-    //    var data = serviceCollection[1];
-    //    var loginData = USERS.CLIENT;
-    //
-    //    agent
-    //        .post('/user/signIn')
-    //        .send(loginData)
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //
-    //            agent
-    //                .get('/service/' + data._id)
-    //                .send()
-    //                .expect(200)
-    //                .end(function (err, res) {
-    //                    if (err) {
-    //                        return done(err)
-    //                    }
-    //
-    //
-    //                    agent
-    //                        .post('/service/' + data._id)
-    //                        .send()
-    //                        .expect(200)
-    //                        .end(function (err, res) {
-    //                            if (err) {
-    //                                return done(err)
-    //                            }
-    //                            //console.dir(res.body);
-    //                            done()
-    //                        });
-    //                });
-    //        });
-    //});
-
     it('Authorized GET and POST  CAPALABA service (with signIn)', function (done) {
 
         var data = serviceCollection[1];

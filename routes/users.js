@@ -6,6 +6,7 @@ var ImageHandler = require('../handlers/images');
 var SessionHandler = require('../handlers/sessions');
 
 module.exports = function(db){
+    'use strict';
 
     var users = new UserHandler(db);
     var session = new SessionHandler(db);

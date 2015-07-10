@@ -3,10 +3,11 @@ var mongoose = require('mongoose');
 var request = require('supertest');
 
 var USERS = require('./../testHelpers/usersTemplates');
-var SERVICES = require('./../testHelpers/servicesTemplates');
+//var SERVICES = require('./../testHelpers/servicesTemplates');
 
 
 PreparingDb = function (){
+
     var crypto = require('crypto');
     var connectOptions = {
         db: {native_parser: false},
@@ -81,10 +82,10 @@ PreparingDb = function (){
 
     this.createUsersByTemplate = function(userTemplate, count) {
         return function (callback) {
+
             var userTemplateCopy = JSON.parse(JSON.stringify(userTemplate));
             var count = count  || 1;
             var str ="";
-
 
             for (var i = count - 1; i >= 0; i--) {
 

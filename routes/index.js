@@ -1,6 +1,7 @@
 var SessionHandler = require('../handlers/sessions');
 
 module.exports = function(app, db){
+    'use strict';
 
     var logWriter = require('../helpers/logWriter')();
     var models = require('../models/index')(db);

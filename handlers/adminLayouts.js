@@ -3,6 +3,7 @@ var RESPONSE = require('../constants/response');
 var HistoryHandler = require('./historyLog');
 
 var Layout = function(db) {
+    'use strict';
 
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();
@@ -204,7 +205,7 @@ var Layout = function(db) {
 
             Layout
                 .update(searchQuery, {$set: {
-                    'items.$': data}, $set:{ updatedAt: updatedAt}}, function (err,dataResponse) {
+                    'items.$': data, updatedAt: updatedAt}}, function (err,dataResponse) {
                     if (err) {
                         return res.status(400).send({ err: err});
                     }

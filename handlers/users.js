@@ -4,6 +4,7 @@ var RESPONSE = require('../constants/response');
 var HistoryHandler = require('./historyLog');
 
 var User = function(db) {
+    'use strict';
 
     var mongoose = require('mongoose');
     var session = new SessionHandler(db);

@@ -3,6 +3,7 @@ var RESPONSE = require('../constants/response');
 var HistoryHandler = require('./historyLog');
 
 var Service = function(db) {
+    'use strict';
 
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();

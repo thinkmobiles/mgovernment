@@ -3,6 +3,7 @@ var express = require( 'express' );
 var ServicesHandler = require('../handlers/adminServices');
 
 module.exports = function(db){
+    'use strict';
 
     var router = express.Router();
     var servicesHandler = new ServicesHandler(db);

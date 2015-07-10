@@ -2,6 +2,8 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 
 var Session = function ( db ) {
+    'use strict';
+
     var mongoose = require('mongoose');
     var User = db.model(CONST.MODELS.USER);
 
