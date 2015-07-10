@@ -5,6 +5,8 @@ module.exports = function (db) {
 
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Schema.Types.ObjectId;
+    //var ObjectId = mongoose.Types.ObjectId;
+    /// TODO   check ObjectId type
     var schema = mongoose.Schema;
 
     var user = new schema({
@@ -27,7 +29,10 @@ module.exports = function (db) {
             cookieUpdatedAt: Date,
             accountUpdatedAt: Date
         }],
-        avatar: {type: ObjectId, ref: CONST.MODELS.IMAGE + 's', default: null},
+        favorites:[
+            {type: ObjectId, ref: CONST.MODELS.SERVICE }
+        ],
+        avatar: {type: ObjectId, ref: CONST.MODELS.IMAGE + 's', default: null}
     }, {
         collection: CONST.MODELS.USER + 's'
     });

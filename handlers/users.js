@@ -7,11 +7,14 @@ var User = function(db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var ObjectId = mongoose.Types.ObjectId;
     var session = new SessionHandler(db);
 
     var lodash = require('lodash');
     var async = require('async');
     var User = db.model(CONST.MODELS.USER);
+    var Service = db.model(CONST.MODELS.SERVICE);
+
     var crypto = require('crypto');
     var historyHandler = new HistoryHandler(db);
     createDefaultAdmin();
@@ -141,9 +144,12 @@ var User = function(db) {
             console.dir(user);
             user = user.toJSON();
 
-            for (var i = user.accounts.length - 1; i >= 0; i--) {
-                if (user.accounts[i].seviceName === account.seviceName) {
-                    found = true;
+            if (user.favorites) {
+
+                for (var i = user.accounts.length - 1; i >= 0; i--) {
+                    if (user.accounts[i].seviceName === account.seviceName) {
+                        found = true;
+                    }
                 }
             }
             if (found) {
@@ -157,7 +163,58 @@ var User = function(db) {
                     return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful created'});
                 });
         });
+    };
 
+    this.addServiceToFavorites = function ( req, res, next ) {
+        var serviceId= req.params.serviceId;
+        var userId = req.session.uId;
+        var found = false;
+        var favorite = ObjectId(serviceId);
+
+        getUserById(userId, function (err, user) {
+            console.dir(user);
+            user = user.toJSON();
+
+            if (user.favorites) {
+
+                for (var i = user.favorites.length - 1; i >= 0; i--) {
+                    if (user.favorites[i].id == favorite) {
+                        found = true;
+                    }
+                }
+            }
+
+            if (found) {
+                return res.status(400).send({ err: 'You already have same service'});
+            }
+
+            User
+                .update({_id: user._id}, {$push: {'favorites': favorite}}, function (err, data) {
+                    if (err) {
+                        return res.status(400).send(err);
+                    }
+                    return res.status(200).send(RESPONSE.ON_ACTION.SUCCESS);
+                });
+        });
+    };
+
+    this.getServicesFromFavorites = function ( req, res, next ) {
+        var serviceId= req.params.serviceId;
+        var userId = req.session.uId;
+        var found = false;
+        var foundNumber = -1;
+
+        User
+            .findOne({_id: userId})
+            .populate('favorites')
+            .exec(function (err, models) {
+
+                if (err) {
+                    return res.status(400).send(err);
+                }
+                return res.status(200).send(models.toJSON().favorites);
+
+            })
     };
 
     this.getServicesAccountById = function ( req, res, next ) {
@@ -183,7 +240,6 @@ var User = function(db) {
 
             return res.status(200).send(user.accounts[foundNumber]);
         });
-
     };
 
     this.isAdminBySession = function ( req, res, next ) {
