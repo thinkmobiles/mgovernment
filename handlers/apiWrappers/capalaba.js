@@ -11,9 +11,10 @@ var Capalaba = function(db) {
     var session = new SessionHandler(db);
     var User = db.model(CONST.MODELS.USER);
 
-    this.sendRequest = function (serviceOptions, serviceAccount,userRequestBody, userId, callback) {
+    this.sendRequest = function (serviceOptions, serviceAccount, req, userId, callback) {
 
         var userCookiesObject = request.jar();
+        var userRequestBody = req.body;
         var userCookiesString;
         var userCookies;
         var cookie;

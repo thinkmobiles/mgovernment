@@ -14,6 +14,12 @@ var Session = function ( db ) {
         res.status( 200 ).send( { success: RESPONSE.AUTH.LOG_IN } );
     };
 
+    this.addToken = function ( req, token) {
+        //req.session.loggedIn = true;
+        //req.session.uId = userId;
+        req.session.token = token;
+    };
+
     this.kill = function ( req, res, next ) {
         if(req.session) {
             req.session.destroy();

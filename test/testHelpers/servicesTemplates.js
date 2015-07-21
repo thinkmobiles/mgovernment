@@ -21,7 +21,34 @@ module.exports = {
         ],
         method: 'GET',
         url: 'retailer?count=10&page=1&orderBy=name&order=ASC',
-        params: [{onClick: '/sdadsadsa sadasdas'}]
+        params: {
+            needUserAuth: true,
+            onClick: '/sdadsadsa sadasdas'
+        }
+    },
+
+    SERVICE_TMA_TRA_CHECK_MOBILE_VERIFICATION: {
+        serviceProvider: 'TmaTraServices',
+        serviceName: 'Check Mobile Verification',
+        serviceType: 'Mobile',
+        baseUrl: 'http://tma.tra.gov.ae/',
+        profile: {
+            description : 'bla bla bla'},
+
+        forUserType: [CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.ADMIN, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        inputItems: [{
+            order: 11,
+            name: 'eeee',
+            inputType: 'IMG',
+            placeHolder: 'base64 sdasd sfdsd fkjjbkzbhkzashe2kj421u34hejrb lkj32  ',
+            options: []
+        }
+        ],
+        method: 'POST',
+        url: 'tra_api/service/isfakedevice',
+        params: {
+            needUserAuth: false
+        }
     },
 
     SERVICE_CAPALABA_COMMUNICATIONS_GET: {
@@ -43,7 +70,10 @@ module.exports = {
         ],
         method: 'GET',
         url: 'pushMessage?count=10&page=1&orderBy=end_datetime&order=DESC',
-        params: [{onClick: '/sdadsadsa sadasdas'}]
+        params: {
+            needUserAuth: true,
+            onClick: '/sdadsadsa sadasdas'
+        }
     },
     SERVICE_CAPALABA_COMMUNICATIONS_POST: {
         serviceProvider: 'Capalaba',
@@ -64,7 +94,10 @@ module.exports = {
         ],
         method: 'POST',
         url: 'pushMessage/',
-        params: [{onClick: '/sdadsadsa sadasdas'}]
+        params:{
+            needUserAuth: true,
+            onClick: '/sdadsadsa sadasdas'
+        }
     },
 
     SERVICE_SPEDTEST_INET: {
@@ -93,7 +126,10 @@ module.exports = {
         ],
         method: 'POST',
         url: '/speedtest/',
-        params: [{onClick: '/sdadsadsa sadasdas'}]
+        params: {
+            needUserAuth: true,
+            onClick: '/sdadsadsa sadasdas'
+        }
     },
 
     SERVICE_SPEDTEST_INET_FOR_UPDATING: {
@@ -130,7 +166,10 @@ module.exports = {
         ],
         method: 'POST',
         url: '/speedtest/',
-        params: [{onClick: '/sdadsadsa sadasdas'}]
+        params: {
+            needUserAuth: true,
+            onClick: '/sdadsadsa sadasdas'
+        }
     },
 
     SERVICE_GOLD_BANCOMAT: {
@@ -159,7 +198,10 @@ module.exports = {
         ],
         method: 'POST',
         url: '/gold/',
-        params: [{onClick: ''}]
+        params: {
+            needUserAuth: true,
+            onClick: ''
+        }
     },
 
     SERVICE_GOLD_BANCOMAT_FOR_UPDATE: {
@@ -188,7 +230,10 @@ module.exports = {
         ],
         method: 'POST',
         url: '/gold/',
-        params: [{onClick: '/sdadsadsa sadasdas'}]
+        params: {
+            needUserAuth: true,
+            onClick: '/sdadsadsa sadasdas'
+        }
     },
     SERVICE_OIL: {
         serviceProvider: 'Oil retail',
@@ -216,9 +261,11 @@ module.exports = {
         ],
         method: 'POST',
         url: '/oil',
-        params: [{onClick: ''}]
+        params: {
+            needUserAuth: true,
+            onClick: ''
+        }
     }
-
 };
 
 

@@ -2,6 +2,8 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var UserHistoryHandler = require('./userHistoryLog');
 var Capalaba = require('./apiWrappers/capalaba');
+var TmaTraServices = require('./apiWrappers/tmaTraServices');
+
 var SessionHandler = require('./sessions');
 var async = require('async');
 var mongoose = require('mongoose');
@@ -15,6 +17,7 @@ var UserService = function(db) {
 
     var serviceWrappers =  {};
     serviceWrappers[CONST.SERVICE_PROVIDERS.CAPALABA] = new Capalaba(db);
+    serviceWrappers[CONST.SERVICE_PROVIDERS.TMA_TRA_SERVICES] = new TmaTraServices(db);
 
     var userHistoryHandler = new UserHistoryHandler(db);
 
@@ -91,7 +94,7 @@ var UserService = function(db) {
         tasks.push(createChooseProviderAndSendRequest());
 
         /// Async main process service Handlers
-        async.series(tasks, function (err,results){
+        async.waterfall(tasks, function (err,results){
             if (err) {
                 return res.status(400).send(err);
             }
@@ -120,7 +123,12 @@ var UserService = function(db) {
                     }
 
                     serviceOptions = model.toJSON();
-                    return callback();
+
+                    if (serviceOptions.params.needUserAuth) {
+                        console.log('serviceOptions.params.needUserAuth= ',serviceOptions.params.needUserAuth)
+
+                    }
+                        return callback(null, serviceOptions.params.needUserAuth);
                 })
             };
         }
@@ -130,7 +138,7 @@ var UserService = function(db) {
 
                 var specificService = serviceWrappers[serviceOptions.serviceProvider];
 
-                specificService.sendRequest(serviceOptions, serviceAccount,userRequestBody, userId, function (err, result)
+                specificService.sendRequest(serviceOptions, serviceAccount,req, userId, function (err, result)
                 {
                     if (err) {
                         return callback(err);
@@ -142,7 +150,11 @@ var UserService = function(db) {
         }
 
         function createGetServiceAccesOptionsFunction() {
-            return function (callback) {
+            return function (needUserAuth, callback) {
+
+                if (!needUserAuth) {
+                    return callback();
+                }
 
                 getUserById(userId, function (err, user) {
                     user = user.toJSON();

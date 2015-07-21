@@ -33,6 +33,7 @@ describe('Service User: GET options, POST send request', function () {
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT]),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT]),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.GOVERNMENT]),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_TMA_TRA_CHECK_MOBILE_VERIFICATION),
             preparingDb.createUsersByTemplate(USERS.CLIENT),
             preparingDb.createUsersByTemplate(USERS.GOVERNMENT),
             preparingDb.createUsersByTemplate(USERS.COMPANY)
@@ -84,6 +85,27 @@ describe('Service User: GET options, POST send request', function () {
                 if (err) {
                     return done(err)
                 }
+                done()
+            });
+    });
+
+    it('Unauthorized POST TRA_CHECK_MOBILE_VERIFICATION', function (done) {
+
+        var data = serviceCollection[8];
+        var userRequestBody = {
+            'IMEI': '351957053969065'
+        };
+
+
+        agent
+            .post('/service/' + data._id)
+            .send(userRequestBody)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.dir(res.body);
                 done()
             });
     });
