@@ -4,10 +4,11 @@ define([
     'views/mainView',
     'views/service/createView',
     'views/service/updateView',
-    'views/servicesView'
+    'views/servicesView',
+    'views/usersView'
 
 
-], function (Backbone, mainView,serviceCreateView,serviceUpdateView, servicesView) {
+], function (Backbone, MainView,ServiceCreateView,ServiceUpdateView, ServicesView, UsersView) {
     var Router = Backbone.Router.extend({
 
         mainView: null,
@@ -18,9 +19,7 @@ define([
             "services": "toServicesView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
-
-            "changeProperties": "changeProperties",
-            "showDatabase": "showDatabase"
+            "users": "toUsersView"
 
         },
 
@@ -29,7 +28,7 @@ define([
                 this.mainView.undelegateEvents();
             }
 
-            this.mainView = new mainView();
+            this.mainView = new MainView();
 
         },
 
@@ -39,7 +38,7 @@ define([
                 this.contentView.undelegateEvents();
             }
             console.log('createService clicked');
-            this.contentView = new serviceCreateView();
+            this.contentView = new ServiceCreateView();
         },
 
         toUpdateServiceView: function () {
@@ -47,8 +46,8 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            console.log('updateProperties clicked');
-            this.contentView = new serviceUpdateView();
+            console.log('updateServices clicked');
+            this.contentView = new ServiceUpdateView();
         },
 
         toServicesView: function () {
@@ -56,7 +55,15 @@ define([
                 this.contentView.undelegateEvents();
             }
             console.log('Services clicked');
-            this.contentView = new servicesView();
+            this.contentView = new ServicesView();
+        },
+
+        toUsersView: function () {
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+            console.log('Users clicked');
+            this.contentView = new UsersView();
         }
     });
 //

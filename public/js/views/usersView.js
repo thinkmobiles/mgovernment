@@ -1,18 +1,17 @@
 define([
-    'text!templates/servicesViewTemplate.html',
-    '../collections/services',
-    '../models/service'
-],function(content, ServicesCollection, ServiceModel){
-    var servicesView = Backbone.View.extend({
+    'text!templates/usersViewTemplate.html',
+    '../collections/users',
+],function(content, UsersCollection){
+    var usersView = Backbone.View.extend({
 
         el: '#dataBlock',
         events: {
             'click .DbList': 'showServicesInfo',
             'mouseover .DbList': 'changePointer',
             'mouseout .DbList': 'clearDecoration',
-            'click #createService': 'createService',
-            'click #deleteService': 'deleteService',
-            'click #updateService': 'updateService'
+            'click #createService': 'createUser',
+            'click #deleteService': 'deleteUser',
+            'click #updateService': 'updateUser'
         },
 
         template: _.template(content),
@@ -20,11 +19,11 @@ define([
         initialize: function(){
             var self = this;
 
-            this.servicesCollection =  new ServicesCollection();
-            this.servicesCollection.fetch({
+            this.UsersCollection =  new UsersCollection();
+            this.UsersCollection.fetch({
                 success: function(model){
 
-                    console.log('Services loaded: ',  self.servicesCollection.toJSON());
+                    console.log('Services loaded: ',  self.UsersCollection.toJSON());
                     self.render();
                 },
 
@@ -36,7 +35,7 @@ define([
         },
 
         render: function () {
-            console.log('ServicesView render');
+            console.log('usersView render');
             this.$el.html(this.template());
             this.updateServiceList();
         },
@@ -55,17 +54,17 @@ define([
             e.stopPropagation();
             e.stopImmediatePropagation();
 
-            Backbone.history.navigate('createService', {trigger: true});
+            Backbone.history.navigate('createUser', {trigger: true});
         },
 
-        deleteService: function() {
+        deleteUser: function() {
 
-            var service = this.servicesCollection.models[this.selectedServiceId];
+            var service = this.UsersCollection.models[this.selectedServiceId];
 
             service.destroy ({
                 success: function(model, response, options){
                     alert('Service deleted');
-                    Backbone.history.navigate('services', {trigger: true});
+                    Backbone.history.navigate('users', {trigger: true});
                 },
 
                 error: function(model, xhr, options){
@@ -74,23 +73,22 @@ define([
             });
         },
 
-        updateService: function() {
+        updateUser: function() {
 
             if (!this.selectedServiceId) return;
 
-            App.selectedService = this.servicesCollection.models[this.selectedServiceId];
-            Backbone.history.navigate('updateService', {trigger: true});
+            App.selectedUser = this.UsersCollection.models[this.selectedServiceId];
+            Backbone.history.navigate('updateUser', {trigger: true});
         },
-
 
         showServicesInfo: function(e){
             var id = $(e.target).attr('data-hash');
-            var selectedService = this.servicesCollection.toJSON()[id];
+            var selectedUser = this.UsersCollection.toJSON()[id];
             var str = "";
             var property;
 
-            for(var k in selectedService) {
-                property = selectedService[k];
+            for(var k in selectedUser) {
+                property = selectedUser[k];
 
                 if (typeof property == 'object') {
                     property = JSON.stringify(property);
@@ -102,23 +100,23 @@ define([
 
             $("#propertyList").text("");
             $("#propertyList").append(str);
-            $("#properties").text( selectedService.serviceName + " properties ");
+            $("#properties").text( selectedUser.login + " properties ");
         },
 
         updateServiceList: function(){
 
-            var servicesCollection = this.servicesCollection.toJSON();
+            var UsersCollection = this.UsersCollection.toJSON();
             var itemTextColor = '#0A0EF2';
             var textContent;
             var serviceDiv;
             var serviceId;
             var service;
 
-            for (var i = servicesCollection.length-1; i>=0; i--){
-                service = servicesCollection[i];
+            for (var i = UsersCollection.length-1; i>=0; i--){
+                service = UsersCollection[i];
                 serviceId = service._id;
                 serviceDiv = $("#DbList" + serviceId);
-                textContent = service.serviceProvider + ', ' + service.serviceName;
+                textContent = service.login;
 
                 console.log('service: ',service.serviceName);
                 console.dir("#DbList" + serviceId);
@@ -141,5 +139,5 @@ define([
             return this;
         }
     });
-    return servicesView;
+    return usersView;
 });

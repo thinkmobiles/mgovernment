@@ -37,7 +37,8 @@ define([
 
             service.method == 'POST' ? el.find('#POST')[0].checked =true : el.find('#GET')[0].checked = true;
             el.find('#url').val(service.url);
-            service.params.needUserAuth == 'true' ? el.find('#needUserAuth')[0].checked = true : el.find('#needUserAuth2')[0].checked = true;
+            console.log(service.params.needUserAuth);
+            service.params.needUserAuth ? el.find('#needUserAuth')[0].checked = true : el.find('#needUserAuth2')[0].checked = true;
         },
 
         updateService: function(e){

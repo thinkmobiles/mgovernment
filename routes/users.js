@@ -24,9 +24,7 @@ module.exports = function(db){
     router.post('/signOut', users.signOutClient);
 
     router.get('/profile', session.authenticatedUser,  users.getUserProfileBySession);
-    router.route('/profile/:id')
-        .get(session.isAdminBySession, users.getUserProfileByIdForAdmin)
-        .delete(session.isAdminBySession, users.deleteUserProfileByIdForAdmin);
+
 
     router.route('/account/:serviceId')
         .get(session.authenticatedUser, users.getServicesAccountById);
@@ -52,6 +50,10 @@ module.exports = function(db){
     router.route('/account/image/:id')
         .get(imageHandler.getImage)
         .delete(imageHandler.removeImage);
+
+    router.route('/:id')
+        .get(session.isAdminBySession, users.getUserProfileByIdForAdmin)
+        .delete(session.isAdminBySession, users.deleteUserProfileByIdForAdmin);
 
     return router;
 };

@@ -1,9 +1,8 @@
 define([
-    '../models/service',
-    'views/mainView'
-], function(heroModel,mainView){
+    '../models/service'
+], function(serviceModel){
     var ServicesCollection = Backbone.Collection.extend({
-        model: heroModel,
+        model: serviceModel,
         url: '/adminService/'
         //initialize: function(){
         //    this.fetch({
