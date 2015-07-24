@@ -383,6 +383,50 @@ var User = function(db) {
             });
     };
 
+    this.adminSignIn = function (req, res, next) {
+
+        var body = req.body;
+        var login = body.login;
+        var pass = body.pass;
+        var err;
+        var device = {
+            deviceOs: body.deviceOs,
+            deviceToken: body.deviceToken
+        };
+
+        if (!body || !login || !pass) {
+            err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
+            err.status = 400;
+            return next(err);
+        }
+
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
+
+        User
+            .findOne({login: login, pass: pass})
+            .exec(function (err, model) {
+                if (err) {
+                    return next(err)
+                }
+
+                if (!model || model.toJSON().userType != CONST.USER_TYPE.ADMIN) {
+
+                    return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
+                }
+
+                var deviceOptions = {
+                    model: model,
+                    device: device
+                };
+
+                processDeviceToken(deviceOptions, function () {
+                    return session.register(req, res, model._id.toString(), model.userType);
+                });
+            });
+    };
+
     function processDeviceToken(options, callback) {
 
         var found = false;

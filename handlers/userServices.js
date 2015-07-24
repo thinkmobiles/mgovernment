@@ -152,7 +152,8 @@ var UserService = function(db) {
         function createGetServiceAccesOptionsFunction() {
             return function (needUserAuth, callback) {
 
-                if (!needUserAuth) {
+                if (!needUserAuth || !userId) {
+
                     return callback();
                 }
 

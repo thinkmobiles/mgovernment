@@ -19,7 +19,8 @@ module.exports = function(db){
     router.route('/getCount/')
         .get(users.getCount);
 
-    router.post('/signIn', users.signInClient );
+    router.post('/signIn', users.signInClient);
+    router.post('/adminSignIn', users.adminSignIn);
     router.post('/signOut', users.signOutClient);
 
     router.get('/profile', session.authenticatedUser,  users.getUserProfileBySession);

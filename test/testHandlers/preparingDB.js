@@ -107,7 +107,7 @@ PreparingDb = function (){
 
             var serviceData = (JSON.parse(JSON.stringify(serviceTemplate)));
             serviceData.forUserType = forUserType || serviceData.forUserType;
-            serviceData.serviceName = serviceData.serviceName + serviceData.forUserType;
+            serviceData.serviceName = serviceData.serviceName;
 
             saveService(serviceData);
             callback();

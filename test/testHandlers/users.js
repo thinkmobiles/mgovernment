@@ -30,7 +30,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_GET),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_POST),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
             preparingDb.toFillUsers(1)
         ], function (err,results)   {
             if (err) {
@@ -88,21 +88,21 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
     });
 
-    //it('Login with BAD credentials - wrong pass (client123, 123456)', function (done) {
-    //
-    //    var loginData = USERS.CLIENT_BAD_PASSWORD;
-    //
-    //    agent
-    //        .post('/user/signIn')
-    //        .send(loginData)
-    //        .expect(400)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //            done();
-    //        });
-    //});
+    it('Login with BAD credentials - wrong pass (client123, 123456)', function (done) {
+
+        var loginData = USERS.CLIENT_BAD_PASSWORD;
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(400)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                done();
+            });
+    });
     //
     //it('SignOut if Logined (client123, pass1234)', function (done) {
     //

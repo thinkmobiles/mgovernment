@@ -15,8 +15,19 @@ var TmaTraServices = function(db) {
         var userRequestBody = req.body;
 
         //1  check session
-        if (!req.session.token) {
+        if (!req.session.token && serviceOptions.params.needUserAuth) {
+            console.log('!req.session.token && serviceOptions.params.needUserAuth', !req.session.token, serviceOptions.params.needUserAuth);
             return async.series([createSendAuthRequest(), createSendRequest()], function (err, results) {
+                if (err) {
+                    console.log(err);
+                    return callback(err);
+                    //return requestWithSignIn();
+                }
+                return callback(null, results);
+            });
+        } else {
+            console.log('!req.session.token && serviceOptions.params.needUserAuth', req.session.token, serviceOptions.params.needUserAuth);
+            return async.series([createSendRequest()], function (err, results) {
                 if (err) {
                     console.log(err);
                     return callback(err);
@@ -108,9 +119,7 @@ var TmaTraServices = function(db) {
                     if (!err && res.statusCode == 200) {
 
                         console.log(body.access_token);
-
                         session.addToken(req, body.access_token);
-
                         return callback(null, body)
                     }
                     return callback(err)
