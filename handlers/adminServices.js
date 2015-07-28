@@ -40,9 +40,38 @@ var Service = function(db) {
 
     this.createService = function (req, res, next) {
 
+        var foundRelevantField = false;
         var body = req.body;
+        var tempArray;
+
+        var checkRecivedParamsWithItemsName = function(recivedArray){
+            for (var i = recivedArray.length - 1; i >= 0; i--) {
+                for (var j = body.inputItems.length -1; j >= 0; j --) {
+                    if (recivedArray[i] === body.inputItems[j].name){
+                        foundRelevantField = true;
+                    }
+                }
+                if (!foundRelevantField) {
+                    return false
+                }
+                foundRelevantField = false;
+            }
+          return true;
+        };
 
         if (!body) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        if (body.params.body && !checkRecivedParamsWithItemsName(body.params.body)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        if (body.params.query && !checkRecivedParamsWithItemsName(body.params.query)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        if (body.params.uriSpecQuery && !checkRecivedParamsWithItemsName(body.params.uriSpecQuery)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 

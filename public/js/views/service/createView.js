@@ -3,21 +3,102 @@ define([
     'text!templates/service/create.html',
     '../../models/service'
 ], function (content, ServiceModel) {
+    var itemBlockCount = 0;
     var serviceCreateView = Backbone.View.extend({
+
         el: '#dataBlock',
         template: _.template(content),
 
         events: {
-            'click #saveBtn' : 'saveService'
+            'click #saveBtn' : 'saveService',
+            'click #addInputItemsBlock' : 'addInputItemsBlock',
+            'click #delInputItemsBlock' : 'delInputItemsBlock',
+            'change .enabledCheckBox' : 'enableInput'
         },
 
         initialize: function () {
-            console.log('createView initialize');
+            itemBlockCount = 0;
             this.render();
         },
 
+
+
+        addInputItemsBlock: function(e) {
+            var el = this.$el;
+            var textContent;
+
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].order:</b></td>  <td class = "hiddenByDefault"><input type="number" id="order' + itemBlockCount + '" size ="4" style="width: 50px"></td><td class = "hiddenByDefault"> Input order of item[' + itemBlockCount + ']: </td>';
+
+            $("<tr> </tr>").
+                attr("id", "itemBlockOrder" + itemBlockCount).
+                html(textContent).
+                insertBefore("#itemBlock");
+
+            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].name:</b></td>  <td class = "hiddenByDefault"><input type="text" id="name' + itemBlockCount + '" size="20" maxlength="20"></td><td class = "hiddenByDefault"> Input name of item[' + itemBlockCount + ']: </td>';
+
+            $("<tr> </tr>").
+                attr("id", "itemBlockName" + itemBlockCount).
+                html(textContent).
+                insertBefore("#itemBlock");
+
+            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].type:</b></td>  <td class = "hiddenByDefault"> <select id = "inputType' + itemBlockCount + '">' +
+                '<option value="string">string</option>' +
+                '<option value="number">number</option>' +
+                '<option value="boolean">boolean</option>' +
+                '<option value="file">file</option>' +
+                '</select></td><td class = "hiddenByDefault"> Input type of of item[' + itemBlockCount + ']: </td>';
+
+            $("<tr> </tr>").
+                attr("id", "itemBlockInputType" + itemBlockCount).
+                html(textContent).
+                insertBefore("#itemBlock");
+
+            itemBlockCount++;
+        },
+
+        delInputItemsBlock: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            if (itemBlockCount == 0) {
+                return;
+            }
+            itemBlockCount--;
+
+            $("#itemBlockName" + itemBlockCount).
+                empty().
+                remove();
+
+            $("#itemBlockInputType" + itemBlockCount).
+                empty().
+                remove();
+
+            $("#itemBlockOrder" + itemBlockCount).
+                empty().
+                remove();
+
+        },
+
+        enableInput: function(e) {
+            var idName = e.target.id;
+            var el = this.$el;
+            console.log(idName,'(e.target.checked) ',e.target.checked,'#'+ idName + 'Input' );
+
+            if (e.target.checked) {
+                el.find('#'+ idName + 'Input').prop( "disabled", false );
+            } else {
+                el.find('#'+ idName + 'Input').prop( "disabled", true );
+            }
+
+
+        },
+
         saveService: function(e){
-            console.log('Save Button pressed');
             var el = this.$el;
             var model = new ServiceModel();
             var data ={};
@@ -42,7 +123,30 @@ define([
             data.params = {
                 needUserAuth: el.find('#needUserAuth')[0].checked
             };
-            //console.log(data);
+
+            if (el.find('#uriSpecQuery')[0].checked) {
+                data.params.uriSpecQuery = el.find('#uriSpecQueryInput').val().split(',');
+            }
+
+            if (el.find('#body')[0].checked) {
+                data.params.body = el.find('#bodyInput').val().split(',');
+            }
+
+            if (el.find('#query')[0].checked) {
+                data.params.query = el.find('#queryInput').val().split(',');
+            }
+
+            data.inputItems =[];
+
+            for (var i = itemBlockCount - 1; i >= 0; i-- ){
+                data.inputItems[i]= {
+                    inputType: el.find('#inputType' + i).val(),
+                    name: el.find('#name' + i).val(),
+                    order: el.find('#order' + i).val()
+                }
+            }
+
+            console.dir(data);
 
             model.save(data, {
                 success: function(model, response){
@@ -68,3 +172,5 @@ define([
     });
     return serviceCreateView;
 });
+
+

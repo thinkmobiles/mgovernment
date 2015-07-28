@@ -5,10 +5,12 @@ define([
     'views/service/createView',
     'views/service/updateView',
     'views/servicesView',
-    'views/usersView'
+    'views/usersView',
+    'views/user/createView',
+    'views/user/updateView'
 
 
-], function (Backbone, MainView,ServiceCreateView,ServiceUpdateView, ServicesView, UsersView) {
+], function (Backbone, MainView,ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView) {
     var Router = Backbone.Router.extend({
 
         mainView: null,
@@ -19,8 +21,9 @@ define([
             "services": "toServicesView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
-            "users": "toUsersView"
-
+            "users": "toUsersView",
+            "createUser": "toCreateUserView",
+            "updateUser": "toUpdateUserView"
         },
 
         toMainView: function () {
@@ -64,6 +67,24 @@ define([
             }
             console.log('Users clicked');
             this.contentView = new UsersView();
+        },
+
+        toCreateUserView: function () {
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+            console.log('createUser clicked');
+            this.contentView = new UserCreateView();
+        },
+
+        toUpdateUserView: function () {
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+            console.log('updateSUser clicked');
+            this.contentView = new UserUpdateView();
         }
     });
 //

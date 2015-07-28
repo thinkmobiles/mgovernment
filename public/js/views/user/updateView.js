@@ -1,38 +1,27 @@
 
 define([
-    'text!templates/service/update.html',
-    '../../models/service'
+    'text!templates/user/update.html',
+    '../../models/user'
 
 
-], function (content, ServiceModel) {
-    var serviceUpdateView = Backbone.View.extend({
+], function (content, UserModel) {
+    var userUpdateView = Backbone.View.extend({
         el: '#dataBlock',
         template: _.template(content),
 
         events: {
-            'click #updateBtn' : 'updateService'
+            'click #updateBtn' : 'updateUser'
         },
 
         initialize: function () {
+            console.log('updateView initialize');
             this.render();
         },
 
-        addTest: function () {
-
-            service =  App.selectedService.toJSON();
-            var generatedBloks;
-            if (service.inputItems.length){
-                for (var i = service.inputItems.length; i >= 0; i --){
-                    generatedBloks ='<tr> <td>'+ i + '</td> <td></td><td></td> </tr>';
-                }
-            }
-return generatedBloks;
-        },
-
-        readPropertySelectedService: function(){
+        readPropertySelectedUser: function(){
             var el = this.$el;
-            service =  App.selectedService.toJSON();
-            console.log(service.forUserType);
+            var user =  App.selectedUser.toJSON();
+            console.log(user.forUserType);
 
             el.find('#serviceProvider').val(service.serviceProvider);
             el.find('#serviceName').val(service.serviceName);
@@ -52,9 +41,10 @@ return generatedBloks;
             service.params.needUserAuth ? el.find('#needUserAuth')[0].checked = true : el.find('#needUserAuth2')[0].checked = true;
         },
 
-        updateService: function(e){
+        updateUser: function(e){
+            console.log('Update Button pressed');
             var el = this.$el;
-            var model = new ServiceModel();
+            var model = new UserModel();
             var data ={};
 
             data.serviceProvider = el.find('#serviceProvider').val();
@@ -77,8 +67,9 @@ return generatedBloks;
             data.params = {
                 needUserAuth: el.find('#needUserAuth')[0].checked
             };
+            //console.log(data);
 
-            App.selectedService.save(data, {
+            App.selectedUser.save(data, {
                 success: function(model, response){
                     Backbone.history.fragment = '';
                     Backbone.history.navigate('services', {trigger: true});
@@ -96,13 +87,14 @@ return generatedBloks;
         },
 
         render: function () {
-            console.dir(App.selectedService.toJSON());
-            this.$el.html(this.template( App.selectedService.toJSON()));
+            var user = App.selectedUser.toJSON();
+            console.log(user);
 
-            // this. readPropertySelectedService();
+            this.$el.html(this.template(user));
+           // this.readPropertySelectedUser();
             return this;
         }
     });
 
-    return serviceUpdateView;
+    return userUpdateView;
 });

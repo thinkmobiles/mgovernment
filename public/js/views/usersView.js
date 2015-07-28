@@ -6,12 +6,12 @@ define([
 
         el: '#dataBlock',
         events: {
-            'click .DbList': 'showServicesInfo',
+            'click .DbList': 'showUsersInfo',
             'mouseover .DbList': 'changePointer',
             'mouseout .DbList': 'clearDecoration',
-            'click #createService': 'createUser',
-            'click #deleteService': 'deleteUser',
-            'click #updateService': 'updateUser'
+            'click #createUser': 'createUser',
+            'click #deleteUser': 'deleteUser',
+            'click #updateUser': 'updateUser'
         },
 
         template: _.template(content),
@@ -37,7 +37,7 @@ define([
         render: function () {
             console.log('usersView render');
             this.$el.html(this.template());
-            this.updateServiceList();
+            this.updateUserList();
         },
 
         clearDecoration:function(e) {
@@ -49,7 +49,7 @@ define([
             $(e.target).css({"background-color":"#d3d3d3"});
         },
 
-        createService: function(e){
+        createUser: function(e){
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -59,11 +59,11 @@ define([
 
         deleteUser: function() {
 
-            var service = this.UsersCollection.models[this.selectedServiceId];
+            var service = this.UsersCollection.models[this.selectedUserId];
 
             service.destroy ({
                 success: function(model, response, options){
-                    alert('Service deleted');
+                    alert('User deleted');
                     Backbone.history.navigate('users', {trigger: true});
                 },
 
@@ -75,13 +75,13 @@ define([
 
         updateUser: function() {
 
-            if (!this.selectedServiceId) return;
+            if (!this.selectedUserId) return;
 
-            App.selectedUser = this.UsersCollection.models[this.selectedServiceId];
+            App.selectedUser = this.UsersCollection.models[this.selectedUserId];
             Backbone.history.navigate('updateUser', {trigger: true});
         },
 
-        showServicesInfo: function(e){
+        showUsersInfo: function(e){
             var id = $(e.target).attr('data-hash');
             var selectedUser = this.UsersCollection.toJSON()[id];
             var str = "";
@@ -96,14 +96,14 @@ define([
                 str += "<b>" + k + ": </b>" + property + "<br>";
             }
 
-            this.selectedServiceId = id;
+            this.selectedUserId = id;
 
             $("#propertyList").text("");
             $("#propertyList").append(str);
             $("#properties").text( selectedUser.login + " properties ");
         },
 
-        updateServiceList: function(){
+        updateUserList: function(){
 
             var UsersCollection = this.UsersCollection.toJSON();
             var itemTextColor = '#0A0EF2';
