@@ -561,6 +561,59 @@ var User = function(db) {
             });
     };
 
+    this.updateAccount = function (req, res, next) {
+
+        var body = req.body;
+        var login = body.login;
+        var pass = body.pass;
+        var userType = body.userType;
+        var userId = req.params.id
+        var err;
+
+        var device = {
+            deviceOs: body.deviceOs,
+            deviceToken: body.deviceToken
+        };
+
+        var profile = {
+            firstName: body.firstName,
+            lastName: body.lastName
+        };
+
+        if (!isValidUserType(userType)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        if (!body || !login || !pass) {
+            err = new Error(RESPONSE.NOT_ENOUGH_PARAMS);
+            err.status = 400;
+            return next(err);
+        }
+
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
+
+        var userData ={login: login, pass: pass, userType: userType, profile: profile};
+
+        if (device.deviceOs && device.deviceToken && isValidDeviceOs(device.deviceOs)) {
+            userData.devices = [device];
+        }
+
+        getUserById(userId, function (err, user) {
+            user = user.toJSON();
+            console.dir(user);
+
+            User
+                .update({'_id': user._id}, {$set: userData}, function (err, data) {
+                    if (err) {
+                        return res.status(400).send({ err: err});
+                    }
+                    return res.status(200).send({ succes: 'User was succesful updating'});
+                });
+        });
+    };
+
     this.getCount = function (req, res, next) {
 
         User

@@ -45,9 +45,10 @@ var TmaTraServices = function(db) {
 
         function createSendRequest() {
             return function (callback) {
-                var tokenString = '';
                 var uriSpecQueryString= '';
-                var serviceUrl = '';
+                var tokenString = '';
+                var queryString = '';
+                var serviceUrl;
 
                 if  (serviceOptions.params.needUserAuth) {
                     tokenString = '?access_token=' + req.session.token;

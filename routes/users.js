@@ -53,6 +53,7 @@ module.exports = function(db){
 
     router.route('/:id')
         .get(session.isAdminBySession, users.getUserProfileByIdForAdmin)
+        .put(session.isAdminBySession,users.updateAccount)
         .delete(session.isAdminBySession, users.deleteUserProfileByIdForAdmin);
 
     return router;

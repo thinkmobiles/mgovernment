@@ -23,32 +23,18 @@ define([
             var el = this.$el;
             var data ={};
 
-            data.serviceProvider = el.find('#serviceProvider').val();
-            data.serviceName = el.find('#serviceName').val();
-            data.serviceType = el.find('#serviceType').val();
-            data.profile = {
-                description: el.find('#description').val()
-            };
-            data.baseUrl = el.find('#baseUrl').val();
+            data.login = el.find('#login').val();
+            data.pass = el.find('#pass').val();
+            data.firstName = el.find('#firstName').val();
+            data. lastName = el.find('#lastName').val();
+            data.userType = el.find('#client')[0].checked ? 'client' :  el.find('#admin')[0].checked ? 'admin' :  el.find('#company')[0].checked ? 'company' :  el.find('#government')[0].checked ? 'government' : 'thi is impossible';
 
-            data.forUserType = [];
-            el.find('#guest')[0].checked ? data.forUserType.push('guest') : undefined;
-            el.find('#client')[0].checked ? data.forUserType.push('client') : undefined;
-            el.find('#admin')[0].checked ? data.forUserType.push('admin') : undefined;
-            el.find('#company')[0].checked ? data.forUserType.push('company') : undefined;
-            el.find('#government')[0].checked ?  data.forUserType.push('government') : undefined;
-
-            data.method = el.find('#POST')[0].checked ? 'POST' : 'GET';
-            data.url = el.find('#url').val();
-            data.params = {
-                needUserAuth: el.find('#needUserAuth')[0].checked
-            };
             //console.log(data);
 
             App.selectedUser.save(data, {
                 success: function(model, response){
                     Backbone.history.fragment = '';
-                    Backbone.history.navigate('services', {trigger: true});
+                    Backbone.history.navigate('users', {trigger: true});
                     console.log('Success updated');
                     console.log(model);
                     console.log(response);
@@ -56,7 +42,7 @@ define([
 
                 },
                 error: function(err, xhr, model, response){
-                    console.log('Error created',xhr);
+                    console.log('Error updating',xhr);
                     alert(xhr.responseText);
                 }
             });
