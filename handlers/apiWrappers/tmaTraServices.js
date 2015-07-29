@@ -39,14 +39,15 @@ var TmaTraServices = function(db) {
             });
         }
 
-        //6  respons process
 
-//TODO  // if 401 - Unauthorizate goto stage 4
+
+//TODO  // if 401 - Unauthorizate goto stage with auth
 
         function createSendRequest() {
             return function (callback) {
                 var tokenString = '';
                 var uriSpecQueryString= '';
+                var serviceUrl = '';
 
                 if  (serviceOptions.params.needUserAuth) {
                     tokenString = '?access_token=' + req.session.token;
@@ -58,10 +59,9 @@ var TmaTraServices = function(db) {
                         uriSpecQueryString += '/' + userRequestBody[serviceOptions.params.uriSpecQuery[i]];
                     }
                     uriSpecQueryString += '/';
+                }
 
-                };
-
-                var serviceUrl = serviceOptions.baseUrl + serviceOptions.url + uriSpecQueryString + tokenString;
+                serviceUrl = serviceOptions.baseUrl + serviceOptions.url + uriSpecQueryString + tokenString;
 
                 console.log(serviceUrl);
 

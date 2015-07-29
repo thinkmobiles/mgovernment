@@ -121,15 +121,15 @@ define([
             };
 
             if (el.find('#uriSpecQuery')[0].checked) {
-                data.params.uriSpecQuery = el.find('#uriSpecQueryInput').val().trim().split(',');
+                data.params.uriSpecQuery = el.find('#uriSpecQueryInput').val().replace(' ','').split(',');
             }
 
             if (el.find('#body')[0].checked) {
-                data.params.body = el.find('#bodyInput').val().trim().split(',');
+                data.params.body = el.find('#bodyInput').val().replace(' ','').split(',');
             }
 
             if (el.find('#query')[0].checked) {
-                data.params.query = el.find('#queryInput').val().trim().split(',');
+                data.params.query = el.find('#queryInput').val().replace(' ','').split(',');
             }
 
             data.inputItems =[];

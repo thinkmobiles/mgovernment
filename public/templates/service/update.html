@@ -59,7 +59,7 @@
 
             generatedBloks +='<tr id="' + 'itemBlockName' + i + '"><td class = "hiddenByDefault"><b>item[' + i + '].name:</b></td>  <td class = "hiddenByDefault"><input type="text"  id="name' + i + '" size="20" maxlength="20" value="' + inputItems[i].name + '"></td><td class = "hiddenByDefault"> Input name of item[' + i + ']: </td></tr>';
 
-            generatedBloks +='<tr id="' + 'itemBlockInputType' + i + '"><td class = "hiddenByDefault"><b>item[' + i + '].name:</b></td>  <td class = "hiddenByDefault">' +
+            generatedBloks +='<tr id="' + 'itemBlockInputType' + i + '"><td class = "hiddenByDefault"><b>item[' + i + '].type:</b></td>  <td class = "hiddenByDefault">' +
             '<select  id="inputType' + i + '" value="' + inputItems[i].inputType + '" >' +
                 '<option value="string"' + (inputItems[i].inputType == 'string' ? 'selected':'')  + '>string</option>' +
                 '<option value="number"' + (inputItems[i].inputType == 'number' ? 'selected':'')  + '>number</option>' +
