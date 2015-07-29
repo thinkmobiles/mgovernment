@@ -15,6 +15,8 @@ var TmaTraServices = function(db) {
         var userRequestBody = req.body;
 
         //1  check session
+        //2 if not - auth get token -> session.register + token -> 5
+
         if (!req.session.token && serviceOptions.params.needUserAuth) {
             console.log('!req.session.token && serviceOptions.params.needUserAuth', !req.session.token, serviceOptions.params.needUserAuth);
             return async.series([createSendAuthRequest(), createSendRequest()], function (err, results) {
@@ -37,55 +39,31 @@ var TmaTraServices = function(db) {
             });
         }
 
-        //2 if not - auth get token -> session.register + token -> 5
-
-        //3 if yes - check token -> 5
-
-        //4 if not - auth get token -> session.token
-
-        //5  send request
-
         //6  respons process
 
-        // if 401 - Unauthorizate goto stage 4
-
-
-
-        //if (!serviceAccount.userCookie) {
-        //    return requestWithSignIn();
-        //
-        //} else {
-        //
-        //    return async.series([createSendRequestFunction()], function (err, results) {
-        //        if (err) {
-        //            console.log(err);
-        //            //return callback(err);
-        //            return requestWithSignIn();
-        //        }
-        //        return callback(null, results);
-        //    });
-        //}
-
-        //function requestWithSignIn() {
-        //    var tasks = [];
-        //
-        //    tasks.push(createUserSignInFunction());
-        //    tasks.push(createSendRequestFunction());
-        //    tasks.push(createSaveCookieFunction());
-        //
-        //    async.series(tasks, function (err, results) {
-        //        if (err) {
-        //            console.log(err);
-        //            return callback(err);
-        //        }
-        //        return callback(null, results);
-        //    });
-        //}
+//TODO  // if 401 - Unauthorizate goto stage 4
 
         function createSendRequest() {
             return function (callback) {
+                var tokenString = '';
+                var uriSpecQueryString= '';
 
-                var serviceUrl = serviceOptions.baseUrl + serviceOptions.url;
+                if  (serviceOptions.params.needUserAuth) {
+                    tokenString = '?access_token=' + req.session.token;
+                }
+
+                if  (serviceOptions.params.uriSpecQuery) {
+
+                    for (var i = 0, len = serviceOptions.params.uriSpecQuery.length - 1 ;  i <= len; i++) {
+                        uriSpecQueryString += '/' + userRequestBody[serviceOptions.params.uriSpecQuery[i]];
+                    }
+                    uriSpecQueryString += '/';
+
+                };
+
+                var serviceUrl = serviceOptions.baseUrl + serviceOptions.url + uriSpecQueryString + tokenString;
+
+                console.log(serviceUrl);
 
                 request(serviceUrl, {
                     method: serviceOptions.method,
@@ -126,24 +104,6 @@ var TmaTraServices = function(db) {
                 });
             }
         }
-
-        //function createSaveCookieFunction() {
-        //    return function (callback) {
-        //
-        //        User
-        //            .update({'_id': userId, 'accounts.serviceProvider': serviceOptions.serviceProvider}, {
-        //                $set: {
-        //                    'accounts.$.userCookie': userCookiesString,
-        //                    'accounts.$.cookieUpdatedAt': new Date()
-        //                }
-        //            }, function (err, data) {
-        //                if (err) {
-        //                    return callback(err);
-        //                }
-        //                return callback(null, 'Cookies saved in User');
-        //            });
-        //    }
-        //}
     };
 };
 

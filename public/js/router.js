@@ -40,7 +40,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            console.log('createService clicked');
+            //console.log('createService clicked');
             this.contentView = new ServiceCreateView();
         },
 
@@ -49,7 +49,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            console.log('updateServices clicked');
+            //console.log('updateServices clicked');
             this.contentView = new ServiceUpdateView();
         },
 
@@ -57,7 +57,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            console.log('Services clicked');
+            //console.log('Services clicked');
             this.contentView = new ServicesView();
         },
 
@@ -65,7 +65,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            console.log('Users clicked');
+            //console.log('Users clicked');
             this.contentView = new UsersView();
         },
 
@@ -74,7 +74,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            console.log('createUser clicked');
+            //console.log('createUser clicked');
             this.contentView = new UserCreateView();
         },
 
@@ -83,7 +83,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            console.log('updateSUser clicked');
+            //console.log('updateSUser clicked');
             this.contentView = new UserUpdateView();
         }
     });

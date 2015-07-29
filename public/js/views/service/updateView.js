@@ -5,56 +5,98 @@ define([
 
 
 ], function (content, ServiceModel) {
+    var itemBlockCount = 0;
     var serviceUpdateView = Backbone.View.extend({
         el: '#dataBlock',
         template: _.template(content),
 
         events: {
-            'click #updateBtn' : 'updateService'
+            'click #updateBtn' : 'updateService',
+            'click #addInputItemsBlock' : 'addInputItemsBlock',
+            'click #delInputItemsBlock' : 'delInputItemsBlock',
+            'change .enabledCheckBox' : 'enableInput'
         },
 
         initialize: function () {
             this.render();
         },
 
-        addTest: function () {
+        addInputItemsBlock: function(e) {
+            var el = this.$el;
+            var textContent;
 
-            service =  App.selectedService.toJSON();
-            var generatedBloks;
-            if (service.inputItems.length){
-                for (var i = service.inputItems.length; i >= 0; i --){
-                    generatedBloks ='<tr> <td>'+ i + '</td> <td></td><td></td> </tr>';
-                }
-            }
-return generatedBloks;
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].order:</b></td>  <td class = "hiddenByDefault"><input type="number" id="order' + itemBlockCount + '" size ="4" style="width: 50px"></td><td class = "hiddenByDefault"> Input order of item[' + itemBlockCount + ']: </td>';
+
+            $("<tr> </tr>").
+                attr("id", "itemBlockOrder" + itemBlockCount).
+                html(textContent).
+                insertBefore("#itemBlock");
+
+            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].name:</b></td>  <td class = "hiddenByDefault"><input type="text" id="name' + itemBlockCount + '" size="20" maxlength="20"></td><td class = "hiddenByDefault"> Input name of item[' + itemBlockCount + ']: </td>';
+
+            $("<tr> </tr>").
+                attr("id", "itemBlockName" + itemBlockCount).
+                html(textContent).
+                insertBefore("#itemBlock");
+
+            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].type:</b></td>  <td class = "hiddenByDefault"> <select id = "inputType' + itemBlockCount + '">' +
+                '<option value="string">string</option>' +
+                '<option value="number">number</option>' +
+                '<option value="boolean">boolean</option>' +
+                '<option value="file">file</option>' +
+                '</select></td><td class = "hiddenByDefault"> Input type of of item[' + itemBlockCount + ']: </td>';
+
+            $("<tr> </tr>").
+                attr("id", "itemBlockInputType" + itemBlockCount).
+                html(textContent).
+                insertBefore("#itemBlock");
+
+            itemBlockCount++;
         },
 
-        readPropertySelectedService: function(){
+        delInputItemsBlock: function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            if (itemBlockCount == 0) {
+                return;
+            }
+            itemBlockCount--;
+
+            $("#itemBlockName" + itemBlockCount).
+                empty().
+                remove();
+
+            $("#itemBlockInputType" + itemBlockCount).
+                empty().
+                remove();
+
+            $("#itemBlockOrder" + itemBlockCount).
+                empty().
+                remove();
+
+        },
+
+        enableInput: function(e) {
+            var idName = e.target.id;
             var el = this.$el;
-            service =  App.selectedService.toJSON();
-            console.log(service.forUserType);
 
-            el.find('#serviceProvider').val(service.serviceProvider);
-            el.find('#serviceName').val(service.serviceName);
-            el.find('#serviceType').val(service.serviceType);
-            el.find('#description').val(service.profile.description);
-            el.find('#baseUrl').val(service.baseUrl);
+            if (e.target.checked) {
+                el.find('#'+ idName + 'Input').prop( "disabled", false );
+            } else {
+                el.find('#'+ idName + 'Input').prop( "disabled", true );
+            }
 
-            service.forUserType.indexOf('guest') >= 0 ? el.find('#guest')[0].checked = true : undefined;
-            service.forUserType.indexOf('client') >= 0 ? el.find('#client')[0].checked = true : undefined;
-            service.forUserType.indexOf('admin') >= 0 ? el.find('#admin')[0].checked = true : undefined;
-            service.forUserType.indexOf('company') >= 0 ? el.find('#company')[0].checked = true : undefined;
-            service.forUserType.indexOf('government') >= 0 ? el.find('#government')[0].checked = true : undefined;
 
-            service.method == 'POST' ? el.find('#POST')[0].checked =true : el.find('#GET')[0].checked = true;
-            el.find('#url').val(service.url);
-            console.log(service.params.needUserAuth);
-            service.params.needUserAuth ? el.find('#needUserAuth')[0].checked = true : el.find('#needUserAuth2')[0].checked = true;
         },
 
         updateService: function(e){
             var el = this.$el;
-            var model = new ServiceModel();
             var data ={};
 
             data.serviceProvider = el.find('#serviceProvider').val();
@@ -78,6 +120,31 @@ return generatedBloks;
                 needUserAuth: el.find('#needUserAuth')[0].checked
             };
 
+            if (el.find('#uriSpecQuery')[0].checked) {
+                data.params.uriSpecQuery = el.find('#uriSpecQueryInput').val().trim().split(',');
+            }
+
+            if (el.find('#body')[0].checked) {
+                data.params.body = el.find('#bodyInput').val().trim().split(',');
+            }
+
+            if (el.find('#query')[0].checked) {
+                data.params.query = el.find('#queryInput').val().trim().split(',');
+            }
+
+            data.inputItems =[];
+
+            for (var i = itemBlockCount - 1; i >= 0; i-- ){
+                data.inputItems[i]= {
+                    inputType: el.find('#inputType' + i).val(),
+                    name: el.find('#name' + i).val(),
+                    order: el.find('#order' + i).val()
+                }
+            }
+            console.log(itemBlockCount);
+
+            console.dir(data);
+
             App.selectedService.save(data, {
                 success: function(model, response){
                     Backbone.history.fragment = '';
@@ -89,18 +156,18 @@ return generatedBloks;
 
                 },
                 error: function(err, xhr, model, response){
-                    console.log('Error created',xhr);
+                    console.log('Error updated',xhr);
                     alert(xhr.responseText);
                 }
             });
         },
 
         render: function () {
-            console.dir(App.selectedService.toJSON());
-            this.$el.html(this.template( App.selectedService.toJSON()));
 
-            // this. readPropertySelectedService();
-            return this;
+            this.$el.html(this.template( App.selectedService.toJSON()));
+            itemBlockCount =  App.selectedService.toJSON().inputItems.length;
+            console.log(itemBlockCount);
+                        return this;
         }
     });
 

@@ -1,6 +1,6 @@
 define([
     'text!templates/usersViewTemplate.html',
-    '../collections/users',
+    '../collections/users'
 ],function(content, UsersCollection){
     var usersView = Backbone.View.extend({
 
@@ -23,7 +23,7 @@ define([
             this.UsersCollection.fetch({
                 success: function(model){
 
-                    console.log('Services loaded: ',  self.UsersCollection.toJSON());
+                    console.log('Users loaded: ',  self.UsersCollection.toJSON());
                     self.render();
                 },
 
@@ -98,8 +98,7 @@ define([
 
             this.selectedUserId = id;
 
-            $("#propertyList").text("");
-            $("#propertyList").append(str);
+            $("#propertyList").text("").append(str);
             $("#properties").text( selectedUser.login + " properties ");
         },
 
@@ -118,9 +117,9 @@ define([
                 serviceDiv = $("#DbList" + serviceId);
                 textContent = service.login;
 
-                console.log('service: ',service.serviceName);
-                console.dir("#DbList" + serviceId);
-                console.dir(serviceDiv);
+                //console.log('user: ',service.serviceName);
+                //console.dir("#DbList" + serviceId);
+                //console.dir(serviceDiv);
 
                 if (!serviceDiv.length) {
                     $("<div> </div>").

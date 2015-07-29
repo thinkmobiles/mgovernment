@@ -18,33 +18,9 @@ define([
             this.render();
         },
 
-        readPropertySelectedUser: function(){
-            var el = this.$el;
-            var user =  App.selectedUser.toJSON();
-            console.log(user.forUserType);
-
-            el.find('#serviceProvider').val(service.serviceProvider);
-            el.find('#serviceName').val(service.serviceName);
-            el.find('#serviceType').val(service.serviceType);
-            el.find('#description').val(service.profile.description);
-            el.find('#baseUrl').val(service.baseUrl);
-
-            service.forUserType.indexOf('guest') >= 0 ? el.find('#guest')[0].checked = true : undefined;
-            service.forUserType.indexOf('client') >= 0 ? el.find('#client')[0].checked = true : undefined;
-            service.forUserType.indexOf('admin') >= 0 ? el.find('#admin')[0].checked = true : undefined;
-            service.forUserType.indexOf('company') >= 0 ? el.find('#company')[0].checked = true : undefined;
-            service.forUserType.indexOf('government') >= 0 ? el.find('#government')[0].checked = true : undefined;
-
-            service.method == 'POST' ? el.find('#POST')[0].checked =true : el.find('#GET')[0].checked = true;
-            el.find('#url').val(service.url);
-            console.log(service.params.needUserAuth);
-            service.params.needUserAuth ? el.find('#needUserAuth')[0].checked = true : el.find('#needUserAuth2')[0].checked = true;
-        },
-
         updateUser: function(e){
             console.log('Update Button pressed');
             var el = this.$el;
-            var model = new UserModel();
             var data ={};
 
             data.serviceProvider = el.find('#serviceProvider').val();
@@ -88,10 +64,9 @@ define([
 
         render: function () {
             var user = App.selectedUser.toJSON();
-            console.log(user);
+            //console.log(user);
 
             this.$el.html(this.template(user));
-           // this.readPropertySelectedUser();
             return this;
         }
     });

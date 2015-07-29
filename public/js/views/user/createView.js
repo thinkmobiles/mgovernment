@@ -22,10 +22,8 @@ define([
 
             data.login = el.find('#login').val();
             data.pass = el.find('#pass').val();
-
             data.firstName = el.find('#firstName').val();
             data. lastName = el.find('#lastName').val();
-
             data.userType = el.find('#client')[0].checked ? 'client' :  el.find('#admin')[0].checked ? 'admin' :  el.find('#company')[0].checked ? 'company' :  el.find('#government')[0].checked ? 'government' : 'thi is impossible';
 
             model.save(data, {

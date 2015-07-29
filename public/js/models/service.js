@@ -11,8 +11,3 @@ define([], function(){
     return serviceModel;
 });
 
-//GET - fetch //
-//POST  Model.save
-//PUT model.save
-//PATCH
-//DELETE

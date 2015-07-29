@@ -100,8 +100,7 @@ define([
 
             this.selectedServiceId = id;
 
-            $("#propertyList").text("");
-            $("#propertyList").append(str);
+            $("#propertyList").text("").append(str);
             $("#properties").text( selectedService.serviceName + " properties ");
         },
 
@@ -120,9 +119,9 @@ define([
                 serviceDiv = $("#DbList" + serviceId);
                 textContent = service.serviceProvider + ', ' + service.serviceName;
 
-                console.log('service: ',service.serviceName);
-                console.dir("#DbList" + serviceId);
-                console.dir(serviceDiv);
+                //console.log('service: ',service.serviceName);
+                //console.dir("#DbList" + serviceId);
+                //console.dir(serviceDiv);
 
                 if (!serviceDiv.length) {
                     $("<div> </div>").

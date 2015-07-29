@@ -24,7 +24,6 @@ define([
 
 
         addInputItemsBlock: function(e) {
-            var el = this.$el;
             var textContent;
 
             e.preventDefault();
@@ -125,15 +124,15 @@ define([
             };
 
             if (el.find('#uriSpecQuery')[0].checked) {
-                data.params.uriSpecQuery = el.find('#uriSpecQueryInput').val().split(',');
+                data.params.uriSpecQuery = el.find('#uriSpecQueryInput').val().trim().split(',');
             }
 
             if (el.find('#body')[0].checked) {
-                data.params.body = el.find('#bodyInput').val().split(',');
+                data.params.body = el.find('#bodyInput').val().trim().split(',');
             }
 
             if (el.find('#query')[0].checked) {
-                data.params.query = el.find('#queryInput').val().split(',');
+                data.params.query = el.find('#queryInput').val().trim().split(',');
             }
 
             data.inputItems =[];

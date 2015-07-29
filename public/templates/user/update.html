@@ -3,32 +3,64 @@
     <form>
 
         <table>
-            <tr> <th>List of properties</th>       <th>Input, set properties</th>      <th>Description of properties</th></tr>
+            <tr>
+                <th>List of properties</th>
+                <th>Input, set properties</th>
+                <th>Description of properties</th>
+            </tr>
 
-            <tr><td class = "hiddenByDefault"><b>login:</b></td>  <td class = "hiddenByDefault"><input type="text" name="name" id="login" size="20" maxlength="40" value="<%=login%>"></td><td class = "hiddenByDefault"> Input login. </td></tr>
+            <tr>
+                <td class="hiddenByDefault"><b>login:</b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="login" size="20" maxlength="40"
+                                                   value="<%=login%>"></td>
+                <td class="hiddenByDefault"> Input login.</td>
+            </tr>
 
-            <tr><td class = "hiddenByDefault"><b>pasword:</b></td>  <td class = "hiddenByDefault"><input type="text" name="name" id="pass" size="20" maxlength="40" value="" ></td><td class = "hiddenByDefault"> Input password </td></tr>
+            <tr>
+                <td class="hiddenByDefault"><b>pasword:</b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="pass" size="20" maxlength="40" value="">
+                </td>
+                <td class="hiddenByDefault"> Input password</td>
+            </tr>
 
 
-            <tr><td class = "hiddenByDefault"><b>first name</b></td>  <td class = "hiddenByDefault"><input type="text" name="name" id="firstName" size="20" maxlength="40" value="<%=profile ? profile.firstName || '' : ''%>"></td><td class = "hiddenByDefault"> Input first name: </td></tr>
+            <tr>
+                <td class="hiddenByDefault"><b>first name</b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="firstName" size="20" maxlength="40"
+                                                   value="<%=profile ? profile.firstName || '' : ''%>"></td>
+                <td class="hiddenByDefault"> Input first name:</td>
+            </tr>
 
-            <tr><td class = "hiddenByDefault"><b>last name</b></td>  <td class = "hiddenByDefault"><input type="text" name="name" id="lastName" size="20" maxlength="40" value="<%=profile ? profile.lastName || '' : ''%>"></td><td class = "hiddenByDefault"> Input last name. </td></tr>
+            <tr>
+                <td class="hiddenByDefault"><b>last name</b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="lastName" size="20" maxlength="40"
+                                                   value="<%=profile ? profile.lastName || '' : ''%>"></td>
+                <td class="hiddenByDefault"> Input last name.</td>
+            </tr>
 
-            <tr><td class = "hiddenByDefault"><b>user type</b></td>    <td class = "hiddenByDefault">
-                <input type="radio" name="userType" id="client"  value="client" <%= userType == 'client' ? 'checked':''%>>client
-                <input type="radio" name="userType" id="admin"  value="admin" <%= userType == 'admin' ? 'checked':'' %>> admin <br>
-                <input type="radio" name="userType" id="company"  value="company"  <%= userType == 'company' ? 'checked':'' %>>company
-                <input type="radio" name="userType" id="government"  value="government"  <%= userType == 'government' ? 'checked':''%>> government <br>
+            <tr>
+                <td class="hiddenByDefault"><b>user type</b></td>
+                <td class="hiddenByDefault">
+                    <input type="radio" name="userType" id="client" value="client" <%= userType == 'client' ?
+                    'checked':''%>>client
+                    <input type="radio" name="userType" id="admin" value="admin" <%= userType == 'admin' ? 'checked':''
+                    %>> admin <br>
+                    <input type="radio" name="userType" id="company" value="company" <%= userType == 'company' ?
+                    'checked':'' %>>company
+                    <input type="radio" name="userType" id="government" value="government" <%= userType == 'government'
+                    ? 'checked':''%>> government <br>
 
-            </td>   <td class = "hiddenByDefault">Choose user type, it check when service access</td></tr>
+                </td>
+                <td class="hiddenByDefault">Choose user type, it check when service access</td>
+            </tr>
 
         </table>
 
-        <div style=" text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px;
+        <div style=" text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;
     border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8">
             <div id="updateBtn" onmouseover="this.style.cursor='pointer'">
         <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
-        Save created User
+        Save updated User
         </span>
             </div>
         </div>

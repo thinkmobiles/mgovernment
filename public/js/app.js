@@ -7,7 +7,6 @@ define(/*@Parrameters dependencies*/['Backbone', 'router'], function(Backbone, R
 
         if(!fragment){
             Backbone.history.start({silent: true});
-
             Backbone.history.fragment = '';
             Backbone.history.navigate('#index', {trigger: true, replace: true});
         } else {
