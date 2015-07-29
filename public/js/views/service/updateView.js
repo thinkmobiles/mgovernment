@@ -167,7 +167,12 @@ define([
             this.$el.html(this.template( App.selectedService.toJSON()));
             itemBlockCount =  App.selectedService.toJSON().inputItems.length;
             console.log(itemBlockCount);
-                        return this;
+            $("<tr> </tr>").
+                attr("id", "itemBlockInputType" + itemBlockCount).
+                html(textContent).
+                insertBefore("#itemBlock");
+
+            return this;
         }
     });
 

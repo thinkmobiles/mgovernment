@@ -1,6 +1,7 @@
 
 define([
     'text!templates/service/create.html',
+    'text!templates/service/inputItemsBlock.html',
     '../../models/service'
 ], function (content, ServiceModel) {
     var itemBlockCount = 0;
@@ -20,7 +21,6 @@ define([
             itemBlockCount = 0;
             this.render();
         },
-
 
 
         addInputItemsBlock: function(e) {

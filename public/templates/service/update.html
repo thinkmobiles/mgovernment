@@ -51,25 +51,22 @@
                 <td class="hiddenByDefault">Start Provider url, like google.com</td>
             </tr>
 
-            <%= (function(){
-            var generatedBloks = '';
-            if (inputItems.length){
-            for (var i= 0, len = inputItems.length - 1; i <= len; i ++){
-            generatedBloks +='<tr id="' + 'itemBlockOrder' + i + '"><td class = "hiddenByDefault"><b>item[' + i + '].order:</b></td>  <td class = "hiddenByDefault"><input type="number" id="order' + i + '" size ="4" style="width: 50px" value="' + inputItems[i].order + '"></td><td class = "hiddenByDefault"> Input order of item[' + i + ']: </td></tr>';
+            <% if (inputItems.length){ %>
+            <% for (var i= 0, len = inputItems.length - 1; i <= len; i ++){ %>
 
-            generatedBloks +='<tr id="' + 'itemBlockName' + i + '"><td class = "hiddenByDefault"><b>item[' + i + '].name:</b></td>  <td class = "hiddenByDefault"><input type="text"  id="name' + i + '" size="20" maxlength="20" value="' + inputItems[i].name + '"></td><td class = "hiddenByDefault"> Input name of item[' + i + ']: </td></tr>';
+            <tr id="itemBlockOrder<%= i %>"><td class = "hiddenByDefault"><b>item[<%= i %>].order:</b></td>  <td class = "hiddenByDefault"><input type="number" id="order<%= i %>" size ="4" style="width: 50px" value="<%= inputItems[i].order %>"></td><td class = "hiddenByDefault"> Input order of item[<%= i %>]: </td></tr>
 
-            generatedBloks +='<tr id="' + 'itemBlockInputType' + i + '"><td class = "hiddenByDefault"><b>item[' + i + '].type:</b></td>  <td class = "hiddenByDefault">' +
-            '<select  id="inputType' + i + '" value="' + inputItems[i].inputType + '" >' +
-                '<option value="string"' + (inputItems[i].inputType == 'string' ? 'selected':'')  + '>string</option>' +
-                '<option value="number"' + (inputItems[i].inputType == 'number' ? 'selected':'')  + '>number</option>' +
-                '<option value="boolean"' + (inputItems[i].inputType == 'boolean' ? 'selected':'')  + '>boolean</option>' +
-                '<option value="file"' + (inputItems[i].inputType == 'file' ? 'selected':'')  + ' >file</option>' +
-                '</select></td><td class = "hiddenByDefault"> Input type of item[' + i + ']: </td></tr>';
+            <tr id="itemBlockName<%= i %>"><td class = "hiddenByDefault"><b>item[<%= i %>].name:</b></td>  <td class = "hiddenByDefault"><input type="text"  id="name<%= i %>" size="20" maxlength="20" value="<%= inputItems[i].name %>"></td><td class = "hiddenByDefault"> Input name of item[<%= i %>]: </td></tr>
 
-            }
-            }
-            return generatedBloks; })() %>
+            <tr id="itemBlockInputType<%= i %>"><td class = "hiddenByDefault"><b>item[<%= i %>].type:</b></td>  <td class = "hiddenByDefault">
+                <select  id="inputType<%= i %>" value="<%= inputItems[i].inputType %>" >
+                    <option value="string" <% if (inputItems[i].inputType == 'string') { %> selected <% } %> >string</option>
+                    <option value="number" <% if (inputItems[i].inputType == 'number') { %> selected <% } %> >number</option>
+                    <option value="boolean" <% if (inputItems[i].inputType == 'boolean') { %> selected <% } %> > boolean</option>
+                    <option value="file" <% if (inputItems[i].inputType == 'file') { %> selected <% } %> >file</option>
+                </select></td><td class = "hiddenByDefault"> Input type of item[<%= i %>]: </td></tr>
+            <% } %>
+            <% } %>
 
             <tr id="itemBlock">
                 <td class="hiddenByDefault"><b>inputItems [</b></td>
