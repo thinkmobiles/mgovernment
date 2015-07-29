@@ -29,17 +29,12 @@
                 <td class="hiddenByDefault"></td>
             </tr>
 
-            <%= (function(){
-            var generatedBloks = '';
+            <% if (accounts.length){ %>
 
-            if (accounts.length){
-
-            for (var i= 0, len = accounts.length - 1; i <= len; i ++){
-            generatedBloks +='<tr><td class = "hiddenByDefault"><b>serviceProvider:</b></td>  <td class = "hiddenByDefault" style="color: #003eff">' + accounts[i].serviceProvider + '</td><td class = "hiddenByDefault"> </td></tr>';
-            };
-            };
-            return generatedBloks; })() %>
-
+            <% for (var i= 0, len = accounts.length - 1; i <= len; i ++){ %>
+            <tr><td class = "hiddenByDefault"><b>serviceProvider:</b></td>  <td class = "hiddenByDefault" style="color: #003eff"> <%= accounts[i].serviceProvider %></td><td class = "hiddenByDefault"> </td></tr>
+           <% } %>
+           <% } %>
 
             <tr>
                 <td class="hiddenByDefault"><b>first name</b></td>
