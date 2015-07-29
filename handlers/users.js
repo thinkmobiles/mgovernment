@@ -567,7 +567,7 @@ var User = function(db) {
         var login = body.login;
         var pass = body.pass;
         var userType = body.userType;
-        var userId = req.params.id
+        var userId = req.params.id;
         var err;
 
         var device = {

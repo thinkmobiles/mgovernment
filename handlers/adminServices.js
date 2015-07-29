@@ -11,42 +11,40 @@ var Service = function(db) {
     var Layout = db.model(CONST.MODELS.LAYOUT);
     var historyHandler = new HistoryHandler(db);
 
+    function checkRecivedParamsFieldNamesWithItemsNames(recivedArray,arrayTocompareName){
+        var foundEqualFieldName = false;
+
+        for (var i = recivedArray.length - 1; i >= 0; i--) {
+            for (var j = arrayTocompareName.length -1; j >= 0; j --) {
+                if (recivedArray[i] === arrayTocompareName[j].name){
+                    foundEqualFieldName = true;
+                }
+            }
+            if (!foundEqualFieldName) {
+                return false
+            }
+            foundEqualFieldName = false;
+        }
+        return true;
+    }
+
     this.updateServiceById = function (req, res, next) {
 
         var searchQuery = {
             '_id': req.params.id
         };
-        var foundRelevantField = false;
         var body = req.body;
-
-        var checkRecivedParamsWithItemsName = function(recivedArray){
-            for (var i = recivedArray.length - 1; i >= 0; i--) {
-                for (var j = body.inputItems.length -1; j >= 0; j --) {
-                    if (recivedArray[i] === body.inputItems[j].name){
-                        foundRelevantField = true;
-                    }
-                }
-                if (!foundRelevantField) {
-                    return false
-                }
-                foundRelevantField = false;
-            }
-            return true;
-        };
 
         if (!body) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
-        if (body.params.body && !checkRecivedParamsWithItemsName(body.params.body)) {
+        if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
-        if (body.params.query && !checkRecivedParamsWithItemsName(body.params.query)) {
+        if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
-        if (body.params.uriSpecQuery && !checkRecivedParamsWithItemsName(body.params.uriSpecQuery)) {
+        if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
@@ -70,44 +68,28 @@ var Service = function(db) {
             });
     };
 
+
+
     this.createService = function (req, res, next) {
 
-        var foundRelevantField = false;
         var body = req.body;
-
-        var checkRecivedParamsWithItemsName = function(recivedArray){
-            for (var i = recivedArray.length - 1; i >= 0; i--) {
-                for (var j = body.inputItems.length -1; j >= 0; j --) {
-                    if (recivedArray[i] === body.inputItems[j].name){
-                        foundRelevantField = true;
-                    }
-                }
-                if (!foundRelevantField) {
-                    return false
-                }
-                foundRelevantField = false;
-            }
-          return true;
-        };
+        var service;
 
         if (!body) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
-        if (body.params.body && !checkRecivedParamsWithItemsName(body.params.body)) {
+        if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
-        if (body.params.query && !checkRecivedParamsWithItemsName(body.params.query)) {
+        if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
-        if (body.params.uriSpecQuery && !checkRecivedParamsWithItemsName(body.params.uriSpecQuery)) {
+        if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         body.updatedAt = new Date();
-        var service = new Service(body);
+        service = new Service(body);
 
         service
             .save(function (err, model) {
