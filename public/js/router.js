@@ -9,7 +9,6 @@ define([
     'views/user/createView',
     'views/user/updateView'
 
-
 ], function (Backbone, MainView,ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView) {
     var Router = Backbone.Router.extend({
 
@@ -25,6 +24,11 @@ define([
             "createUser": "toCreateUserView",
             "updateUser": "toUpdateUserView"
         },
+
+        initialize: function () {
+            this.mainView = new MainView();
+        },
+
 
         toMainView: function () {
             if (this.mainView) {

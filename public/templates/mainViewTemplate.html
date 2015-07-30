@@ -1,15 +1,9 @@
-<div class="header" style="width: 750px; text-align: center">
-    <img src="../img/tra_logo.jpg">
-
-</div>
-
-
 <div style="text-align:left">
-    <div id="topBar" style="width: 74%;  float: left; text-align: center; left:1px;  display: none; ">
+    <div id="topBar" style="width: 74%;  float: left; text-align: center; left:1px; <% if(!authorized) { %>  display: none; <% } %> ">
         <h1>topBar</h1>
     </div>
 
-    <div id="logOutBlock" style="width: 25%;  float: left;  text-align: left; display: none;">
+    <div id="logOutBlock" style="width: 25%;  float: left;  text-align: left; <% if(!authorized) { %>  display: none; <% } %> ">
 
         <label class="input_header" id="signInLogin">login</label>
 
@@ -19,7 +13,7 @@
     </div>
 </div>
 
-<div id="loginBlock" style="width: 300px;  text-align: center; clear: both">
+<div id="loginBlock" style="width: 300px;  text-align: center; clear: both; <% if(authorized) { %>  display: none; <% } %>">
     <div id="contact_name" class="input_div half"><label class="input_header">Login</label> <br>
         <input name="inputLogin" id="inputLogin" type="text" class="input_field">
 
@@ -34,15 +28,3 @@
 
 </div>
 
-<div id="dataBlock"
-     style="width: 750px; min-height: 100px; clear: both;  border-radius:4px; -moz-border-radius:5px; -khtml-border-radius:10px; border: 1px solid grey">
-
-</div>
-
-
-<div class="footer" style="width: 750px;  text-align: center; clear: both">
-
-    <img src="../img/tm_logo.png">
-
-
-</div>

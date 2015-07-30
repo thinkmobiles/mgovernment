@@ -83,6 +83,7 @@ define([
                     e.preventDefault();
                     e.stopPropagation();
                     e.stopImmediatePropagation();
+                    App.authorized = false;
 
                     Backbone.history.navigate('index', {trigger: true});
                 },
@@ -96,7 +97,9 @@ define([
         },
 
         render: function () {
-            this.$el.html(this.template());
+            console.log(App.authorized);
+            !App.authorized ? App.authorized = false :'';
+            this.$el.html(this.template(App));
             new topBarView();
             return this;
         }

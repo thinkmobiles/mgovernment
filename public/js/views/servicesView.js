@@ -54,7 +54,7 @@ define([
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
-
+            Backbone.history.fragment = '';
             Backbone.history.navigate('createService', {trigger: true});
         },
 
@@ -65,6 +65,7 @@ define([
             service.destroy ({
                 success: function(model, response, options){
                     alert('Service deleted');
+                    Backbone.history.fragment = '';
                     Backbone.history.navigate('services', {trigger: true});
                 },
 
@@ -79,6 +80,7 @@ define([
             if (!this.selectedServiceId) return;
 
             App.selectedService = this.servicesCollection.models[this.selectedServiceId];
+            Backbone.history.fragment = '';
             Backbone.history.navigate('updateService', {trigger: true});
         },
 

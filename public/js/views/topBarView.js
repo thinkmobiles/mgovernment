@@ -35,7 +35,7 @@ define([
 
             e.preventDefault();
             e.stopPropagation();
-
+            Backbone.history.fragment = '';
             Backbone.history.navigate(hash, {trigger: true});
         },
 

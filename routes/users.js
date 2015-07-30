@@ -20,7 +20,12 @@ module.exports = function(db){
         .get(session.isAdminBySession, users.getCount);
 
     router.post('/signIn', users.signInClient);
-    router.post('/adminSignIn', users.adminSignIn);
+    router.route('/adminSignIn')
+        .get(session.isAdminBySession, function(req, res, next){
+                res.status(200).send({session: 'admin'});
+            })
+        .post(users.adminSignIn);
+
     router.post('/signOut', users.signOutClient);
 
     router.get('/profile', session.authenticatedUser,  users.getUserProfileBySession);

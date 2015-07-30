@@ -1,4 +1,3 @@
-
 define([
     'text!templates/service/create.html',
     'text!templates/service/inputItemsBlock.html',

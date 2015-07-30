@@ -1,8 +1,6 @@
-
 define([
     'text!templates/service/update.html',
     '../../models/service'
-
 
 ], function (content, ServiceModel) {
     var itemBlockCount = 0;
@@ -166,12 +164,7 @@ define([
 
             this.$el.html(this.template( App.selectedService.toJSON()));
             itemBlockCount =  App.selectedService.toJSON().inputItems.length;
-            console.log(itemBlockCount);
-            $("<tr> </tr>").
-                attr("id", "itemBlockInputType" + itemBlockCount).
-                html(textContent).
-                insertBefore("#itemBlock");
-
+            //console.log(itemBlockCount);
             return this;
         }
     });
