@@ -577,7 +577,8 @@ var User = function(db) {
 
         var profile = {
             firstName: body.firstName,
-            lastName: body.lastName
+            lastName: body.lastName,
+            createdAt: new Date()
         };
 
         if (!isValidUserType(userType)) {
