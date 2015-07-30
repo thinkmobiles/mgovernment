@@ -19,19 +19,18 @@ var TmaTraServices = function(db) {
 
         if (!req.session.token && serviceOptions.params.needUserAuth) {
             console.log('!req.session.token && serviceOptions.params.needUserAuth', !req.session.token, serviceOptions.params.needUserAuth);
-            return async.series([createSendAuthRequest(), createSendRequest()], function (err, results) {
-                if (err) {
-                    console.log(err);
-                    return callback(err);
-                    //return requestWithSignIn();
-                }
-                return callback(null, results);
-            });
+            return sendRequestWithAuth();
         } else {
             console.log('!req.session.token && serviceOptions.params.needUserAuth', req.session.token, serviceOptions.params.needUserAuth);
             return async.series([createSendRequest()], function (err, results) {
                 if (err) {
                     console.log(err);
+
+                    //TODO  // if 401 - Unauthorizate goto stage with auth
+
+                    if (err == 'nullUnauthorized') {
+                        return sendRequestWithAuth()
+                    }
                     return callback(err);
                     //return requestWithSignIn();
                 }
@@ -39,9 +38,15 @@ var TmaTraServices = function(db) {
             });
         }
 
-
-
-//TODO  // if 401 - Unauthorizate goto stage with auth
+        function sendRequestWithAuth () {
+            async.series([createSendAuthRequest(), createSendRequest()], function (err, results) {
+                if (err) {
+                    console.log(err);
+                    return callback(err);
+                }
+                return callback(null, results);
+            });
+        }
 
         function createSendRequest() {
             return function (callback) {

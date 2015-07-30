@@ -17,7 +17,7 @@ module.exports = function(db){
         .get(session.isAdminBySession,users.getUserProfiles);
 
     router.route('/getCount/')
-        .get(users.getCount);
+        .get(session.isAdminBySession, users.getCount);
 
     router.post('/signIn', users.signInClient);
     router.post('/adminSignIn', users.adminSignIn);
@@ -41,7 +41,7 @@ module.exports = function(db){
         .delete(session.authenticatedUser, users.deleteServiceToFavorites);
 
     router.route('/favorites')
-        .get(session.authenticatedUser, users.getServicesFromFavorites)
+        .get(session.authenticatedUser, users.getServicesFromFavorites);
 
 
     router.route('/account/image')
