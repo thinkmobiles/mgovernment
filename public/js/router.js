@@ -2,6 +2,7 @@
 define([
     'Backbone',
     'views/mainView',
+    'views/login/loginView',
     'views/service/createView',
     'views/service/updateView',
     'views/servicesView',
@@ -9,7 +10,7 @@ define([
     'views/user/createView',
     'views/user/updateView'
 
-], function (Backbone, MainView,ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView) {
+], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView) {
     var Router = Backbone.Router.extend({
 
         mainView: null,
@@ -18,6 +19,7 @@ define([
         routes: {
             "index": "toMainView",
             "services": "toServicesView",
+            "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
             "users": "toUsersView",
@@ -26,6 +28,7 @@ define([
         },
 
         initialize: function () {
+
             this.mainView = new MainView();
         },
 
@@ -34,8 +37,17 @@ define([
             if (this.mainView) {
                 this.mainView.undelegateEvents();
             }
-
+            //console.log('MainView routed');
             this.mainView = new MainView();
+
+        },
+
+        toLoginView: function () {
+            if (this.mainView) {
+                this.mainView.undelegateEvents();
+            }
+
+            this.mainView = new LoginView();
 
         },
 

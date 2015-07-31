@@ -1,13 +1,10 @@
-/**
- * Created by Roman on 28.05.2015.
- // */
+
 define([
     'text!templates/mainViewTemplate.html',
     'views/topBarView',
-    '../models/adminSignIn',
     '../models/adminSignOut'
 
-], function (mainTemplate, topBarView, adminSignIn, adminSignOut) {
+], function (mainTemplate, topBarView, adminSignOut) {
     var mainView = Backbone.View.extend({
         el: '#content',
 
@@ -18,11 +15,11 @@ define([
             'mouseout .actionButton': 'clearDecoration',
             'mouseover .actionButtonWhite': 'changePointerWhite',
             'mouseout .actionButtonWhite': 'clearDecorationWhite',
-            "click #signIn": "SignInAdmin",
             "click #signOut": "SignOutAdmin"
         },
 
         initialize: function () {
+           console.log('Main View Inicialize');
             this.render();
         },
 
@@ -44,36 +41,6 @@ define([
             $(e.target).css({"background-color":"rgba(0, 0, 0, 0.1)"});
         },
 
-        SignInAdmin: function(e) {
-            var model = new adminSignIn();
-
-            var loginData ={
-                login: $('#inputLogin').val(),
-                pass: $('#inputPassword').val()
-            };
-
-            model.save(loginData, {
-                success: function(model, response) {
-
-                    console.log(response);
-                    $('#topBar').css('display', 'block');
-                    $('#signInLogin').text(loginData.login);
-                    $('#logOutBlock').css('display', 'block');
-                    $('#loginBlock').css('display', 'none');
-
-                    e.preventDefault();
-                    e.stopPropagation();
-                    e.stopImmediatePropagation();
-                },
-
-                error: function(err, xhr, model, response) {
-
-                    console.log('Error: ',xhr.responseText);
-                    alert(xhr.responseText);
-                }
-            });
-        },
-
         SignOutAdmin: function(e) {
             var model = new adminSignOut();
 
@@ -85,7 +52,8 @@ define([
                     e.stopImmediatePropagation();
                     App.authorized = false;
 
-                    Backbone.history.navigate('index', {trigger: true});
+                    Backbone.history.fragment = '';
+                    Backbone.history.navigate('login', {trigger: true});
                 },
 
                 error: function(err, xhr, model, response) {
@@ -97,9 +65,9 @@ define([
         },
 
         render: function () {
-            console.log(App.authorized);
-            !App.authorized ? App.authorized = false :'';
-            this.$el.html(this.template(App));
+            //console.log('Main View render');
+            //console.log('hello', App.authorized);
+            this.$el.html(this.template());
             new topBarView();
             return this;
         }
