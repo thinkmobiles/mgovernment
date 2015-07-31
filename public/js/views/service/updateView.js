@@ -1,8 +1,8 @@
 define([
     'text!templates/service/update.html',
-    '../../models/service'
+    'text!templates/service/inputItemsBlock.html'
 
-], function (content, ServiceModel) {
+], function (content,inputBlockTemplate) {
     var itemBlockCount = 0;
     var serviceUpdateView = Backbone.View.extend({
         el: '#dataBlock',

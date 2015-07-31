@@ -1,8 +1,7 @@
 define([
-    'text!templates/user/update.html',
-    '../../models/user'
+    'text!templates/user/update.html'
 
-], function (content, UserModel) {
+], function (content) {
     var userUpdateView = Backbone.View.extend({
         el: '#dataBlock',
         template: _.template(content),
