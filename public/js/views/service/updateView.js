@@ -26,32 +26,33 @@ define([
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
+            $("<tr> </tr>").html(_.template(inputBlockTemplate, {i: itemBlockCount})).insertBefore("#itemBlock");
 
-            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].order:</b></td>  <td class = "hiddenByDefault"><input type="number" id="order' + itemBlockCount + '" size ="4" style="width: 50px"></td><td class = "hiddenByDefault"> Input order of item[' + itemBlockCount + ']: </td>';
-
-            $("<tr> </tr>").
-                attr("id", "itemBlockOrder" + itemBlockCount).
-                html(textContent).
-                insertBefore("#itemBlock");
-
-            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].name:</b></td>  <td class = "hiddenByDefault"><input type="text" id="name' + itemBlockCount + '" size="20" maxlength="20"></td><td class = "hiddenByDefault"> Input name of item[' + itemBlockCount + ']: </td>';
-
-            $("<tr> </tr>").
-                attr("id", "itemBlockName" + itemBlockCount).
-                html(textContent).
-                insertBefore("#itemBlock");
-
-            textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].type:</b></td>  <td class = "hiddenByDefault"> <select id = "inputType' + itemBlockCount + '">' +
-                '<option value="string">string</option>' +
-                '<option value="number">number</option>' +
-                '<option value="boolean">boolean</option>' +
-                '<option value="file">file</option>' +
-                '</select></td><td class = "hiddenByDefault"> Input type of of item[' + itemBlockCount + ']: </td>';
-
-            $("<tr> </tr>").
-                attr("id", "itemBlockInputType" + itemBlockCount).
-                html(textContent).
-                insertBefore("#itemBlock");
+            //textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].order:</b></td>  <td class = "hiddenByDefault"><input type="number" id="order' + itemBlockCount + '" size ="4" style="width: 50px"></td><td class = "hiddenByDefault"> Input order of item[' + itemBlockCount + ']: </td>';
+            //
+            //$("<tr> </tr>").
+            //    attr("id", "itemBlockOrder" + itemBlockCount).
+            //    html(textContent).
+            //    insertBefore("#itemBlock");
+            //
+            //textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].name:</b></td>  <td class = "hiddenByDefault"><input type="text" id="name' + itemBlockCount + '" size="20" maxlength="20"></td><td class = "hiddenByDefault"> Input name of item[' + itemBlockCount + ']: </td>';
+            //
+            //$("<tr> </tr>").
+            //    attr("id", "itemBlockName" + itemBlockCount).
+            //    html(textContent).
+            //    insertBefore("#itemBlock");
+            //
+            //textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].type:</b></td>  <td class = "hiddenByDefault"> <select id = "inputType' + itemBlockCount + '">' +
+            //    '<option value="string">string</option>' +
+            //    '<option value="number">number</option>' +
+            //    '<option value="boolean">boolean</option>' +
+            //    '<option value="file">file</option>' +
+            //    '</select></td><td class = "hiddenByDefault"> Input type of of item[' + itemBlockCount + ']: </td>';
+            //
+            //$("<tr> </tr>").
+            //    attr("id", "itemBlockInputType" + itemBlockCount).
+            //    html(textContent).
+            //    insertBefore("#itemBlock");
 
             itemBlockCount++;
         },

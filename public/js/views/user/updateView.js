@@ -1,8 +1,6 @@
-
 define([
     'text!templates/user/update.html',
     '../../models/user'
-
 
 ], function (content, UserModel) {
     var userUpdateView = Backbone.View.extend({

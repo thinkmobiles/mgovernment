@@ -1,4 +1,3 @@
-
 define([
     'text!templates/user/create.html',
     '../../models/user'

@@ -1,29 +1,29 @@
 <tr id="itemBlockOrder<=%i%>">
     <td class="hiddenByDefault"><b>item[<=%i%>].order:</b></td>
     <td class="hiddenByDefault"><input type="number" id="order<=%i%>" size="4" style="width: 50px"
-                                       value="<=%inputItem.order%>"></td>
+                                       value=""></td>
     <td class="hiddenByDefault"> Input order of item[<=%i%>]:</td>
 </tr>
 
 <tr id="itemBlockName<=%i%>">
     <td class="hiddenByDefault"><b>item[<=%i%>].name:</b></td>
     <td class="hiddenByDefault"><input type="text" id="name<=%i%>" size="20" maxlength="20"
-                                       value="<=%inputItem.name%>"></td>
+                                       value=""></td>
     <td class="hiddenByDefault"> Input name of item[<=%i%>]:</td>
 </tr>
 
 <tr id="itemBlockInputType<=%i%>">
     <td class="hiddenByDefault"><b>item[<=%i%>].type:</b></td>
     <td class="hiddenByDefault">
-        <select id="inputType<=%i%>" value="<%=inputItem.inputType%>">
+        <select id="inputType<=%i%>">
 
-            <option value="string" <%=(inputItem.inputType == 'string' ? 'selected':'')%> >string</option>
+            <option value="string">string</option>
 
-            <option value="number" <%=(inputItem.inputType == 'number' ? 'selected':'')%> >number</option>
+            <option value="number" >number</option>
 
-            <option value="boolean" <%=(inputItem.inputType == 'boolean' ? 'selected':'')%> >boolean</option>
+            <option value="boolean">boolean</option>
 
-            <option value="file" <%=(inputItem.inputType == 'boolean' ? 'selected':'')%> >boolean</option>
+            <option value="file" >boolean</option>
              </select></td>
     <td class="hiddenByDefault"> Input type of item[<=%i%>]:</td>
 </tr>
