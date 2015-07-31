@@ -1,7 +1,7 @@
 define([
     'text!templates/service/create.html',
     'text!templates/service/inputItemsBlock.html',
-    '../../models/service'
+    'models/service'
 ], function (content,inputBlockTemplate, ServiceModel) {
     var itemBlockCount = 0;
     var serviceCreateView = Backbone.View.extend({

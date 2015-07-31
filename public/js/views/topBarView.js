@@ -1,6 +1,3 @@
-/**
- * Created by Roman on 28.05.2015.
- */
 define([
     'text!templates/topBarTemplate.html',
 ], function (topBarTemplate) {

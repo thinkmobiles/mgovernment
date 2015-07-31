@@ -1,6 +1,6 @@
 define([
     'text!templates/usersViewTemplate.html',
-    '../collections/users'
+    'collections/users'
 ],function(content, UsersCollection){
     var usersView = Backbone.View.extend({
 

@@ -2,7 +2,7 @@
 define([
     'text!templates/mainViewTemplate.html',
     'views/topBarView',
-    '../models/adminSignOut'
+    'models/adminSignOut'
 
 ], function (mainTemplate, topBarView, adminSignOut) {
     var mainView = Backbone.View.extend({

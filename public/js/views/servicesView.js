@@ -1,7 +1,7 @@
 define([
     'text!templates/servicesViewTemplate.html',
-    '../collections/services',
-    '../models/service'
+    'collections/services',
+    'models/service'
 ],function(content, ServicesCollection, ServiceModel){
     var servicesView = Backbone.View.extend({
 

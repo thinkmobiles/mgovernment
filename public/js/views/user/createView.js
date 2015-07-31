@@ -1,6 +1,6 @@
 define([
     'text!templates/user/create.html',
-    '../../models/user'
+    'models/user'
 ], function (content, UserModel) {
     var userCreateView = Backbone.View.extend({
         el: '#dataBlock',
