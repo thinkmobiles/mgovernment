@@ -44,7 +44,7 @@ define([
                     //e.stopImmediatePropagation();
                     App.authorized = true;
                     Backbone.history.fragment = '';
-                    Backbone.history.navigate('index', {trigger: true});
+                    Backbone.history.navigate('index', {trigger: true, replace: true});
                 },
 
                 error: function(err, xhr, model, response) {

@@ -9,7 +9,6 @@ define([
         el: '#dataBlock',
         template: _.template(content),
 
-
         events: {
             'click #saveBtn' : 'saveService',
             'click #addInputItemsBlock' : 'addInputItemsBlock',
@@ -24,13 +23,12 @@ define([
 
 
         addInputItemsBlock: function(e) {
-            var textContent;
-            var block;
 
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
-            $("<tr> </tr>").html(_.template(inputBlockTemplate, {i: itemBlockCount})).insertBefore("#itemBlock");
+            $("#itemBlock").before(_.template(inputBlockTemplate)({i: itemBlockCount}));
+
 
             //textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].order:</b></td>  <td class = "hiddenByDefault"><input type="number" id="order' + itemBlockCount + '" size ="4" style="width: 50px"></td><td class = "hiddenByDefault"> Input order of item[' + itemBlockCount + ']: </td>';
             //
