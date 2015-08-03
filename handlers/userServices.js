@@ -75,7 +75,6 @@ var UserService = function(db) {
 
     this.sendServiceRequest = function (req, res, next) {
 
-        var userRequestBody = req.body;
         var userId = req.session.uId;
         var serviceId = req.params.serviceId;
         var found = false;
@@ -104,7 +103,7 @@ var UserService = function(db) {
                 action: CONST.ACTION.POST,
                 model: CONST.MODELS.SERVICE,
                 modelId: serviceId,
-                req: {params: req.params, userRequestBody: req.params},
+                req: {params: req.params, body: req.body},
                 res: results,
                 description: 'sendServiceRequest'
             };

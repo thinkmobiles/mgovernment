@@ -103,7 +103,8 @@ define([
             this.selectedUserId = id;
 
             $("#propertyList").text("").append(str);
-            $("#properties").text( selectedUser.login + " properties ");
+            $("#properties").text( selectedUser.login );
+            //$("#properties").text( selectedUser.login + " properties ");
         },
 
         updateUserList: function(){

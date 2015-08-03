@@ -107,7 +107,8 @@ define([
             this.selectedServiceId = id;
 
             $("#propertyList").text("").append(str);
-            $("#properties").text( selectedService.serviceName + " properties ");
+            $("#properties").text( selectedService.serviceName);
+            //$("#properties").text( selectedService.serviceName + " properties ");
         },
 
         updateServiceList: function(){
