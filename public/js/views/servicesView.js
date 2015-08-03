@@ -75,7 +75,11 @@ define([
             });
         },
 
-        updateService: function() {
+        updateService: function(e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
 
             if (!this.selectedServiceId) return;
 

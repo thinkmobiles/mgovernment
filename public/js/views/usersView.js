@@ -73,7 +73,11 @@ define([
             });
         },
 
-        updateUser: function() {
+        updateUser: function(e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
 
             if (!this.selectedUserId) return;
 
