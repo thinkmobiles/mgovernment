@@ -28,34 +28,6 @@ define([
             e.stopPropagation();
             e.stopImmediatePropagation();
             $("#itemBlock").before(_.template(inputBlockTemplate)({i: itemBlockCount}));
-
-
-            //textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].order:</b></td>  <td class = "hiddenByDefault"><input type="number" id="order' + itemBlockCount + '" size ="4" style="width: 50px"></td><td class = "hiddenByDefault"> Input order of item[' + itemBlockCount + ']: </td>';
-            //
-            //$("<tr> </tr>").
-            //    attr("id", "itemBlockOrder" + itemBlockCount).
-            //    html(textContent).
-            //    insertBefore("#itemBlock");
-            //
-            //textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].name:</b></td>  <td class = "hiddenByDefault"><input type="text" id="name' + itemBlockCount + '" size="20" maxlength="20"></td><td class = "hiddenByDefault"> Input name of item[' + itemBlockCount + ']: </td>';
-            //
-            //$("<tr> </tr>").
-            //    attr("id", "itemBlockName" + itemBlockCount).
-            //    html(textContent).
-            //    insertBefore("#itemBlock");
-            //
-            //textContent = '<td class = "hiddenByDefault"><b>item[' + itemBlockCount + '].type:</b></td>  <td class = "hiddenByDefault"> <select id = "inputType' + itemBlockCount + '">' +
-            //    '<option value="string">string</option>' +
-            //    '<option value="number">number</option>' +
-            //    '<option value="boolean">boolean</option>' +
-            //    '<option value="file">file</option>' +
-            //    '</select></td><td class = "hiddenByDefault"> Input type of of item[' + itemBlockCount + ']: </td>';
-            //
-            //$("<tr> </tr>").
-            //    attr("id", "itemBlockInputType" + itemBlockCount).
-            //    html(textContent).
-            //    insertBefore("#itemBlock");
-
             itemBlockCount++;
         },
 
@@ -102,13 +74,13 @@ define([
             var model = new ServiceModel();
             var data ={};
 
-            data.serviceProvider = el.find('#serviceProvider').val();
-            data.serviceName = el.find('#serviceName').val();
-            data.serviceType = el.find('#serviceType').val();
+            data.serviceProvider = el.find('#serviceProvider').val().trim();
+            data.serviceName = el.find('#serviceName').val().trim();
+            data.serviceType = el.find('#serviceType').val().trim();
             data.profile = {
-                description: el.find('#description').val()
+                description: el.find('#description').val().trim()
             };
-            data.baseUrl = el.find('#baseUrl').val();
+            data.baseUrl = el.find('#baseUrl').val().trim();
 
             data.forUserType = [];
             el.find('#guest')[0].checked ? data.forUserType.push('guest') : undefined;
@@ -139,9 +111,9 @@ define([
 
             for (var i = itemBlockCount - 1; i >= 0; i-- ){
                 data.inputItems[i]= {
-                    inputType: el.find('#inputType' + i).val(),
-                    name: el.find('#name' + i).val(),
-                    order: el.find('#order' + i).val()
+                    inputType: el.find('#inputType' + i).val().trim(),
+                    name: el.find('#name' + i).val().trim(),
+                    order: el.find('#order' + i).val().trim()
                 }
             }
 

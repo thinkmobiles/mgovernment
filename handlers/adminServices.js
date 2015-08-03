@@ -40,11 +40,9 @@ var Service = function(db) {
         if (!body) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
         if (!myRegExp.test(body.baseUrl)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
         if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
@@ -54,6 +52,9 @@ var Service = function(db) {
         if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
+
+        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) == '/' ? body.baseUrl : body.baseUrl + '/';
+        body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
 
@@ -98,6 +99,9 @@ var Service = function(db) {
         if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
+
+        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) == '/' ? body.baseUrl : body.baseUrl + '/';
+        body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
         service = new Service(body);
