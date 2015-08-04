@@ -1,8 +1,8 @@
 define([
     'text!templates/servicesViewTemplate.html',
     'collections/services',
-    'models/service'
-],function(content, ServicesCollection, ServiceModel){
+    'text!templates/pagination/paginationTemplate.html'
+],function(content, ServicesCollection, paginationTemplate){
     var servicesView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -38,6 +38,7 @@ define([
         render: function () {
             console.log('ServicesView render');
             this.$el.html(this.template());
+            this.$el.find("#paginationDiv").html(_.template(paginationTemplate)({gridStart: 1, gridEnd: 20, gridCount: 100 }));
             this.updateServiceList();
         },
 
@@ -144,8 +145,10 @@ define([
                         text(textContent);
                 }
             }
+
             return this;
         }
     });
+
     return servicesView;
 });

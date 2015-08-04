@@ -183,7 +183,6 @@ var Layout = function(db) {
         })
     };
 
-
     this.updateItemByIdAndLayoutId = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id,
@@ -225,7 +224,6 @@ var Layout = function(db) {
         })
     };
 
-
     function findLayoutByQuery(Query, callback) {
         Layout
             .findOne(Query)
@@ -239,6 +237,7 @@ var Layout = function(db) {
                     err.status = 404;
                     return callback(err);
                 }
+
                 return callback(null, model);
             });
     }

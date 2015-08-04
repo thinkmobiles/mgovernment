@@ -29,7 +29,7 @@ define([
             e.stopImmediatePropagation();
             $("#itemBlock").before(_.template(inputBlockTemplate)({i: itemBlockCount}));
 
-             itemBlockCount++;
+            itemBlockCount++;
         },
 
         delInputItemsBlock: function(e) {

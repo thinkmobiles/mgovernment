@@ -140,8 +140,10 @@ define([
                         text(textContent);
                 }
             }
+
             return this;
         }
     });
+
     return usersView;
 });

@@ -21,7 +21,6 @@ define([
             this.render();
         },
 
-
         addInputItemsBlock: function(e) {
 
             e.preventDefault();
@@ -65,8 +64,6 @@ define([
             } else {
                 el.find('#'+ idName + 'Input').prop( "disabled", true );
             }
-
-
         },
 
         saveService: function(e){
@@ -141,6 +138,7 @@ define([
             return this;
         }
     });
+
     return serviceCreateView;
 });
 
