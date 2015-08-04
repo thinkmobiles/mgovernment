@@ -1,9 +1,9 @@
 {
-  "name": "JSGroup2",
+  "name": "",
   "version": "1.0.0",
-  "homepage": "https://github.com/romashka50/JSGroup2",
+  "homepage": "",
   "authors": [
-    "Roman <roma.buchuk@gmail.com>"
+    ""
   ],
   "moduleType": [
     "node"
@@ -21,7 +21,6 @@
     "requirejs": "~2.1.18",
     "text": "~2.0.14",
     "jquery": "~2.1.4",
-    "jqueryui": "~1.11.4",
-    "d3": "~3.5.5"
+    "jqueryui": "~1.11.4"
   }
 }

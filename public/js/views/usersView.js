@@ -94,7 +94,7 @@ define([
             for(var k in selectedUser) {
                 property = selectedUser[k];
 
-                if (typeof property == 'object') {
+                if (typeof property === 'object') {
                     property = JSON.stringify(property);
                 }
                 str += "<b>" + k + ": </b>" + property + "<br>";

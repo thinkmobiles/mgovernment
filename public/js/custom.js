@@ -3,7 +3,7 @@ define([],function () {
         var url;
         url =  Backbone.history.fragment || Backbone.history.getFragment();
 
-        if ((url === "")) {
+        if ((url === '')) {
             url = 'index';
         }
 

@@ -37,7 +37,7 @@ define([
             e.stopPropagation();
             e.stopImmediatePropagation();
 
-            if (itemBlockCount == 0) {
+            if (itemBlockCount === 0) {
                 return;
             }
             itemBlockCount--;

@@ -53,7 +53,7 @@ var Service = function(db) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) == '/' ? body.baseUrl : body.baseUrl + '/';
+        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
         body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
@@ -100,7 +100,7 @@ var Service = function(db) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) == '/' ? body.baseUrl : body.baseUrl + '/';
+        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
         body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();

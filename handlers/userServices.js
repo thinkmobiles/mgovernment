@@ -160,7 +160,7 @@ var UserService = function(db) {
                     user = user.toJSON();
 
                     for (var i = user.accounts.length - 1; i >= 0; i--) {
-                        if (user.accounts[i].serviceProvider == serviceOptions.serviceProvider) {
+                        if (user.accounts[i].serviceProvider === serviceOptions.serviceProvider) {
                             foundNumber = i;
                             found = true;
                         }
