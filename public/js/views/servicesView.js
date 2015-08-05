@@ -28,7 +28,7 @@ define([
 
             this.paginationView = new PaginationView({
                 collection   : this.servicesCollection,
-                onPage       : 8,
+                onPage       : 10,
                 padding      : 2,
                 page         : 1,
                 ends         : true,
