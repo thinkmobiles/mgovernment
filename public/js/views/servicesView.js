@@ -26,9 +26,22 @@ define([
 
             console.log('servicesCollection', this.servicesCollection);
 
+            this.stateModel = new Backbone.Model({
+                params            : {},
+                devices           : [],
+                checked           : false,
+                selectedDevicesCount: 0,
+                //newPlan           : null,
+                //costForThisMonth  : 0,
+                ////modal             : modal,
+                ////period            : user.billings.planPeriod || 'month',
+                //search            : ''
+            });
+
             this.paginationView = new PaginationView({
                 collection   : this.servicesCollection,
                 onPage       : 10,
+                url          : 'services/page',
                 padding      : 2,
                 page         : 1,
                 ends         : true,
@@ -48,7 +61,29 @@ define([
             //        alert(xhr);
             //    }
             //});
+
+            this.listenTo(this.stateModel, 'change:params', this.handleParams);
+
             this.render();
+        },
+
+
+
+        setParams: function (params) {
+            console.log('Set Params routed', params);
+            this.stateModel.set({params: params});
+        },
+
+        handleParams: function () {
+            var params = this.stateModel.get('params');
+
+            if (params) {
+                if (params.page) {
+                    this.paginationView.stateModel.set({
+                        page: this.stateModel.get('params').page
+                    });
+                }
+            }
         },
 
         clearDecoration:function(e) {

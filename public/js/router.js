@@ -18,7 +18,7 @@ define([
 
         routes: {
             "index": "toMainView",
-            "services": "toServicesView",
+            "services(/page/:page)": "toServicesView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
@@ -53,11 +53,15 @@ define([
 
         toCreateServiceView: function () {
 
+
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('createService clicked');
+
             this.contentView = new ServiceCreateView();
+
+
+
         },
 
         toUpdateServiceView: function () {
@@ -69,12 +73,18 @@ define([
             this.contentView = new ServiceUpdateView();
         },
 
-        toServicesView: function () {
+        toServicesView: function (page) {
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
+
+            console.log('Selected Page', page);
             //console.log('Services clicked');
             this.contentView = new ServicesView();
+            if (page) {
+                page = parseInt(page);
+                this.contentView.setParams({page: page});
+            }
         },
 
         toUsersView: function () {

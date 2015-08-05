@@ -18,7 +18,7 @@ define([
                 page          : options.page    || 1,
                 padding       : options.padding || 3,
                 url           : options.url     || '',
-                urlPagination : options.urlPagination || false,
+                urlPagination : options.urlPagination || true,
                 ends          : options.ends,
                 steps         : options.steps,
                 data          : options.data,
@@ -206,8 +206,8 @@ define([
 
         render: function () {
             var data = this.stateModel.toJSON();
-            console.log('data',data);
-            console.log('Fetched Collection', this.collection);
+            console.log('stateModel:',data);
+            console.log('Fetched Collection:', this.collection);
 
             this.undelegateEvents();
             this.$el.html(_.template(template)(data));
