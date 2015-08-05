@@ -22,7 +22,10 @@ define([
                 ends          : options.ends,
                 steps         : options.steps,
                 data          : options.data,
-                pages         : []
+                pages         : [],
+                gridStart     :0,
+                gridEnd       :10,
+                gridCount     :100
             });
 
             this.collection = options.collection;
@@ -98,6 +101,7 @@ define([
             var ends  = this.stateModel.get('ends');
             var steps = this.stateModel.get('steps');
             var page  = this.stateModel.get('page');
+            var gridStart;
 
             if ((page - paddingBefore) < 1) {
                 start = 1;
@@ -170,8 +174,14 @@ define([
                         clNam  : true
                     });
                 }
+
+                gridStart = (page - 1) * onPage + 1;
+
                 this.stateModel.set({
-                    pages: pages
+                    pages: pages,
+                    gridCount: count,
+                    gridStart: gridStart,
+                    gridEnd: (gridStart + onPage -1) < count ? gridStart + onPage -1 : count
                 });
             }
 

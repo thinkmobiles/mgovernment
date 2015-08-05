@@ -1,4 +1,18 @@
 <ul class="pagination">
+    <span>
+        <span id="grid-start"> <%= gridStart %> </span> -
+        <span id="grid-end"><%= gridEnd %></span> of
+        <span id="grid-count"><%= gridCount %></span> items
+    </span>
+
+    <select id="itemsNumber">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="25">20</option>
+        <option value="50">50</option>
+    </select>
+    <span>Per Page</span>
+
     <% for(page in pages) { %>
     <li class="<% if (pages[page].clNam) {%>arrow<%}%><% if(pages[page].active) { %>active<% } %> item">
         <% if(urlPagination) { %>
