@@ -54,13 +54,16 @@ define([
         },
 
         deleteService: function() {
-
+            if (!this.selectedServiceId) {
+                return;
+            }
             var service = this.servicesCollection.models[this.selectedServiceId];
+            var self = this;
 
             service.destroy ({
                 success: function(model, response, options){
                     alert('Service deleted');
-                    this.servicesCollection.reset();
+                    self.servicesCollection.reset();
                     //Backbone.history.fragment = '';
                     //Backbone.history.navigate('services', {trigger: true});
                 },
@@ -149,7 +152,7 @@ define([
         render: function () {
 
             console.log('ServicesView render');
-            console.log(this.paginationView);
+            //console.log(this.paginationView);
 
             this.$el.html(this.template());
 

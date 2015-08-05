@@ -22,7 +22,7 @@ define([
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
-            "users": "toUsersView",
+            "users(/p=:page)(/c=:countPerPage)": "toUsersView",
             "createUser": "toCreateUserView",
             "updateUser": "toUpdateUserView"
         },
@@ -53,15 +53,11 @@ define([
 
         toCreateServiceView: function () {
 
-
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
 
             this.contentView = new ServiceCreateView();
-
-
-
         },
 
         toUpdateServiceView: function () {
@@ -77,36 +73,29 @@ define([
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
 
-            App.services = {
-                pagenationParams: {
-                    page: page,
-                    countPerPage: countPerPage
-                }
-            };
-
-            console.log('Selected Page-------------------------', App);
-
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
 
-
-            //console.log('Services clicked');
-           this.contentView = new ServicesView({
-               page: page,
-               countPerPage: countPerPage
-           });
-
-            // this.contentView.setParams({page: page});
+            this.contentView = new ServicesView({
+                page: page,
+                countPerPage: countPerPage
+            });
 
         },
 
-        toUsersView: function () {
+        toUsersView: function (page, countPerPage) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('Users clicked');
-            this.contentView = new UsersView();
+
+            this.contentView = new UsersView({
+                page: page,
+                countPerPage: countPerPage
+            });
         },
 
         toCreateUserView: function () {

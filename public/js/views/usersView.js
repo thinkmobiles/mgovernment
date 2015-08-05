@@ -1,7 +1,9 @@
 define([
     'text!templates/usersViewTemplate.html',
-    'collections/users'
-],function(content, UsersCollection){
+    'collections/users',
+    'text!templates/pagination/paginationTemplate.html',
+    'views/customElements/paginationView'
+],function(content, UsersCollection, paginationTemplate, PaginationView){
     var usersView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -16,27 +18,42 @@ define([
 
         template: _.template(content),
 
-        initialize: function(){
-            var self = this;
+        initialize: function(options){
+            this.usersCollection =  new UsersCollection();
 
-            this.UsersCollection =  new UsersCollection();
-            this.UsersCollection.fetch({
-                success: function(model){
-
-                    console.log('Users loaded: ',  self.UsersCollection.toJSON());
-                    self.render();
-                },
-
-                error: function(err, xhr, model){
-                    alert(xhr);
-                }
+            this.paginationView = new PaginationView({
+                collection   : this.usersCollection,
+                countPerPage : options.countPerPage,
+                url          : 'users',
+                urlGetCount  : '/user/getCount',
+                padding      : 2,
+                page         : options.page,
+                ends         : true,
+                steps        : true,
+                data         : {}
             });
+
+            this.listenTo(this.usersCollection, 'sync reset remove', this.render);
+            this.render();
+
+            //this.UsersCollection.fetch({
+            //    success: function(model){
+            //
+            //        console.log('Users loaded: ',  self.UsersCollection.toJSON());
+            //        self.render();
+            //    },
+            //
+            //    error: function(err, xhr, model){
+            //        alert(xhr);
+            //    }
+            //});
 
         },
 
         render: function () {
             console.log('usersView render');
             this.$el.html(this.template());
+            this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
             this.updateUserList();
         },
 
@@ -58,13 +75,18 @@ define([
         },
 
         deleteUser: function() {
+            if (!this.selectedUserId) {
+                return;
+            }
 
-            var service = this.UsersCollection.models[this.selectedUserId];
+            var service = this.usersCollection.models[this.selectedUserId];
+            var self = this;
 
             service.destroy ({
                 success: function(model, response, options){
                     alert('User deleted');
-                    Backbone.history.navigate('users', {trigger: true});
+                    self.usersCollection.reset();
+                    //Backbone.history.navigate('users', {trigger: true});
                 },
 
                 error: function(model, xhr, options){
@@ -81,13 +103,13 @@ define([
 
             if (!this.selectedUserId) return;
 
-            App.selectedUser = this.UsersCollection.models[this.selectedUserId];
+            App.selectedUser = this.usersCollection.models[this.selectedUserId];
             Backbone.history.navigate('updateUser', {trigger: true});
         },
 
         showUsersInfo: function(e){
             var id = $(e.target).attr('data-hash');
-            var selectedUser = this.UsersCollection.toJSON()[id];
+            var selectedUser = this.usersCollection.toJSON()[id];
             var str = "";
             var property;
 
@@ -109,15 +131,15 @@ define([
 
         updateUserList: function(){
 
-            var UsersCollection = this.UsersCollection.toJSON();
+            var usersCollection = this.usersCollection.toJSON();
             var itemTextColor = '#0A0EF2';
             var textContent;
             var serviceDiv;
             var serviceId;
             var service;
 
-            for (var i = UsersCollection.length-1; i>=0; i--){
-                service = UsersCollection[i];
+            for (var i = usersCollection.length-1; i>=0; i--){
+                service = usersCollection[i];
                 serviceId = service._id;
                 serviceDiv = $("#DbList" + serviceId);
                 textContent = service.login;
