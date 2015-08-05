@@ -90,6 +90,7 @@ define([
         },
 
         calculate: function () {
+
             var count  = this.stateModel.get('count') || 0;
             var onPage = this.stateModel.get('onPage');
             var paddingBefore = this.stateModel.get('padding');
@@ -177,13 +178,19 @@ define([
 
                 gridStart = (page - 1) * onPage + 1;
 
+                //console.log('stateModel.set: ',  this.stateModel.toJSON());
+
                 this.stateModel.set({
-                    pages: pages,
-                    gridCount: count,
-                    gridStart: gridStart,
-                    gridEnd: (gridStart + onPage -1) < count ? gridStart + onPage -1 : count
+                    pages: pages
                 });
             }
+
+            gridStart = (page - 1) * onPage + 1;
+            this.stateModel.set({
+                gridCount: count,
+                gridStart: gridStart,
+                gridEnd: (gridStart + onPage -1) < count ? gridStart + onPage -1 : count
+            });
 
             this.loadPage();
             this.render();
