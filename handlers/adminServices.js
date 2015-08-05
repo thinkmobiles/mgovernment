@@ -3,6 +3,7 @@ var RESPONSE = require('../constants/response');
 var HistoryHandler = require('./historyLog');
 
 var Service = function(db) {
+    'use strict';
 
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();
@@ -10,12 +11,50 @@ var Service = function(db) {
     var Layout = db.model(CONST.MODELS.LAYOUT);
     var historyHandler = new HistoryHandler(db);
 
+    function checkRecivedParamsFieldNamesWithItemsNames(recivedArray,arrayTocompareName){
+        var foundEqualFieldName = false;
+
+        for (var i = recivedArray.length - 1; i >= 0; i--) {
+            for (var j = arrayTocompareName.length -1; j >= 0; j --) {
+                if (recivedArray[i] === arrayTocompareName[j].name){
+                    foundEqualFieldName = true;
+                }
+            }
+            if (!foundEqualFieldName) {
+                return false
+            }
+            foundEqualFieldName = false;
+        }
+        return true;
+    }
+
     this.updateServiceById = function (req, res, next) {
 
         var searchQuery = {
             '_id': req.params.id
         };
+
         var body = req.body;
+        var myRegExp =/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
+
+        if (!body) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (!myRegExp.test(body.baseUrl)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
+        body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
 
@@ -37,16 +76,35 @@ var Service = function(db) {
             });
     };
 
+
+
     this.createService = function (req, res, next) {
 
         var body = req.body;
+        var service;
+        var myRegExp =/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
 
         if (!body) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
+        if (!myRegExp.test(body.baseUrl)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
+        body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
-        var service = new Service(body);
+        service = new Service(body);
 
         service
             .save(function (err, model) {

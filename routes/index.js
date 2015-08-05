@@ -1,6 +1,7 @@
 var SessionHandler = require('../handlers/sessions');
 
 module.exports = function(app, db){
+    'use strict';
 
     var logWriter = require('../helpers/logWriter')();
     var models = require('../models/index')(db);
@@ -10,6 +11,7 @@ module.exports = function(app, db){
     var adminLayoutsRouter = require('./adminLayouts')(db);
     var adminServicesRouter = require('./adminServices')(db);
     var userServicesRouter = require('./userServices')(db);
+    var userTraServicesRouter = require('./userTraServices')(db);
 
     var session = new SessionHandler(db);
 
@@ -17,11 +19,16 @@ module.exports = function(app, db){
         res.status(200).send( 'Express start succeed' );
     });
 
+
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);
-    app.use('/adminLayout', session.isAdminBySession, adminLayoutsRouter);
-    app.use('/adminService', session.isAdminBySession, adminServicesRouter);
+    app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);
+    app.use('/adminService',session.isAdminBySession, adminServicesRouter);
     app.use('/service', userServicesRouter);
+    app.use('/tra_api/service', userTraServicesRouter);
+    app.get('/', function(req, res){
+        res.sendfile('./index.html');
+    });
 
     function notFound(req, res, next){
         next();

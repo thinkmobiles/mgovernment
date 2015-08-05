@@ -16,7 +16,7 @@ module.exports = function (db) {
             forUserType: {type:[], required: true},
             method: {type: String, required: true},
             url: {type: String, required: true},
-            params: [],
+            params: {},
 
             inputItems: [{
                 order: Number,

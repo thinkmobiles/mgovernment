@@ -3,6 +3,8 @@ var RESPONSE = require('../constants/response');
 var mongoose = require('mongoose');
 
 var AccessHandler = function (db) {
+    'use strict';
+
     var User = db.model(CONST.MODELS.USER);
     var Service = db.model(CONST.MODELS.SERVICE);
 

@@ -2,6 +2,7 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 
 var Layout = function(db) {
+    'use strict';
 
     var async = require('async');
     var Layout = db.model(CONST.MODELS.LAYOUT);

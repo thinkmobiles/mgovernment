@@ -21,7 +21,6 @@ module.exports = function (db) {
                 id:String,
                 action: {}
             }]
-
         },
         {
             collection: CONST.MODELS.LAYOUT + 's'

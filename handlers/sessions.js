@@ -2,6 +2,8 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 
 var Session = function ( db ) {
+    'use strict';
+
     var mongoose = require('mongoose');
     var User = db.model(CONST.MODELS.USER);
 
@@ -12,7 +14,14 @@ var Session = function ( db ) {
         res.status( 200 ).send( { success: RESPONSE.AUTH.LOG_IN } );
     };
 
+    this.addToken = function ( req, token) {
+        //req.session.loggedIn = true;
+        //req.session.uId = userId;
+        req.session.token = token;
+    };
+
     this.kill = function ( req, res, next ) {
+
         if(req.session) {
             req.session.destroy();
         }

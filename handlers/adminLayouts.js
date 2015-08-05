@@ -3,6 +3,7 @@ var RESPONSE = require('../constants/response');
 var HistoryHandler = require('./historyLog');
 
 var Layout = function(db) {
+    'use strict';
 
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();
@@ -182,7 +183,6 @@ var Layout = function(db) {
         })
     };
 
-
     this.updateItemByIdAndLayoutId = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id,
@@ -204,7 +204,7 @@ var Layout = function(db) {
 
             Layout
                 .update(searchQuery, {$set: {
-                    'items.$': data}, $set:{ updatedAt: updatedAt}}, function (err,dataResponse) {
+                    'items.$': data, updatedAt: updatedAt}}, function (err,dataResponse) {
                     if (err) {
                         return res.status(400).send({ err: err});
                     }
@@ -224,7 +224,6 @@ var Layout = function(db) {
         })
     };
 
-
     function findLayoutByQuery(Query, callback) {
         Layout
             .findOne(Query)
@@ -238,6 +237,7 @@ var Layout = function(db) {
                     err.status = 404;
                     return callback(err);
                 }
+
                 return callback(null, model);
             });
     }

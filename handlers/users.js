@@ -4,13 +4,17 @@ var RESPONSE = require('../constants/response');
 var HistoryHandler = require('./historyLog');
 
 var User = function(db) {
+    'use strict';
 
     var mongoose = require('mongoose');
+    var ObjectId = mongoose.Types.ObjectId;
     var session = new SessionHandler(db);
 
     var lodash = require('lodash');
     var async = require('async');
     var User = db.model(CONST.MODELS.USER);
+    var Service = db.model(CONST.MODELS.SERVICE);
+
     var crypto = require('crypto');
     var historyHandler = new HistoryHandler(db);
     createDefaultAdmin();
@@ -140,9 +144,12 @@ var User = function(db) {
             console.dir(user);
             user = user.toJSON();
 
-            for (var i = user.accounts.length - 1; i >= 0; i--) {
-                if (user.accounts[i].seviceName === account.seviceName) {
-                    found = true;
+            if (user.favorites) {
+
+                for (var i = user.accounts.length - 1; i >= 0; i--) {
+                    if (user.accounts[i].seviceName === account.seviceName) {
+                        found = true;
+                    }
                 }
             }
             if (found) {
@@ -156,7 +163,94 @@ var User = function(db) {
                     return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful created'});
                 });
         });
+    };
 
+    this.addServiceToFavorites = function ( req, res, next ) {
+        var serviceId= req.params.serviceId;
+        var userId = req.session.uId;
+        var found = false;
+        var favorite = ObjectId(serviceId);
+
+        getUserById(userId, function (err, user) {
+           // console.dir(user);
+            user = user.toJSON();
+
+            if (user.favorites) {
+
+                for (var i = user.favorites.length - 1; i >= 0; i--) {
+                    if (user.favorites[i].id == favorite.id) {
+                        found = true;
+                    }
+                }
+            }
+
+            if (found) {
+                return res.status(400).send(RESPONSE.ON_ACTION.NOT_FOUND);
+            }
+
+            User
+                .update({_id: user._id}, {$push: {'favorites': favorite}}, function (err, data) {
+                    if (err) {
+                        return res.status(400).send(err);
+                    }
+                    return res.status(200).send(RESPONSE.ON_ACTION.SUCCESS);
+                });
+        });
+    };
+
+    this.deleteServiceToFavorites = function ( req, res, next ) {
+        var serviceId= req.params.serviceId;
+        var userId = req.session.uId;
+        var found = false;
+        var favorite = ObjectId(serviceId);
+        var foundPosition = -1;
+
+        getUserById(userId, function (err, user) {
+           // console.dir(user);
+            user = user.toJSON();
+
+            if (user.favorites) {
+
+                for (var i = user.favorites.length - 1; i >= 0; i--) {
+                    if (user.favorites[i].id == favorite.id) {
+                        found = true;
+                        foundPosition = i;
+                    }
+                }
+            }
+
+            if (!found) {
+                return res.status(400).send(RESPONSE.ON_ACTION.NOT_FOUND);
+            }
+
+            User
+                .update({_id: user._id, favorites: favorite }, {$pull: {
+                    'favorites': favorite}}, function (err, data) {
+                    if (err) {
+                        return res.status(400).send(err);
+                    }
+                    return res.status(200).send(RESPONSE.ON_ACTION.SUCCESS);
+                });
+        });
+    };
+
+    this.getServicesFromFavorites = function ( req, res, next ) {
+        var serviceId= req.params.serviceId;
+        var userId = req.session.uId;
+        var found = false;
+        var foundNumber = -1;
+
+        User
+            .findOne({_id: userId})
+            .populate('favorites')
+            .exec(function (err, models) {
+
+                if (err) {
+                    return res.status(400).send(err);
+                }
+                return res.status(200).send(models.toJSON().favorites);
+
+            })
     };
 
     this.getServicesAccountById = function ( req, res, next ) {
@@ -167,7 +261,7 @@ var User = function(db) {
         var foundNumber = -1;
 
         getUserById(userId, function (err, user) {
-            console.dir(user);
+          //  console.dir(user);
             user = user.toJSON();
 
             for (var i = user.accounts.length - 1; i >= 0; i--) {
@@ -182,7 +276,6 @@ var User = function(db) {
 
             return res.status(200).send(user.accounts[foundNumber]);
         });
-
     };
 
     this.isAdminBySession = function ( req, res, next ) {
@@ -231,7 +324,7 @@ var User = function(db) {
 
         User
             .findOne({_id: userId})
-            .select( 'login userType devices profile accounts')
+            .select( 'login userType devices profile favorites accounts')
             .exec(function (err, model) {
                 if (err) {
                     return callback(err);
@@ -275,6 +368,50 @@ var User = function(db) {
                 }
 
                 if (!model) {
+
+                    return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
+                }
+
+                var deviceOptions = {
+                    model: model,
+                    device: device
+                };
+
+                processDeviceToken(deviceOptions, function () {
+                    return session.register(req, res, model._id.toString(), model.userType);
+                });
+            });
+    };
+
+    this.adminSignIn = function (req, res, next) {
+
+        var body = req.body;
+        var login = body.login;
+        var pass = body.pass;
+        var err;
+        var device = {
+            deviceOs: body.deviceOs,
+            deviceToken: body.deviceToken
+        };
+
+        if (!body || !login || !pass) {
+            err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
+            err.status = 400;
+            return next(err);
+        }
+
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
+
+        User
+            .findOne({login: login, pass: pass})
+            .exec(function (err, model) {
+                if (err) {
+                    return next(err)
+                }
+
+                if (!model || model.toJSON().userType != CONST.USER_TYPE.ADMIN) {
 
                     return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
@@ -422,6 +559,60 @@ var User = function(db) {
 
                 res.status(200).send(user);
             });
+    };
+
+    this.updateAccount = function (req, res, next) {
+
+        var body = req.body;
+        var login = body.login;
+        var pass = body.pass;
+        var userType = body.userType;
+        var userId = req.params.id;
+        var err;
+
+        var device = {
+            deviceOs: body.deviceOs,
+            deviceToken: body.deviceToken
+        };
+
+        var profile = {
+            firstName: body.firstName,
+            lastName: body.lastName,
+            createdAt: new Date()
+        };
+
+        if (!isValidUserType(userType)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        if (!body || !login || !pass) {
+            err = new Error(RESPONSE.NOT_ENOUGH_PARAMS);
+            err.status = 400;
+            return next(err);
+        }
+
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
+
+        var userData ={login: login, pass: pass, userType: userType, profile: profile};
+
+        if (device.deviceOs && device.deviceToken && isValidDeviceOs(device.deviceOs)) {
+            userData.devices = [device];
+        }
+
+        getUserById(userId, function (err, user) {
+            user = user.toJSON();
+            console.dir(user);
+
+            User
+                .update({'_id': user._id}, {$set: userData}, function (err, data) {
+                    if (err) {
+                        return res.status(400).send({ err: err});
+                    }
+                    return res.status(200).send({ succes: 'User was succesful updating'});
+                });
+        });
     };
 
     this.getCount = function (req, res, next) {

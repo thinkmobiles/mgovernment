@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var IMAGES = require('./../testHelpers/imageTemplates');
+var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:7791';
@@ -14,6 +15,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     var agent = request.agent(url);
     var userId;
+    var serviceCollection;
 
     before(function (done) {
         console.log('>>> before');
@@ -25,6 +27,10 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
             preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
             preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_GET),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
             preparingDb.toFillUsers(1)
         ], function (err,results)   {
             if (err) {
@@ -97,34 +103,34 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 done();
             });
     });
-
-    it('SignOut if Logined (client123, pass1234)', function (done) {
-
-        var loginData = USERS.CLIENT_GOOD_DEVICE_OS;
-        var loginData2 = USERS.CLIENT_GOOD_DEVICE_OS_DIFFERENT_DEVICE_TOKEN;
-
-        agent
-            .post('/user/signIn')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                agent
-                    .post('/user/signOut')
-                    .send(loginData2)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-                        done();
-                    });
-            });
-    });
-
+    //
+    //it('SignOut if Logined (client123, pass1234)', function (done) {
+    //
+    //    var loginData = USERS.CLIENT_GOOD_DEVICE_OS;
+    //    var loginData2 = USERS.CLIENT_GOOD_DEVICE_OS_DIFFERENT_DEVICE_TOKEN;
+    //
+    //    agent
+    //        .post('/user/signIn')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //
+    //            agent
+    //                .post('/user/signOut')
+    //                .send(loginData2)
+    //                .expect(200)
+    //                .end(function (err, res) {
+    //                    if (err) {
+    //                        return done(err)
+    //                    }
+    //                    done();
+    //                });
+    //        });
+    //});
+    //
     it('SignOut if Unauthorized (client123, pass1234)', function (done) {
 
         var loginData = USERS.CLIENT_BAD_DEVICE_OS;
@@ -259,38 +265,128 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
     });
 
-    it('POST duplicate Service account (client123, pass1234)', function (done) {
-
-        var loginData =  USERS.CLIENT;
+    it('User GET serviceList', function (done) {
 
         agent
-            .post('/user/account')
-            .send(loginData)
-            .expect(400)
+            .get('/service/')
+            .send({})
+            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-                done();
+                serviceCollection = res.body;
+                //console.dir(res.body);
+                done()
+
             });
+
     });
 
-    it('PUT  Service account (client123, pass1234)', function (done) {
 
-        var loginData =  USERS.CLIENT_CHANGE_ACCOUNT;
+
+    it('ADD service to Favorites', function (done) {
+
+        var loginData = USERS.CLIENT;
+        var serviceId = serviceCollection[0]._id;
 
         agent
-            .put('/user/account')
+            .post('/user/favorites/'+ serviceId)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
+
                 done();
+            });
+
+    });
+
+    it('Delete service from Favorites', function (done) {
+
+
+        var loginData = USERS.CLIENT;
+        var serviceId = serviceCollection[1]._id;
+
+        agent
+            .post('/user/favorites/'+ serviceId)
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+
+                var loginData = USERS.CLIENT;
+                var serviceId = serviceCollection[1]._id;
+
+                agent
+                    .delete('/user/favorites/'+ serviceId)
+                    .send(loginData)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        done();
+                    });
             });
     });
 
+    it('Get  Favorites Services', function (done) {
+
+        var loginData = USERS.CLIENT;
+
+        agent
+            .get('/user/favorites/')
+            .send()
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.dir(res.body);
+                done();
+            });
+
+    });
+
+    //it('POST duplicate Service account (client123, pass1234)', function (done) {
+    //
+    //    var loginData =  USERS.CLIENT;
+    //
+    //    agent
+    //        .post('/user/account')
+    //        .send(loginData)
+    //        .expect(400)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            done();
+    //        });
+    //});
+    //
+    //it('PUT  Service account (client123, pass1234)', function (done) {
+    //
+    //    var loginData =  USERS.CLIENT_CHANGE_ACCOUNT;
+    //
+    //    agent
+    //        .put('/user/account')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            done();
+    //        });
+    //});
+    //
     it('Admin Create 1 Users', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
@@ -324,21 +420,21 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 });
             });
     });
-
-    it('Admin GET ALL USER with Query', function (done) {
-
-        agent
-            .get('/user/?orderBy=login&order=1&page=1&count=2')
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.log('All users was get:');
-                console.dir(res.body);
-                done();
-            });
-    });
+    //
+    //it('Admin GET ALL USER with Query', function (done) {
+    //
+    //    agent
+    //        .get('/user/?orderBy=login&order=1&page=1&count=2')
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.log('All users was get:');
+    //            console.dir(res.body);
+    //            done();
+    //        });
+    //});
 
     it('Admin GET Count of Users', function (done) {
 
@@ -371,7 +467,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 console.log('id fo deleting: ',userId);
 
                 agent
-                    .delete('/user/profile/' + userId)
+                    .delete('/user/' + userId)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {

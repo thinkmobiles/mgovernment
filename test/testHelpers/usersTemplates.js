@@ -6,7 +6,7 @@ module.exports = {
         pass: 'pass1234',
         userType: 'client',
         accounts:[{
-            serviceProvider: 'CAPALABA',
+            serviceProvider: 'Capalaba',
             serviceId: '559ccf6abb74dd001f2d0c75',
             login: 'admin',
             pass: '1q2w3e4r',

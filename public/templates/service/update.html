@@ -1,0 +1,190 @@
+<div style="align-content: center; margin-top: 5px; padding-bottom: 5px">
+
+    <form>
+
+        <table>
+            <tr>
+                <th>List of properties</th>
+                <th>Input, set properties</th>
+                <th>Description of properties</th>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>serviceProvider:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceProvider" size="20" maxlength="40"
+                                                   value="<%= serviceProvider %>"></td>
+                <td class="hiddenByDefault"> Input service provider name.</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>serviceName:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceName" size="20" maxlength="40"
+                                                   value="<%= serviceName %>"></td>
+                <td class="hiddenByDefault"> Input service name (like speed test or mobile verification check</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>serviceType:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceType" size="20" maxlength="40"
+                                                   value="<%= serviceType %>"></td>
+                <td class="hiddenByDefault">Like this: internet \ mobile \ money \ biznes \ government</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>profile { description:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="description" size="20" maxlength="40"
+                                                   value="<%= profile.description %>"></td>
+                <td class="hiddenByDefault"> Input Provider description:</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>profile{:</b></td>
+                <td class="hiddenByDefault" style="color: red">ADD FIELD</td>
+                <td class="hiddenByDefault">ADD custom field</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>baseUrl:</b></td>
+                <td class="hiddenByDefault">
+                    <input type="text" name="name" id="baseUrl" size="20" maxlength="40"
+                           value="<%= baseUrl %>"></td>
+                <td class="hiddenByDefault">Start Provider url, like google.com</td>
+            </tr>
+
+            <% if (inputItems.length){ %>
+            <% for (var i= 0, len = inputItems.length - 1; i <= len; i ++){ %>
+
+            <tr id="itemBlockOrder<%= i %>">
+                <td class="hiddenByDefault"><b>item[<%= i %>].order:</b></td>
+                <td class="hiddenByDefault"><input type="number" id="order<%= i %>" size="4" style="width: 50px"
+                                                   value="<%= inputItems[i].order %>"></td>
+                <td class="hiddenByDefault"> Input order of item[<%= i %>]:</td>
+            </tr>
+
+            <tr id="itemBlockName<%= i %>">
+                <td class="hiddenByDefault"><b>item[<%= i %>].name:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="name<%= i %>" size="20" maxlength="20"
+                                                   value="<%= inputItems[i].name %>"></td>
+                <td class="hiddenByDefault"> Input name of item[<%= i %>]:</td>
+            </tr>
+
+            <tr id="itemBlockInputType<%= i %>">
+                <td class="hiddenByDefault"><b>item[<%= i %>].type:</b></td>
+                <td class="hiddenByDefault">
+                    <select id="inputType<%= i %>" value="<%= inputItems[i].inputType %>">
+                        <option value="string"
+                        <% if (inputItems[i].inputType == 'string') { %> selected <% } %> >string</option>
+                        <option value="number"
+                        <% if (inputItems[i].inputType == 'number') { %> selected <% } %> >number</option>
+                        <option value="boolean"
+                        <% if (inputItems[i].inputType == 'boolean') { %> selected <% } %> > boolean</option>
+                        <option value="file"
+                        <% if (inputItems[i].inputType == 'file') { %> selected <% } %> >file</option>
+                    </select></td>
+                <td class="hiddenByDefault"> Input type of item[<%= i %>]:</td>
+            </tr>
+            <% } %>
+            <% } %>
+
+            <tr id="itemBlock">
+                <td class="hiddenByDefault"><b>inputItems [</b></td>
+                <td class="hiddenByDefault"><a href="#" id="addInputItemsBlock" data-hash="signOut" class="actionButton"
+                                               style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
+                        href="#" id="delInputItemsBlock" data-hash="signOut" class="actionButton"
+                        style=" text-decoration: none; font-size: 18px; color: red">--</a></td>
+                <td class="hiddenByDefault">ADD or Delete last Items field-block</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>allow users type </b></td>
+                <td class="hiddenByDefault">
+                    <input type="checkbox" id="guest" value="guest"' <%=(forUserType.indexOf('guest') >= 0 ?
+                    'checked':'')%> > Guest
+                    <input type="checkbox" id="client" value="client" <%=(forUserType.indexOf('client') >= 0 ?
+                    'checked':'')%> > Client<br>
+                    <input type="checkbox" id="admin" value="admin" <%=(forUserType.indexOf('admin') >= 0 ?
+                    'checked':'')%> > Admin
+                    <input type="checkbox" id="company" value="company" <%=(forUserType.indexOf('company') >= 0 ?
+                    'checked':'')%> > Company<br>
+                    <input type="checkbox" id="government" value="government" <%=(forUserType.indexOf('government') >= 0
+                    ? 'checked':'')%> > Government
+                </td>
+                <td class="hiddenByDefault">Choose who can use this service</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>method </b></td>
+                <td class="hiddenByDefault">
+                    <input type="radio" name="Method" id="POST" value="POST" <%= method == 'POST' ? 'checked':''%>> POST
+                    <input type="radio" name="Method" id="GET" value="GET" <%= method == 'GET' ? 'checked':''%> > GET
+                </td>
+                <td class="hiddenByDefault">Choose method that client use when send request</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>Uri:</b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="url" size="20" maxlength="40"
+                                                   value="<%= url %>"></td>
+                <td class="hiddenByDefault">When service need uri response like: chackimei\ or \users\create</td>
+            </tr>
+            <tr>
+                <td class="hiddenByDefault"><b>params.needUserAuth:</b></td>
+                <td class="hiddenByDefault">
+                    <input type="radio" name="auth" id="needUserAuth" value="true" <%= params.needUserAuth ?
+                    'checked':''%>>true
+                    <input type="radio" name="auth" id="needUserAuth2" value="false" <%= !params.needUserAuth ?
+                    'checked':''%> > false
+                </td>
+                <td class="hiddenByDefault">For using service authenticate is needed</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>params {</b></td>
+                <td class="hiddenByDefault"></td>
+                <td class="hiddenByDefault">What params waiting from client? and how use them</td>
+            </tr>
+            <tr>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="body" value="body"
+                    <%= params.body ? 'checked':''%> > .body </b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="bodyInput" size="20" maxlength="40" <%=
+                    !params.body ? 'disabled':''%> value="<%= params.body ? params.body.join(','):''%>">
+                </td>
+                <td class="hiddenByDefault"> Body is array, that have names of fields that will be nested to
+                    Request.body, input the names of fields separated by commas without spaces
+                </td>
+            </tr>
+            <tr>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="query" value="query"
+                    <%= params.query ? 'checked':''%>> .query </b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="queryInput" size="20" maxlength="40" <%=
+                    !params.query ? 'disabled':''%> value="<%= params.query ? params.query.join(','):'' %>">
+                </td>
+                <td class="hiddenByDefault"> Query is array, that have names of fields that will form standard query
+                    Request, input the names of fields separated by commas without spaces
+                </td>
+            </tr>
+            <tr>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="uriSpecQuery"
+                                                       value="uriSpecQuery" <%= params.uriSpecQuery ? 'checked':''%>>
+                    .uriSpecQuery </b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="uriSpecQueryInput" size="20"
+                                                   maxlength="40" <%= !params.uriSpecQuery ? 'disabled':''%> value="<%=
+                    params.uriSpecQuery ? params.uriSpecQuery.join(','):'' %>" >
+                </td>
+                <td class="hiddenByDefault"> uriSpecQuery is array, that have names of fields that will be added to url
+                    of Request, input the names of fields separated by commas without spaces
+                </td>
+            </tr>
+        </table>
+
+        <div style=" text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px;
+    border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8; margin-left: 5px;">
+            <div id="updateBtn" onmouseover="this.style.cursor='pointer'">
+        <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
+        Save Updated Service
+        </span>
+            </div>
+        </div>
+
+    </form>
+</div>

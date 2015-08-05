@@ -3,6 +3,7 @@ var express = require( 'express' );
 var LayoutHandler = require('../handlers/clientLayouts');
 
 module.exports = function(db){
+    'use strict';
 
     var router = express.Router();
     var layoutsHandler = new LayoutHandler(db);
