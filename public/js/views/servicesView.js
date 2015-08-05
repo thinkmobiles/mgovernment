@@ -18,72 +18,22 @@ define([
 
         template: _.template(content),
 
-        initialize: function(){
-            var self = this;
-
+        initialize: function(options){
             this.servicesCollection =  new ServicesCollection();
-            this.listenTo(this.servicesCollection, 'sync remove', this.render);
-
-            console.log('servicesCollection', this.servicesCollection);
-
-            this.stateModel = new Backbone.Model({
-                params            : {},
-                devices           : [],
-                checked           : false,
-                selectedDevicesCount: 0,
-                //newPlan           : null,
-                //costForThisMonth  : 0,
-                ////modal             : modal,
-                ////period            : user.billings.planPeriod || 'month',
-                //search            : ''
-            });
-
             this.paginationView = new PaginationView({
                 collection   : this.servicesCollection,
-                onPage       : 10,
-                url          : 'services/page',
+                countPerPage : options.countPerPage,
+                url          : 'services',
+                urlGetCount  : '/adminService/getCount',
                 padding      : 2,
-                page         : 1,
+                page         : options.page,
                 ends         : true,
                 steps        : true,
-                data         : {status : "Hello"}
+                data         : {}
             });
 
-            //this.servicesCollection.fetch({ data: {page: 1, count: 20 },
-
-            //this.servicesCollection.fetch({
-            //    success: function(model){
-            //        console.log('Services loaded: ', self.servicesCollection.toJSON());
-            //        self.render();
-            //    },
-            //
-            //    error: function(err, xhr, model){
-            //        alert(xhr);
-            //    }
-            //});
-
-            this.listenTo(this.stateModel, 'change:params', this.handleParams);
-
+            this.listenTo(this.servicesCollection, 'sync reset remove', this.render);
             this.render();
-        },
-
-
-
-        setParams: function (params) {
-            console.log('Set Params routed', params);
-            this.stateModel.set({params: params});
-        },
-
-        handleParams: function () {
-            var params = this.stateModel.get('params');
-
-            if (params) {
-                if (params.page) {
-                    this.paginationView.stateModel.set({
-                        page: this.stateModel.get('params').page
-                    });
-                }
-            }
         },
 
         clearDecoration:function(e) {
@@ -110,8 +60,9 @@ define([
             service.destroy ({
                 success: function(model, response, options){
                     alert('Service deleted');
-                    Backbone.history.fragment = '';
-                    Backbone.history.navigate('services', {trigger: true});
+                    this.servicesCollection.reset();
+                    //Backbone.history.fragment = '';
+                    //Backbone.history.navigate('services', {trigger: true});
                 },
 
                 error: function(model, xhr, options){
@@ -121,7 +72,6 @@ define([
         },
 
         updateService: function(e) {
-
 
             e.preventDefault();
             e.stopPropagation();

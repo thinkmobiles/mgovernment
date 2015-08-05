@@ -18,7 +18,7 @@ define([
 
         routes: {
             "index": "toMainView",
-            "services(/page/:page)": "toServicesView",
+            "services(/p=:page)(/c=:countPerPage)": "toServicesView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
@@ -73,18 +73,32 @@ define([
             this.contentView = new ServiceUpdateView();
         },
 
-        toServicesView: function (page) {
+        toServicesView: function (page, countPerPage) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+
+            App.services = {
+                pagenationParams: {
+                    page: page,
+                    countPerPage: countPerPage
+                }
+            };
+
+            console.log('Selected Page-------------------------', App);
+
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
 
-            console.log('Selected Page', page);
+
             //console.log('Services clicked');
-            this.contentView = new ServicesView();
-            if (page) {
-                page = parseInt(page);
-                this.contentView.setParams({page: page});
-            }
+           this.contentView = new ServicesView({
+               page: page,
+               countPerPage: countPerPage
+           });
+
+            // this.contentView.setParams({page: page});
+
         },
 
         toUsersView: function () {
