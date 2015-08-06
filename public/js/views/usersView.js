@@ -9,8 +9,6 @@ define([
         el: '#dataBlock',
         events: {
             'click .DbList': 'showUsersInfo',
-            'mouseover .DbList': 'changePointer',
-            'mouseout .DbList': 'clearDecoration',
             'click #createUser': 'createUser',
             'click #deleteUser': 'deleteUser',
             'click #updateUser': 'updateUser'
@@ -35,19 +33,6 @@ define([
 
             this.listenTo(this.usersCollection, 'sync reset remove', this.render);
             this.render();
-
-            //this.UsersCollection.fetch({
-            //    success: function(model){
-            //
-            //        console.log('Users loaded: ',  self.UsersCollection.toJSON());
-            //        self.render();
-            //    },
-            //
-            //    error: function(err, xhr, model){
-            //        alert(xhr);
-            //    }
-            //});
-
         },
 
         render: function () {
@@ -55,15 +40,6 @@ define([
             this.$el.html(this.template());
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
             this.updateUserList();
-        },
-
-        clearDecoration:function(e) {
-            $(e.target).css({"background-color":"white"});
-        },
-
-        changePointer: function(e){
-            $(e.target).css({"cursor":"pointer"});
-            $(e.target).css({"background-color":"#d3d3d3"});
         },
 
         createUser: function(e){
@@ -143,10 +119,6 @@ define([
                 serviceId = service._id;
                 serviceDiv = $("#DbList" + serviceId);
                 textContent = service.login;
-
-                //console.log('user: ',service.serviceName);
-                //console.dir("#DbList" + serviceId);
-                //console.dir(serviceDiv);
 
                 if (!serviceDiv.length) {
                     $("<div> </div>").

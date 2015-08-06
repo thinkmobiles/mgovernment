@@ -9,8 +9,6 @@ define([
         el: '#dataBlock',
         events: {
             'click .DbList': 'showServicesInfo',
-            'mouseover .DbList': 'changePointer',
-            'mouseout .DbList': 'clearDecoration',
             'click #createService': 'createService',
             'click #deleteService': 'deleteService',
             'click #updateService': 'updateService'
@@ -36,14 +34,6 @@ define([
             this.render();
         },
 
-        clearDecoration:function(e) {
-            $(e.target).css({"background-color":"white"});
-        },
-
-        changePointer: function(e){
-            $(e.target).css({"cursor":"pointer"});
-            $(e.target).css({"background-color":"#d3d3d3"});
-        },
 
         createService: function(e){
             e.preventDefault();
@@ -64,8 +54,6 @@ define([
                 success: function(model, response, options){
                     alert('Service deleted');
                     self.servicesCollection.reset();
-                    //Backbone.history.fragment = '';
-                    //Backbone.history.navigate('services', {trigger: true});
                 },
 
                 error: function(model, xhr, options){
@@ -107,7 +95,7 @@ define([
 
             $("#propertyList").text("").append(str);
             $("#properties").text( selectedService.serviceName);
-            //$("#properties").text( selectedService.serviceName + " properties ");
+
         },
 
         updateServiceList: function(){
@@ -126,10 +114,6 @@ define([
                 serviceId = service._id;
                 serviceDiv = $("#DbList" + serviceId);
                 textContent = service.serviceProvider + ', ' + service.serviceName;
-
-                //console.log('service: ',service.serviceName);
-                //console.dir("#DbList" + serviceId);
-                //console.dir(serviceDiv);
 
                 if (!serviceDiv.length) {
                     $("<div> </div>").
@@ -152,17 +136,9 @@ define([
         render: function () {
 
             console.log('ServicesView render');
-            //console.log(this.paginationView);
 
             this.$el.html(this.template());
-
-            //this.$el.find("#paginationDiv").html(this.paginationView.$el);
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
-            //this.$el.find('#pagination').append();
-            //this.$el.append(this.paginationView.$el);
-
-            //this.$el.find("#paginationDiv").html(_.template(paginationTemplate)({gridStart: 1, gridEnd: 20, gridCount: 100 }));
-
             this.updateServiceList();
         }
     });
