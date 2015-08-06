@@ -1,7 +1,8 @@
 define([
-    'text!templates/user/update.html'
+    'text!templates/user/update.html',
+    'validation'
 
-], function (content) {
+], function (content, Validation) {
     var userUpdateView = Backbone.View.extend({
         el: '#dataBlock',
         template: _.template(content),
@@ -18,6 +19,7 @@ define([
         updateUser: function(e){
             console.log('Update Button pressed');
             var el = this.$el;
+            var errors = [];
             var data ={};
 
             data.login = el.find('#login').val().trim();
@@ -26,7 +28,13 @@ define([
             data. lastName = el.find('#lastName').val().trim();
             data.userType = el.find('#client')[0].checked ? 'client' :  el.find('#admin')[0].checked ? 'admin' :  el.find('#company')[0].checked ? 'company' :  el.find('#government')[0].checked ? 'government' : 'thi is impossible';
 
-            //console.log(data);
+            Validation.checkLoginField(errors, true, data.login, 'Login');
+            Validation.checkPasswordField(errors, true,  data.pass, 'Password');
+
+            if (errors.length){
+                alert(errors);
+                return;
+            }
 
             App.selectedUser.save(data, {
                 success: function(model, response){

@@ -1,16 +1,15 @@
 define([
     'text!templates/login/loginViewTemplate.html',
-    '../../models/adminSignIn'
+    '../../models/adminSignIn',
+    'validation'
 
-], function (loginTemplate, adminSignIn) {
+], function (loginTemplate, adminSignIn, Validation) {
     var loginView = Backbone.View.extend({
         el: '#content',
 
         template: _.template(loginTemplate),
 
         events: {
-            'mouseover .actionButton': 'changePointer',
-            'mouseout .actionButton': 'clearDecoration',
             "click #signIn": "SignInAdmin"
         },
 
@@ -18,27 +17,25 @@ define([
             this.render();
         },
 
-        clearDecoration:function(e) {
-            $(e.target).css({"background-color":"rgba(0, 0, 0, 0.1)"});
-        },
-
-        changePointer: function(e) {
-            $(e.target).css({"cursor":"pointer"});
-            $(e.target).css({"background-color":"rgba(0, 0, 0, 0.01)"});
-        },
-
         SignInAdmin: function(e) {
             var model = new adminSignIn();
+            var errors = [];
 
             var loginData ={
                 login: $('#inputLogin').val(),
                 pass: $('#inputPassword').val()
             };
 
+            Validation.checkLoginField(errors, true, loginData.login, 'Login');
+            Validation.checkPasswordField(errors, true,  loginData.pass, 'Password');
+
+            if (errors.length){
+                alert(errors);
+                return;
+            }
+
             model.save(loginData, {
                 success: function(model, response) {
-
-                    console.log(response);
                     //e.preventDefault();
                     //e.stopPropagation();
                     //e.stopImmediatePropagation();
