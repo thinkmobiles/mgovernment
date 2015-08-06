@@ -5,6 +5,9 @@ var Image = function(db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var Grid = require('gridfs-stream');
+    var gridFs = Grid(db.db, mongoose.mongo);
+
     var ObjectId = mongoose.Types.ObjectId;
 
     var Image = db.model(CONST.MODELS.IMAGE);
@@ -40,6 +43,17 @@ var Image = function(db) {
             if (err) {
                 return callback(err);
             }
+
+            /*var fileId = new ObjectID();
+            var gridStore = new GridStore(db, fileId, 'w');
+
+           /* gridFs.create(encodedImageData.data, function(err, fileInfo) {
+                if (err) {
+                    return callback(err);
+                }
+
+                return callback(null, fileInfo);
+            });*/
 
             var image = new Image();
 

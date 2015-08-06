@@ -4,6 +4,7 @@ module.exports = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
+
     var serviceSchema = mongoose.Schema({
             serviceProvider: {type: String, required: true},
             serviceName: {type: String, required: true},

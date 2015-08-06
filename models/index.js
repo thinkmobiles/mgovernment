@@ -9,5 +9,4 @@ module.exports = function(db) {
     require('./historyLog')(db);
     require('./userHistoryLog')(db);
     require('./image')(db);
-
 };
