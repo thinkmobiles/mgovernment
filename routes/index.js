@@ -1,4 +1,5 @@
 var SessionHandler = require('../handlers/sessions');
+var TestTRAHandler = require('../handlers/testTRAHandler');
 
 module.exports = function(app, db){
     'use strict';
@@ -14,11 +15,19 @@ module.exports = function(app, db){
     var userTraServicesRouter = require('./userTraServices')(db);
 
     var session = new SessionHandler(db);
+    var testTRAHandler = new TestTRAHandler(db);
 
     app.get('/', function(req, res, next){
-        res.status(200).send( 'Express start succeed' );
+        res.status(200).send('Express start succeed');
     });
 
+    app.get('/checkWhois', function(req, res, next) {
+        testTRAHandler.testWhois(req, res, next);
+    });
+
+    app.get('/checkWhoisAvailable', function(req, res, next) {
+        testTRAHandler.testWhoisCheck(req, res, next);
+    });
 
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);
