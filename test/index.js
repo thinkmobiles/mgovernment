@@ -2,6 +2,7 @@
 
 var app = require('../app');
 
+//TODO CHECK THIS! temporary set for my tests
 //require('./testHandlers/users');
 //require('./testHandlers/layouts');
 //require('./testHandlers/services');
