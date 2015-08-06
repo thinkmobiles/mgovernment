@@ -17,6 +17,7 @@ define([
 
         initialize: function () {
             this.render();
+            console.dir(Backbone.history);
         },
 
         addInputItemsBlock: function(e) {
@@ -65,8 +66,6 @@ define([
             } else {
                 el.find('#'+ idName + 'Input').prop( "disabled", true );
             }
-
-
         },
 
         updateService: function(e){
@@ -121,12 +120,13 @@ define([
 
             App.selectedService.save(data, {
                 success: function(model, response){
-                    Backbone.history.fragment = '';
-                    Backbone.history.navigate('services', {trigger: true});
-                    console.log('Success updated');
-                    console.log(model);
-                    console.log(response);
-                    alert(model);
+                    Backbone.history.history.back();
+                    //Backbone.history.fragment = '';
+                    //Backbone.history.navigate('services', {trigger: true});
+                    //console.log('Success updated');
+                    //console.log(model);
+                    //console.log(response);
+                    //alert(model);
 
                 },
                 error: function(err, xhr, model, response){

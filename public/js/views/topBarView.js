@@ -7,23 +7,12 @@ define([
         template: _.template(topBarTemplate),
 
         events: {
-            'mouseover .topBarButton': 'changePointer',
-            'mouseout .topBarButton': 'clearDecoration',
             'click #navigateServicesView': 'navigateToByDataHash',
             'click #navigateUsersView': 'navigateToByDataHash'
         },
 
         initialize: function () {
             this.render();
-        },
-
-        clearDecoration:function(e) {
-            $(e.target).css({"background-color":"rgba(0, 0, 0, 0.1)"});
-        },
-
-        changePointer: function(e) {
-            $(e.target).css({"cursor":"pointer"});
-            $(e.target).css({"background-color":"rgba(0, 0, 0, 0.01)"});
         },
 
         navigateToByDataHash: function(e) {

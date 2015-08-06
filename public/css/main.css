@@ -158,6 +158,15 @@
     text-decoration: none;
 }
 
+.DbList{
+    background-color: white;
+    cursor: pointer;
+}
+
+.DbList:hover{
+    background-color: #d3d3d3;
+}
+
 .topBarButton {
     margin-left: 5px;
     text-align: center;
@@ -176,6 +185,11 @@
     font-weight: bold;
     color: #000000;
     text-shadow: 1px 1px white;
+    cursor: pointer;
+}
+
+.topBarButton:hover {
+    background-color: rgba(0, 0, 0, 0.01);
 }
 
 .actionButton {

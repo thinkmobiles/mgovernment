@@ -9,8 +9,6 @@ define([
         el: '#dataBlock',
         events: {
             'click .DbList': 'showServicesInfo',
-            'mouseover .DbList': 'changePointer',
-            'mouseout .DbList': 'clearDecoration',
             'click #createService': 'createService',
             'click #deleteService': 'deleteService',
             'click #updateService': 'updateService'
@@ -18,47 +16,24 @@ define([
 
         template: _.template(content),
 
-        initialize: function(){
-            var self = this;
-
+        initialize: function(options){
             this.servicesCollection =  new ServicesCollection();
-            this.listenTo(this.servicesCollection, 'sync remove', this.render);
-
-            console.log('servicesCollection', this.servicesCollection);
-
             this.paginationView = new PaginationView({
                 collection   : this.servicesCollection,
-                onPage       : 10,
+                countPerPage : options.countPerPage,
+                url          : 'services',
+                urlGetCount  : '/adminService/getCount',
                 padding      : 2,
-                page         : 1,
+                page         : options.page,
                 ends         : true,
                 steps        : true,
-                data         : {status : "Hello"}
+                data         : {}
             });
 
-            //this.servicesCollection.fetch({ data: {page: 1, count: 20 },
-
-            //this.servicesCollection.fetch({
-            //    success: function(model){
-            //        console.log('Services loaded: ', self.servicesCollection.toJSON());
-            //        self.render();
-            //    },
-            //
-            //    error: function(err, xhr, model){
-            //        alert(xhr);
-            //    }
-            //});
+            this.listenTo(this.servicesCollection, 'sync reset remove', this.render);
             this.render();
         },
 
-        clearDecoration:function(e) {
-            $(e.target).css({"background-color":"white"});
-        },
-
-        changePointer: function(e){
-            $(e.target).css({"cursor":"pointer"});
-            $(e.target).css({"background-color":"#d3d3d3"});
-        },
 
         createService: function(e){
             e.preventDefault();
@@ -69,14 +44,16 @@ define([
         },
 
         deleteService: function() {
-
+            if (!this.selectedServiceId) {
+                return;
+            }
             var service = this.servicesCollection.models[this.selectedServiceId];
+            var self = this;
 
             service.destroy ({
                 success: function(model, response, options){
                     alert('Service deleted');
-                    Backbone.history.fragment = '';
-                    Backbone.history.navigate('services', {trigger: true});
+                    self.servicesCollection.reset();
                 },
 
                 error: function(model, xhr, options){
@@ -86,7 +63,6 @@ define([
         },
 
         updateService: function(e) {
-
 
             e.preventDefault();
             e.stopPropagation();
@@ -119,7 +95,7 @@ define([
 
             $("#propertyList").text("").append(str);
             $("#properties").text( selectedService.serviceName);
-            //$("#properties").text( selectedService.serviceName + " properties ");
+
         },
 
         updateServiceList: function(){
@@ -138,10 +114,6 @@ define([
                 serviceId = service._id;
                 serviceDiv = $("#DbList" + serviceId);
                 textContent = service.serviceProvider + ', ' + service.serviceName;
-
-                //console.log('service: ',service.serviceName);
-                //console.dir("#DbList" + serviceId);
-                //console.dir(serviceDiv);
 
                 if (!serviceDiv.length) {
                     $("<div> </div>").
@@ -164,17 +136,9 @@ define([
         render: function () {
 
             console.log('ServicesView render');
-            console.log(this.paginationView);
 
             this.$el.html(this.template());
-
-            //this.$el.find("#paginationDiv").html(this.paginationView.$el);
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
-            //this.$el.find('#pagination').append();
-            //this.$el.append(this.paginationView.$el);
-
-            //this.$el.find("#paginationDiv").html(_.template(paginationTemplate)({gridStart: 1, gridEnd: 20, gridCount: 100 }));
-
             this.updateServiceList();
         }
     });

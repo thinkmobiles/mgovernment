@@ -18,11 +18,11 @@ define([
 
         routes: {
             "index": "toMainView",
-            "services": "toServicesView",
+            "services(/p=:page)(/c=:countPerPage)": "toServicesView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
-            "users": "toUsersView",
+            "users(/p=:page)(/c=:countPerPage)": "toUsersView",
             "createUser": "toCreateUserView",
             "updateUser": "toUpdateUserView"
         },
@@ -56,7 +56,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('createService clicked');
+
             this.contentView = new ServiceCreateView();
         },
 
@@ -69,20 +69,33 @@ define([
             this.contentView = new ServiceUpdateView();
         },
 
-        toServicesView: function () {
+        toServicesView: function (page, countPerPage) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('Services clicked');
-            this.contentView = new ServicesView();
+
+            this.contentView = new ServicesView({
+                page: page,
+                countPerPage: countPerPage
+            });
+
         },
 
-        toUsersView: function () {
+        toUsersView: function (page, countPerPage) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('Users clicked');
-            this.contentView = new UsersView();
+
+            this.contentView = new UsersView({
+                page: page,
+                countPerPage: countPerPage
+            });
         },
 
         toCreateUserView: function () {

@@ -14,11 +14,12 @@ define([
 
             this.stateModel = new Backbone.Model({
                 count         : 0,
-                onPage        : options.onPage  || 10,
+                countPerPage  : options.countPerPage  || 10,
                 page          : options.page    || 1,
                 padding       : options.padding || 3,
                 url           : options.url     || '',
-                urlPagination : options.urlPagination || false,
+                urlGetCount   : options.urlGetCount,
+                urlPagination : options.urlPagination || true,
                 ends          : options.ends,
                 steps         : options.steps,
                 data          : options.data,
@@ -40,7 +41,8 @@ define([
         tagName: 'nav',
 
         events: {
-            'click .goToPage' : 'goToPage'
+            'click .goToPage' : 'goToPage',
+            'change #selectCountPerPage': 'routeChangeCountPerPage'
         },
 
         goToPage: function (event) {
@@ -53,11 +55,24 @@ define([
             });
         },
 
+        routeChangeCountPerPage: function(e) {
+
+            var newPage = this.stateModel.get('page');
+            var allPages = Math.ceil(this.stateModel.get('count') / e.target.value);
+            var routeToUrl;
+
+            newPage = allPages < newPage ? allPages: newPage;
+            routeToUrl = this.stateModel.get('url') + '/p=' + newPage + '/c=' + e.target.value;
+
+            Backbone.history.fragment = '';
+            Backbone.history.navigate(routeToUrl,{trigger: true});
+        },
+
         count: function () {
             var self = this;
             $.ajax({
-                url   : "/adminService/getCount",
-                type  : "GET",
+                url   : this.stateModel.get('urlGetCount'),
+                type  : 'GET',
                 data  : this.getFilters(),
 
                 success: function (response) {
@@ -75,7 +90,7 @@ define([
         getFilters: function () {
             return _.extend({
                 page  : this.stateModel.get('page'),
-                count : this.stateModel.get('onPage')
+                count : this.stateModel.get('countPerPage')
             }, this.stateModel.get('data'));
         },
 
@@ -90,11 +105,12 @@ define([
         },
 
         calculate: function () {
+
             var count  = this.stateModel.get('count') || 0;
-            var onPage = this.stateModel.get('onPage');
+            var countPerPage = this.stateModel.get('countPerPage');
             var paddingBefore = this.stateModel.get('padding');
             var paddingAfter  = this.stateModel.get('padding');
-            var allPages      = Math.ceil(count / onPage);
+            var allPages      = Math.ceil(count / countPerPage);
             var pages = [];
             var start = 1;
             var end   = 1;
@@ -175,15 +191,21 @@ define([
                     });
                 }
 
-                gridStart = (page - 1) * onPage + 1;
+                gridStart = (page - 1) * countPerPage + 1;
+
+                //console.log('stateModel.set: ',  this.stateModel.toJSON());
 
                 this.stateModel.set({
-                    pages: pages,
-                    gridCount: count,
-                    gridStart: gridStart,
-                    gridEnd: (gridStart + onPage -1) < count ? gridStart + onPage -1 : count
+                    pages: pages
                 });
             }
+
+            gridStart = (page - 1) * countPerPage + 1;
+            this.stateModel.set({
+                gridCount: count,
+                gridStart: gridStart,
+                gridEnd: (gridStart + countPerPage -1) < count ? gridStart + countPerPage -1 : count
+            });
 
             this.loadPage();
             this.render();
@@ -199,8 +221,8 @@ define([
 
         render: function () {
             var data = this.stateModel.toJSON();
-            console.log('data',data);
-            console.log('Fetched Collection', this.collection);
+            console.log('stateModel:',data);
+            console.log('Fetched Collection:', this.collection);
 
             this.undelegateEvents();
             this.$el.html(_.template(template)(data));
