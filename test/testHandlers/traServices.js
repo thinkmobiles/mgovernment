@@ -86,56 +86,56 @@ describe('TRA Services tests', function () {
             });
     });
 
-    it('SEARCH IMEI real', function (done) {
-
-        var imeiCode = '01385100'; //013851002659853
-
-        agent
-            .get('/checkMobile?imei=' + imeiCode)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.dir(res.body);
-                expect(res.body).to.have.property('devices');
-                done();
-            });
-    });
-
-    it('SEARCH IMEI fake', function (done) {
-
-        var imeiCode = '98998'; //013851002659853
-
-        agent
-            .get('/searchMobile?imei=' + imeiCode)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.dir(res.body);
-                expect(res.body).to.have.property('devices');
-                expect(res.body.devices).equal([]);
-                done();
-            });
-    });
-
-    it('SEARCH BRAND', function (done) {
-
-        var brandName = 'Appl%';
-
-        agent
-            .get('/searchMobileBrand?brand=' + brandName)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.dir(res.body);
-                expect(res.body).to.have.property('devices');
-                done();
-            });
-    });
+    //it('SEARCH IMEI real', function (done) {
+    //
+    //    var imeiCode = '01385100'; //013851002659853
+    //
+    //    agent
+    //        .get('/checkMobile?imei=' + imeiCode)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('devices');
+    //            done();
+    //        });
+    //});
+    //
+    //it('SEARCH IMEI fake', function (done) {
+    //
+    //    var imeiCode = '98998'; //013851002659853
+    //
+    //    agent
+    //        .get('/searchMobile?imei=' + imeiCode)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('devices');
+    //            expect(res.body.devices).equal([]);
+    //            done();
+    //        });
+    //});
+    //
+    //it('SEARCH BRAND', function (done) {
+    //
+    //    var brandName = 'Appl%';
+    //
+    //    agent
+    //        .get('/searchMobileBrand?brand=' + brandName)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('devices');
+    //            done();
+    //        });
+    //});
 
 });

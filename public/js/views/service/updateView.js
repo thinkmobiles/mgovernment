@@ -104,7 +104,7 @@ define([
             data.serviceType = el.find('#serviceType').val().trim();
             data.baseUrl = el.find('#baseUrl').val().trim();
 
-            ata.forUserType = [];
+            data.forUserType = [];
             el.find('#guest')[0].checked ? data.forUserType.push('guest') : undefined;
             el.find('#client')[0].checked ? data.forUserType.push('client') : undefined;
             el.find('#admin')[0].checked ? data.forUserType.push('admin') : undefined;
@@ -127,6 +127,10 @@ define([
 
             if (el.find('#query')[0].checked) {
                 data.params.query = el.find('#queryInput').val().replace(' ','').split(',');
+            }
+
+            if (el.find('#port')[0].checked) {
+                data.port = el.find('#portInput').val().trim();
             }
 
             data.inputItems =[];
@@ -177,8 +181,11 @@ define([
         },
 
         render: function () {
+            var service = App.selectedService.toJSON();
 
-            this.$el.html(this.template( App.selectedService.toJSON()));
+            service.port =  service.port || undefined;
+
+            this.$el.html(this.template( service));
             itemBlockCount =  App.selectedService.toJSON().inputItems.length;
             profileBlockCount =  Object.keys(App.selectedService.toJSON().profile).length;
             //console.log(itemBlockCount);

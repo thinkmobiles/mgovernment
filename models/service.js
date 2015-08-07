@@ -15,7 +15,8 @@ module.exports = function (db) {
             createdAt: {type: Date, default: Date.now},
             forUserType: {type:[], required: true},
             method: {type: String, required: true},
-            url: {type: String, required: true},
+            port: {type: String},
+            url: {type: String},
             params: {},
 
             inputItems: [{

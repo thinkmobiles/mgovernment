@@ -129,6 +129,15 @@
             </tr>
 
             <tr>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= port ? 'checked' : '' %> >Socket is used </b></td>
+                <td class="hiddenByDefault"> <b> PORT: </b><input type="text" name="name" id="portInput" size="6"
+                                                                  maxlength="4" <%= !port ? 'disabled' : '' %> value="<%=
+                    port ? port :'' %>"></td>
+                <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
+                </td>
+            </tr>
+
+            <tr>
                 <td class="hiddenByDefault"><b>Uri:</b></td>
                 <td class="hiddenByDefault"><input type="text" name="name" id="url" size="20" maxlength="40"
                                                    value="<%= url %>"></td>

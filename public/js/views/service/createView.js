@@ -134,6 +134,10 @@ define([
                 data.params.query = el.find('#queryInput').val().replace(' ','').split(',');
             }
 
+            if (el.find('#port')[0].checked) {
+                data.port = el.find('#portInput').val().trim();
+            }
+
             data.inputItems =[];
 
             for (var i = itemBlockCount - 1; i >= 0; i-- ){

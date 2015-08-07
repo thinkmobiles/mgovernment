@@ -72,9 +72,20 @@
                 <td class="hiddenByDefault">
                     <input type="radio" name="Method" id="POST" value="POST" checked="checked"> POST
                     <input type="radio" name="Method" id="GET" value="GET"> GET
-                </td>
-                <td class="hiddenByDefault">Choose method that client use when send request</td>
+                    </td>
+
+                <td class="hiddenByDefault">Choose method that server use when send request</td>
             </tr>
+            <tr>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port"
+                                                       value="">Socket is used </b></td>
+                <td class="hiddenByDefault"> <b> PORT: </b><input type="text" name="name" id="portInput" size="6"
+                                                   maxlength="4" disabled></td>
+                <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
+                </td>
+            </tr>
+
+
 
             <tr>
                 <td class="hiddenByDefault"><b>Uri:</b></td>
