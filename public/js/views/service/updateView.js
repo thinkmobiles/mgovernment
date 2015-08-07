@@ -1,11 +1,13 @@
 define([
     'text!templates/service/update.html',
     'text!templates/service/inputItemsBlock.html',
+    'models/service',
     'validation'
 
-], function (content,inputBlockTemplate, Validation) {
+], function (content,inputBlockTemplate, ServiceModel, Validation) {
     var itemBlockCount = 0;
     var profileBlockCount = 0;
+    var cloneService = false;
     var serviceUpdateView = Backbone.View.extend({
         el: '#dataBlock',
         template: _.template(content),
@@ -19,7 +21,8 @@ define([
             'change .enabledCheckBox' : 'enableInput'
         },
 
-        initialize: function () {
+        initialize: function (options) {
+            cloneService = options.cloneService;
             this.render();
             console.dir(Backbone.history);
         },
@@ -95,6 +98,7 @@ define([
         },
 
         updateService: function(e){
+            var model = new ServiceModel();
             var el = this.$el;
             var errors =[];
             var data ={};
@@ -162,22 +166,27 @@ define([
                 return;
             }
 
-            App.selectedService.save(data, {
-                success: function(model, response){
-                    Backbone.history.history.back();
-                    //Backbone.history.fragment = '';
-                    //Backbone.history.navigate('services', {trigger: true});
-                    //console.log('Success updated');
-                    //console.log(model);
-                    //console.log(response);
-                    //alert(model);
-
-                },
-                error: function(err, xhr, model, response){
-                    console.log('Error updated',xhr);
-                    alert(xhr.responseText);
-                }
-            });
+            if (cloneService) {
+                model.save(data, {
+                    success: function(model, response){
+                        Backbone.history.history.back();
+                    },
+                    error: function(err, xhr, model, response){
+                        console.log('Error updated',xhr);
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                App.selectedService.save(data, {
+                    success: function (model, response) {
+                        Backbone.history.history.back();
+                    },
+                    error: function (err, xhr, model, response) {
+                        console.log('Error updated', xhr);
+                        alert(xhr.responseText);
+                    }
+                });
+            }
         },
 
         render: function () {

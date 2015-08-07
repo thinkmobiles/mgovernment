@@ -10,6 +10,7 @@ define([
         events: {
             'click .DbList': 'showServicesInfo',
             'click #createService': 'createService',
+            'click #cloneService': 'cloneService',
             'click #deleteService': 'deleteService',
             'click #updateService': 'updateService'
         },
@@ -62,6 +63,19 @@ define([
             });
         },
 
+        cloneService: function(e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            console.log('clone service');
+
+            if (!this.selectedServiceId) return;
+
+            App.selectedService = this.servicesCollection.models[this.selectedServiceId];
+            Backbone.history.fragment = '';
+            Backbone.history.navigate('cloneService', {trigger: true});
+        },
         updateService: function(e) {
 
             e.preventDefault();
