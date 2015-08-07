@@ -1,9 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
-
-var WHOIS_URL = 'whois.aeda.net.ae';
-var WHOIS_CHECK_URL = 'whois-check.aeda.net.ae';
-var WHOIS_PORT = 43;
+var TRA = require('../constants/traServices');
 
 var AVAILABLE_STATUS = {
     AVAILABLE: 'Available',
@@ -18,11 +15,11 @@ var TestTRAHandler = function (db) {
 
         var checkUrl = req.query.checkUrl;
 
-        handleWhoisSocket(checkUrl, WHOIS_URL, function (err, data) {
+        handleWhoisSocket(checkUrl, TRA.WHOIS_URL, function (err, data) {
             if (err) {
                 return next(err);
             }
-            return res.status(200).send({receivedData: data});
+            return res.status(200).send({urlData: data});
         });
     };
 
@@ -30,7 +27,7 @@ var TestTRAHandler = function (db) {
 
         var checkUrl = req.query.checkUrl;
 
-        handleWhoisSocket(checkUrl, WHOIS_CHECK_URL, function (err, data) {
+        handleWhoisSocket(checkUrl, TRA.WHOIS_CHECK_URL, function (err, data) {
             if (err) {
                 return next(err);
             }
@@ -41,37 +38,83 @@ var TestTRAHandler = function (db) {
     function handleWhoisSocket(checkUrl, reqUrl, callback) {
 
         var net = require('net');
-        var client = new net.Socket();
+        var clientSocket = new net.Socket();
 
-        client.connect(WHOIS_PORT, reqUrl, function () {
+        clientSocket.connect(TRA.WHOIS_PORT, reqUrl, function () {
             console.log('Connected');
-            client.write('tra.gov.ae'); //TODO set 'checkUrl' from req.params
+            clientSocket.write(checkUrl +'\r\n');
         });
 
-        client.on('data', function (data) {
+        clientSocket.on('data', function (data) {
             console.log('Received: ' + data);
-            client.destroy();
+            //client.destroy();
+            var strData = data.toString('utf8');
 
+            callback(null, strData);
+        });
+
+        clientSocket.on('drain', function (data) {
+            console.log('Received: ' + data);
+            console.log('Connection drain');
             callback(null, data);
         });
 
-        client.on('', function (data) {
-            //TODO Remove it
+        clientSocket.on('lookup', function (err, data) {
             console.log('Received: ' + data);
-            client.destroy();
-
-            callback(null, data);
+            console.log('Connection lookup');
         });
 
-        client.on('close', function () {
-            console.log('Connection closed');
+        clientSocket.on('finish', function (e, d) {
+            console.log(e);
+            console.log(d);
+            console.log('Connection finish');
         });
 
-        client.on('error', function (err) {
+        clientSocket.on('close', function (e, d) {
+            console.log(e);
+            console.log(d);
+            console.log('Connection close');
+        });
+
+        clientSocket.on('end', function (e, d) {
+            console.log(e);
+            console.log(d);
+            console.log('Connection end');
+        });
+
+        clientSocket.on('error', function (err) {
             console.log('Error occurred: ' + err.message);
 
             callback(err);
         });
+    }
+
+    this.searchMobileImei = function (req, res, next) {
+
+        var checkUrl = req.query.checkUrl;
+
+        handleWhoisSocket(checkUrl, TRA.WHOIS_CHECK_URL, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+            return res.status(200).send({availableStatus: data});
+        });
+    };
+
+    this.searchMobileBrand = function (req, res, next) {
+
+        var checkUrl = req.query.checkUrl;
+
+        handleWhoisSocket(checkUrl, TRA.WHOIS_CHECK_URL, function (err, data) {
+            if (err) {
+                return next(err);
+            }
+            return res.status(200).send({availableStatus: data});
+        });
+    };
+
+    function sendSearchRequest() {
+
     }
 };
 
