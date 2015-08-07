@@ -1,8 +1,9 @@
 define([
     'text!templates/service/update.html',
-    'text!templates/service/inputItemsBlock.html'
+    'text!templates/service/inputItemsBlock.html',
+    'validation'
 
-], function (content,inputBlockTemplate) {
+], function (content,inputBlockTemplate, Validation) {
     var itemBlockCount = 0;
     var serviceUpdateView = Backbone.View.extend({
         el: '#dataBlock',
@@ -70,6 +71,7 @@ define([
 
         updateService: function(e){
             var el = this.$el;
+            var errors =[];
             var data ={};
 
             data.serviceProvider = el.find('#serviceProvider').val().trim();
@@ -114,9 +116,17 @@ define([
                     order: el.find('#order' + i).val().trim()
                 }
             }
-            console.log(itemBlockCount);
 
+            //console.log(itemBlockCount);
             console.dir(data);
+
+            Validation.checkUrlField(errors, true, data.baseUrl, 'Base Url');
+            Validation.checkCompanyNameField(errors, true, data.serviceProvider, 'serviceProvider');
+
+            if (errors.length){
+                alert(errors);
+                return;
+            }
 
             App.selectedService.save(data, {
                 success: function(model, response){

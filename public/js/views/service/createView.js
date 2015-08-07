@@ -1,8 +1,9 @@
 define([
     'text!templates/service/create.html',
     'text!templates/service/inputItemsBlock.html',
-    'models/service'
-], function (content,inputBlockTemplate, ServiceModel) {
+    'models/service',
+    'validation'
+], function (content,inputBlockTemplate, ServiceModel, Validation) {
     var itemBlockCount = 0;
     var serviceCreateView = Backbone.View.extend({
 
@@ -57,7 +58,8 @@ define([
         enableInput: function(e) {
             var idName = e.target.id;
             var el = this.$el;
-            console.log(idName,'(e.target.checked) ',e.target.checked,'#'+ idName + 'Input' );
+
+            //console.log(idName,'(e.target.checked) ',e.target.checked,'#'+ idName + 'Input' );
 
             if (e.target.checked) {
                 el.find('#'+ idName + 'Input').prop( "disabled", false );
@@ -69,6 +71,7 @@ define([
         saveService: function(e){
             var el = this.$el;
             var model = new ServiceModel();
+            var errors =[];
             var data ={};
 
             data.serviceProvider = el.find('#serviceProvider').val().trim();
@@ -114,7 +117,15 @@ define([
                 }
             }
 
-            console.dir(data);
+            //console.dir(data);
+
+            Validation.checkUrlField(errors, true, data.baseUrl, 'Base Url');
+            Validation.checkCompanyNameField(errors, true, data.serviceProvider, 'serviceProvider');
+
+            if (errors.length){
+                alert(errors);
+                return;
+            }
 
             model.save(data, {
                 success: function(model, response){
