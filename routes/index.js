@@ -29,6 +29,14 @@ module.exports = function(app, db){
         testTRAHandler.testWhoisCheck(req, res, next);
     });
 
+    app.get('/searchMobile', function(req, res, next) {
+        testTRAHandler.searchMobileImei(req, res, next);
+    });
+
+    app.get('/searchMobileBrand', function(req, res, next) {
+        testTRAHandler.searchMobileBrand(req, res, next);
+    });
+
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);
     app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);
