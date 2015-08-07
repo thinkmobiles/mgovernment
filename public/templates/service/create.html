@@ -30,17 +30,13 @@
                 <td class="hiddenByDefault">Like this: internet \ mobile \ money \ biznes \ government</td>
             </tr>
 
-            <tr>
-                <td class="hiddenByDefault"><b>profile { description:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="description" size="20" maxlength="40">
-                </td>
-                <td class="hiddenByDefault"> Input Provider description:</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>profile{:</b></td>
-                <td class="hiddenByDefault" style="color: red">ADD FIELD</td>
-                <td class="hiddenByDefault">ADD custom field</td>
+            <tr id="profileBlock">
+                <td class="hiddenByDefault"><b>profile{ }</b></td>
+                <td class="hiddenByDefault"><a id="addProfileFieldBlock" data-hash="" class="actionButton"
+                                               style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
+                        id="delProfileFieldBlock" data-hash="" class="actionButton"
+                        style=" text-decoration: none; font-size: 18px; color: red">--</a></td>
+                <td class="hiddenByDefault">ADD or Delete last profiles fields block</td>
             </tr>
 
             <tr>
@@ -51,10 +47,10 @@
             </tr>
 
             <tr id="itemBlock">
-                <td class="hiddenByDefault"><b>inputItems [</b></td>
+                <td class="hiddenByDefault"><b>inputItems [ ]</b></td>
                 <td class="hiddenByDefault"><a href="#" id="addInputItemsBlock" data-hash="signOut" class="actionButton"
                                                style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
-                        href="#" id="delInputItemsBlock" data-hash="signOut" class="actionButton"
+                        href="#" id="delInputItemsBlock" data-hash="" class="actionButton"
                         style=" text-decoration: none; font-size: 18px; color: red">--</a></td>
                 <td class="hiddenByDefault">ADD or Delete last Items field-block</td>
             </tr>
@@ -82,7 +78,8 @@
 
             <tr>
                 <td class="hiddenByDefault"><b>Uri:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="url" size="20" maxlength="40" required></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="url" size="20" maxlength="40" required>
+                </td>
                 <td class="hiddenByDefault">When service need uri response like: chackimei\ or \users\create</td>
             </tr>
             <tr>

@@ -30,17 +30,24 @@
                 <td class="hiddenByDefault">Like this: internet \ mobile \ money \ biznes \ government</td>
             </tr>
 
-            <tr>
-                <td class="hiddenByDefault"><b>profile { description:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="description" size="20" maxlength="40"
-                                                   value="<%= profile.description %>"></td>
-                <td class="hiddenByDefault"> Input Provider description:</td>
+            <% if (profile){ var i =0; %>
+            <% for (var k in profile){ %>
+            <tr id="profileFieldBlock<%= i %>">
+                <td><b>profile.</b><input type="text" name="" id="profileFieldName<%= i %>" size="10" maxlength="20" value="<%= k %>"></td>
+                <td><input type="text" name="" id="profileFieldValue<%= i %>" size="20" maxlength="40"
+                           value="<%= profile[k] %>"></td>
+                <td> Input profile. fileds name and fields value</td>
             </tr>
+            <% i++ } %>
+            <% } %>
 
-            <tr>
-                <td class="hiddenByDefault"><b>profile{:</b></td>
-                <td class="hiddenByDefault" style="color: red">ADD FIELD</td>
-                <td class="hiddenByDefault">ADD custom field</td>
+            <tr id="profileBlock">
+                <td class="hiddenByDefault"><b>profile{ }</b></td>
+                <td class="hiddenByDefault"><a id="addProfileFieldBlock" data-hash="" class="actionButton"
+                                               style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
+                        id="delProfileFieldBlock" data-hash="" class="actionButton"
+                        style=" text-decoration: none; font-size: 18px; color: red">--</a></td>
+                <td class="hiddenByDefault">ADD or Delete last profiles fields block</td>
             </tr>
 
             <tr>
@@ -87,7 +94,7 @@
             <% } %>
 
             <tr id="itemBlock">
-                <td class="hiddenByDefault"><b>inputItems [</b></td>
+                <td class="hiddenByDefault"><b>inputItems [ ]</b></td>
                 <td class="hiddenByDefault"><a href="#" id="addInputItemsBlock" data-hash="signOut" class="actionButton"
                                                style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
                         href="#" id="delInputItemsBlock" data-hash="signOut" class="actionButton"

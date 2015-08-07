@@ -5,12 +5,15 @@ define([
 
 ], function (content,inputBlockTemplate, Validation) {
     var itemBlockCount = 0;
+    var profileBlockCount = 0;
     var serviceUpdateView = Backbone.View.extend({
         el: '#dataBlock',
         template: _.template(content),
 
         events: {
             'click #updateBtn' : 'updateService',
+            'click #addProfileFieldBlock' : 'addProfileFieldBlock',
+            'click #delProfileFieldBlock' : 'delProfileFieldBlock',
             'click #addInputItemsBlock' : 'addInputItemsBlock',
             'click #delInputItemsBlock' : 'delInputItemsBlock',
             'change .enabledCheckBox' : 'enableInput'
@@ -21,10 +24,32 @@ define([
             console.dir(Backbone.history);
         },
 
+        addProfileFieldBlock: function(e) {
+
+            var textContent = '<td><b>profile.</b><input type="text" name="" id="profileFieldName' + profileBlockCount + '" size="10" maxlength="20"></td><td><input type="text" name="" id="profileFieldValue' + profileBlockCount + '" size="20" maxlength="40"></td><td> Input profile. fileds name and fields value </td>';
+
+            $("<tr> </tr>").
+                attr("id", "profileFieldBlock" + profileBlockCount).
+                html(textContent).
+                insertBefore("#profileBlock");
+
+            profileBlockCount++;
+        },
+
+        delProfileFieldBlock: function(e) {
+
+            if (profileBlockCount === 0) {
+                return;
+            }
+            profileBlockCount--;
+
+            $("#profileFieldBlock" + profileBlockCount).
+                remove();
+        },
+
+
         addInputItemsBlock: function(e) {
             var el = this.$el;
-            //this.template =  _.template(inputBlockTemplate);
-
 
             e.preventDefault();
             e.stopPropagation();
@@ -77,12 +102,9 @@ define([
             data.serviceProvider = el.find('#serviceProvider').val().trim();
             data.serviceName = el.find('#serviceName').val().trim();
             data.serviceType = el.find('#serviceType').val().trim();
-            data.profile = {
-                description: el.find('#description').val().trim()
-            };
             data.baseUrl = el.find('#baseUrl').val().trim();
 
-            data.forUserType = [];
+            ata.forUserType = [];
             el.find('#guest')[0].checked ? data.forUserType.push('guest') : undefined;
             el.find('#client')[0].checked ? data.forUserType.push('client') : undefined;
             el.find('#admin')[0].checked ? data.forUserType.push('admin') : undefined;
@@ -114,6 +136,14 @@ define([
                     inputType: el.find('#inputType' + i).val().trim(),
                     name: el.find('#name' + i).val().trim(),
                     order: el.find('#order' + i).val().trim()
+                }
+            }
+
+            if (profileBlockCount > 0) {
+                data.profile = {};
+
+                for (var i = profileBlockCount - 1; i >= 0; i-- ){
+                    data.profile[el.find('#profileFieldName' + i).val().trim()] =  el.find('#profileFieldValue' + i).val().trim();
                 }
             }
 
@@ -150,6 +180,7 @@ define([
 
             this.$el.html(this.template( App.selectedService.toJSON()));
             itemBlockCount =  App.selectedService.toJSON().inputItems.length;
+            profileBlockCount =  Object.keys(App.selectedService.toJSON().profile).length;
             //console.log(itemBlockCount);
             return this;
         }
