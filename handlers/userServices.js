@@ -3,6 +3,7 @@ var RESPONSE = require('../constants/response');
 var UserHistoryHandler = require('./userHistoryLog');
 var Capalaba = require('./apiWrappers/capalaba');
 var TmaTraServices = require('./apiWrappers/tmaTraServices');
+var tmaTraServicesViaSocket = require('./apiWrappers/tmaTraServicesViaSocket');
 
 var SessionHandler = require('./sessions');
 var async = require('async');
@@ -18,6 +19,7 @@ var UserService = function(db) {
     var serviceWrappers =  {};
     serviceWrappers[CONST.SERVICE_PROVIDERS.CAPALABA] = new Capalaba(db);
     serviceWrappers[CONST.SERVICE_PROVIDERS.TMA_TRA_SERVICES] = new TmaTraServices(db);
+    serviceWrappers[CONST.SERVICE_PROVIDERS.TMA_TRA_SERVICES_VIA_SOCKET] = new tmaTraServicesViaSocket(db);
 
     var userHistoryHandler = new UserHistoryHandler(db);
 
