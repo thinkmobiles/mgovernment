@@ -2,6 +2,8 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var TRA = require('../constants/traServices');
 
+var request = require('request');
+
 var AVAILABLE_STATUS = {
     AVAILABLE: 'Available',
     NOT_AVAILABLE: 'Not Available',
@@ -44,7 +46,7 @@ var TestTRAHandler = function (db) {
 
         clientSocket.connect(TRA.WHOIS_PORT, reqUrl, function () {
             console.log('Connected');
-            clientSocket.write(checkUrl +'\r\n');
+            clientSocket.write(checkUrl + '\r\n');
         });
 
         clientSocket.on('data', function (data) {
@@ -93,30 +95,69 @@ var TestTRAHandler = function (db) {
 
     this.searchMobileImei = function (req, res, next) {
 
-        var checkUrl = req.query.checkUrl;
+        var imei = req.query.imei;
 
-        handleWhoisSocket(checkUrl, TRA.WHOIS_CHECK_URL, function (err, data) {
+        if (!imei) {
+            res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+        }
+
+        var startIndex = req.query.start || 0;
+        var endIndex = req.query.end || 10;
+
+        var requestBody = {
+            startIndex: startIndex,
+            endIndex: endIndex,
+            tac: imei
+        };
+
+        sendSearchRequest(requestBody, function (err, result) {
             if (err) {
-                return next(err);
+                return res.status(500).send(err);
             }
-            return res.status(200).send({availableStatus: data});
+            return res.status(200).send(result);
         });
     };
 
     this.searchMobileBrand = function (req, res, next) {
 
-        var checkUrl = req.query.checkUrl;
+        var brand = req.query.brand;
 
-        handleWhoisSocket(checkUrl, TRA.WHOIS_CHECK_URL, function (err, data) {
+        if (!brand) {
+            res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+        }
+
+        var startIndex = req.query.start || 0;
+        var endIndex = req.query.end || 10;
+
+        var requestBody = {
+            startIndex: startIndex,
+            endIndex: endIndex,
+            manufacturer: brand
+        };
+
+        sendSearchRequest(requestBody, function (err, result) {
             if (err) {
-                return next(err);
+                return res.status(500).send(err);
             }
-            return res.status(200).send({availableStatus: data});
+            return res.status(200).send(result);
         });
     };
 
-    function sendSearchRequest() {
+    function sendSearchRequest(reqBody, callback) {
 
+        var reqOptions = {
+            method: 'GET',
+            headers: {'api_key': 'int'},
+            body: reqBody,
+            json: true
+        };
+
+        request(TRA.MOBILE_SEARCH_URL, reqOptions, function (err, res, body) {
+            if (!err && res.statusCode == 200) {
+                return callback(null, res.body)
+            }
+            return callback(err)
+        });
     }
 };
 
