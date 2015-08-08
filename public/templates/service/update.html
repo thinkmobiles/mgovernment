@@ -30,17 +30,24 @@
                 <td class="hiddenByDefault">Like this: internet \ mobile \ money \ biznes \ government</td>
             </tr>
 
-            <tr>
-                <td class="hiddenByDefault"><b>profile { description:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="description" size="20" maxlength="40"
-                                                   value="<%= profile.description %>"></td>
-                <td class="hiddenByDefault"> Input Provider description:</td>
+            <% if (profile){ var i =0; %>
+            <% for (var k in profile){ %>
+            <tr id="profileFieldBlock<%= i %>">
+                <td><b>profile.</b><input type="text" name="" id="profileFieldName<%= i %>" size="10" maxlength="20" value="<%= k %>"></td>
+                <td><input type="text" name="" id="profileFieldValue<%= i %>" size="20" maxlength="40"
+                           value="<%= profile[k] %>"></td>
+                <td> Input profile. fileds name and fields value</td>
             </tr>
+            <% i++ } %>
+            <% } %>
 
-            <tr>
-                <td class="hiddenByDefault"><b>profile{:</b></td>
-                <td class="hiddenByDefault" style="color: red">ADD FIELD</td>
-                <td class="hiddenByDefault">ADD custom field</td>
+            <tr id="profileBlock">
+                <td class="hiddenByDefault"><b>profile{ }</b></td>
+                <td class="hiddenByDefault"><a id="addProfileFieldBlock" data-hash="" class="actionButton"
+                                               style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
+                        id="delProfileFieldBlock" data-hash="" class="actionButton"
+                        style=" text-decoration: none; font-size: 18px; color: red">--</a></td>
+                <td class="hiddenByDefault">ADD or Delete last profiles fields block</td>
             </tr>
 
             <tr>
@@ -87,7 +94,7 @@
             <% } %>
 
             <tr id="itemBlock">
-                <td class="hiddenByDefault"><b>inputItems [</b></td>
+                <td class="hiddenByDefault"><b>inputItems [ ]</b></td>
                 <td class="hiddenByDefault"><a href="#" id="addInputItemsBlock" data-hash="signOut" class="actionButton"
                                                style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
                         href="#" id="delInputItemsBlock" data-hash="signOut" class="actionButton"
@@ -119,6 +126,15 @@
                     <input type="radio" name="Method" id="GET" value="GET" <%= method == 'GET' ? 'checked':''%> > GET
                 </td>
                 <td class="hiddenByDefault">Choose method that client use when send request</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= port ? 'checked' : '' %> >Socket is used </b></td>
+                <td class="hiddenByDefault"> <b> PORT: </b><input type="text" name="name" id="portInput" size="6"
+                                                                  maxlength="4" <%= !port ? 'disabled' : '' %> value="<%=
+                    port ? port :'' %>"></td>
+                <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
+                </td>
             </tr>
 
             <tr>
@@ -181,7 +197,7 @@
     border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8; margin-left: 5px;">
             <div id="updateBtn" onmouseover="this.style.cursor='pointer'">
         <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
-        Save Updated Service
+        Save Service
         </span>
             </div>
         </div>

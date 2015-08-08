@@ -1,30 +1,58 @@
 define([
     'text!templates/service/update.html',
     'text!templates/service/inputItemsBlock.html',
+    'models/service',
     'validation'
 
-], function (content,inputBlockTemplate, Validation) {
+], function (content,inputBlockTemplate, ServiceModel, Validation) {
     var itemBlockCount = 0;
+    var profileBlockCount = 0;
+    var cloneService = false;
     var serviceUpdateView = Backbone.View.extend({
         el: '#dataBlock',
         template: _.template(content),
 
         events: {
             'click #updateBtn' : 'updateService',
+            'click #addProfileFieldBlock' : 'addProfileFieldBlock',
+            'click #delProfileFieldBlock' : 'delProfileFieldBlock',
             'click #addInputItemsBlock' : 'addInputItemsBlock',
             'click #delInputItemsBlock' : 'delInputItemsBlock',
             'change .enabledCheckBox' : 'enableInput'
         },
 
-        initialize: function () {
+        initialize: function (options) {
+            cloneService = options.cloneService;
             this.render();
             console.dir(Backbone.history);
         },
 
+        addProfileFieldBlock: function(e) {
+
+            var textContent = '<td><b>profile.</b><input type="text" name="" id="profileFieldName' + profileBlockCount + '" size="10" maxlength="20"></td><td><input type="text" name="" id="profileFieldValue' + profileBlockCount + '" size="20" maxlength="40"></td><td> Input profile. fileds name and fields value </td>';
+
+            $("<tr> </tr>").
+                attr("id", "profileFieldBlock" + profileBlockCount).
+                html(textContent).
+                insertBefore("#profileBlock");
+
+            profileBlockCount++;
+        },
+
+        delProfileFieldBlock: function(e) {
+
+            if (profileBlockCount === 0) {
+                return;
+            }
+            profileBlockCount--;
+
+            $("#profileFieldBlock" + profileBlockCount).
+                remove();
+        },
+
+
         addInputItemsBlock: function(e) {
             var el = this.$el;
-            //this.template =  _.template(inputBlockTemplate);
-
 
             e.preventDefault();
             e.stopPropagation();
@@ -70,6 +98,7 @@ define([
         },
 
         updateService: function(e){
+            var model = new ServiceModel();
             var el = this.$el;
             var errors =[];
             var data ={};
@@ -77,9 +106,6 @@ define([
             data.serviceProvider = el.find('#serviceProvider').val().trim();
             data.serviceName = el.find('#serviceName').val().trim();
             data.serviceType = el.find('#serviceType').val().trim();
-            data.profile = {
-                description: el.find('#description').val().trim()
-            };
             data.baseUrl = el.find('#baseUrl').val().trim();
 
             data.forUserType = [];
@@ -107,6 +133,10 @@ define([
                 data.params.query = el.find('#queryInput').val().replace(' ','').split(',');
             }
 
+            if (el.find('#port')[0].checked) {
+                data.port = el.find('#portInput').val().trim();
+            }
+
             data.inputItems =[];
 
             for (var i = itemBlockCount - 1; i >= 0; i-- ){
@@ -114,6 +144,14 @@ define([
                     inputType: el.find('#inputType' + i).val().trim(),
                     name: el.find('#name' + i).val().trim(),
                     order: el.find('#order' + i).val().trim()
+                }
+            }
+
+            if (profileBlockCount > 0) {
+                data.profile = {};
+
+                for (var i = profileBlockCount - 1; i >= 0; i-- ){
+                    data.profile[el.find('#profileFieldName' + i).val().trim()] =  el.find('#profileFieldValue' + i).val().trim();
                 }
             }
 
@@ -128,28 +166,37 @@ define([
                 return;
             }
 
-            App.selectedService.save(data, {
-                success: function(model, response){
-                    Backbone.history.history.back();
-                    //Backbone.history.fragment = '';
-                    //Backbone.history.navigate('services', {trigger: true});
-                    //console.log('Success updated');
-                    //console.log(model);
-                    //console.log(response);
-                    //alert(model);
-
-                },
-                error: function(err, xhr, model, response){
-                    console.log('Error updated',xhr);
-                    alert(xhr.responseText);
-                }
-            });
+            if (cloneService) {
+                model.save(data, {
+                    success: function(model, response){
+                        Backbone.history.history.back();
+                    },
+                    error: function(err, xhr, model, response){
+                        console.log('Error updated',xhr);
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                App.selectedService.save(data, {
+                    success: function (model, response) {
+                        Backbone.history.history.back();
+                    },
+                    error: function (err, xhr, model, response) {
+                        console.log('Error updated', xhr);
+                        alert(xhr.responseText);
+                    }
+                });
+            }
         },
 
         render: function () {
+            var service = App.selectedService.toJSON();
 
-            this.$el.html(this.template( App.selectedService.toJSON()));
+            service.port =  service.port || undefined;
+
+            this.$el.html(this.template( service));
             itemBlockCount =  App.selectedService.toJSON().inputItems.length;
+            profileBlockCount =  Object.keys(App.selectedService.toJSON().profile).length;
             //console.log(itemBlockCount);
             return this;
         }

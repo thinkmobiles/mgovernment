@@ -22,6 +22,7 @@ define([
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
+            "cloneService": "toUpdateServiceViewWithCloneKey",
             "users(/p=:page)(/c=:countPerPage)": "toUsersView",
             "createUser": "toCreateUserView",
             "updateUser": "toUpdateUserView"
@@ -67,6 +68,15 @@ define([
             }
             //console.log('updateServices clicked');
             this.contentView = new ServiceUpdateView();
+        },
+
+        toUpdateServiceViewWithCloneKey: function () {
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+            //console.log('updateServices clicked');
+            this.contentView = new ServiceUpdateView({cloneService: true});
         },
 
         toServicesView: function (page, countPerPage) {

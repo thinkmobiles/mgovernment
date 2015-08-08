@@ -36,7 +36,8 @@ module.exports = {
 
     SERVICE_PROVIDERS: {
         CAPALABA: 'Capalaba',
-        TMA_TRA_SERVICES: 'TmaTraServices'
+        TMA_TRA_SERVICES: 'TmaTraServices',
+        TMA_TRA_SERVICES_VIA_SOCKET: 'tmaTraServicesViaSocket'
 }
 
 };

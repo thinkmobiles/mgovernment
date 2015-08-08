@@ -5,6 +5,7 @@ define([
     'validation'
 ], function (content,inputBlockTemplate, ServiceModel, Validation) {
     var itemBlockCount = 0;
+    var profileBlockCount = 0;
     var serviceCreateView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -12,6 +13,8 @@ define([
 
         events: {
             'click #saveBtn' : 'saveService',
+            'click #addProfileFieldBlock' : 'addProfileFieldBlock',
+            'click #delProfileFieldBlock' : 'delProfileFieldBlock',
             'click #addInputItemsBlock' : 'addInputItemsBlock',
             'click #delInputItemsBlock' : 'delInputItemsBlock',
             'change .enabledCheckBox' : 'enableInput'
@@ -20,6 +23,35 @@ define([
         initialize: function () {
             itemBlockCount = 0;
             this.render();
+        },
+
+        addProfileFieldBlock: function(e) {
+            //e.preventDefault();
+            //e.stopPropagation();
+            //e.stopImmediatePropagation();
+
+            var textContent = '<td><b>profile.</b><input type="text" name="" id="profileFieldName' + profileBlockCount + '" size="10" maxlength="20"></td><td><input type="text" name="" id="profileFieldValue' + profileBlockCount + '" size="20" maxlength="40"></td><td> Input profile. fileds name and fields value </td>';
+
+            $("<tr> </tr>").
+                attr("id", "profileFieldBlock" + profileBlockCount).
+                html(textContent).
+                insertBefore("#profileBlock");
+
+            profileBlockCount++;
+        },
+
+        delProfileFieldBlock: function(e) {
+            //e.preventDefault();
+            //e.stopPropagation();
+            //e.stopImmediatePropagation();
+
+            if (profileBlockCount === 0) {
+                return;
+            }
+            profileBlockCount--;
+
+            $("#profileFieldBlock" + profileBlockCount).
+                remove();
         },
 
         addInputItemsBlock: function(e) {
@@ -59,8 +91,6 @@ define([
             var idName = e.target.id;
             var el = this.$el;
 
-            //console.log(idName,'(e.target.checked) ',e.target.checked,'#'+ idName + 'Input' );
-
             if (e.target.checked) {
                 el.find('#'+ idName + 'Input').prop( "disabled", false );
             } else {
@@ -77,9 +107,6 @@ define([
             data.serviceProvider = el.find('#serviceProvider').val().trim();
             data.serviceName = el.find('#serviceName').val().trim();
             data.serviceType = el.find('#serviceType').val().trim();
-            data.profile = {
-                description: el.find('#description').val().trim()
-            };
             data.baseUrl = el.find('#baseUrl').val().trim();
 
             data.forUserType = [];
@@ -107,6 +134,10 @@ define([
                 data.params.query = el.find('#queryInput').val().replace(' ','').split(',');
             }
 
+            if (el.find('#port')[0].checked) {
+                data.port = el.find('#portInput').val().trim();
+            }
+
             data.inputItems =[];
 
             for (var i = itemBlockCount - 1; i >= 0; i-- ){
@@ -117,7 +148,15 @@ define([
                 }
             }
 
-            //console.dir(data);
+            if (profileBlockCount > 0) {
+                data.profile = {};
+
+                for (var i = profileBlockCount - 1; i >= 0; i-- ){
+                    data.profile[el.find('#profileFieldName' + i).val().trim()] =  el.find('#profileFieldValue' + i).val().trim();
+                }
+            }
+
+            console.dir(data);
 
             Validation.checkUrlField(errors, true, data.baseUrl, 'Base Url');
             Validation.checkCompanyNameField(errors, true, data.serviceProvider, 'serviceProvider');
@@ -130,13 +169,6 @@ define([
             model.save(data, {
                 success: function(model, response){
                     Backbone.history.history.back();
-                    //Backbone.history.fragment = '';
-                    //Backbone.history.navigate('services', {trigger: true});
-                    //console.log('Success created');
-                    //console.log(model);
-                    //console.log(response);
-                    //alert(model);
-
                 },
                 error: function(err, xhr, model, response){
                     console.log('Error created',xhr);

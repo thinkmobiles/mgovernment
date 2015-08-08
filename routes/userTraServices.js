@@ -39,9 +39,5 @@ module.exports = function(db){
 //router.route('/taggedsearch/:searchString')
 //        .post(servicesHandler.sendServiceRequest);
 
-
-
-
-
     return router;
 };
