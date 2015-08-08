@@ -19,6 +19,7 @@ var TestTRAHandler = function (db) {
             if (err) {
                 return next(err);
             }
+            //TODO PARSE Data in JSON structure
             return res.status(200).send({urlData: data});
         });
     };
@@ -31,6 +32,7 @@ var TestTRAHandler = function (db) {
             if (err) {
                 return next(err);
             }
+            data = data.replace(/\r?\n/g, '');
             return res.status(200).send({availableStatus: data});
         });
     };

@@ -1,6 +1,7 @@
 'use strict';
 
 var request = require('supertest');
+var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var async =  require('async');
 var url = 'http://localhost:7791';
@@ -18,7 +19,7 @@ describe('TRA Services tests', function () {
 
     it('WHOIS GET Data for Exist url', function (done) {
 
-        var existUrl = 'tra.gov.ae';
+        var existUrl = 'google.ae';
 
         agent
             .get('/checkWhois?checkUrl=' + existUrl)
