@@ -22,14 +22,14 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
+                preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
                 preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-                preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
-                preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
                 preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
                 preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
                 preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
                 preparingDb.toFillUsers(1),
-                preparingDb.createUsersByTemplate(USERS.CLIENT)
+                preparingDb.createUsersByTemplate(USERS.CLIENT),
+                preparingDb.createUsersByTemplate(USERS.COMPANY)
             ],
             function (err, results) {
                 if (err) {
@@ -100,7 +100,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     it('SEND Bad feedback', function (done) {
 
         var service = serviceCollection[2];
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.COMPANY;
         var feedback = {
             serviceId: service._id,
             rate: 1,
@@ -109,6 +109,39 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
         agent
             .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/feedback')
+                    .send(feedback)
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
+    it('SEND GOOD feedback UnAuthorized', function (done) {
+
+        var service = serviceCollection[2];
+        var loginData = USERS.CLIENT;
+        var feedback = {
+            serviceId: service._id,
+            rate: 3,
+            feedback: 'pretty nice'
+        };
+
+        agent
+            .post('/user/signOut')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
