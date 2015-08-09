@@ -10,6 +10,8 @@ var AVAILABLE_STATUS = {
     RESERVED: 'Reserved'
 };
 
+var NO_DATA_FOUND = '';
+
 var TestTRAHandler = function (db) {
     'use strict';
 
@@ -21,10 +23,14 @@ var TestTRAHandler = function (db) {
             if (err) {
                 return next(err);
             }
-            //TODO PARSE Data in JSON structure
-            return res.status(200).send({urlData: data});
+            var parsedData = parseDataToJson(data);
+            return res.status(200).send({urlData: parsedData});
         });
     };
+
+    function parseDataToJson(urlData) {
+        return urlData;
+    }
 
     this.testWhoisCheck = function (req, res, next) {
 

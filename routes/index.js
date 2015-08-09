@@ -13,6 +13,7 @@ module.exports = function(app, db){
     var adminServicesRouter = require('./adminServices')(db);
     var userServicesRouter = require('./userServices')(db);
     var userTraServicesRouter = require('./userTraServices')(db);
+    var userFeedbackRouter = require('./userFeedback')(db);
 
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
@@ -42,7 +43,9 @@ module.exports = function(app, db){
     app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);
     app.use('/adminService',session.isAdminBySession, adminServicesRouter);
     app.use('/service', userServicesRouter);
+    app.use('/feedback', userFeedbackRouter);
     app.use('/tra_api/service', userTraServicesRouter);
+
     app.get('/', function(req, res){
         res.sendfile('./index.html');
     });

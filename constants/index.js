@@ -21,7 +21,8 @@ module.exports = {
         HISTORY: 'HistoryLog',
         USER_HISTORY: 'UserHistoryLog',
         SERVICE: 'Service',
-        IMAGE: 'Image'
+        IMAGE: 'Image',
+        FEEDBACK: 'Feedback'
     },
 
     ACTION: {
