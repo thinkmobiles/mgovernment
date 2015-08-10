@@ -102,7 +102,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
         var service = serviceCollection[2];
         var loginData = USERS.COMPANY;
         var feedback = {
-            serviceId: service._id,
+            serviceName: service.serviceName,
             rate: 1,
             feedback: 'the worst one'
         };

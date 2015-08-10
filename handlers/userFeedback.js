@@ -12,7 +12,7 @@ var Feedback = function(db) {
         var body = req.body;
         var feedback;
 
-        if (!body) {
+        if (!body || !body.rate || !body.feedback || (!body.serviceId && !body.serviceName)) {
             return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
@@ -22,6 +22,7 @@ var Feedback = function(db) {
         var feedbackData = {
             user: userRef,
             service: serviceRef,
+            serviceName: body.serviceName,
             rate: body.rate,
             feedback: body.feedback
         };
@@ -30,12 +31,10 @@ var Feedback = function(db) {
 
         feedback
             .save(function (err, model) {
-
                 if (err) {
                     return next(err);
                 }
-
-                res.status(201).send(model);
+                return res.status(201).send(model);
             })
     };
 
@@ -55,7 +54,7 @@ var Feedback = function(db) {
             .skip(skipCount)
             .limit(limitCount)
             .populate({path: 'service', select: '_id serviceProvider serviceName'})
-            .populate({path: 'user', select: '_id login profile.firstName profile.lastName'})
+            .populate({path: 'user', select: '_id login'})
             .exec(function (err, collection) {
                 if (err) {
                     return next(err);

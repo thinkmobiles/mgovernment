@@ -8,6 +8,7 @@ module.exports = function (db) {
     var schema = mongoose.Schema;
 
     var feedback = new schema({
+        serviceName: String,
         service: {type: ObjectId, ref: CONST.MODELS.SERVICE, default: null},
         user: {type: ObjectId, ref: CONST.MODELS.USER, default: null},
         rate: String,
