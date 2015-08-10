@@ -69,6 +69,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var feedback = {
+            serviceName: service.serviceName,
             serviceId: service._id,
             rate: 3,
             feedback: 'awesome, max rate'
@@ -135,6 +136,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
         var service = serviceCollection[2];
         var loginData = USERS.CLIENT;
         var feedback = {
+            serviceName: service.serviceName,
             serviceId: service._id,
             rate: 3,
             feedback: 'pretty nice'

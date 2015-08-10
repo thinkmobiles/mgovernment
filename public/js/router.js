@@ -8,9 +8,10 @@ define([
     'views/servicesView',
     'views/usersView',
     'views/user/createView',
-    'views/user/updateView'
+    'views/user/updateView',
+    'views/feedbacksView'
 
-], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView) {
+], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView, FeedbacksView ) {
     var Router = Backbone.Router.extend({
 
         mainView: null,
@@ -19,6 +20,7 @@ define([
         routes: {
             "index": "toMainView",
             "services(/p=:page)(/c=:countPerPage)": "toServicesView",
+            "feedbacks(/p=:page)(/c=:countPerPage)": "toFeedbacksView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
@@ -88,6 +90,21 @@ define([
             }
 
             this.contentView = new ServicesView({
+                page: page,
+                countPerPage: countPerPage
+            });
+
+        },
+
+        toFeedbacksView: function (page, countPerPage) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+
+            this.contentView = new FeedbacksView({
                 page: page,
                 countPerPage: countPerPage
             });

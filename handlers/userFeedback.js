@@ -8,7 +8,7 @@ var Feedback = function(db) {
     var ObjectId = mongoose.Types.ObjectId;
     var Feedback = db.model(CONST.MODELS.FEEDBACK);
 
-    this.createFeedback = function(req, res, next) {
+    this.createFeedback = function (req, res, next) {
         var body = req.body;
         var feedback;
 
@@ -38,7 +38,7 @@ var Feedback = function(db) {
             })
     };
 
-    this.getAllFeedback = function(req, res, next) {
+    this.getAllFeedback = function (req, res, next) {
 
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
@@ -62,7 +62,18 @@ var Feedback = function(db) {
 
                 return res.status(200).send(collection);
             });
-    }
+    };
+
+    this.getCount = function (req, res, next) {
+
+        Feedback
+            .count({}, function (err, count) {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).send({count: count});
+            });
+    };
 };
 
-module.exports = Feedback;
+    module.exports = Feedback;
