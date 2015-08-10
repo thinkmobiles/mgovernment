@@ -14,28 +14,13 @@ module.exports = function(app, db){
     var userServicesRouter = require('./userServices')(db);
     var userTraServicesRouter = require('./userTraServices')(db);
     var userFeedbackRouter = require('./userFeedback')(db);
+    var testTRAServicesRouter = require('./testTRAServices')(db);
 
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
 
     app.get('/', function(req, res, next){
         res.status(200).send('Express start succeed');
-    });
-
-    app.get('/checkWhois', function(req, res, next) {
-        testTRAHandler.testWhois(req, res, next);
-    });
-
-    app.get('/checkWhoisAvailable', function(req, res, next) {
-        testTRAHandler.testWhoisCheck(req, res, next);
-    });
-
-    app.get('/searchMobile', function(req, res, next) {
-        testTRAHandler.searchMobileImei(req, res, next);
-    });
-
-    app.get('/searchMobileBrand', function(req, res, next) {
-        testTRAHandler.searchMobileBrand(req, res, next);
     });
 
     app.use('/user', usersRouter);
@@ -45,6 +30,7 @@ module.exports = function(app, db){
     app.use('/service', userServicesRouter);
     app.use('/feedback', userFeedbackRouter);
     app.use('/tra_api/service', userTraServicesRouter);
+    app.use('/', testTRAServicesRouter);
 
     app.get('/', function(req, res){
         res.sendfile('./index.html');

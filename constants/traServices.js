@@ -1,4 +1,7 @@
+'use strict';
+
 module.exports = {
+
     WHOIS_URL: 'whois.aeda.net.ae',
     WHOIS_CHECK_URL: 'whois-check.aeda.net.ae',
     WHOIS_PORT: 43,
@@ -7,7 +10,12 @@ module.exports = {
 
     CRM_USER: 'TRA\crm.acc',
     CRM_PASS: 'TRA_#admin',
-    CRM_URL: 'http://do-crm15/TRA/main.aspx'
+    CRM_URL: 'http://do-crm15/TRA/main.aspx',
     //CRM inner IP: 192.168.91.232
     //DB inner IP: 192.168.90.50
+
+    CRM_ORGANIZATION_UNIQUE_NAME: 'TRA',
+    CRM_DISCOVERY_SERVICE: 'http://do-crm15/XRMServices/2011/Discovery.svc',                //SOAP
+    CRM_ORGANIZATION_SERVICE: 'http://do-crm15/XRMServices/2011/Organization.svc',          //SOAP
+    CRM_ORGANIZATION_DATA_SERVICE: 'http://do-crm15/XRMServices/2011/OrganizationData.svc'  //OData REST
 };
