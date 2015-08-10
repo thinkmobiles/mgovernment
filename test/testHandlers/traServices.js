@@ -139,4 +139,17 @@ describe('TRA Services tests', function () {
             });
     });
 
+    it('GET CRM CASES', function (done) {
+
+        agent
+            .get('/crm/case')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.dir(res.body);
+                done();
+            });
+    });
 });
