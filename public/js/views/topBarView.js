@@ -8,7 +8,8 @@ define([
 
         events: {
             'click #navigateServicesView': 'navigateToByDataHash',
-            'click #navigateUsersView': 'navigateToByDataHash'
+            'click #navigateUsersView': 'navigateToByDataHash',
+            'click #navigateFeedbacksView': 'navigateToByDataHash',
         },
 
         initialize: function () {

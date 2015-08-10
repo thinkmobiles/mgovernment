@@ -14,5 +14,8 @@ module.exports = function(db) {
         .post(userFeedback.createFeedback)
         .get(session.isAdminBySession, userFeedback.getAllFeedback);
 
+    router.route('/getCount/')
+        .get(session.isAdminBySession, userFeedback.getCount);
+
     return router;
 };

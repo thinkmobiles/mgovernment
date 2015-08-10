@@ -10,4 +10,5 @@ module.exports = function(db) {
     require('./userHistoryLog')(db);
     require('./image')(db);
     require('./feedback')(db);
+    require('./emailReport')(db);
 };

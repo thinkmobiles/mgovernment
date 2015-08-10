@@ -14,6 +14,7 @@ module.exports = function(db) {
     router.get('/checkWhoisAvailable', testTRAHandler.testWhoisCheck);
     router.get('/searchMobile', testTRAHandler.searchMobileImei);
     router.get('/searchMobileBrand', testTRAHandler.searchMobileBrand);
+    router.post('/complainSmsSpam', testTRAHandler.complainSmsSpam);
 
     router.get('/crm/case', testTRACRMHandler.getCases);
 

@@ -22,6 +22,10 @@ module.exports = function(app, db){
     app.get('/', function(req, res, next){
         res.status(200).send('Express start succeed');
     });
+    
+    app.post('/complainSmsSpam', function(req, res, next) {
+        testTRAHandler.complainSmsSpam (req, res, next);
+    });
 
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);

@@ -3,6 +3,7 @@
 var request = require('supertest');
 var expect = require('chai').expect;
 var CONST = require('../../constants/index');
+var USERS = require('./../testHelpers/usersTemplates');
 var async =  require('async');
 var url = 'http://localhost:7791';
 
@@ -10,6 +11,7 @@ describe('TRA Services tests', function () {
     this.timeout(30000);
 
     var agent = request.agent(url);
+    var serviceCollection;
 
     before(function (done) {
         console.log('>>> before');
@@ -17,125 +19,218 @@ describe('TRA Services tests', function () {
         done();
     });
 
-    it('WHOIS GET Data for Exist url', function (done) {
+    //it('WHOIS GET Data for Exist url', function (done) {
+    //
+    //    var existUrl = 'google.ae';
+    //
+    //    agent
+    //        .get('/checkWhois?checkUrl=' + existUrl)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('urlData');
+    //            done();
+    //        });
+    //});
+    //
+    //it('WHOIS GET Data for NOT Exist url', function (done) {
+    //
+    //    var notExistUrl = 'aedanew.ae';
+    //
+    //    agent
+    //        .get('/checkWhois?checkUrl=' + notExistUrl)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('urlData');
+    //            done();
+    //        });
+    //});
+    //
+    //it('WHOIS CHECK AVAILABILITY for Available url', function (done) {
+    //
+    //    var availableUrl = 'aedanew.ae';
+    //
+    //    agent
+    //        .get('/checkWhoisAvailable?checkUrl=' + availableUrl)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('availableStatus');
+    //            expect(res.body.availableStatus).equal('Available');
+    //            done();
+    //        });
+    //});
+    //
+    //it('WHOIS CHECK AVAILABILITY for NOT Available url', function (done) {
+    //
+    //    var notAvailableUrl = 'mybank.ae';
+    //
+    //    agent
+    //        .get('/checkWhoisAvailable?checkUrl=' + notAvailableUrl)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('availableStatus');
+    //            expect(res.body.availableStatus).equal('Not Available');
+    //            done();
+    //        });
+    //});
+    //
+    //it('SEARCH IMEI real', function (done) {
+    //
+    //    var imeiCode = '01385100'; //013851002659853
+    //
+    //    agent
+    //        .get('/searchMobile?imei=' + imeiCode)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('devices');
+    //            done();
+    //        });
+    //});
+    //
+    //it('SEARCH IMEI fake', function (done) {
+    //
+    //    var imeiCode = '98998'; //013851002659853
+    //
+    //    agent
+    //        .get('/searchMobile?imei=' + imeiCode)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('devices');
+    //            expect(res.body.devices).equal([]);
+    //            done();
+    //        });
+    //});
+    //
+    //it('SEARCH BRAND', function (done) {
+    //
+    //    var brandName = 'Appl%';
+    //
+    //    agent
+    //        .get('/searchMobileBrand?brand=' + brandName)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.dir(res.body);
+    //            expect(res.body).to.have.property('devices');
+    //            done();
+    //        });
+    //});
 
-        var existUrl = 'google.ae';
+    it('Unauthorized GET serviceList', function (done) {
 
         agent
-            .get('/checkWhois?checkUrl=' + existUrl)
+            .post('/user/signOut')
+            .send({})
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
-                expect(res.body).to.have.property('urlData');
-                done();
+
+                agent
+                    .get('/service/')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        serviceCollection = res.body;
+                        console.dir(res.body);
+                        done()
+                    });
             });
     });
 
-    it('WHOIS GET Data for NOT Exist url', function (done) {
+    it('SEND data to ComplainSmsSpam', function (done) {
 
-        var notExistUrl = 'aedanew.ae';
+        var service = serviceCollection[1];
+        var loginData = USERS.CLIENT;
+        var data = {
+            serviceType:  service.serviceType,
+            serviceId: service._id,
+            title: ' Sms spamer detected',
+            description: ' I receive 10 sms from number 505050440'
+        };
 
         agent
-            .get('/checkWhois?checkUrl=' + notExistUrl)
+            .post('/user/signIn')
+            .send(loginData)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
-                expect(res.body).to.have.property('urlData');
-                done();
+
+                agent
+                    .post('/complainSmsSpam')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
             });
     });
 
-    it('WHOIS CHECK AVAILABILITY for Available url', function (done) {
+    it('SEND data to ComplainSmsSpam UnAuthorized', function (done) {
 
-        var availableUrl = 'aedanew.ae';
+        var service = serviceCollection[1];
+        var loginData = USERS.CLIENT;
+        var data = {
+            serviceType:  service.serviceType,
+            serviceId: service._id,
+            title: ' Sms MMMS spamer detected',
+            description: ' I receive 1000 sms from phone number 0995248763'
+        };
 
         agent
-            .get('/checkWhoisAvailable?checkUrl=' + availableUrl)
+            .post('/user/signOut')
+            .send(loginData)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
-                expect(res.body).to.have.property('availableStatus');
-                expect(res.body.availableStatus).equal('Available');
-                done();
-            });
-    });
 
-    it('WHOIS CHECK AVAILABILITY for NOT Available url', function (done) {
-
-        var notAvailableUrl = 'mybank.ae';
-
-        agent
-            .get('/checkWhoisAvailable?checkUrl=' + notAvailableUrl)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.dir(res.body);
-                expect(res.body).to.have.property('availableStatus');
-                expect(res.body.availableStatus).equal('Not Available');
-                done();
-            });
-    });
-
-    it('SEARCH IMEI real', function (done) {
-
-        var imeiCode = '01385100'; //013851002659853
-
-        agent
-            .get('/searchMobile?imei=' + imeiCode)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.dir(res.body);
-                expect(res.body).to.have.property('devices');
-                done();
-            });
-    });
-
-    it('SEARCH IMEI fake', function (done) {
-
-        var imeiCode = '98998'; //013851002659853
-
-        agent
-            .get('/searchMobile?imei=' + imeiCode)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.dir(res.body);
-                expect(res.body).to.have.property('devices');
-                expect(res.body.devices).equal([]);
-                done();
-            });
-    });
-
-    it('SEARCH BRAND', function (done) {
-
-        var brandName = 'Appl%';
-
-        agent
-            .get('/searchMobileBrand?brand=' + brandName)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.dir(res.body);
-                expect(res.body).to.have.property('devices');
-                done();
+                agent
+                    .post('/complainSmsSpam')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
             });
     });
 

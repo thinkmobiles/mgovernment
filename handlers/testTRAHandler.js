@@ -3,6 +3,7 @@ var RESPONSE = require('../constants/response');
 var TRA = require('../constants/traServices');
 
 var request = require('request');
+var SessionHandler = require('./sessions');
 
 var AVAILABLE_STATUS = {
     AVAILABLE: 'Available',
@@ -14,6 +15,11 @@ var NO_DATA_FOUND = '';
 
 var TestTRAHandler = function (db) {
     'use strict';
+
+    var mongoose = require('mongoose');
+    var mailer = require('../helpers/mailer');
+    var session = new SessionHandler(db);
+    var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
 
     this.testWhois = function (req, res, next) {
 
@@ -149,6 +155,7 @@ var TestTRAHandler = function (db) {
         });
     };
 
+
     function sendSearchRequest(reqBody, callback) {
 
         var reqOptions = {
@@ -165,6 +172,69 @@ var TestTRAHandler = function (db) {
             return callback(err)
         });
     }
+
+    this.complainSmsSpam = function (req, res, next) {
+
+        var serviceType = req.body.serviceType;
+        var title = req.body.title;
+        var description = req.body.description;
+        var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
+        var userId = req.session.uId || null;
+        var templateName = 'public/templates/mail/complainSmsSpam.html';
+        var from = 'testTRA  <' + 'testTRA@testTRA.ae' + '>';
+        // console.dir(req.body);
+
+
+        //if (!brand) {
+        //    res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+        //}
+
+        mailer.sendReport({
+            templateName: templateName,
+            templateData: {
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                userId: userId
+            },
+            from: from,
+            mailTo: mailTo,
+            title: title
+
+        }, function (err, data){
+            var emailReport = new EmailReport({
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                mailTo: mailTo,
+                userId: userId,
+                response: data || err
+            });
+
+            emailReport
+                .save(function (err, model) {
+                    if (model) {
+                        console.log('emailReport saved');
+                        //return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    }
+                    console.log('emailReport err saved', err);
+                    //res.status(400).send({err: err});
+                });
+
+            if (err) {
+                cpnsole.log('err', err);
+
+                return  res.status(400).send({err: err});
+            }
+
+            return res.status(200).send({data: data});
+        });
+
+
+
+
+
+    };
 };
 
 module.exports = TestTRAHandler;
