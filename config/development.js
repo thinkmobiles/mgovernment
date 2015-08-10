@@ -10,3 +10,5 @@ process.env.MAIL_SERVICE = 'SendGrid';
 process.env.MAIL_USERNAME = 'istvan.nazarovits';
 process.env.MAIL_PASSWORD = 'sendGridpassw365';
 
+
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div class="pm-text">
+        <p>Hi Dear  <b><%=name %></b>!
+
+        <% if (minderId) {%>
+        <br>Your Minder ID is: <b><%=minderId %></b>
+        <% } %>
+
+        <br><br>To verify you MinderWeb account please click on link below <br><a href="<%=url%>" target="_blank"><%=url%></a>
+
+        <br>
+        <br>You can manage your devices through our web application <a href="<%=process.env.HOST%>" target="_blank"><%=process.env.HOST%></a>
+
+        <br>
+        <br>
+        <br>If you have received this in error, please delete this email</p>
+
+    </div>
+</body>
+</html>

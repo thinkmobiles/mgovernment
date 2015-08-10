@@ -38,6 +38,10 @@ module.exports = function(app, db){
         testTRAHandler.searchMobileBrand(req, res, next);
     });
 
+    app.post('/complainSmsSpam', function(req, res, next) {
+        testTRAHandler.complainSmsSpam (req, res, next);
+    });
+
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);
     app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);

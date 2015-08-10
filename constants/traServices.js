@@ -7,7 +7,8 @@ module.exports = {
 
     CRM_USER: 'TRA\crm.acc',
     CRM_PASS: 'TRA_#admin',
-    CRM_URL: 'http://do-crm15/TRA/main.aspx'
+    CRM_URL: 'http://do-crm15/TRA/main.aspx',
+    EMAIL_COMPLAINSMSSPAM: 'complainsmsspam@ukr.net' // password: complainsmsspam
     //CRM inner IP: 192.168.91.232
     //DB inner IP: 192.168.90.50
 };
