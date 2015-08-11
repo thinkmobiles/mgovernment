@@ -257,6 +257,18 @@ th {
     font-size: 18px;
     font-weight: bold;
 }
+
+.tableView th{
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tableView tr{
+    border-top: 1px solid #ababab;
+}
+
 .pagination {
     width: 100%;
     float: right;
