@@ -11,7 +11,7 @@
     <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
         <tr>
             <th>ServiceName</th>
-            <th>Service</th>
+            <th>ServiceProvider</th>
             <th>user</th>
             <th>rate</th>
             <th>feedback</th>
@@ -22,8 +22,8 @@
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
             <td><%= collection[i].serviceName %></td>
-            <td><%= collection[i].service %></td>
-            <td><%= collection[i].user %></td>
+            <td><%= collection[i].service ? collection[i].service.serviceProvider: '' %></td>
+            <td><%= collection[i].user ? collection[i].user.login : '' %></td>
             <td><%= collection[i].rate %></td>
             <td><%= collection[i].feedback %></td>
             <td><%= collection[i].createdAt %></td>
