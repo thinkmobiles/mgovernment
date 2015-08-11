@@ -7,10 +7,10 @@ var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
-var PreparingBd = require('./preparingDb');
+var PreparingBd = require('./preparingDB');
 var url = 'http://localhost:7791';
 
-describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
+describe('Feedback tests - Create, Get ,', function () {
 
     var agent = request.agent(url);
     var serviceCollection;
