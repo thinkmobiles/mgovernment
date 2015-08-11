@@ -234,9 +234,8 @@ var TestTRAHandler = function (db) {
         var description = req.body.description;
         var mailTo = TRA.EMAIL_HELP_SALIM;
         var userId = req.session.uId || null;
-        var templateName = 'public/templates/mail/complainSmsSpam.html';
+        var templateName = 'public/templates/mail/helpSalim.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-        console.log('mailTo: ',mailTo)
         var mailOptions = {
             templateName: templateName,
             templateData: {
@@ -271,6 +270,7 @@ var TestTRAHandler = function (db) {
                         console.log('emailReport err saved: ', err);
                     }
                 });
+
             if (err) {
                 console.error('err: ', err);
                 res.status(500).send({err: err});
