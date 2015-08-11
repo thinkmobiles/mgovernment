@@ -10,6 +10,7 @@ define([
             'click #navigateServicesView': 'navigateToByDataHash',
             'click #navigateUsersView': 'navigateToByDataHash',
             'click #navigateFeedbacksView': 'navigateToByDataHash',
+            'click #navigateEmailReportsView': 'navigateToByDataHash'
         },
 
         initialize: function () {

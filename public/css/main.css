@@ -268,6 +268,15 @@ th {
 .tableView tr{
     border-top: 1px solid #ababab;
 }
+.tableView td {
+    padding: 2px;
+}
+
+.tableFilter {
+    color: #0b3e6f;
+    font-size: 18px;
+    font-weight: bold;
+}
 
 .pagination {
     width: 100%;
