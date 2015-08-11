@@ -8,7 +8,7 @@ module.exports = function(db) {
     'use strict';
 
     var testTRAHandler = new TestTRAHandler(db);
-    //var testTRACRMHandler = new TestTRACRMHandler(db);
+    var testTRACRMHandler = new TestTRACRMHandler(db);
 
     router.get('/checkWhois', testTRAHandler.testWhois);
     router.get('/checkWhoisAvailable', testTRAHandler.testWhoisCheck);
@@ -17,6 +17,9 @@ module.exports = function(db) {
     router.post('/complainSmsSpam', testTRAHandler.complainSmsSpam);
 
     //router.get('/crm/case', testTRACRMHandler.getCases);
+    router.get('/crm/auth', testTRACRMHandler.loginHttp);
+    router.get('/crm/auth/callback', testTRACRMHandler.authCallback);
+    router.get('/crm/contacts', testTRACRMHandler.getContacts);
 
     return router;
 };
