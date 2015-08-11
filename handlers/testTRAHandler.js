@@ -200,11 +200,6 @@ var TestTRAHandler = function (db) {
 
             //TODO remove console.logs
 
-            if (err) {
-                console.error('err', err);
-                return next(err);
-            }
-
             var emailReport = new EmailReport({
                 serviceType: serviceType,
                 title: title,
@@ -218,18 +213,71 @@ var TestTRAHandler = function (db) {
                 .save(function (err, model) {
                     if (model) {
                         console.log('emailReport saved');
-                        return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    } else {
+                        console.log('emailReport err saved: ', err);
                     }
-                    console.log('emailReport err saved', err);
-                    res.status(500).send({err: err});
                 });
+
+            if (err) {
+                console.error('err: ', err);
+                res.status(500).send({err: err});
+            }
+
+            return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
         });
+    };
 
-        this.sendHelpSalim = function(req, res, next) {
+    this.sendHelpSalim = function(req, res, next) {
 
-            return res.status(501).send('Not Implemented');
+        var serviceType = req.body.serviceType;
+        var title = 'Complaint to site: ' + req.body.url;
+        var description = req.body.description;
+        var mailTo = TRA.EMAIL_HELP_SALIM;
+        var userId = req.session.uId || null;
+        var templateName = 'public/templates/mail/complainSmsSpam.html';
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        console.log('mailTo: ',mailTo)
+        var mailOptions = {
+            templateName: templateName,
+            templateData: {
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                userId: userId
+            },
+            from: from,
+            mailTo: mailTo,
+            title: title
         };
 
+        mailer.sendReport(mailOptions, function (err, data) {
+
+            //TODO remove console.logs
+
+            var emailReport = new EmailReport({
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                mailTo: mailTo,
+                userId: userId,
+                response: data || err
+            });
+
+            emailReport
+                .save(function (err, model) {
+                    if (model) {
+                        console.log('emailReport saved');
+                    } else {
+                        console.log('emailReport err saved: ', err);
+                    }
+                });
+            if (err) {
+                console.error('err: ', err);
+                res.status(500).send({err: err});
+            }
+
+            return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+        });
     };
 };
 
