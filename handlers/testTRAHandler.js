@@ -181,15 +181,9 @@ var TestTRAHandler = function (db) {
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
         var userId = req.session.uId || null;
         var templateName = 'public/templates/mail/complainSmsSpam.html';
-        var from = 'testTRA  <' + 'testTRA@testTRA.ae' + '>';
-        // console.dir(req.body);
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
-
-        //if (!brand) {
-        //    res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
-        //}
-
-        mailer.sendReport({
+        var mailOptions = {
             templateName: templateName,
             templateData: {
                 serviceType: serviceType,
@@ -200,39 +194,41 @@ var TestTRAHandler = function (db) {
             from: from,
             mailTo: mailTo,
             title: title
+        };
 
-        }, function (err, data){
+        mailer.sendReport(mailOptions, function (err, data) {
+
+            //TODO remove console.logs
+
+            if (err) {
+                console.error('err', err);
+                return next(err);
+            }
+
             var emailReport = new EmailReport({
                 serviceType: serviceType,
                 title: title,
                 description: description,
                 mailTo: mailTo,
                 userId: userId,
-                response: data || err
+                response: data
             });
 
             emailReport
                 .save(function (err, model) {
                     if (model) {
                         console.log('emailReport saved');
-                        //return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                        return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
                     }
                     console.log('emailReport err saved', err);
-                    //res.status(400).send({err: err});
+                    res.status(500).send({err: err});
                 });
-
-            if (err) {
-                cpnsole.log('err', err);
-
-                return  res.status(400).send({err: err});
-            }
-
-            return res.status(200).send({data: data});
         });
 
+        this.sendHelpSalim = function(req, res, next) {
 
-
-
+            return res.status(501).send('Not Implemented');
+        };
 
     };
 };
