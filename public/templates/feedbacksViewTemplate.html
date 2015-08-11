@@ -1,25 +1,39 @@
-<div style=" padding-bottom: 5px;margin-left: 5px ">
+<div style=" padding-bottom: 5px;margin-left: 5px; margin-right: 5px; vertical-align: top">
 
-     <div style="clear: both; margin: 5px">
-    </div>
+     <!--<div style="clear: both; margin: 1%">-->
+    <!--</div>-->
 
-    <div style=" width: 50%; min-height: 100px; float: left;  padding-bottom: 5px;">
+    <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
         <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
             <span style="font-size: 22px; "><b>List of Feedbacks</b></span></div>
-        <div id="databaseList" style=" width: auto; height: auto;   opacity: 0.8;"></div>
-    </div>
+            </div>
 
-    <div style=" margin-left:0.5%; width:49%;  min-height: 100px; float: left;  background-color: #FAF5F5;    opacity: 0.8; padding-bottom: 40px">
-        <div style="width: 100%;background-color: lightsteelblue; text-align: center ; ">
-            <span id="properties" style="font-size: 22px; ">Feedback properties</span>
-            <!--<a href="#updateUser" id="updateUser" data-hash="update" class="actionButtonWhite" style="text-decoration: none">-->
-                <!--update </a>-->
-            <!--<a id="deleteUser" data-hash="delete" class="actionButtonWhite" style="text-decoration: none">-->
-                <!--delete </a>-->
+    <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
+        <tr>
+            <th>ServiceName</th>
+            <th>Service</th>
+            <th>user</th>
+            <th>rate</th>
+            <th>feedback</th>
+            <th>createdAt</th>
+        </tr>
 
-        </div>
-        <div id="propertyList" style=" background-color: #FAF5F5;   opacity: 0.8; font-size:11pt; word-break: break-all;"></div>
-    </div>
+        <% if (collection.length) { %>
+        <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
+        <tr>
+            <td><%= collection[i].serviceName %></td>
+            <td><%= collection[i].service %></td>
+            <td><%= collection[i].user %></td>
+            <td><%= collection[i].rate %></td>
+            <td><%= collection[i].feedback %></td>
+            <td><%= collection[i].createdAt %></td>
+        </tr>
+
+        <% } %>
+        <% } %>
+
+        </table>
+
     <div style="clear:both; "></div>
 
     <div id="paginationDiv" style="">
