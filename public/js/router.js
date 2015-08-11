@@ -9,9 +9,10 @@ define([
     'views/usersView',
     'views/user/createView',
     'views/user/updateView',
-    'views/feedbacksView'
+    'views/feedbacksView',
+    'views/emailReportsView'
 
-], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView, FeedbacksView ) {
+], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView, FeedbacksView, EmailReportsView  ) {
     var Router = Backbone.Router.extend({
 
         mainView: null,
@@ -21,6 +22,7 @@ define([
             "index": "toMainView",
             "services(/p=:page)(/c=:countPerPage)": "toServicesView",
             "feedbacks(/p=:page)(/c=:countPerPage)": "toFeedbacksView",
+            "emailReports(/p=:page)(/c=:countPerPage)(/filter=:filter)": "toEmailReportsView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
@@ -68,7 +70,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('updateServices clicked');
+           console.log('updateServices clicked');
             this.contentView = new ServiceUpdateView();
         },
 
@@ -93,7 +95,6 @@ define([
                 page: page,
                 countPerPage: countPerPage
             });
-
         },
 
         toFeedbacksView: function (page, countPerPage) {
@@ -108,7 +109,22 @@ define([
                 page: page,
                 countPerPage: countPerPage
             });
+        },
 
+        toEmailReportsView: function (page, countPerPage, filter) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+            filter = filter || '';
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+
+            this.contentView = new EmailReportsView({
+                page: page,
+                countPerPage: countPerPage,
+                filter: filter
+            });
         },
 
         toUsersView: function (page, countPerPage) {

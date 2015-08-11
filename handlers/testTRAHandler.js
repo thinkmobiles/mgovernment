@@ -179,7 +179,7 @@ var TestTRAHandler = function (db) {
         var title = req.body.title;
         var description = req.body.description;
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
-        var userId = req.session.uId || null;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainSmsSpam.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
@@ -233,7 +233,7 @@ var TestTRAHandler = function (db) {
         var title = 'Complaint to site: ' + req.body.url;
         var description = req.body.description;
         var mailTo = TRA.EMAIL_HELP_SALIM;
-        var userId = req.session.uId || null;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/helpSalim.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
         var mailOptions = {

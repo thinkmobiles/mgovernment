@@ -22,7 +22,7 @@ define([
         },
 
         initialize: function (options) {
-            cloneService = options.cloneService;
+            cloneService = options ? options.cloneService : undefined;
             this.render();
             console.dir(Backbone.history);
         },
