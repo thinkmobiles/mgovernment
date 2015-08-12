@@ -1,6 +1,6 @@
 
-process.env.HOST = 'http://localhost:7792/';
-process.env.PORT = 7792;
+process.env.HOST = 'http://localhost:80/';
+process.env.PORT = 80;
 
 process.env.DB_HOST = 'localhost';
 process.env.DB_NAME = "mgovermentDB";

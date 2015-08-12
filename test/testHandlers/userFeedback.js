@@ -8,7 +8,7 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDB');
-var url = 'http://localhost:7791';
+var url = 'http://localhost:80';
 
 describe('Feedback tests - Create, Get ,', function () {
 
@@ -24,12 +24,12 @@ describe('Feedback tests - Create, Get ,', function () {
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
                 preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
-                preparingDb.createUsersByTemplate(USERS.COMPANY)
+                preparingDb.createUsersByTemplate(USERS.COMPANY),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET)
             ],
             function (err, results) {
                 if (err) {
