@@ -19,7 +19,7 @@ module.exports = {
     CRM_ORGANIZATION_SERVICE: 'http://do-crm15/XRMServices/2011/Organization.svc',          //SOAP
     CRM_ORGANIZATION_DATA_SERVICE: 'http://do-crm15/XRMServices/2011/OrganizationData.svc', //OData REST
 
-    EMAIL_COMPLAINSMSSPAM: 'complainsmsspam@ukr.net',// password: complainsmsspam
+    EMAIL_COMPLAINSMSSPAM: 'smsspam@ukr.net',// password: smsspam
     EMAIL_COMPLAIN_FROM: 'testTRA@testTRA.ae',
 
     EMAIL_HELP_SALIM: 'helpsalim@ukr.net'// password: helpsalim
