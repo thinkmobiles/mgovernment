@@ -24,12 +24,13 @@ describe('TRA Services tests', function () {
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
                 preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
+                preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
-                preparingDb.createUsersByTemplate(USERS.COMPANY)
+                preparingDb.createUsersByTemplate(USERS.COMPANY),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET)
             ],
             function (err, results) {
                 if (err) {
