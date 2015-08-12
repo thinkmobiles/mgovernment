@@ -274,6 +274,9 @@ var TestTRACRMHandler = function (db) {
             }
 
             var authHeader = resGet.headers['www-authenticate'];
+            if(!authHeader) {
+                return res.status(500).send({err: 'Not fount www-authenticate in header'})
+            }
             var authUri = authHeader.replace('Bearer authorization_uri=', '');
             if (authUri.indexOf(',') > 0) {
                 authUri = authUri.substr(0, authUri.indexOf(','));
