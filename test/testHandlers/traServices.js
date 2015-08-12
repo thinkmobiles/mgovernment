@@ -171,10 +171,10 @@ describe('TRA Services tests', function () {
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            serviceType:  service.serviceType,
-            serviceId: service._id,
-            title: ' Sms spamer detected',
-            description: ' I receive 10 sms from number 505050440'
+            phone: '7893',
+            phoneProvider: '2020',
+            providerType: 'elesat',
+            description: 'I receive 10 sms from number 505050440'
         };
 
         agent
@@ -205,10 +205,10 @@ describe('TRA Services tests', function () {
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            serviceType:  service.serviceType,
-            serviceId: service._id,
-            title: ' Sms MMMS spamer detected',
-            description: ' I receive 1000 sms from phone number 0995248763'
+            phone: '0995248763',
+            phoneProvider: '3030',
+            providerType: 'du',
+            description: 'I receive 1000 sms from phone number 0995248763'
         };
 
         agent
@@ -239,8 +239,6 @@ describe('TRA Services tests', function () {
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            serviceType:  service.serviceType,
-            serviceId: service._id,
             url: 'blabla.com.ae',
             description: 'On this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
         };
@@ -273,8 +271,6 @@ describe('TRA Services tests', function () {
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            serviceType:  service.serviceType,
-            serviceId: service._id,
             url: 'programs.com.ae',
             description: 'Hi. on this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
         };

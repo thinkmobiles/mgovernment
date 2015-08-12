@@ -175,9 +175,13 @@ var TestTRAHandler = function (db) {
 
     this.complainSmsSpam = function (req, res, next) {
 
-        var serviceType = req.body.serviceType;
-        var title = req.body.title;
+        var serviceType = 'SMS Spam';
+        var phoneSpam = req.body.phone;
+        var phoneProvider = req.body.phoneProvider;
+        var providerType = req.body.providerType;
         var description = req.body.description;
+        var title = 'SMS Spam From ' + phoneSpam;
+
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
         var userId = req.session.uId || null;
         var templateName = 'public/templates/mail/complainSmsSpam.html';
@@ -229,7 +233,7 @@ var TestTRAHandler = function (db) {
 
     this.sendHelpSalim = function(req, res, next) {
 
-        var serviceType = req.body.serviceType;
+        var serviceType = 'Help Salim';
         var title = 'Complaint to site: ' + req.body.url;
         var description = req.body.description;
         var mailTo = TRA.EMAIL_HELP_SALIM;
