@@ -168,10 +168,11 @@ describe('TRA Services tests', function () {
 
     it('SEND data to ComplainSmsSpam', function (done) {
 
-        var service = serviceCollection[1];
+        var service = serviceCollection[0];
         var loginData = USERS.CLIENT;
         var data = {
-            serviceType:  service.serviceType,
+            //serviceType:  service.serviceType,
+            serviceType:  'SMSSpam',
             serviceId: service._id,
             title: ' Sms spamer detected',
             description: ' I receive 10 sms from number 505050440'
@@ -202,10 +203,11 @@ describe('TRA Services tests', function () {
 
     it('SEND data to ComplainSmsSpam UnAuthorized', function (done) {
 
-        var service = serviceCollection[1];
+        var service = serviceCollection[0];
         var loginData = USERS.CLIENT;
         var data = {
-            serviceType:  service.serviceType,
+            //serviceType:  service.serviceType,
+            serviceType:  'SMSSpam',
             serviceId: service._id,
             title: ' Sms MMMS spamer detected',
             description: ' I receive 1000 sms from phone number 0995248763'
@@ -239,7 +241,8 @@ describe('TRA Services tests', function () {
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            serviceType:  service.serviceType,
+            //serviceType:  service.serviceType,
+            serviceType:  'HelpSalim',
             serviceId: service._id,
             url: 'blabla.com.ae',
             description: 'On this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
@@ -273,7 +276,8 @@ describe('TRA Services tests', function () {
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            serviceType:  service.serviceType,
+            //serviceType:  service.serviceType,
+            serviceType: 'helpSalim',
             serviceId: service._id,
             url: 'programs.com.ae',
             description: 'Hi. on this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'

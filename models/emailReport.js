@@ -15,7 +15,7 @@ module.exports = function (db) {
         serviceType: String,
 
         //serviceId: {type: ObjectId, ref: CONST.MODELS.SERVICE, default: null},
-        userId: {type: ObjectId, ref: CONST.MODELS.USER, default: null},
+        user: {type: ObjectId, ref: CONST.MODELS.USER, default: null},
         //rate: String,
         //feedback: String,
         createdAt: {type: Date, default: Date.now}

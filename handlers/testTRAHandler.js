@@ -13,10 +13,12 @@ var AVAILABLE_STATUS = {
 
 var NO_DATA_FOUND = '';
 
+
 var TestTRAHandler = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var ObjectId = mongoose.Types.ObjectId;
     var mailer = require('../helpers/mailer');
     var session = new SessionHandler(db);
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
@@ -205,7 +207,7 @@ var TestTRAHandler = function (db) {
                 title: title,
                 description: description,
                 mailTo: mailTo,
-                userId: userId,
+                user: userId,
                 response: data
             });
 
@@ -258,7 +260,7 @@ var TestTRAHandler = function (db) {
                 title: title,
                 description: description,
                 mailTo: mailTo,
-                userId: userId,
+                user: userId,
                 response: data || err
             });
 
