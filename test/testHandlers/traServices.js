@@ -39,6 +39,7 @@ describe('TRA Services tests', function () {
             });
     });
 
+/*
     it('WHOIS GET Data for Exist url', function (done) {
 
         var existUrl = 'google.ae';
@@ -160,6 +161,7 @@ describe('TRA Services tests', function () {
                 done();
             });
     });
+*/
 
     it('Unauthorized GET serviceList', function (done) {
 

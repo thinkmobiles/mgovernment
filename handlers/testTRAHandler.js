@@ -17,6 +17,7 @@ var TestTRAHandler = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var ObjectId = mongoose.Types.ObjectId;
     var mailer = require('../helpers/mailer');
     var session = new SessionHandler(db);
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
@@ -200,7 +201,7 @@ var TestTRAHandler = function (db) {
             title: title
         };
 
-        mailer.sendReport(mailOptions, function (err, data) {
+        mailer.sendReport(mailOptions, function (errMail, data) {
 
             //TODO remove console.logs
 
@@ -210,7 +211,7 @@ var TestTRAHandler = function (db) {
                 description: description,
                 mailTo: mailTo,
                 userId: userId,
-                response: data
+                response: data || errMail
             });
 
             emailReport
@@ -220,14 +221,14 @@ var TestTRAHandler = function (db) {
                     } else {
                         console.log('emailReport err saved: ', err);
                     }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
                 });
-
-            if (err) {
-                console.error('err: ', err);
-                res.status(500).send({err: err});
-            }
-
-            return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
         });
     };
 
@@ -253,7 +254,7 @@ var TestTRAHandler = function (db) {
             title: title
         };
 
-        mailer.sendReport(mailOptions, function (err, data) {
+        mailer.sendReport(mailOptions, function (errMail, data) {
 
             //TODO remove console.logs
 
@@ -263,7 +264,7 @@ var TestTRAHandler = function (db) {
                 description: description,
                 mailTo: mailTo,
                 userId: userId,
-                response: data || err
+                response: data || errMail
             });
 
             emailReport
@@ -273,14 +274,14 @@ var TestTRAHandler = function (db) {
                     } else {
                         console.log('emailReport err saved: ', err);
                     }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
                 });
-
-            if (err) {
-                console.error('err: ', err);
-                res.status(500).send({err: err});
-            }
-
-            return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
         });
     };
 };
