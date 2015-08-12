@@ -232,6 +232,63 @@ var TestTRAHandler = function (db) {
         });
     };
 
+    this.complainServiceProvider = function (req, res, next) {
+
+        var description = req.body.description;
+        var title = req.body.title;
+        var mailTo = TRA.EMAIL_COMPLAIN_SERVICE_PROVIDER;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var serviceProvider = req.body.serviceProvider;
+        var templateName = 'public/templates/mail/complainServiceProvider.html';
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var referenceNumber =  req.body.referenceNumber;
+
+        var mailOptions = {
+            templateName: templateName,
+            templateData: {
+                serviceProvider: serviceProvider,
+                title: title,
+                description: description,
+                userId: userId,
+                referenceNumber: referenceNumber
+            },
+            from: from,
+            mailTo: mailTo,
+            title: title
+        };
+
+        mailer.sendReport(mailOptions, function (errMail, data) {
+
+            //TODO remove console.logs
+
+            var emailReport = new EmailReport({
+                serviceProvider: serviceProvider,
+                title: title,
+                description: description,
+                mailTo: mailTo,
+                user: userId,
+                referenceNumber: referenceNumber,
+                response: data || errMail
+            });
+
+            emailReport
+                .save(function (err, model) {
+                    if (model) {
+                        console.log('emailReport saved');
+                    } else {
+                        console.log('emailReport err saved: ', err);
+                    }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                });
+        });
+    };
+
     this.sendHelpSalim = function(req, res, next) {
 
         var serviceType = 'Help Salim';

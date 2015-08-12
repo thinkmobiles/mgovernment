@@ -321,6 +321,72 @@ describe('TRA Services tests', function () {
             });
     });
 
+    it('SEND complainServiceProvider', function (done) {
+
+               var loginData = USERS.CLIENT;
+        var data = {
+            title: 'It works slowly',
+            serviceProvider: 'amazon',
+            description: 'Amazon is awefull',
+            referenceNumber: '12312412'
+        };
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/complainServiceProvider')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
+    it('SEND complainServiceProvider UnAuthorized', function (done) {
+
+        var loginData = USERS.CLIENT;
+        var data = {
+            title: 'It works good, but i dont like img in header.',
+            serviceProvider: 'Faceboke',
+            description: 'It works good, but i dont like img in header. Can they change this img to another? Thanks',
+            referenceNumber: '12312412'
+        };
+
+        agent
+            .post('/user/signOut')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/complainServiceProvider')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
     it('GET CRM CASES', function (done) {
 
         agent
