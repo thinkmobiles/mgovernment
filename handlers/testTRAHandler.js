@@ -234,6 +234,7 @@ var TestTRAHandler = function (db) {
 
     this.complainServiceProvider = function (req, res, next) {
 
+        var serviceType = 'Service Provider';
         var description = req.body.description;
         var title = req.body.title;
         var mailTo = TRA.EMAIL_COMPLAIN_SERVICE_PROVIDER;
@@ -262,12 +263,65 @@ var TestTRAHandler = function (db) {
             //TODO remove console.logs
 
             var emailReport = new EmailReport({
+                serviceType: serviceType,
                 serviceProvider: serviceProvider,
                 title: title,
                 description: description,
                 mailTo: mailTo,
                 user: userId,
                 referenceNumber: referenceNumber,
+                response: data || errMail
+            });
+
+            emailReport
+                .save(function (err, model) {
+                    if (model) {
+                        console.log('emailReport saved');
+                    } else {
+                        console.log('emailReport err saved: ', err);
+                    }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                });
+        });
+    };
+
+    this.complainTRAService = function (req, res, next) {
+
+        var serviceType = 'TRA Service';
+        var description = req.body.description;
+        var title = req.body.title;
+        var mailTo = TRA.EMAIL_COMPLAIN_TRA_SERVICE;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var templateName = 'public/templates/mail/complainTRAService.html';
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var mailOptions = {
+            templateName: templateName,
+            templateData: {
+                title: title,
+                description: description,
+                userId: userId,
+            },
+            from: from,
+            mailTo: mailTo,
+            title: title
+        };
+
+        mailer.sendReport(mailOptions, function (errMail, data) {
+
+            //TODO remove console.logs
+
+            var emailReport = new EmailReport({
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                mailTo: mailTo,
+                user: userId,
                 response: data || errMail
             });
 

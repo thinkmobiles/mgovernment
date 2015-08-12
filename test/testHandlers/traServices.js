@@ -387,6 +387,68 @@ describe('TRA Services tests', function () {
             });
     });
 
+    it('SEND complainTRAService', function (done) {
+
+        var loginData = USERS.CLIENT;
+        var data = {
+            title: 'I like TRA services',
+            description: 'TRA has very cool services. I think TRA is Best of the bests of the bests... :) e.t.c.'
+              };
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/complainTRAService')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
+    it('SEND complainTRAService UnAuthorized', function (done) {
+
+        var loginData = USERS.CLIENT;
+        var data = {
+            title: 'TRA services has pretty developers teem',
+            description: 'TRA services has pretty developers teem. Its design, its fast work are greate result of developers work'
+        };
+
+        agent
+            .post('/user/signOut')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/complainTRAService')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
     it('GET CRM CASES', function (done) {
 
         agent
