@@ -266,7 +266,7 @@ var TestTRAHandler = function (db) {
                 serviceType: serviceType,
                 serviceProvider: serviceProvider,
                 title: title,
-                description: description,
+                description: description + ' referenceNumber:' + referenceNumber,
                 mailTo: mailTo,
                 user: userId,
                 referenceNumber: referenceNumber,

@@ -359,7 +359,7 @@ describe('TRA Services tests', function () {
         var loginData = USERS.CLIENT;
         var data = {
             title: 'It works good, but i dont like img in header.',
-            serviceProvider: 'Faceboke',
+            serviceProvider: 'Facebook',
             description: 'It works good, but i dont like img in header. Can they change this img to another? Thanks',
             referenceNumber: '12312412'
         };

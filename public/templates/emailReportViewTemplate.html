@@ -10,12 +10,18 @@
             <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
         <b> <input type="checkbox" class="filterServiceType" id="filterSMSSpam"
                    value="SMS Spam" <%= filter.length ? ( filter.match(/SMS Spam/) ? '' : 'checked') : 'checked' %>> SMS Spam</b>
+        <b> <input type="checkbox" class="filterServiceType" id="filterServiceProvider"
+                   value="Service Provider"<%= filter.length ? ( filter.match(/Service Provider/) ? '' : 'checked') : 'checked' %>> Service Provider </b>
+        <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
+        <b> <input type="checkbox" class="filterServiceType" id="filterTRAService"
+                   value="TRA Service" <%= filter.length ? ( filter.match(/TRA Service/) ? '' : 'checked') : 'checked' %>> TRA Service</b>
 
     </div>
 
     <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
         <tr>
             <th>serviceType</th>
+            <th >serviceProvider</th>
             <th>user</th>
             <th>title</th>
             <th>description</th>
@@ -28,13 +34,14 @@
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
             <td><%= collection[i].serviceType %></td>
+            <td><%= collection[i].serviceProvider %></td>
             <td><%= collection[i].user ? collection[i].user.login : '' %></td>
             <!--<td><%= collection[i].user %></td>-->
             <td><%= collection[i].title %></td>
             <td><%= collection[i].description %></td>
-            <td><%= collection[i].mailTo %></td>
-            <td><%= collection[i].createdAt %></td>
-            <td><%= collection[i].response ?  ( collection[i].response.response ? collection[i].response.response : collection[i].response) : '' %></td>
+            <td style=" word-break: break-all;"><%= collection[i].mailTo %></td>
+            <td style=" word-break: break-all;"><%= collection[i].createdAt %></td>
+            <td  style=" word-break: break-all;"><%= collection[i].response ?  ( collection[i].response.response ? collection[i].response.response : collection[i].response) : '' %></td>
         </tr>
 
         <% } %>

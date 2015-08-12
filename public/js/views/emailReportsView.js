@@ -23,6 +23,9 @@ define([
 
             filter += el.find('#filterHelpSalim')[0].checked ? '' : 'Help Salim,';
             filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMS Spam,';
+            filter += el.find('#filterServiceProvider')[0].checked ? '' : 'Service Provider,';
+            filter += el.find('#filterTRAService')[0].checked ? '' : 'TRA Service,';
+
             filter = filter.replace(/\,$/,'');
           console.log('filter',filter);
             this.paginationView.setData({filter: filter});

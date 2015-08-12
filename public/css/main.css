@@ -263,6 +263,7 @@ th {
     font-size: 14px;
     font-weight: bold;
     text-align: center;
+    padding: 2px;
 }
 
 .tableView tr{
