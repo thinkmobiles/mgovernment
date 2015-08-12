@@ -4,7 +4,9 @@ var request = require('supertest');
 var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
+var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
+var PreparingDB = require('./preparingDB');
 var url = 'http://localhost:7791';
 
 describe('TRA Services tests', function () {
@@ -16,9 +18,28 @@ describe('TRA Services tests', function () {
     before(function (done) {
         console.log('>>> before');
 
-        done();
+        var preparingDb = new PreparingDB();
+
+        async.series([
+                preparingDb.dropCollection(CONST.MODELS.USER + 's'),
+                preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
+                preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
+                preparingDb.toFillUsers(1),
+                preparingDb.createUsersByTemplate(USERS.CLIENT),
+                preparingDb.createUsersByTemplate(USERS.COMPANY)
+            ],
+            function (err, results) {
+                if (err) {
+                    return done(err)
+                }
+                done();
+            });
     });
 
+/*
     it('WHOIS GET Data for Exist url', function (done) {
 
         var existUrl = 'google.ae';
@@ -140,6 +161,7 @@ describe('TRA Services tests', function () {
                 done();
             });
     });
+*/
 
     it('Unauthorized GET serviceList', function (done) {
 
@@ -168,14 +190,13 @@ describe('TRA Services tests', function () {
 
     it('SEND data to ComplainSmsSpam', function (done) {
 
-        var service = serviceCollection[0];
+        var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            //serviceType:  service.serviceType,
-            serviceType:  'SMSSpam',
-            serviceId: service._id,
-            title: ' Sms spamer detected',
-            description: ' I receive 10 sms from number 505050440'
+            phone: '7893',
+            phoneProvider: '2020',
+            providerType: 'elesat',
+            description: 'I receive 10 sms from number 505050440'
         };
 
         agent
@@ -203,14 +224,13 @@ describe('TRA Services tests', function () {
 
     it('SEND data to ComplainSmsSpam UnAuthorized', function (done) {
 
-        var service = serviceCollection[0];
+        var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            //serviceType:  service.serviceType,
-            serviceType:  'SMSSpam',
-            serviceId: service._id,
-            title: ' Sms MMMS spamer detected',
-            description: ' I receive 1000 sms from phone number 0995248763'
+            phone: '0995248763',
+            phoneProvider: '3030',
+            providerType: 'du',
+            description: 'I receive 1000 sms from phone number 0995248763'
         };
 
         agent
@@ -241,9 +261,6 @@ describe('TRA Services tests', function () {
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            //serviceType:  service.serviceType,
-            serviceType:  'HelpSalim',
-            serviceId: service._id,
             url: 'blabla.com.ae',
             description: 'On this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
         };
@@ -276,9 +293,6 @@ describe('TRA Services tests', function () {
         var service = serviceCollection[1];
         var loginData = USERS.CLIENT;
         var data = {
-            //serviceType:  service.serviceType,
-            serviceType: 'helpSalim',
-            serviceId: service._id,
             url: 'programs.com.ae',
             description: 'Hi. on this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
         };

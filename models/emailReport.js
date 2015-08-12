@@ -12,12 +12,10 @@ module.exports = function (db) {
         title: String,
         description: String,
         mailTo: String,
-        serviceType: String,
 
-        //serviceId: {type: ObjectId, ref: CONST.MODELS.SERVICE, default: null},
+        serviceName: String,
+        service: {type: ObjectId, ref: CONST.MODELS.SERVICE, default: null},
         user: {type: ObjectId, ref: CONST.MODELS.USER, default: null},
-        //rate: String,
-        //feedback: String,
         createdAt: {type: Date, default: Date.now}
     }, {
         collection: CONST.MODELS.EMAIL_REPORT + 's'

@@ -13,7 +13,6 @@ var AVAILABLE_STATUS = {
 
 var NO_DATA_FOUND = '';
 
-
 var TestTRAHandler = function (db) {
     'use strict';
 
@@ -177,9 +176,13 @@ var TestTRAHandler = function (db) {
 
     this.complainSmsSpam = function (req, res, next) {
 
-        var serviceType = req.body.serviceType;
-        var title = req.body.title;
+        var serviceType = 'SMS Spam';
+        var phoneSpam = req.body.phone;
+        var phoneProvider = req.body.phoneProvider;
+        var providerType = req.body.providerType;
         var description = req.body.description;
+        var title = 'SMS Spam From ' + phoneSpam;
+
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainSmsSpam.html';
@@ -198,7 +201,7 @@ var TestTRAHandler = function (db) {
             title: title
         };
 
-        mailer.sendReport(mailOptions, function (err, data) {
+        mailer.sendReport(mailOptions, function (errMail, data) {
 
             //TODO remove console.logs
 
@@ -207,8 +210,8 @@ var TestTRAHandler = function (db) {
                 title: title,
                 description: description,
                 mailTo: mailTo,
-                user: userId,
-                response: data
+                userId: userId,
+                response: data || errMail
             });
 
             emailReport
@@ -218,20 +221,20 @@ var TestTRAHandler = function (db) {
                     } else {
                         console.log('emailReport err saved: ', err);
                     }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
                 });
-
-            if (err) {
-                console.error('err: ', err);
-                res.status(500).send({err: err});
-            }
-
-            return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
         });
     };
 
     this.sendHelpSalim = function(req, res, next) {
 
-        var serviceType = req.body.serviceType;
+        var serviceType = 'Help Salim';
         var title = 'Complaint to site: ' + req.body.url;
         var description = req.body.description;
         var mailTo = TRA.EMAIL_HELP_SALIM;
@@ -251,7 +254,7 @@ var TestTRAHandler = function (db) {
             title: title
         };
 
-        mailer.sendReport(mailOptions, function (err, data) {
+        mailer.sendReport(mailOptions, function (errMail, data) {
 
             //TODO remove console.logs
 
@@ -260,8 +263,8 @@ var TestTRAHandler = function (db) {
                 title: title,
                 description: description,
                 mailTo: mailTo,
-                user: userId,
-                response: data || err
+                userId: userId,
+                response: data || errMail
             });
 
             emailReport
@@ -271,14 +274,14 @@ var TestTRAHandler = function (db) {
                     } else {
                         console.log('emailReport err saved: ', err);
                     }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
                 });
-
-            if (err) {
-                console.error('err: ', err);
-                res.status(500).send({err: err});
-            }
-
-            return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
         });
     };
 };
