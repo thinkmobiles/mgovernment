@@ -6,11 +6,11 @@
     </div>
     <div class = "tableFilter"><b> FILTER: </b>
         <b> <input type="checkbox" class="filterServiceType" id="filterHelpSalim"
-                   value="helpSalim"<%= filter.length ? ( filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %>> helpSalim </b>
+                   value="Help Salim"<%= filter.length ? ( filter.match(/Help Salim/) ? '' : 'checked') : 'checked' %>> Help Salim </b>
             <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
         <b> <input type="checkbox" class="filterServiceType" id="filterSMSSpam"
-                   value="SMSSpam" <%= filter.length ? ( filter.match(/SMSSpam/) ? '' : 'checked') : 'checked' %>> SMSSpam</b>
-<% console.log(' filter ', filter,' lenght ', filter.lenght ,' .match(/SMSSpam/)', filter.match(/SMSSpam/)); %>
+                   value="SMS Spam" <%= filter.length ? ( filter.match(/SMS Spam/) ? '' : 'checked') : 'checked' %>> SMS Spam</b>
+
     </div>
 
     <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
@@ -28,8 +28,8 @@
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
             <td><%= collection[i].serviceType %></td>
-            <!--<td><%= collection[i].user ? collection[i].user.login : '' %></td>-->
-            <td><%= collection[i].userId %></td>
+            <td><%= collection[i].user ? collection[i].user.login : '' %></td>
+            <!--<td><%= collection[i].user %></td>-->
             <td><%= collection[i].title %></td>
             <td><%= collection[i].description %></td>
             <td><%= collection[i].mailTo %></td>

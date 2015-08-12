@@ -21,8 +21,8 @@ define([
             var el = this.$el;
             var filter = '';
 
-            filter += el.find('#filterHelpSalim')[0].checked ? '' : 'helpSalim,';
-            filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMSSpam,';
+            filter += el.find('#filterHelpSalim')[0].checked ? '' : 'Help Salim,';
+            filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMS Spam,';
             filter = filter.replace(/\,$/,'');
           console.log('filter',filter);
             this.paginationView.setData({filter: filter});

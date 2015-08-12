@@ -180,7 +180,7 @@ var TestTRAHandler = function (db) {
         var phoneSpam = req.body.phone;
         var phoneProvider = req.body.phoneProvider;
         var providerType = req.body.providerType;
-        var description = req.body.description;
+        var description = req.body.description + ' / phoneProvider: ' + phoneProvider + ' / providerType: ' + providerType + ' /';
         var title = 'SMS Spam From ' + phoneSpam;
 
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
@@ -210,7 +210,7 @@ var TestTRAHandler = function (db) {
                 title: title,
                 description: description,
                 mailTo: mailTo,
-                userId: userId,
+                user: userId,
                 response: data || errMail
             });
 
@@ -263,7 +263,7 @@ var TestTRAHandler = function (db) {
                 title: title,
                 description: description,
                 mailTo: mailTo,
-                userId: userId,
+                user: userId,
                 response: data || errMail
             });
 

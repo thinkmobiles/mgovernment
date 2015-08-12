@@ -268,8 +268,10 @@ th {
 .tableView tr{
     border-top: 1px solid #ababab;
 }
+
 .tableView td {
     padding: 2px;
+    text-align: left;
 }
 
 .tableFilter {
