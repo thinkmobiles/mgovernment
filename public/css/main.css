@@ -281,6 +281,35 @@ th {
     font-weight: bold;
 }
 
+th.oe_sortable,
+th.oe_sortable_sub {
+    cursor: pointer;
+}
+
+th.oe_sortable .arrow,
+th.oe_sortable_sub .arrow {
+    display: none;
+    padding: 0 0 0 5px;
+    margin: 0;
+    text-align: center;
+    width: 5px;
+    height: 5px;
+    font-weight: 100 !important;
+    cursor: pointer;
+    font-family: Icons;
+    text-decoration: none;
+    line-height: 23px;
+    background: none;
+}
+.oe_sortable.sortUp .up,
+.oe_sortable_sub.sortUp .up {
+    display: inline-block;
+}
+th.oe_sortable.sortDn .down,
+th.oe_sortable_sub.sortDn .down {
+    display: inline-block;
+}
+
 .pagination {
     width: 100%;
     float: right;

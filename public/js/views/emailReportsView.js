@@ -12,7 +12,8 @@ define([
             'click #createService': 'createService',
             'click #cloneService': 'cloneService',
             'click #deleteService': 'deleteService',
-            'click #updateService': 'updateService'
+            'click #updateService': 'updateService',
+            "click .oe_sortable": "goSort"
         },
 
         template: _.template(content),
@@ -27,12 +28,13 @@ define([
             filter += el.find('#filterTRAService')[0].checked ? '' : 'TRA Service,';
 
             filter = filter.replace(/\,$/,'');
-          console.log('filter',filter);
+            console.log('filter',filter);
             this.paginationView.setData({filter: filter});
         },
 
         initialize: function(options){
             this.emailReportsCollecion =  new EmailReportsCollecion();
+
             this.paginationView = new PaginationView({
                 collection   : this.emailReportsCollecion,
                 countPerPage : options.countPerPage,
@@ -42,11 +44,62 @@ define([
                 page         : options.page,
                 ends         : true,
                 steps        : true,
-                data         : {filter: options.filter }
+                data         : {
+                    filter: options.filter,
+                    orderBy: options.orderBy,
+                    order: options.order
+                }
             });
 
             this.listenTo(this.emailReportsCollecion, 'sync reset remove', this.render);
             this.render();
+        },
+
+        goSort: function (e) {
+            var target$ = $(e.target);
+            //var currentParrentSortClass = target$.attr('class');
+            //var sortClass = currentParrentSortClass.split(' ')[1];
+
+            var previousOrderBy =  this.paginationView.stateModel.toJSON().data.orderBy;
+            var previousOrder =  this.paginationView.stateModel.toJSON().data.order;
+            var filter = this.paginationView.stateModel.toJSON().data.filter;
+            var sortClass;
+
+            var sortBy = target$.data('sort');
+            var sortOrder = 1;
+
+            if (previousOrderBy === sortBy) {
+                sortOrder = previousOrder * -1;
+            }
+
+            sortClass = (sortOrder == -1) ? 'sortUp' : 'sortDn' ;
+
+            // if (!sortClass) {
+            //    target$.addClass('sortDn');
+            //    sortClass = "sortDn";
+            //}
+
+            switch (sortClass) {
+                case "sortDn":
+                {
+                    target$.parent().find("th").removeClass('sortDn').removeClass('sortUp');
+                    target$.removeClass('sortDn').addClass('sortUp');
+                    //order = 1;
+                }
+                    break;
+                case "sortUp":
+                {
+                    target$.parent().find("th").removeClass('sortDn').removeClass('sortUp');
+                    target$.removeClass('sortUp').addClass('sortDn');
+                    //order = -1;
+                }
+                    break;
+            }
+            //sortObject[sortBy] = sortConst;
+            //this.fetchSortCollection(sortObject);
+            //this.changeLocationHash(1, this.defaultItemsNumber);
+            //this.getTotalLength(null, this.defaultItemsNumber, this.filter);
+            this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter});
         },
 
         render: function () {

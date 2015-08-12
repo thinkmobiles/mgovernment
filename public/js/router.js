@@ -22,7 +22,7 @@ define([
             "index": "toMainView",
             "services(/p=:page)(/c=:countPerPage)": "toServicesView",
             "feedbacks(/p=:page)(/c=:countPerPage)": "toFeedbacksView",
-            "emailReports(/p=:page)(/c=:countPerPage)(/filter=:filter)": "toEmailReportsView",
+            "emailReports(/p=:page)(/c=:countPerPage)(/f=:filter)(/ob=:orderBy)(/o=:order)": "toEmailReportsView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
@@ -111,10 +111,14 @@ define([
             });
         },
 
-        toEmailReportsView: function (page, countPerPage, filter) {
+        toEmailReportsView: function (page, countPerPage, filter, orderBy, order) {
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             filter = filter || '';
+            orderBy = orderBy || 'createdAt';
+            order = order || 1;
+
 
             if(this.contentView){
                 this.contentView.undelegateEvents();
@@ -123,7 +127,9 @@ define([
             this.contentView = new EmailReportsView({
                 page: page,
                 countPerPage: countPerPage,
-                filter: filter
+                filter: filter,
+                orderBy: orderBy,
+                order: order
             });
         },
 
