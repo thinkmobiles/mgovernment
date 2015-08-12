@@ -1,0 +1,50 @@
+<div style=" padding-bottom: 5px;margin-left: 5px; margin-right: 5px; vertical-align: top">
+
+    <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
+        <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
+            <span style="font-size: 22px; "><b>List of Feedbacks</b></span></div>
+    </div>
+    <div class = "tableFilter"><b> FILTER: </b>
+        <b> <input type="checkbox" class="filterServiceType" id="filterHelpSalim"
+                   value="helpSalim"<%= filter.length ? ( filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %>> helpSalim </b>
+            <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
+        <b> <input type="checkbox" class="filterServiceType" id="filterSMSSpam"
+                   value="SMSSpam" <%= filter.length ? ( filter.match(/SMSSpam/) ? '' : 'checked') : 'checked' %>> SMSSpam</b>
+<% console.log(' filter ', filter,' lenght ', filter.lenght ,' .match(/SMSSpam/)', filter.match(/SMSSpam/)); %>
+    </div>
+
+    <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
+        <tr>
+            <th>serviceType</th>
+            <th>user</th>
+            <th>title</th>
+            <th>description</th>
+            <th>mailTo</th>
+            <th>createdAt</th>
+            <th>response</th>
+        </tr>
+
+        <% if (collection.length) { %>
+        <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
+        <tr>
+            <td><%= collection[i].serviceType %></td>
+            <!--<td><%= collection[i].user ? collection[i].user.login : '' %></td>-->
+            <td><%= collection[i].userId %></td>
+            <td><%= collection[i].title %></td>
+            <td><%= collection[i].description %></td>
+            <td><%= collection[i].mailTo %></td>
+            <td><%= collection[i].createdAt %></td>
+            <td><%= collection[i].response ?  ( collection[i].response.response ? collection[i].response.response : collection[i].response) : '' %></td>
+        </tr>
+
+        <% } %>
+        <% } %>
+
+    </table>
+
+    <div style="clear:both; "></div>
+
+    <div id="paginationDiv" style="">
+    </div>
+
+</div>

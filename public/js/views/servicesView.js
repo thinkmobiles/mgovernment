@@ -76,6 +76,7 @@ define([
             Backbone.history.fragment = '';
             Backbone.history.navigate('cloneService', {trigger: true});
         },
+
         updateService: function(e) {
 
             e.preventDefault();
@@ -88,7 +89,6 @@ define([
             Backbone.history.fragment = '';
             Backbone.history.navigate('updateService', {trigger: true});
         },
-
 
         showServicesInfo: function(e){
             var id = $(e.target).attr('data-hash');

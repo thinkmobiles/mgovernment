@@ -19,7 +19,7 @@
     <% for(page in pages) { %>
     <li class="<% if (pages[page].clNam) {%>arrow<%}%><% if(pages[page].active) { %>active<% } %> item">
         <% if(urlPagination) { %>
-        <a href="#<%= url %>/p=<%= pages[page].data %>/c=<%= countPerPage %>"><%= pages[page].html %></a>
+        <a href="#<%= url %>/p=<%= pages[page].data %>/c=<%= countPerPage %><%= data.filter ? '/filter=' + data.filter:'' %>"><%= pages[page].html %></a>
         <% } else { %>
         <a class="goToPage" value="<%= pages[page].data %>"><%= pages[page].html %></a>
         <% } %>

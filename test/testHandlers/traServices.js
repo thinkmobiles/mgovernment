@@ -4,7 +4,9 @@ var request = require('supertest');
 var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
+var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
+var PreparingDB = require('./preparingDB');
 var url = 'http://localhost:7791';
 
 describe('TRA Services tests', function () {
@@ -16,7 +18,25 @@ describe('TRA Services tests', function () {
     before(function (done) {
         console.log('>>> before');
 
-        done();
+        var preparingDb = new PreparingDB();
+
+        async.series([
+                preparingDb.dropCollection(CONST.MODELS.USER + 's'),
+                preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
+                preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
+                preparingDb.toFillUsers(1),
+                preparingDb.createUsersByTemplate(USERS.CLIENT),
+                preparingDb.createUsersByTemplate(USERS.COMPANY)
+            ],
+            function (err, results) {
+                if (err) {
+                    return done(err)
+                }
+                done();
+            });
     });
 
     it('WHOIS GET Data for Exist url', function (done) {
