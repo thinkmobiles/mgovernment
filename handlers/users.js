@@ -561,6 +561,60 @@ var User = function(db) {
             });
     };
 
+    this.registerClient = function (req, res, next) {
+
+        var body = req.body;
+        var login = body.login;
+        var pass = body.pass;
+        var gender = body.gender;
+        var phone = body.phone;
+        var userType = CONST.USER_TYPE.CLIENT;
+
+        if (!body || !login || !pass || !gender || !phone) {
+            var err = new Error(RESPONSE.NOT_ENOUGH_PARAMS);
+            err.status = 400;
+            return next(err);
+        }
+
+        if (!(gender === 'male' || gender === 'female')) {
+            var err = new Error(RESPONSE.NOT_ENOUGH_PARAMS + ': incorrect gender (male/female)');
+            err.status = 400;
+            return next(err);
+        }
+
+        var profile = {
+            gender: gender,
+            phone: phone
+        };
+
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
+
+        var userData = {login: login, pass: pass, userType: userType, profile: profile};
+
+        User
+            .findOne({login: login})
+            .exec(function (err, model) {
+                if (err) {
+                    return next(err);
+                }
+                if (model) {
+                    return res.status(400).send(RESPONSE.AUTH.REGISTER_LOGIN_USED);
+                }
+
+                var user = new User(userData);
+                user
+                    .save(function (err, user) {
+                        if (err) {
+                            return res.status(500).send(err);
+                        }
+
+                        return res.status(200).send(RESPONSE.AUTH.REGISTER);
+                    });
+            });
+    };
+
     this.updateAccount = function (req, res, next) {
 
         var body = req.body;

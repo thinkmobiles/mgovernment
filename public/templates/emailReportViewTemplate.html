@@ -24,7 +24,8 @@
             <th class="oe_sortable" data-sort="serviceProvider">serviceProvider<span class="arrow down">^</span><span class="arrow up">v</span></th>
             <th class="oe_sortable" data-sort="user">user<span class="arrow down">^</span><span class="arrow up">v</span></th>
             <th class="oe_sortable" data-sort="title">title<span class="arrow down">^</span><span class="arrow up">v</span></th>
-            <th class="oe_sortable" data-sort="description">description<span class="arrow down">^</span><span class="arrow up">v</span></th>
+            <th class="oe_sortable" data-sort="description">description<span class="arrow down">^</span><span class="arrow up">v</span>
+            <th class="oe_sortable" data-sort="attachment">attachment<span class="arrow down">^</span><span class="arrow up">v</span></th>
             <th class="oe_sortable" data-sort="mailTo">mailTo<span class="arrow down">^</span><span class="arrow up">v</span></th>
             <th class="oe_sortable" data-sort="createdAt">createdAt<span class="arrow down">^</span><span class="arrow up">v</span></th>
             <th class="oe_sortable" data-sort="response">response<span class="arrow down">^</span><span class="arrow up">v</span></th>
@@ -39,6 +40,10 @@
             <!--<td><%= collection[i].user %></td>-->
             <td><%= collection[i].title %></td>
             <td><%= collection[i].description %></td>
+            <td style="text-align: center"><% if (collection[i].attachment) {%>
+            <a href="<%= collection[i].attachment %>" target="_blank"> <img src="<%= collection[i].attachment %>" style=" height: 40px"></a>
+                <% } %>
+            </td>
             <td style=" word-break: break-all;"><%= collection[i].mailTo %></td>
             <td style=" word-break: break-all;"><%= collection[i].createdAt %></td>
             <td  style=" word-break: break-all;"><%= collection[i].response ?  ( collection[i].response.response ? collection[i].response.response : collection[i].response) : '' %></td>

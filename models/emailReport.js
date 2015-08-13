@@ -10,6 +10,7 @@ module.exports = function (db) {
     var emailReport = new schema({
         response: {},
         title: String,
+        attachment: String,
         description: String,
         mailTo: String,
         serviceProvider: String,

@@ -17,6 +17,8 @@ module.exports = function (db) {
         profile:{
             firstName: {type: String},
             lastName: String,
+            gender: String,
+            phone: String,
             createdAt: {type: Date, default: Date.now}
         },
         accounts:[{
