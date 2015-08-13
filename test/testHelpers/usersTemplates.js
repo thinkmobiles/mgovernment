@@ -35,6 +35,13 @@ module.exports = {
         userType: 'client'
     },
 
+    CLIENT_REGISTER_DATA: {
+        login: 'testUser',
+        pass: 'password777',
+        gender: 'male',
+        phone: '+987654321'
+    },
+
     CLIENT_GOOD_USER_TYPE_FOR_DELETING: {
         login: 'clientForDeleting',
         pass: 'clientForDeleting',

@@ -40,7 +40,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
         });
     });
 
-
     it('Create user', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
@@ -248,7 +247,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
     });
 
-
     it('POST Service account (client123, pass1234)', function (done) {
 
         var loginData = USERS.CLIENT;
@@ -282,8 +280,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
 
     });
-
-
 
     it('ADD service to Favorites', function (done) {
 
@@ -420,21 +416,6 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 });
             });
     });
-    //
-    //it('Admin GET ALL USER with Query', function (done) {
-    //
-    //    agent
-    //        .get('/user/?orderBy=login&order=1&page=1&count=2')
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //            console.log('All users was get:');
-    //            console.dir(res.body);
-    //            done();
-    //        });
-    //});
 
     it('Admin GET Count of Users', function (done) {
 
@@ -479,6 +460,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
     });
 
+/*
     it('POST upload image', function (done) {
 
         var imageBase64 = IMAGES.avatar;
@@ -545,6 +527,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 done();
             });
     });
+*/
 
     function saveUser(data) {
         return function (callback) {
