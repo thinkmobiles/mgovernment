@@ -22,6 +22,9 @@ module.exports = {
     EMAIL_COMPLAINSMSSPAM: 'smsspam@ukr.net',// password: smsspam
     EMAIL_COMPLAIN_SERVICE_PROVIDER: 'complainserviceprovider@rambler.ru',// password: complainserviceprovider
     EMAIL_COMPLAIN_TRA_SERVICE: 'complaintraservice@rambler.ru',// password: complaintraservice
+    EMAIL_COMPLAIN_ENQUIRIES: 'allotheremails@ukr.net',
+    EMAIL_COMPLAIN_SUGGESTION: 'allotheremails@ukr.net',
+    EMAIL_COMPLAIN_POOR_COVERAGE: 'allotheremails@ukr.net',
 
     EMAIL_COMPLAIN_FROM: 'testTRA@testTRA.ae',
 

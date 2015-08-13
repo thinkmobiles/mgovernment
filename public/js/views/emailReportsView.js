@@ -26,6 +26,9 @@ define([
             filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMS Spam,';
             filter += el.find('#filterServiceProvider')[0].checked ? '' : 'Service Provider,';
             filter += el.find('#filterTRAService')[0].checked ? '' : 'TRA Service,';
+            filter += el.find('#filterEnquiries')[0].checked ? '' : 'Enquiries,';
+            filter += el.find('#filterSuggestion')[0].checked ? '' : 'Suggestion,';
+            filter += el.find('#filterPoorCoverage')[0].checked ? '' : 'Poor Coverage,';
 
             filter = filter.replace(/\,$/,'');
             console.log('filter',filter);

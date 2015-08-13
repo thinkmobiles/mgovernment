@@ -17,8 +17,13 @@ module.exports = function(db) {
     router.post('/complainSmsSpam', testTRAHandler.complainSmsSpam);
     router.post('/complainServiceProvider', testTRAHandler.complainServiceProvider);
     router.post('/complainTRAService', testTRAHandler.complainTRAService);
-    router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
 
+    router.post('/complainEnquiries', testTRAHandler.complainEnquiries);
+    router.post('/sendSuggestion', testTRAHandler.sendSuggestion);
+    router.post('/sendPoorCoverage', testTRAHandler.sendPoorCoverage);
+
+
+    router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
     //router.get('/crm/case', testTRACRMHandler.getCases);
     router.get('/crm/auth', testTRACRMHandler.loginHttp);
     router.get('/crm/auth/callback', testTRACRMHandler.authCallback);

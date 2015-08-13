@@ -188,13 +188,13 @@ var TestTRAHandler = function (db) {
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
         var mailOptions = {
-            templateName: templateName,
             templateData: {
                 serviceType: serviceType,
                 title: title,
                 description: description,
                 userId: userId
             },
+            templateName: templateName,
             from: from,
             mailTo: mailTo,
             title: title
@@ -245,7 +245,6 @@ var TestTRAHandler = function (db) {
         var attachment =  req.body.attachment;
 
         var mailOptions = {
-            templateName: templateName,
             templateData: {
                 serviceProvider: serviceProvider,
                 title: title,
@@ -254,6 +253,7 @@ var TestTRAHandler = function (db) {
                 referenceNumber: referenceNumber
 
             },
+            templateName: templateName,
             from: from,
             mailTo: mailTo,
             title: title,
@@ -306,14 +306,12 @@ var TestTRAHandler = function (db) {
         var attachment =  req.body.attachment;
 
         var mailOptions = {
-            templateName: templateName,
             templateData: {
                 title: title,
                 description: description,
                 userId: userId
-
-
             },
+            templateName: templateName,
             from: from,
             mailTo: mailTo,
             title: title,
@@ -329,6 +327,173 @@ var TestTRAHandler = function (db) {
                 serviceType: serviceType,
                 title: title,
                 description: description,
+                mailTo: mailTo,
+                user: userId,
+                response: data || errMail
+            });
+
+            emailReport
+                .save(function (err, model) {
+                    if (model) {
+                        console.log('emailReport saved');
+                    } else {
+                        console.log('emailReport err saved: ', err);
+                    }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                });
+        });
+    };
+
+    this.complainEnquiries = function (req, res, next) {
+
+        var serviceType = 'Enquiries';
+        var description = req.body.description;
+        var title = req.body.title;
+        var mailTo = TRA.EMAIL_COMPLAIN_ENQUIRIES;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var templateName = 'public/templates/mail/complainEnquiries.html';
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var attachment =  req.body.attachment;
+
+        var mailOptions = {
+            templateData: {
+                title: title,
+                description: description,
+                userId: userId
+            },
+            templateName: templateName,
+            from: from,
+            mailTo: mailTo,
+            title: title,
+            attachment: attachment
+        };
+
+        mailer.sendReport(mailOptions, function (errMail, data) {
+
+            //TODO remove console.logs
+
+            var emailReport = new EmailReport({
+                attachment: attachment,
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                mailTo: mailTo,
+                user: userId,
+                response: data || errMail
+            });
+
+            emailReport
+                .save(function (err, model) {
+                    if (model) {
+                        console.log('emailReport saved');
+                    } else {
+                        console.log('emailReport err saved: ', err);
+                    }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                });
+        });
+    };
+
+    this.sendSuggestion = function (req, res, next) {
+
+        var serviceType = 'Suggestion';
+        var description = req.body.description;
+        var title = req.body.title;
+        var mailTo = TRA.EMAIL_COMPLAIN_ENQUIRIES;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var templateName = 'public/templates/mail/suggestion.html';
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var attachment =  req.body.attachment;
+
+        var mailOptions = {
+            templateData: {
+                title: title,
+                description: description,
+                userId: userId
+            },
+            templateName: templateName,
+            from: from,
+            mailTo: mailTo,
+            title: title,
+            attachment: attachment
+        };
+
+        mailer.sendReport(mailOptions, function (errMail, data) {
+
+            //TODO remove console.logs
+
+            var emailReport = new EmailReport({
+                attachment: attachment,
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                mailTo: mailTo,
+                user: userId,
+                response: data || errMail
+            });
+
+            emailReport
+                .save(function (err, model) {
+                    if (model) {
+                        console.log('emailReport saved');
+                    } else {
+                        console.log('emailReport err saved: ', err);
+                    }
+
+                    if (errMail) {
+                        console.error('err on Mail: ', errMail);
+                        return res.status(500).send({err: errMail});
+                    }
+
+                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                });
+        });
+    };
+
+    this.sendPoorCoverage = function (req, res, next) {
+
+        var serviceType = 'Poor Coverage';
+        var signalLevel = req.body.signalLevel;
+        var location = req.body.location;
+        var title = 'Location: ' + location + ' Signal level: ' + signalLevel;
+        var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var templateName = 'public/templates/mail/poorCoverage.html';
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var attachment =  req.body.attachment;
+
+        var mailOptions = {
+            templateName: templateName,
+            from: from,
+            mailTo: mailTo,
+            title: title,
+
+            templateData: {
+                location: location,
+                signalLevel: signalLevel,
+                userId: userId
+            }
+        };
+
+        mailer.sendReport(mailOptions, function (errMail, data) {
+
+            //TODO remove console.logs
+
+            var emailReport = new EmailReport({
+                title: title,
+                serviceType: serviceType,
                 mailTo: mailTo,
                 user: userId,
                 response: data || errMail
