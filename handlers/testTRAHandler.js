@@ -251,12 +251,13 @@ var TestTRAHandler = function (db) {
                 title: title,
                 description: description,
                 userId: userId,
-                referenceNumber: referenceNumber,
-                attachment: attachment
+                referenceNumber: referenceNumber
+
             },
             from: from,
             mailTo: mailTo,
-            title: title
+            title: title,
+            attachment: attachment
         };
 
         mailer.sendReport(mailOptions, function (errMail, data) {
@@ -309,13 +310,14 @@ var TestTRAHandler = function (db) {
             templateData: {
                 title: title,
                 description: description,
-                userId: userId,
-                attachment: attachment
+                userId: userId
+
 
             },
             from: from,
             mailTo: mailTo,
-            title: title
+            title: title,
+            attachment: attachment
         };
 
         mailer.sendReport(mailOptions, function (errMail, data) {
