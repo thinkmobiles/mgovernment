@@ -10,5 +10,5 @@ var app = require('../app');
 //require('./testHandlers/userServices');
 
 require('./testHandlers/usersAuth'); //added register
+require('./testHandlers/userFeedback');
 require('./testHandlers/traServices');
-//require('./testHandlers/userFeedback');
