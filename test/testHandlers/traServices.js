@@ -7,7 +7,7 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:80';
+var url = 'http://localhost:7791';
 
 describe('TRA Services tests', function () {
     this.timeout(35000);
@@ -36,6 +36,7 @@ describe('TRA Services tests', function () {
                 if (err) {
                     return done(err)
                 }
+                //console.log('BD preparing completed')
                 done();
             });
     });
@@ -165,7 +166,7 @@ describe('TRA Services tests', function () {
 */
 
     it('Unauthorized GET serviceList', function (done) {
-
+        console.log('GET serviceList: ')
         agent
             .post('/user/signOut')
             .send({})
