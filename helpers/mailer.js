@@ -50,7 +50,7 @@ module.exports = new function () {
             };
             mailOptions.attachments = attachments;
         }
-        
+
         deliver(mailOptions, callback);
     };
 
