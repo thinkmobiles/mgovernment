@@ -182,7 +182,6 @@ var TestTRAHandler = function (db) {
         var providerType = req.body.providerType;
         var description = req.body.description + ' / phoneProvider: ' + phoneProvider + ' / providerType: ' + providerType + ' /';
         var title = 'SMS Spam From ' + phoneSpam;
-
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainSmsSpam.html';
@@ -243,6 +242,7 @@ var TestTRAHandler = function (db) {
         var templateName = 'public/templates/mail/complainServiceProvider.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
         var referenceNumber =  req.body.referenceNumber;
+        var attachment =  req.body.attachment;
 
         var mailOptions = {
             templateName: templateName,
@@ -263,6 +263,7 @@ var TestTRAHandler = function (db) {
             //TODO remove console.logs
 
             var emailReport = new EmailReport({
+                attachment: attachment,
                 serviceType: serviceType,
                 serviceProvider: serviceProvider,
                 title: title,
@@ -300,12 +301,14 @@ var TestTRAHandler = function (db) {
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainTRAService.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var attachment =  req.body.attachment;
+
         var mailOptions = {
             templateName: templateName,
             templateData: {
                 title: title,
                 description: description,
-                userId: userId,
+                userId: userId
             },
             from: from,
             mailTo: mailTo,
@@ -317,6 +320,7 @@ var TestTRAHandler = function (db) {
             //TODO remove console.logs
 
             var emailReport = new EmailReport({
+                attachment: attachment,
                 serviceType: serviceType,
                 title: title,
                 description: description,
@@ -352,6 +356,7 @@ var TestTRAHandler = function (db) {
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/helpSalim.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+
         var mailOptions = {
             templateName: templateName,
             templateData: {
