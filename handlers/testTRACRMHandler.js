@@ -22,7 +22,7 @@ var CASE_FIELDS = [
     'Priority'
 ];
 
-var CRM_HOST = 'do-crm15'; //http://192.168.91.232/
+var CRM_HOST = 'http://192.168.91.232/';
 var CRM_PORT = 80;
 var CRM_USER = '';
 var CRM_PASS = '';
