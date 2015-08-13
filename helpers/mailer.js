@@ -28,7 +28,7 @@ module.exports = new function () {
             if (!matches || matches.length !== 3) {
                 try {
                     imageData.type = 'image/png';
-                    imageData.data = new Buffer(dataString, 'base64');
+                    imageData.data = attachment;
                     imageData.extention = 'png';
                 } catch (err) {
                     callback({error: 'Invalid input string'});

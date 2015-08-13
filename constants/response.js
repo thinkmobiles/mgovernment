@@ -7,6 +7,8 @@ module.exports = {
         UN_AUTHORIZED: 'Un Authorized',
         LOG_IN: 'Login successful',
         LOG_OUT: 'Logout successful',
+        REGISTER: 'Register successful',
+        REGISTER_LOGIN_USED: 'Login is used',
         INVALID_CREDENTIALS: 'Invalid login or password',
         NO_PERMISSIONS: 'Access denied'
     },
