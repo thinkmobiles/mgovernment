@@ -82,7 +82,12 @@ define([
                     self.calculate();
                 },
                 error: function (err) {
-                    App.error(err);
+                    console.log('getCount Eror: ', err);
+                    if (err.status == 403) {
+                        App.authorized = false;
+                        Backbone.history.fragment = '';
+                        Backbone.history.navigate('login', {trigger: true});
+                    }
                 }
             });
         },
