@@ -251,7 +251,8 @@ var TestTRAHandler = function (db) {
                 title: title,
                 description: description,
                 userId: userId,
-                referenceNumber: referenceNumber
+                referenceNumber: referenceNumber,
+                attachment: attachment
             },
             from: from,
             mailTo: mailTo,
@@ -308,7 +309,9 @@ var TestTRAHandler = function (db) {
             templateData: {
                 title: title,
                 description: description,
-                userId: userId
+                userId: userId,
+                attachment: attachment
+
             },
             from: from,
             mailTo: mailTo,
