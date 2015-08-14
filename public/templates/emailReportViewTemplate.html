@@ -60,7 +60,7 @@
             </td>
             <td style=" word-break: break-all;"><%= collection[i].mailTo %></td>
             <td style=" word-break: break-all;"><%= collection[i].createdAt %></td>
-            <td  style=" word-break: break-all;"><%= collection[i].response ?  ( collection[i].response.response ? collection[i].response.response : collection[i].response) : '' %></td>
+            <td  style=" word-break: break-all;"><%= collection[i].response ?  ( collection[i].response.message ? collection[i].response.message : collection[i].response) : '' %></td>
         </tr>
 
         <% } %>

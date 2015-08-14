@@ -12,6 +12,11 @@ module.exports = function (db) {
         title: String,
         attachment: String,
         description: String,
+        location: {
+            latitude: String,
+            longitude: String
+        },
+        signalLevel: String,
         mailTo: String,
         serviceProvider: String,
         referenceNumber:String,

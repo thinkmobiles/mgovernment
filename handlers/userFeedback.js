@@ -27,6 +27,10 @@ var Feedback = function(db) {
             feedback: body.feedback
         };
 
+        if (! /^[12345]$/.test(rate)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
         feedback = new Feedback(feedbackData);
 
         feedback

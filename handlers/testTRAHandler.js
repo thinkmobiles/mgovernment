@@ -466,8 +466,13 @@ var TestTRAHandler = function (db) {
 
         var serviceType = 'Poor Coverage';
         var signalLevel = req.body.signalLevel;
+
+        if (! /^[12345]$/.test(signalLevel)) {
+            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
         var location = req.body.location;
-        var title = 'Location: ' + location + ' Signal level: ' + signalLevel;
+        var title = 'Location.latitude: ' + location.latitude +  ', location.longitude: ' + location.longitude +' Signal level: ' + signalLevel;
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
@@ -492,6 +497,8 @@ var TestTRAHandler = function (db) {
             //TODO remove console.logs
 
             var emailReport = new EmailReport({
+                location: location,
+                signalLevel: signalLevel,
                 title: title,
                 serviceType: serviceType,
                 mailTo: mailTo,

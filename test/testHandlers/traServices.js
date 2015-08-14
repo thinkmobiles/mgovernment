@@ -586,8 +586,11 @@ describe('TRA Services tests', function () {
 
         var loginData = USERS.CLIENT;
         var data = {
-            location: 'Bubai Elan street',
-            signalLevel: 80
+            location: {
+                latitude: '24.9821547',
+                longitude: '55.402868'
+            },
+            signalLevel: 4
         };
 
         agent
