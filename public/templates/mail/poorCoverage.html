@@ -6,10 +6,16 @@
 </head>
 <body>
 <div class="pm-text">
-    <p>It is poor coverage leter.
+    <p>It is poor coverage mail.
 
-        <br> You received this email because user (<%= userId %>) send information  <b>Location latitude: </b> <%= location.latitude%>,
+        <br> You received this email because user (<%= userId %>) send information
+        <% if (location) { %>
+        <br> <b>Location latitude: </b> <%= location.latitude%>,
         <b> longitude:</b> <%= location.longitude %>
+        <% }%>
+<% if (address) {%>
+        <br> <b>Address: </b> <%= address%>,
+        <% }%>
         <br><b>Signal level: </b> <%= signalLevel %>
         <br>
         <br>If you have received this in error, please delete this email

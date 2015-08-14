@@ -17,6 +17,7 @@ module.exports = function (db) {
             longitude: String
         },
         signalLevel: String,
+        address: String,
         mailTo: String,
         serviceProvider: String,
         referenceNumber:String,

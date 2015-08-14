@@ -507,7 +507,9 @@ var User = function(db) {
         };
         var profile = {
             firstName: body.firstName,
-            lastName: body.lastName
+            lastName: body.lastName,
+            gender: body.gender,
+            phone: body.phone
         };
         var account = {
             seviceName: body.seviceName,
@@ -620,6 +622,8 @@ var User = function(db) {
         var body = req.body;
         var login = body.login;
         var pass = body.pass;
+        var gender = body.gender;
+        var phone = body.phone;
         var userType = body.userType;
         var userId = req.params.id;
         var err;
@@ -632,6 +636,8 @@ var User = function(db) {
         var profile = {
             firstName: body.firstName,
             lastName: body.lastName,
+            gender: body.gender,
+            phone: body.phone,
             createdAt: new Date()
         };
 

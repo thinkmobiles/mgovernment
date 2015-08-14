@@ -472,7 +472,8 @@ var TestTRAHandler = function (db) {
         }
 
         var location = req.body.location;
-        var title = 'Location.latitude: ' + location.latitude +  ', location.longitude: ' + location.longitude +' Signal level: ' + signalLevel;
+        var address = req.body.address;
+        var title = location ? ('Location.latitude: ' + location.latitude +  ', location.longitude: ' + location.longitude +' Signal level: ' + signalLevel) : address + ' Signal level: ' + signalLevel;
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
@@ -488,6 +489,7 @@ var TestTRAHandler = function (db) {
             templateData: {
                 location: location,
                 signalLevel: signalLevel,
+                address: address,
                 userId: userId
             }
         };
@@ -497,6 +499,7 @@ var TestTRAHandler = function (db) {
             //TODO remove console.logs
 
             var emailReport = new EmailReport({
+                address: address,
                 location: location,
                 signalLevel: signalLevel,
                 title: title,
