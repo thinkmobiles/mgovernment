@@ -10,12 +10,12 @@
 
     <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
         <tr>
-            <th>ServiceName</th>
-            <th>ServiceProvider</th>
-            <th>user</th>
-            <th>rate</th>
-            <th>feedback</th>
-            <th>createdAt</th>
+            <th class="oe_sortable" data-sort="serviceName">ServiceName</th>
+            <th class="oe_sortable" data-sort="serviceProvider" >ServiceProvider</th>
+            <th class="oe_sortable" data-sort="user" >user</th>
+            <th class="oe_sortable" data-sort="rate">rate</th>
+            <th class="oe_sortable" data-sort="feedback" >feedback</th>
+            <th class="oe_sortable" data-sort="createdAt" >createdAt</th>
         </tr>
 
         <% if (collection.length) { %>

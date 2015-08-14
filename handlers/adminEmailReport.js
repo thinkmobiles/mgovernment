@@ -27,6 +27,7 @@ var EmailReport = function(db) {
             .limit(limitCount)
             //.populate({path: 'service', select: '_id serviceProvider serviceName'})
             .populate({path: 'user', select: '_id login'})
+            .allowDiskUse(true)
             .exec(function (err, collection) {
                 if (err) {
                     return next(err);
