@@ -369,7 +369,7 @@ var User = function(db) {
 
                 if (!model) {
 
-                    return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
+                    return res.status(400).send({ error: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
                 var deviceOptions = {
@@ -600,7 +600,7 @@ var User = function(db) {
                     return next(err);
                 }
                 if (model) {
-                    return res.status(400).send(RESPONSE.AUTH.REGISTER_LOGIN_USED);
+                    return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
                 }
 
                 var user = new User(userData);
@@ -610,7 +610,7 @@ var User = function(db) {
                             return res.status(500).send(err);
                         }
 
-                        return res.status(200).send(RESPONSE.AUTH.REGISTER);
+                        return res.status(200).send({success: RESPONSE.AUTH.REGISTER});
                     });
             });
     };
