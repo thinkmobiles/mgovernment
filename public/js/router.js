@@ -20,7 +20,7 @@ define([
         routes: {
             "index": "toMainView",
             "services(/p=:page)(/c=:countPerPage)": "toServicesView",
-            "feedbacks(/p=:page)(/c=:countPerPage)": "toFeedbacksView",
+            "feedbacks(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toFeedbacksView",
             "emailReports(/p=:page)(/c=:countPerPage)(/f=:filter)(/ob=:orderBy)(/o=:order)": "toEmailReportsView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
@@ -96,9 +96,11 @@ define([
             });
         },
 
-        toFeedbacksView: function (page, countPerPage) {
+        toFeedbacksView: function (page, countPerPage, orderBy, order) {
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
+            orderBy = orderBy || 'createdAt';
+            order = order || 1;
 
             if(this.contentView){
                 this.contentView.undelegateEvents();
@@ -106,7 +108,9 @@ define([
 
             this.contentView = new FeedbacksView({
                 page: page,
-                countPerPage: countPerPage
+                countPerPage: countPerPage,
+                orderBy: orderBy,
+                order: order
             });
         },
 

@@ -3,7 +3,7 @@ define([
     'collections/emailReports',
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
-],function(content, EmailReportsCollecion, paginationTemplate, PaginationView){
+], function (content, EmailReportsCollecion, paginationTemplate, PaginationView) {
     var feedbacksView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -18,7 +18,7 @@ define([
 
         template: _.template(content),
 
-        changeCollectionFilter: function(){
+        changeCollectionFilter: function () {
             var el = this.$el;
             var filter = '';
 
@@ -30,24 +30,24 @@ define([
             filter += el.find('#filterSuggestion')[0].checked ? '' : 'Suggestion,';
             filter += el.find('#filterPoorCoverage')[0].checked ? '' : 'Poor Coverage,';
 
-            filter = filter.replace(/\,$/,'');
-            console.log('filter',filter);
+            filter = filter.replace(/\,$/, '');
+            console.log('filter', filter);
             this.paginationView.setData({filter: filter});
         },
 
-        initialize: function(options){
-            this.emailReportsCollecion =  new EmailReportsCollecion();
+        initialize: function (options) {
+            this.emailReportsCollecion = new EmailReportsCollecion();
 
             this.paginationView = new PaginationView({
-                collection   : this.emailReportsCollecion,
-                countPerPage : options.countPerPage,
-                url          : 'emailReports',
-                urlGetCount  : '/emailReport/getCount',
-                padding      : 2,
-                page         : options.page,
-                ends         : true,
-                steps        : true,
-                data         : {
+                collection: this.emailReportsCollecion,
+                countPerPage: options.countPerPage,
+                url: 'emailReports',
+                urlGetCount: '/emailReport/getCount',
+                padding: 2,
+                page: options.page,
+                ends: true,
+                steps: true,
+                data: {
                     filter: options.filter,
                     orderBy: options.orderBy,
                     order: options.order
@@ -58,20 +58,13 @@ define([
             this.render();
         },
 
-        showSort: function(){
-            var OrderBy =  this.paginationView.stateModel.toJSON().data.orderBy;
-            var Order =  this.paginationView.stateModel.toJSON().data.order;
-
-
-        },
-
         goSort: function (e) {
             var target$ = $(e.target);
             //var currentParrentSortClass = target$.attr('class');
             //var sortClass = currentParrentSortClass.split(' ')[1];
 
-            var previousOrderBy =  this.paginationView.stateModel.toJSON().data.orderBy;
-            var previousOrder =  this.paginationView.stateModel.toJSON().data.order;
+            var previousOrderBy = this.paginationView.stateModel.toJSON().data.orderBy;
+            var previousOrder = this.paginationView.stateModel.toJSON().data.order;
             var filter = this.paginationView.stateModel.toJSON().data.filter;
             var sortClass;
 
@@ -82,7 +75,7 @@ define([
                 sortOrder = previousOrder * -1;
             }
 
-            sortClass = (sortOrder == -1) ? 'sortUp' : 'sortDn' ;
+            sortClass = (sortOrder == -1) ? 'sortUp' : 'sortDn';
 
             // if (!sortClass) {
             //    target$.addClass('sortDn');
@@ -115,9 +108,11 @@ define([
         render: function () {
             console.log('emailReportsView render');
             console.log('filter: ', this.paginationView.stateModel.toJSON().data);
-            this.$el.html(this.template({collection: this.emailReportsCollecion.toJSON(), filter: this.paginationView.stateModel.toJSON().data.filter}));
+            this.$el.html(this.template({
+                collection: this.emailReportsCollecion.toJSON(),
+                filter: this.paginationView.stateModel.toJSON().data.filter
+            }));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
-            this.showSort();
         }
     });
 
