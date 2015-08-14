@@ -8,7 +8,7 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDB');
-var url = 'http://localhost:80';
+var url = 'http://localhost:7791';
 
 describe('Feedback tests - Create, Get ,', function () {
 

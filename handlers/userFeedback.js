@@ -18,12 +18,13 @@ var Feedback = function(db) {
 
         var userRef = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var serviceRef = new ObjectId(body.serviceId);
+        var rate = body.rate;
 
         var feedbackData = {
             user: userRef,
             service: serviceRef,
             serviceName: body.serviceName,
-            rate: body.rate,
+            rate: rate,
             feedback: body.feedback
         };
 
