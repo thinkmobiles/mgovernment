@@ -1,4 +1,3 @@
-
 define([
     'text!templates/mainViewTemplate.html',
     'views/topBarView',

@@ -1,4 +1,3 @@
-
 define([
     'Backbone',
     'views/mainView',

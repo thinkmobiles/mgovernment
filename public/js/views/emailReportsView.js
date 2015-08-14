@@ -58,6 +58,13 @@ define([
             this.render();
         },
 
+        showSort: function(){
+            var OrderBy =  this.paginationView.stateModel.toJSON().data.orderBy;
+            var Order =  this.paginationView.stateModel.toJSON().data.order;
+
+
+        },
+
         goSort: function (e) {
             var target$ = $(e.target);
             //var currentParrentSortClass = target$.attr('class');
@@ -106,11 +113,11 @@ define([
         },
 
         render: function () {
-
             console.log('emailReportsView render');
             console.log('filter: ', this.paginationView.stateModel.toJSON().data);
             this.$el.html(this.template({collection: this.emailReportsCollecion.toJSON(), filter: this.paginationView.stateModel.toJSON().data.filter}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+            this.showSort();
         }
     });
 
