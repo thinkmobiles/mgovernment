@@ -111,7 +111,7 @@ var TestTRAHandler = function (db) {
         var imei = req.query.imei;
 
         if (!imei) {
-            res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+            return res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
         }
 
         var startIndex = req.query.start || 0;
@@ -155,7 +155,6 @@ var TestTRAHandler = function (db) {
             return res.status(200).send(result);
         });
     };
-
 
     function sendSearchRequest(reqBody, callback) {
 
@@ -473,7 +472,9 @@ var TestTRAHandler = function (db) {
 
         var location = req.body.location;
         var address = req.body.address;
-        var title = location ? ('Location.latitude: ' + location.latitude +  ', location.longitude: ' + location.longitude +' Signal level: ' + signalLevel) : address + ' Signal level: ' + signalLevel;
+        var title = (location && location.latitude)
+            ? ('Location.latitude: ' + location.latitude +  ', location.longitude: ' + location.longitude +' Signal level: ' + signalLevel)
+            : address + ' Signal level: ' + signalLevel;
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';

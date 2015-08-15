@@ -24,7 +24,7 @@ module.exports = function (db) {
         serviceType: String,
         service: {type: ObjectId, ref: CONST.MODELS.SERVICE, default: null},
         user: {type: ObjectId, ref: CONST.MODELS.USER, default: null},
-        createdAt: {type: Date, default: Date.now}
+        createdAt: {type: Date, default: Date.now, index: true}
     }, {
         collection: CONST.MODELS.EMAIL_REPORT + 's'
     });

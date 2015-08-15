@@ -369,7 +369,7 @@ var User = function(db) {
 
                 if (!model) {
 
-                    return res.status(400).send({ error: RESPONSE.AUTH.INVALID_CREDENTIALS});
+                    return res.status(400).send({error: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
                 var deviceOptions = {
@@ -573,15 +573,11 @@ var User = function(db) {
         var userType = CONST.USER_TYPE.CLIENT;
 
         if (!body || !login || !pass || !gender || !phone) {
-            var err = new Error(RESPONSE.NOT_ENOUGH_PARAMS);
-            err.status = 400;
-            return next(err);
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         if (!(gender === 'male' || gender === 'female')) {
-            var err = new Error(RESPONSE.NOT_ENOUGH_PARAMS + ': incorrect gender (male/female)');
-            err.status = 400;
-            return next(err);
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': incorrect gender (male/female)'});
         }
 
         var profile = {
