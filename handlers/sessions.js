@@ -42,6 +42,12 @@ var Session = function ( db ) {
 
     this.isAdminBySession = function ( req, res, next ) {
 
+        if (!( req.session && req.session.uId && req.session.loggedIn)) {
+            var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
+            err.status = 401;
+            return next(err);
+        }
+
         var userId = req.session.uId;
 
         getUserTypeById(userId, function (err, userType) {
@@ -53,7 +59,6 @@ var Session = function ( db ) {
             err = new Error(RESPONSE.AUTH.NO_PERMISSIONS);
             err.status = 403;
             return next(err);
-
         });
     };
 

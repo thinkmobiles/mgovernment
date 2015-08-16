@@ -12,23 +12,37 @@
                    value="SMS Spam" <%= filter.length ? ( filter.match(/SMS Spam/) ? '' : 'checked') : 'checked' %>> SMS Spam</b>
         <b> <input type="checkbox" class="filterServiceType" id="filterServiceProvider"
                    value="Service Provider"<%= filter.length ? ( filter.match(/Service Provider/) ? '' : 'checked') : 'checked' %>> Service Provider </b>
-        <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
         <b> <input type="checkbox" class="filterServiceType" id="filterTRAService"
                    value="TRA Service" <%= filter.length ? ( filter.match(/TRA Service/) ? '' : 'checked') : 'checked' %>> TRA Service</b>
+        <b> <input type="checkbox" class="filterServiceType" id="filterEnquiries"
+                   value="Enquiries" <%= filter.length ? ( filter.match(/Enquiries/) ? '' : 'checked') : 'checked' %>> Enquiries</b>
+        <b> <input type="checkbox" class="filterServiceType" id="filterSuggestion"
+                   value="Suggestion"<%= filter.length ? ( filter.match(/Suggestion/) ? '' : 'checked') : 'checked' %>> Suggestion </b>
+        <b> <input type="checkbox" class="filterServiceType" id="filterPoorCoverage"
+                   value="Poor Coverage" <%= filter.length ? ( filter.match(/Poor Coverage/) ? '' : 'checked') : 'checked' %>> Poor Coverage</b>
 
     </div>
 
     <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
         <tr>
-            <th class="oe_sortable" data-sort="serviceType">serviceType<span class="arrow down">^</span><span class="arrow up">v</span></th>
-            <th class="oe_sortable" data-sort="serviceProvider">serviceProvider<span class="arrow down">^</span><span class="arrow up">v</span></th>
-            <th class="oe_sortable" data-sort="user">user<span class="arrow down">^</span><span class="arrow up">v</span></th>
-            <th class="oe_sortable" data-sort="title">title<span class="arrow down">^</span><span class="arrow up">v</span></th>
-            <th class="oe_sortable" data-sort="description">description<span class="arrow down">^</span><span class="arrow up">v</span>
-            <th class="oe_sortable" data-sort="attachment">attachment<span class="arrow down">^</span><span class="arrow up">v</span></th>
-            <th class="oe_sortable" data-sort="mailTo">mailTo<span class="arrow down">^</span><span class="arrow up">v</span></th>
-            <th class="oe_sortable" data-sort="createdAt">createdAt<span class="arrow down">^</span><span class="arrow up">v</span></th>
-            <th class="oe_sortable" data-sort="response">response<span class="arrow down">^</span><span class="arrow up">v</span></th>
+            <th class="oe_sortable" data-sort="serviceType">serviceType
+                <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
+            <th class="oe_sortable" data-sort="serviceProvider">serviceProvider
+            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
+            <th class="oe_sortable" data-sort="user">user
+            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
+            <th class="oe_sortable" data-sort="title">title
+            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
+            <th class="oe_sortable" data-sort="description">description
+            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span>-->
+            <th class="oe_sortable" data-sort="attachment">attachment
+            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
+            <th class="oe_sortable" data-sort="mailTo">mailTo
+            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
+            <th class="oe_sortable" data-sort="createdAt">createdAt
+            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
+            <th class="oe_sortable" data-sort="response">response
+            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
         </tr>
 
         <% if (collection.length) { %>
@@ -46,7 +60,7 @@
             </td>
             <td style=" word-break: break-all;"><%= collection[i].mailTo %></td>
             <td style=" word-break: break-all;"><%= collection[i].createdAt %></td>
-            <td  style=" word-break: break-all;"><%= collection[i].response ?  ( collection[i].response.response ? collection[i].response.response : collection[i].response) : '' %></td>
+            <td  style=" word-break: break-all;"><%= collection[i].response ?  ( collection[i].response.message ? collection[i].response.message : collection[i].response) : '' %></td>
         </tr>
 
         <% } %>

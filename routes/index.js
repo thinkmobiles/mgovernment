@@ -1,7 +1,7 @@
 var SessionHandler = require('../handlers/sessions');
 var TestTRAHandler = require('../handlers/testTRAHandler');
 
-module.exports = function(app, db){
+module.exports = function(app, db) {
     'use strict';
 
     var logWriter = require('../helpers/logWriter')();
@@ -20,33 +20,33 @@ module.exports = function(app, db){
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
 
-    app.get('/', function(req, res, next){
+    app.get('/', function (req, res, next) {
         res.status(200).send('Express start succeed');
     });
-    
-    app.post('/complainSmsSpam', function(req, res, next) {
-        testTRAHandler.complainSmsSpam (req, res, next);
+
+    app.post('/complainSmsSpam', function (req, res, next) {
+        testTRAHandler.complainSmsSpam(req, res, next);
     });
 
     app.use('/user', usersRouter);
     app.use('/clientLayout', clientLayoutsRouter);
-    app.use('/adminLayout',session.isAdminBySession, adminLayoutsRouter);
-    app.use('/adminService',session.isAdminBySession, adminServicesRouter);
+    app.use('/adminLayout', session.isAdminBySession, adminLayoutsRouter);
+    app.use('/adminService', session.isAdminBySession, adminServicesRouter);
     app.use('/service', userServicesRouter);
     app.use('/feedback', userFeedbackRouter);
     app.use('/emailReport', adminEmailReports);
     app.use('/tra_api/service', userTraServicesRouter);
     app.use('/', testTRAServicesRouter);
 
-    app.get('/', function(req, res){
+    app.get('/', function (req, res) {
         res.sendfile('./index.html');
     });
 
-    function notFound(req, res, next){
+    function notFound(req, res, next) {
         next();
     }
 
-    function errorHandler( err, req, res, next ) {
+    function errorHandler(err, req, res, next) {
         var status = err.status || 500;
 
         if (process.env.NODE_ENV === 'production') {
@@ -69,6 +69,6 @@ module.exports = function(app, db){
         }
     }
 
-    app.use( notFound );
-    app.use( errorHandler );
+    app.use(notFound);
+    app.use(errorHandler);
 };

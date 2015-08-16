@@ -19,12 +19,20 @@ module.exports = {
     CRM_ORGANIZATION_SERVICE: 'http://do-crm15/XRMServices/2011/Organization.svc',          //SOAP
     CRM_ORGANIZATION_DATA_SERVICE: 'http://do-crm15/XRMServices/2011/OrganizationData.svc', //OData REST
 
-    EMAIL_COMPLAINSMSSPAM: 'smsspam@ukr.net',// password: smsspam
-    EMAIL_COMPLAIN_SERVICE_PROVIDER: 'complainserviceprovider@rambler.ru',// password: complainserviceprovider
-    EMAIL_COMPLAIN_TRA_SERVICE: 'complaintraservice@rambler.ru',// password: complaintraservice
+
+    //EMAIL_COMPLAIN_SERVICE_PROVIDER: 'complainserviceprovider@rambler.ru',// password: complainserviceprovider
+    //EMAIL_COMPLAIN_TRA_SERVICE: 'complaintraservice@rambler.ru',// password: complaintraservice
+
+    EMAIL_COMPLAIN_SERVICE_PROVIDER: 'allotheremails@ukr.net',// password: allotheremails
+    EMAIL_COMPLAIN_TRA_SERVICE: 'allotheremails@ukr.net',//
+
+    EMAIL_COMPLAIN_ENQUIRIES: 'allotheremails@ukr.net',
+    EMAIL_COMPLAIN_SUGGESTION: 'allotheremails@ukr.net',
+    EMAIL_COMPLAIN_POOR_COVERAGE: 'allotheremails@ukr.net',
 
     EMAIL_COMPLAIN_FROM: 'testTRA@testTRA.ae',
 
+    EMAIL_COMPLAINSMSSPAM: 'smsspam@ukr.net',// password: smsspam
     EMAIL_HELP_SALIM: 'helpsalim@ukr.net'// password: helpsalim
 
 };

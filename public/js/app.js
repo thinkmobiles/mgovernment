@@ -1,4 +1,3 @@
-
 define(['Backbone', 'router','communication', 'custom'], function(Backbone, Router, Communication, Custom){
 
     function init(){

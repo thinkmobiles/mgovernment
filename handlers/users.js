@@ -369,7 +369,7 @@ var User = function(db) {
 
                 if (!model) {
 
-                    return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
+                    return res.status(400).send({error: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
                 var deviceOptions = {
@@ -507,7 +507,9 @@ var User = function(db) {
         };
         var profile = {
             firstName: body.firstName,
-            lastName: body.lastName
+            lastName: body.lastName,
+            gender: body.gender,
+            phone: body.phone
         };
         var account = {
             seviceName: body.seviceName,
@@ -571,15 +573,11 @@ var User = function(db) {
         var userType = CONST.USER_TYPE.CLIENT;
 
         if (!body || !login || !pass || !gender || !phone) {
-            var err = new Error(RESPONSE.NOT_ENOUGH_PARAMS);
-            err.status = 400;
-            return next(err);
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         if (!(gender === 'male' || gender === 'female')) {
-            var err = new Error(RESPONSE.NOT_ENOUGH_PARAMS + ': incorrect gender (male/female)');
-            err.status = 400;
-            return next(err);
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': incorrect gender (male/female)'});
         }
 
         var profile = {
@@ -600,7 +598,7 @@ var User = function(db) {
                     return next(err);
                 }
                 if (model) {
-                    return res.status(400).send(RESPONSE.AUTH.REGISTER_LOGIN_USED);
+                    return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
                 }
 
                 var user = new User(userData);
@@ -610,7 +608,7 @@ var User = function(db) {
                             return res.status(500).send(err);
                         }
 
-                        return res.status(200).send(RESPONSE.AUTH.REGISTER);
+                        return res.status(200).send({success: RESPONSE.AUTH.REGISTER});
                     });
             });
     };
@@ -620,6 +618,8 @@ var User = function(db) {
         var body = req.body;
         var login = body.login;
         var pass = body.pass;
+        var gender = body.gender;
+        var phone = body.phone;
         var userType = body.userType;
         var userId = req.params.id;
         var err;
@@ -632,6 +632,8 @@ var User = function(db) {
         var profile = {
             firstName: body.firstName,
             lastName: body.lastName,
+            gender: body.gender,
+            phone: body.phone,
             createdAt: new Date()
         };
 

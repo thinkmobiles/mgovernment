@@ -1,14 +1,14 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 
-var EmailReport = function(db) {
+var EmailReport = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
 
-     this.getAllEmailReports = function (req, res, next) {
+    this.getAllEmailReports = function (req, res, next) {
 
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
@@ -18,15 +18,24 @@ var EmailReport = function(db) {
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
         var filter = req.query.filter ? req.query.filter.split(',') : [];
-        console.log('sortOrder:',sortOrder);
+        console.log('sortOrder:', sortOrder);
 
         EmailReport
+            //.find({serviceType: {$nin: filter}})//nin - not in array, in - in array
+            //.sort(sortOrder)
+            //.skip(skipCount)
+            //.limit(limitCount)
+            ////.populate({path: 'service', select: '_id serviceProvider serviceName'})
+            //.populate({path: 'user', select: '_id login'})
+            //.allowDiskUse(true)
+            //
             .find({serviceType: {$nin: filter}})//nin - not in array, in - in array
             .sort(sortOrder)
             .skip(skipCount)
             .limit(limitCount)
             //.populate({path: 'service', select: '_id serviceProvider serviceName'})
             .populate({path: 'user', select: '_id login'})
+            .lean()
             .exec(function (err, collection) {
                 if (err) {
                     return next(err);
