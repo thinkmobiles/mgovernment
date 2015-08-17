@@ -19,6 +19,7 @@ var TestTRAHandler = function (db) {
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
     var mailer = require('../helpers/mailer');
+    var validation = require('../helpers/validation');
     var session = new SessionHandler(db);
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
 
@@ -125,9 +126,9 @@ var TestTRAHandler = function (db) {
 
         sendSearchRequest(requestBody, function (err, result) {
             if (err) {
-                return res.status(500).send(err);
+                return res.status(500).send({error: err});
             }
-            return res.status(200).send(result);
+            return res.status(200).send({success: result});
         });
     };
 
@@ -152,7 +153,7 @@ var TestTRAHandler = function (db) {
             if (err) {
                 return res.status(500).send({error: err});
             }
-            return res.status(200).send(result);
+            return res.status(200).send({success: result});
         });
     };
 
@@ -222,10 +223,10 @@ var TestTRAHandler = function (db) {
 
                     if (errMail) {
                         console.error('err on Mail: ', errMail);
-                        return res.status(500).send({err: errMail});
+                        return res.status(500).send({error: errMail});
                     }
 
-                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };
@@ -250,7 +251,6 @@ var TestTRAHandler = function (db) {
                 description: description,
                 userId: userId,
                 referenceNumber: referenceNumber
-
             },
             templateName: templateName,
             from: from,
@@ -285,10 +285,10 @@ var TestTRAHandler = function (db) {
 
                     if (errMail) {
                         console.error('err on Mail: ', errMail);
-                        return res.status(500).send({err: errMail});
+                        return res.status(500).send({error: errMail});
                     }
 
-                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };
@@ -341,10 +341,10 @@ var TestTRAHandler = function (db) {
 
                     if (errMail) {
                         console.error('err on Mail: ', errMail);
-                        return res.status(500).send({err: errMail});
+                        return res.status(500).send({error: errMail});
                     }
 
-                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };
@@ -397,10 +397,10 @@ var TestTRAHandler = function (db) {
 
                     if (errMail) {
                         console.error('err on Mail: ', errMail);
-                        return res.status(500).send({err: errMail});
+                        return res.status(500).send({error: errMail});
                     }
 
-                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };
@@ -453,10 +453,10 @@ var TestTRAHandler = function (db) {
 
                     if (errMail) {
                         console.error('err on Mail: ', errMail);
-                        return res.status(500).send({err: errMail});
+                        return res.status(500).send({error: errMail});
                     }
 
-                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };
@@ -465,9 +465,11 @@ var TestTRAHandler = function (db) {
 
         var serviceType = 'Poor Coverage';
         var signalLevel = req.body.signalLevel;
+        var errors = [];
 
-        if (! /^[12345]$/.test(signalLevel)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+        validation.checkRate15(errors, true, signalLevel, 'Signal level');
+        if (errors.length) {
+            return res.status(400).send({error: errors});
         }
 
         var location = req.body.location;
@@ -520,10 +522,10 @@ var TestTRAHandler = function (db) {
 
                     if (errMail) {
                         console.error('err on Mail: ', errMail);
-                        return res.status(500).send({err: errMail});
+                        return res.status(500).send({error: errMail});
                     }
 
-                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };
@@ -574,10 +576,10 @@ var TestTRAHandler = function (db) {
 
                     if (errMail) {
                         console.error('err on Mail: ', errMail);
-                        return res.status(500).send({err: errMail});
+                        return res.status(500).send({error: errMail});
                     }
 
-                    return res.status(200).send({status: RESPONSE.ON_ACTION.SUCCESS});
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };

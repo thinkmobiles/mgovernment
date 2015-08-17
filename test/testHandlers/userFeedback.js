@@ -104,7 +104,7 @@ describe('Feedback tests - Create, Get ,', function () {
         var loginData = USERS.COMPANY;
         var feedback = {
             serviceName: service.serviceName,
-            rate: 1,
+            rate: 0,
             feedback: 'the worst one'
         };
 
