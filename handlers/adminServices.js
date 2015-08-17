@@ -39,24 +39,24 @@ var Service = function(db) {
         var errors =[];
 
         if (!body) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         validation.checkUrlField(errors, true, body.baseUrl, 'Base Url');
 
         if (errors.length) {
-            return res.status(400).send({err: errors});
+            return res.status(400).send({error: errors});
         }
 
 
         if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
         if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
         if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
@@ -78,7 +78,7 @@ var Service = function(db) {
                     description: 'Update Service by _id'
                 };
                 historyHandler.pushlog(log);
-                res.status(200).send({success: model});
+                res.status(200).send(model);
             });
     };
 
@@ -91,23 +91,23 @@ var Service = function(db) {
 
 
         if (!body) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         validation.checkUrlField(errors, true, body.baseUrl, 'Base Url');
 
         if (errors.length) {
-            return res.status(400).send({err: errors});
+            return res.status(400).send({error: errors});
         }
 
         if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
         if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
         if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
@@ -131,7 +131,7 @@ var Service = function(db) {
                     description: 'Create new Service'
                 };
                 historyHandler.pushlog(log);
-                res.status(200).send({success: model.toJSON()});
+                res.status(200).send(model.toJSON());
             })
     };
 
@@ -141,7 +141,7 @@ var Service = function(db) {
         };
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         findServiceByQuery(searchQuery, function (err, model) {
@@ -160,7 +160,7 @@ var Service = function(db) {
         };
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         Service
@@ -172,7 +172,7 @@ var Service = function(db) {
                     return next(err);
                 }
 
-                return res.status(200).send({result: RESPONSE.ON_ACTION.SUCCESS});
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
 

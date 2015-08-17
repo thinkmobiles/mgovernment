@@ -19,7 +19,7 @@ var Layout = function(db) {
         body.updatedAt = new Date();
 
         if (!body.layoutName || !body.layoutId || !body._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         Layout
@@ -35,7 +35,7 @@ var Layout = function(db) {
                     description: 'Update Layout by _id'
                 };
                 historyHandler.pushlog(log);
-                res.status(200).send({success: layoutModel});
+                res.status(200).send(layoutModel);
             });
     };
 
@@ -44,7 +44,7 @@ var Layout = function(db) {
         body.updatedAt = new Date();
 
         if (!body.layoutName || !body.layoutId || !body._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         var layout = new Layout(body);
@@ -62,7 +62,7 @@ var Layout = function(db) {
                     description: 'Create new Layout'
                 };
                 historyHandler.pushlog(log);
-                res.status(200).send({success: layoutModel});
+                res.status(200).send(layoutModel);
             })
     };
 
@@ -72,7 +72,7 @@ var Layout = function(db) {
         };
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         findLayoutByQuery(searchQuery, function (err, layout) {
@@ -124,7 +124,7 @@ var Layout = function(db) {
         var responseItem = {};
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         findLayoutByQuery(searchQuery, function (err, layout) {
@@ -154,7 +154,7 @@ var Layout = function(db) {
         var data = req.body.items[0];
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         findLayoutByQuery(searchQuery, function (err, layoutModel) {
@@ -194,7 +194,7 @@ var Layout = function(db) {
         //var responseItem = {};
 
         if (!searchQuery._id || !searchQuery['items.id']) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         findLayoutByQuery(searchQuery, function (err, layout) {
@@ -206,7 +206,7 @@ var Layout = function(db) {
                 .update(searchQuery, {$set: {
                     'items.$': data, updatedAt: updatedAt}}, function (err,dataResponse) {
                     if (err) {
-                        return res.status(400).send({ err: err});
+                        return res.status(400).send({ error: err});
                     }
 
                     var log = {

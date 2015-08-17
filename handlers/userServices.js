@@ -44,7 +44,7 @@ var UserService = function(db) {
             userHistoryHandler.pushlog(log);
 
             if (err) {
-                return res.status(400).send({err: 'Service Option not found'});
+                return res.status(400).send({error: 'Service Option not found'});
             }
             return res.status(200).send(model);
         })
@@ -97,7 +97,7 @@ var UserService = function(db) {
         /// Async main process service Handlers
         async.waterfall(tasks, function (err,results){
             if (err) {
-                return res.status(400).send(err);
+                return res.status(400).send({error: err});
             }
 
             var log = {

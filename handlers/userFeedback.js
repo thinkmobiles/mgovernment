@@ -13,7 +13,7 @@ var Feedback = function(db) {
         var feedback;
 
         if (!body || !body.rate || !body.feedback || (!body.serviceId && !body.serviceName)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         var validation = require('../helpers/validation');
@@ -36,7 +36,7 @@ var Feedback = function(db) {
         }
 
         if (! /^[12345]$/.test(rate)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         feedback = new Feedback(feedbackData);

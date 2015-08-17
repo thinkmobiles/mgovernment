@@ -124,7 +124,7 @@ var TestTRACRMHandler = function (db) {
                 return res.status(200).send({data: result});
             });
         } else {
-            return res.status(401).send('Unauthorized IN CRM')
+            return res.status(401).send({error: 'Unauthorized IN CRM'})
             /*processAuth(function (err, auth) {
              if (err) {
              return next(err);
@@ -275,7 +275,7 @@ var TestTRACRMHandler = function (db) {
 
             var authHeader = resGet.headers['www-authenticate'];
             if(!authHeader) {
-                return res.status(500).send({err: 'Not fount www-authenticate in header'})
+                return res.status(500).send({error: 'Not fount www-authenticate in header'})
             }
             var authUri = authHeader.replace('Bearer authorization_uri=', '');
             if (authUri.indexOf(',') > 0) {

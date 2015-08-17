@@ -112,7 +112,7 @@ var TestTRAHandler = function (db) {
         var imei = req.query.imei;
 
         if (!imei) {
-            return res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         var startIndex = req.query.start || 0;
@@ -128,7 +128,7 @@ var TestTRAHandler = function (db) {
             if (err) {
                 return res.status(500).send({error: err});
             }
-            return res.status(200).send({success: result});
+            return res.status(200).send( result);
         });
     };
 
@@ -153,7 +153,7 @@ var TestTRAHandler = function (db) {
             if (err) {
                 return res.status(500).send({error: err});
             }
-            return res.status(200).send({success: result});
+            return res.status(200).send(result);
         });
     };
 
