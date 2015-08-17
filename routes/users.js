@@ -24,7 +24,7 @@ module.exports = function(db){
 
     router.route('/adminSignIn')
         .get(session.isAdminBySession, function(req, res, next){
-                res.status(200).send({session: 'admin'});
+                res.status(200).send({success: 'This is admins session'});
             })
         .post(users.adminSignIn);
 

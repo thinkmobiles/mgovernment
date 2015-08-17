@@ -559,7 +559,7 @@ var User = function(db) {
 
                 historyHandler.pushlog(log);
 
-                res.status(200).send(user);
+                res.status(200).send({succes: user});
             });
     };
 
