@@ -24,11 +24,11 @@ var Attachment = function(db) {
                     return next(err);
                 }
                 if (!model) {
-                    return res.status(404).send({error: 'Not Found Image'})
+                    return res.status(404).send({error: 'Not Found Attachment'})
                 }
                 srcBase64 = model.toJSON().attachment;
                 //res.contentType(model.contentType);
-                res.status(200).send(' <img src ="' + srcBase64 +'"> Hello');
+                res.status(200).send(' <img src ="' + srcBase64 +'">');
             });
     };
 
