@@ -136,7 +136,7 @@ var TestTRAHandler = function (db) {
         var brand = req.query.brand;
 
         if (!brand) {
-            res.status(400).send(RESPONSE.NOT_ENOUGH_PARAMS);
+            res.status(400).send({ error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         var startIndex = req.query.start || 0;
@@ -150,7 +150,7 @@ var TestTRAHandler = function (db) {
 
         sendSearchRequest(requestBody, function (err, result) {
             if (err) {
-                return res.status(500).send(err);
+                return res.status(500).send({error: err});
             }
             return res.status(200).send(result);
         });

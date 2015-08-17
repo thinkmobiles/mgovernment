@@ -53,12 +53,12 @@ module.exports = function(app, db) {
             if (status === 404 || status === 401) {
                 logWriter.log('', err.message + '\n' + err.stack);
             }
-            res.status(status);
+            res.status({error: status});
         } else {
             if (status !== 401) {
                 logWriter.log('', err.message + '\n' + err.stack);
             }
-            res.status(status).send(err.message + '\n' + err.stack);
+            res.status(status).send({error: err.message + '\n' + err.stack});
         }
 
         if (status === 401) {

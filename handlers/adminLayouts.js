@@ -35,7 +35,7 @@ var Layout = function(db) {
                     description: 'Update Layout by _id'
                 };
                 historyHandler.pushlog(log);
-                res.status(202).send(layoutModel);
+                res.status(200).send({success: layoutModel});
             });
     };
 
@@ -62,7 +62,7 @@ var Layout = function(db) {
                     description: 'Create new Layout'
                 };
                 historyHandler.pushlog(log);
-                res.status(201).send(layoutModel);
+                res.status(200).send({success: layoutModel});
             })
     };
 

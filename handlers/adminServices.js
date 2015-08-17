@@ -72,7 +72,7 @@ var Service = function(db) {
                     description: 'Update Service by _id'
                 };
                 historyHandler.pushlog(log);
-                res.status(202).send(model);
+                res.status(200).send({success: model});
             });
     };
 
@@ -121,7 +121,7 @@ var Service = function(db) {
                     description: 'Create new Service'
                 };
                 historyHandler.pushlog(log);
-                res.status(201).send(model.toJSON());
+                res.status(200).send({success: model.toJSON()});
             })
     };
 
