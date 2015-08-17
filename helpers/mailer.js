@@ -18,8 +18,7 @@ module.exports = new function () {
             from: options.from,
             to: options.mailTo,
             subject: options.title,
-            html: _.template(fs.readFileSync(options.templateName, encoding = "utf8"))(options.templateData),
-
+            html: _.template(fs.readFileSync(options.templateName, encoding = "utf8"))(options.templateData)
         };
 
         if (attachment) {

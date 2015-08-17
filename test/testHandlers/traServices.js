@@ -258,69 +258,69 @@ describe('TRA Services tests', function () {
             });
     });
 
-    it('SEND data to Help Salim', function (done) {
-
-        var service = serviceCollection[1];
-        var loginData = USERS.CLIENT;
-        var data = {
-            url: 'blabla.com.ae',
-            description: 'On this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
-        };
-
-        agent
-            .post('/user/signIn')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                agent
-                    .post('/sendHelpSalim')
-                    .send(data)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-                        console.dir(res.body);
-                        done();
-                    });
-            });
-    });
-
-    it('SEND data to Help Salim UnAuthorized', function (done) {
-
-        var service = serviceCollection[1];
-        var loginData = USERS.CLIENT;
-        var data = {
-            url: 'programs.com.ae',
-            description: 'Hi. on this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
-        };
-
-        agent
-            .post('/user/signOut')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                agent
-                    .post('/sendHelpSalim')
-                    .send(data)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-                        console.dir(res.body);
-                        done();
-                    });
-            });
-    });
+    //it('SEND data to Help Salim', function (done) {
+    //
+    //    var service = serviceCollection[1];
+    //    var loginData = USERS.CLIENT;
+    //    var data = {
+    //        url: 'blabla.com.ae',
+    //        description: 'On this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
+    //    };
+    //
+    //    agent
+    //        .post('/user/signIn')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //
+    //            agent
+    //                .post('/sendHelpSalim')
+    //                .send(data)
+    //                .expect(200)
+    //                .end(function (err, res) {
+    //                    if (err) {
+    //                        return done(err)
+    //                    }
+    //                    console.dir(res.body);
+    //                    done();
+    //                });
+    //        });
+    //});
+    //
+    //it('SEND data to Help Salim UnAuthorized', function (done) {
+    //
+    //    var service = serviceCollection[1];
+    //    var loginData = USERS.CLIENT;
+    //    var data = {
+    //        url: 'programs.com.ae',
+    //        description: 'Hi. on this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
+    //    };
+    //
+    //    agent
+    //        .post('/user/signOut')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //
+    //            agent
+    //                .post('/sendHelpSalim')
+    //                .send(data)
+    //                .expect(200)
+    //                .end(function (err, res) {
+    //                    if (err) {
+    //                        return done(err)
+    //                    }
+    //                    console.dir(res.body);
+    //                    done();
+    //                });
+    //        });
+    //});
 
     it('SEND complainServiceProvider', function (done) {
 
