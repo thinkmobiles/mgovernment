@@ -266,6 +266,7 @@ var TestTRAHandler = function (db) {
         var serviceType = 'Service Provider';
         var description = req.body.description;
         var title = req.body.title;
+        var requiredMissed = !title || !description ? true: false;
         var mailTo = TRA.EMAIL_COMPLAIN_SERVICE_PROVIDER;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var serviceProvider = req.body.serviceProvider;
