@@ -35,7 +35,7 @@ define([
                 }
             });
 
-            this.listenTo(this.feedbacksCollection, 'sync reset remove', this.render);
+            this.listenTo(this.feedbacksCollection, 'reset remove', this.render);
             this.render();
         },
 
