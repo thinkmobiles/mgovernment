@@ -222,13 +222,56 @@ var TestTRAHandler = function (db) {
 
         var serviceType = 'SMS Spam';
         var phoneSpam = req.body.phone;
-        var phoneProvider = req.body.phoneProvider;
-        var providerType = req.body.providerType;
-        var description = req.body.description + ' / phoneProvider: ' + phoneProvider + ' / providerType: ' + providerType + ' /';
+        //var phoneProvider = req.body.phoneProvider;
+        //var providerType = req.body.providerType;
+        var description = req.body.description;
         var title = 'SMS Spam From ' + phoneSpam;
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainSmsSpam.html';
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+
+        var mailOptions = {
+            templateData: {
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                userId: userId
+            },
+            templateName: templateName,
+            from: from,
+            mailTo: mailTo,
+            title: title
+        };
+
+        mailer.sendReport(mailOptions, function (errMail, data) {
+
+            //TODO remove console.logs
+
+            var emailReport = new EmailReport({
+                serviceType: serviceType,
+                title: title,
+                description: description,
+                mailTo: mailTo,
+                user: userId,
+                response: data || errMail
+            });
+
+            emailReportAndAttachmentSave(res, emailReport, errMail);
+        });
+    };
+
+    this.complainSmsBlock = function (req, res, next) {
+
+        var serviceType = 'SMS Block';
+        var phoneSpam = req.body.phone;
+        var phoneProvider = req.body.phoneProvider;
+        var providerType = req.body.providerType;
+        var description = req.body.description + ' / phoneProvider: ' + phoneProvider + ' / providerType: ' + providerType + ' /';
+        var title = 'Block SMS Spam From ' + phoneSpam;
+        var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var templateName = 'public/templates/mail/complainSmsBlock.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
         var mailOptions = {

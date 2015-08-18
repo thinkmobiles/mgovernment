@@ -70,10 +70,10 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         var loginData = USERS.CLIENT;
         var data = {
-            phone: '7893',
-            phoneProvider: '2020',
-            providerType: 'elesat',
-            description: 'I receive 10 sms from number 505050440'
+            phone: '505050440',
+            //phoneProvider: '2020',
+            //providerType: 'elesat',
+            description: 'I receive 10 sms from this number 505050440'
         };
 
         agent
@@ -104,8 +104,8 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
         var loginData = USERS.CLIENT;
         var data = {
             phone: '0995248763',
-            phoneProvider: '3030',
-            providerType: 'du',
+            //phoneProvider: '3030',
+            //providerType: 'du',
             description: 'I receive 1000 sms from phone number 0995248763'
         };
 
@@ -131,6 +131,73 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
                     });
             });
     });
+
+    it('SEND data to ComplainSmsBlock', function (done) {
+
+        var loginData = USERS.CLIENT;
+        var data = {
+            phone: '505050440',
+            phoneProvider: '2020',
+            providerType: 'elesat',
+            description: 'I receive 10 sms from  number 505050440. Please block him'
+        };
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/complainSmsBlock')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
+    it('SEND data to ComplainSmsBlock UnAuthorized', function (done) {
+
+        var loginData = USERS.CLIENT;
+        var data = {
+            phone: '0995248763',
+            phoneProvider: '3030',
+            providerType: 'du',
+            description: 'I receive 1000 sms from phone number 0995248763. Please stop this'
+        };
+
+        agent
+            .post('/user/signOut')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/complainSmsBlock')
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
 
     it('SEND data to Help Salim', function (done) {
 
