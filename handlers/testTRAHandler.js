@@ -309,7 +309,11 @@ var TestTRAHandler = function (db) {
         var serviceType = 'Service Provider';
         var description = req.body.description;
         var title = req.body.title;
-        var requiredMissed = !title || !description ? true: false;
+
+        if (!title || !description){
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
         var mailTo = TRA.EMAIL_COMPLAIN_SERVICE_PROVIDER;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var serviceProvider = req.body.serviceProvider;
@@ -359,6 +363,11 @@ var TestTRAHandler = function (db) {
         var serviceType = 'TRA Service';
         var description = req.body.description;
         var title = req.body.title;
+
+        if (!title || !description){
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
         var mailTo = TRA.EMAIL_COMPLAIN_TRA_SERVICE;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainTRAService.html';
@@ -401,6 +410,11 @@ var TestTRAHandler = function (db) {
         var serviceType = 'Enquiries';
         var description = req.body.description;
         var title = req.body.title;
+
+        if (!title || !description){
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
         var mailTo = TRA.EMAIL_COMPLAIN_ENQUIRIES;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainEnquiries.html';
@@ -443,6 +457,11 @@ var TestTRAHandler = function (db) {
         var serviceType = 'Suggestion';
         var description = req.body.description;
         var title = req.body.title;
+
+        if (!title || !description){
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
         var mailTo = TRA.EMAIL_COMPLAIN_ENQUIRIES;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/suggestion.html';
@@ -492,7 +511,6 @@ var TestTRAHandler = function (db) {
         }
 
         var location = req.body.location;
-
         var address = req.body.address;
         var title = (location && location.latitude)
             ? ('Location.latitude: ' + location.latitude + ', location.longitude: ' + location.longitude + ' Signal level: ' + signalLevel)

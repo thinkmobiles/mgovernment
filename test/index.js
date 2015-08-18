@@ -12,7 +12,7 @@ var app = require('../app');
 require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/traServices CRM');
 //require('./testHandlers/traServices WHOIS_IMEI_BRAND');
-//require('./testHandlers/traServices Complains ServiceProvider_TRA Services');
-//require('./testHandlers/traServices Complains Enquiries_Suggestion ');
+require('./testHandlers/traServices Complains ServiceProvider_TRA Services');
+require('./testHandlers/traServices Complains Enquiries_Suggestion ');
 require('./testHandlers/traServices Complains SMSSpamBlock_HelpSalim_PoorCoverage');
 require('./testHandlers/userFeedback');
