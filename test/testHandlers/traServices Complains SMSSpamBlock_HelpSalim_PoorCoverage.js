@@ -326,28 +326,4 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
             });
     });
 
-    it('SEND Poor Coverage UnAuthorized', function (done) {
-
-        var loginData = USERS.CLIENT;
-        var data = {
-            address: 'Uzgorod siti, Shandora Petefi pl',
-            signalLevel: 4,
-            location: {
-                latitude: '20.9821547',
-                longitude: '18.402868'
-            }
-        };
-        agent
-            .post('/sendPoorCoverage')
-            .send(data)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.dir(res.body);
-                done();
-            });
-    });
-
 });
