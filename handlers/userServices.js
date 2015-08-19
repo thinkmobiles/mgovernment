@@ -102,7 +102,8 @@ var UserService = function(db) {
                     result.push(collection[i].serviceName);
                 }
 
-                return res.status(200).send(result);
+                //return res.status(200).send(result);
+                return res.status(200).send(["complain Poor Coverage", "complain about TRA Service", "complain about Service Provider", "complain Enquiries", "complain Suggestion", "Rating service", "Help Salim", "SMS Spam Block", "SMS Spam Report", "Search Device By BrandName", "Search Device By Imei", "Check Domain Availability", "Get Domain Data"]);
             });
     };
 
