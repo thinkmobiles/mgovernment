@@ -18,6 +18,7 @@ describe('User register/ logIn / logOut', function () {
     var serviceCollection;
 
     before(function (done) {
+        this.timeout(15000);
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
