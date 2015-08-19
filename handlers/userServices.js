@@ -75,6 +75,37 @@ var UserService = function(db) {
             });
     };
 
+    this.getServiceNames = function (req, res, next) {
+
+        Service
+            .find()
+            .select('-_id serviceName')
+            .exec(function (err, collection) {
+                if (err) {
+                    return next(err);
+                }
+
+                var log = {
+                    userId: req.session.uId || 'Unauthorized',
+                    action: CONST.ACTION.GET,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: '',
+                    req: {params: req.params, body: req.params},
+                    res: collection,
+                    description: 'getServices'
+                };
+                var result = [];
+
+                userHistoryHandler.pushlog(log);
+
+                for (var i = collection.length-1; i >= 0; i--){
+                    result.push(collection[i].serviceName);
+                }
+
+                return res.status(200).send(result);
+            });
+    };
+
     this.sendServiceRequest = function (req, res, next) {
 
         var userId = req.session.uId;
@@ -129,7 +160,7 @@ var UserService = function(db) {
                         console.log('serviceOptions.params.needUserAuth= ',serviceOptions.params.needUserAuth)
 
                     }
-                        return callback(null, serviceOptions.params.needUserAuth);
+                    return callback(null, serviceOptions.params.needUserAuth);
                 })
             };
         }
