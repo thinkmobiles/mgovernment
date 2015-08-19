@@ -339,7 +339,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     });
 
-    it('Get  Favorites Services', function (done) {
+    it('Get Favorites Services', function (done) {
 
         agent
             .get('/user/favorites/')
@@ -357,6 +357,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     it('Delete service from Favorites', function (done) {
 
         var serviceNames = [];
+
         serviceNames.push(serviceCollection[0].serviceName);
 
         agent
