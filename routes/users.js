@@ -41,8 +41,7 @@ module.exports = function(db){
         .post(session.authenticatedUser, users.createServicesAccount)
         .put(session.authenticatedUser, users.updateServicesAccount);
 
-    router.route('/favorites/:serviceId')
-        //.get(session.authenticatedUser, users.getServiceFromFavorites)
+    router.route('/favorites/')
         .post(session.authenticatedUser, users.addServiceToFavorites)
         //.put(session.authenticatedUser, users.updateServicesAccount)
         .delete(session.authenticatedUser, users.deleteServiceToFavorites);

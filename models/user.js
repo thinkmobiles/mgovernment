@@ -31,9 +31,7 @@ module.exports = function (db) {
             cookieUpdatedAt: Date,
             accountUpdatedAt: Date
         }],
-        favorites:[
-            {type: ObjectId, ref: CONST.MODELS.SERVICE }
-        ],
+        favorites:[],
         avatar: {type: ObjectId, ref: CONST.MODELS.IMAGE + 's', default: null}
     }, {
         collection: CONST.MODELS.USER + 's'

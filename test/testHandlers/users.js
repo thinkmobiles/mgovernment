@@ -31,9 +31,19 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             //preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
             //preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_GET),
             //preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_RATING_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_GET_DOMAIN_DATA_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CHECK_DOMAIN_AVAILABILITY_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_SEARCH_DEVCIE_BY_IMEI_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_SEARCH_DEVICE_BY_BRANDNAME_TMA_TRA_SERVICES),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_SMS_SPAM_TMA_TRA_SERVICES),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_SMS_BLOCK_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_HELP_SALIM_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_RATING_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_COMPLAIN_SUGGESTION_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_COMPLAIN_ENQUIRIES_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_COMPLAIN_SERVICE_PROVIDER_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_COMPLAIN_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_COMPLAIN_POOR_COVERAGE_TRA_SERVICES),
 
             preparingDb.toFillUsers(1)
         ], function (err,results)   {
@@ -285,14 +295,18 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     });
 
-    it('ADD service to Favorites', function (done) {
+    it('ADD services to Favorites', function (done) {
 
-        var loginData = USERS.CLIENT;
-        var serviceId = serviceCollection[0]._id;
+        var serviceNames = [];
+
+        serviceNames.push(serviceCollection[0].serviceName);
+        serviceNames.push(serviceCollection[1].serviceName);
+        serviceNames.push(serviceCollection[2].serviceName);
+        serviceNames.push(serviceCollection[5].serviceName);
 
         agent
-            .post('/user/favorites/'+ serviceId)
-            .send(loginData)
+            .post('/user/favorites/')
+            .send({serviceNames: serviceNames} )
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -304,42 +318,28 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
 
     });
 
-    it('Delete service from Favorites', function (done) {
+    it('ADD Duplicate services to Favorites', function (done) {
 
-
-        var loginData = USERS.CLIENT;
-        var serviceId = serviceCollection[1]._id;
+        var serviceNames = [];
+        serviceNames.push(serviceCollection[0].serviceName);
+        serviceNames.push(serviceCollection[5].serviceName);
+        serviceNames.push(serviceCollection[10].serviceName);
 
         agent
-            .post('/user/favorites/'+ serviceId)
-            .send(loginData)
+            .post('/user/favorites/')
+            .send({serviceNames: serviceNames} )
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
 
-
-                var loginData = USERS.CLIENT;
-                var serviceId = serviceCollection[1]._id;
-
-                agent
-                    .delete('/user/favorites/'+ serviceId)
-                    .send(loginData)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-
-                        done();
-                    });
+                done();
             });
+
     });
 
     it('Get  Favorites Services', function (done) {
-
-        var loginData = USERS.CLIENT;
 
         agent
             .get('/user/favorites/')
@@ -352,7 +352,40 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 console.dir(res.body);
                 done();
             });
+    });
 
+    it('Delete service from Favorites', function (done) {
+
+        var serviceNames = [];
+        serviceNames.push(serviceCollection[0].serviceName);
+
+        agent
+            .delete('/user/favorites/')
+            .send({serviceNames: serviceNames})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                done();
+            });
+
+    });
+
+    it('Get  Favorites Services', function (done) {
+
+         agent
+            .get('/user/favorites/')
+            .send()
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.dir(res.body);
+                done();
+            });
     });
 
     //it('POST duplicate Service account (client123, pass1234)', function (done) {
@@ -464,74 +497,74 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     //        });
     //});
 
-/*
-    it('POST upload image', function (done) {
+    /*
+     it('POST upload image', function (done) {
 
-        var imageBase64 = IMAGES.avatar;
-        var postData = {
-            imageBase64: imageBase64
-        };
+     var imageBase64 = IMAGES.avatar;
+     var postData = {
+     imageBase64: imageBase64
+     };
 
-        agent
-            .post('/user/account/image/')
-            .send(postData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
+     agent
+     .post('/user/account/image/')
+     .send(postData)
+     .expect(200)
+     .end(function (err, res) {
+     if (err) {
+     return done(err)
+     }
 
-                expect(res.body).to.have.property('imageId');
-                tempImageId = res.body.imageId;
+     expect(res.body).to.have.property('imageId');
+     tempImageId = res.body.imageId;
 
-                done();
-            });
-    });
+     done();
+     });
+     });
 
-    var tempImageId;
+     var tempImageId;
 
-    it('GET image by url', function (done) {
+     it('GET image by url', function (done) {
 
-        agent
-            .get('/user/account/image/' + tempImageId)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
+     agent
+     .get('/user/account/image/' + tempImageId)
+     .expect(200)
+     .end(function (err, res) {
+     if (err) {
+     return done(err)
+     }
 
-                done();
-            });
-    });
+     done();
+     });
+     });
 
-    it('GET image by url (fake imageId)', function (done) {
+     it('GET image by url (fake imageId)', function (done) {
 
-        agent
-            .get('/user/account/image/551137c2f9e1fac808a5f572')
-            .expect(404)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
+     agent
+     .get('/user/account/image/551137c2f9e1fac808a5f572')
+     .expect(404)
+     .end(function (err, res) {
+     if (err) {
+     return done(err)
+     }
 
-                done();
-            });
-    });
+     done();
+     });
+     });
 
-    it('REMOVE image by url', function (done) {
+     it('REMOVE image by url', function (done) {
 
-        agent
-            .delete('/user/account/image/' + tempImageId)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
+     agent
+     .delete('/user/account/image/' + tempImageId)
+     .expect(200)
+     .end(function (err, res) {
+     if (err) {
+     return done(err)
+     }
 
-                done();
-            });
-    });
-*/
+     done();
+     });
+     });
+     */
 
     function saveUser(data) {
         return function (callback) {
