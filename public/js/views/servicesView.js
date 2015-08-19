@@ -31,7 +31,7 @@ define([
                 data         : {}
             });
 
-            this.listenTo(this.servicesCollection, 'sync reset remove', this.render);
+            this.listenTo(this.servicesCollection, 'reset remove', this.render);
             this.render();
         },
 

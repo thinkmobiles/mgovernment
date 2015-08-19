@@ -185,7 +185,7 @@ var User = function(db) {
             }
 
             if (found) {
-                return res.status(400).send(RESPONSE.ON_ACTION.NOT_FOUND);
+                return res.status(400).send(RESPONSE.ON_ACTION.BAD_REQUEST);
             }
 
             User

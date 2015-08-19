@@ -27,10 +27,14 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
             preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
             preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_GET),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
+            //preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
+            //preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
+            //preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_GET),
+            //preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_RATING_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_SMS_SPAM_TMA_TRA_SERVICES),
+            preparingDb.createServiceByTemplate(SERVICES.SERVICE_SMS_BLOCK_TMA_TRA_SERVICES),
+
             preparingDb.toFillUsers(1)
         ], function (err,results)   {
             if (err) {
@@ -71,37 +75,37 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
             });
     });
 
-    it('Login with GOOD credentials (client123, pass1234)', function (done) {
-
-        var loginData = USERS.CLIENT_GOOD_USER_TYPE;
-
-        agent
-            .post('/user/signIn')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                done();
-            });
-    });
-
-    it('Login with BAD credentials - wrong pass (client123, 123456)', function (done) {
-
-        var loginData = USERS.CLIENT_BAD_PASSWORD;
-
-        agent
-            .post('/user/signIn')
-            .send(loginData)
-            .expect(400)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                done();
-            });
-    });
+    //it('Login with GOOD credentials (client123, pass1234)', function (done) {
+    //
+    //    var loginData = USERS.CLIENT_GOOD_USER_TYPE;
+    //
+    //    agent
+    //        .post('/user/signIn')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            done();
+    //        });
+    //});
+    //
+    //it('Login with BAD credentials - wrong pass (client123, 123456)', function (done) {
+    //
+    //    var loginData = USERS.CLIENT_BAD_PASSWORD;
+    //
+    //    agent
+    //        .post('/user/signIn')
+    //        .send(loginData)
+    //        .expect(400)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            done();
+    //        });
+    //});
     //
     //it('SignOut if Logined (client123, pass1234)', function (done) {
     //
@@ -383,82 +387,82 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     //        });
     //});
     //
-    it('Admin Create 1 Users', function (done) {
-
-        var loginData = USERS.ADMIN_DEFAULT;
-
-        agent
-            .post('/user/signIn')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                var layoutsCount = 0;
-                var createUsersArray = [];
-
-                for (var i = 1; i > 0; i--) {
-                    createUsersArray.push(saveUser({
-                        login: 'client123_' + i,
-                        pass: 'pass1234_' + i,
-                        userType: 'client'
-                    }));
-                }
-
-                async.parallel(createUsersArray, function (err, results)   {
-                    if (err) {
-                        return done(err)
-                    }
-                    console.log('ASYNC layoutsCount: ', layoutsCount);
-                    done();
-                });
-            });
-    });
-
-    it('Admin GET Count of Users', function (done) {
-
-        agent
-            .get('/user/getCount')
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                console.log('Count of  Users was get:');
-                console.dir(res.body);
-                done();
-            });
-    });
-
-    it('Admin Delete User by _id', function (done) {
-
-        var data = USERS.CLIENT_GOOD_USER_TYPE_FOR_DELETING;
-
-        agent
-            .post('/user/')
-            .send(data)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                userId = res.body._id;
-                console.log('id fo deleting: ',userId);
-
-                agent
-                    .delete('/user/' + userId)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-                        console.dir(res.body);
-                        done();
-                    });
-            });
-    });
+    //it('Admin Create 1 Users', function (done) {
+    //
+    //    var loginData = USERS.ADMIN_DEFAULT;
+    //
+    //    agent
+    //        .post('/user/signIn')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //
+    //            var layoutsCount = 0;
+    //            var createUsersArray = [];
+    //
+    //            for (var i = 1; i > 0; i--) {
+    //                createUsersArray.push(saveUser({
+    //                    login: 'client123_' + i,
+    //                    pass: 'pass1234_' + i,
+    //                    userType: 'client'
+    //                }));
+    //            }
+    //
+    //            async.parallel(createUsersArray, function (err, results)   {
+    //                if (err) {
+    //                    return done(err)
+    //                }
+    //                console.log('ASYNC layoutsCount: ', layoutsCount);
+    //                done();
+    //            });
+    //        });
+    //});
+    //
+    //it('Admin GET Count of Users', function (done) {
+    //
+    //    agent
+    //        .get('/user/getCount')
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            console.log('Count of  Users was get:');
+    //            console.dir(res.body);
+    //            done();
+    //        });
+    //});
+    //
+    //it('Admin Delete User by _id', function (done) {
+    //
+    //    var data = USERS.CLIENT_GOOD_USER_TYPE_FOR_DELETING;
+    //
+    //    agent
+    //        .post('/user/')
+    //        .send(data)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            userId = res.body._id;
+    //            console.log('id fo deleting: ',userId);
+    //
+    //            agent
+    //                .delete('/user/' + userId)
+    //                .expect(200)
+    //                .end(function (err, res) {
+    //                    if (err) {
+    //                        return done(err)
+    //                    }
+    //                    console.dir(res.body);
+    //                    done();
+    //                });
+    //        });
+    //});
 
 /*
     it('POST upload image', function (done) {

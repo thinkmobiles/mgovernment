@@ -71,8 +71,7 @@ module.exports = new function () {
                     callback(err, null);
                 }
             } else {
-                console.log('Email sent: ');
-                console.log(response);
+                console.log('Email sent:' ,response);
                 if (callback && typeof callback === 'function') {
                     callback(null, response);
                 }

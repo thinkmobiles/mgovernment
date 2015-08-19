@@ -27,6 +27,108 @@ module.exports = {
         }
     },
 
+    SERVICE_RATING_TMA_TRA_SERVICES: {
+        serviceProvider: 'TmaTraServices',
+        serviceName: 'Rating service',
+        serviceType: 'feedback',
+        baseUrl: 'http://134.249.164.53:7791/',
+        profile: {
+            description : 'Feedback about Servcie'},
+
+        forUserType: [CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.ADMIN, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        inputItems: [
+            {
+                order: 1,
+                name: 'serviceName',
+                inputType: 'string'
+            },
+            {
+                order: 2,
+                name: 'rate',
+                inputType: 'string'
+            },
+            {
+                order: 3,
+                name: 'feedback',
+                inputType: 'string'
+            }
+        ],
+        method: 'POST',
+        url: '/feedback',
+        params: {
+            needUserAuth: false,
+            body: ['serviceName','rate', 'feedback']
+        }
+    },
+
+    SERVICE_SMS_SPAM_TMA_TRA_SERVICES: {
+        serviceProvider: 'TmaTraServices',
+        serviceName: 'SMS Spam Report',
+        serviceType: 'complain',
+        baseUrl: 'http://134.249.164.53:7791/',
+        profile: {
+            description : 'Feedback about Servcie'},
+
+        forUserType: [CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.ADMIN, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        inputItems: [
+            {
+                order: 1,
+                name: 'phone',
+                inputType: 'string'
+            },
+            {
+                order: 2,
+                name: 'description',
+                inputType: 'string'
+            }
+        ],
+        method: 'POST',
+        url: 'complainSmsSpam',
+        params: {
+            needUserAuth: false,
+            body: ['phone','description']
+        }
+    },
+
+    SERVICE_SMS_BLOCK_TMA_TRA_SERVICES: {
+        serviceProvider: 'TmaTraServices',
+        serviceName: 'SMS Spam Block',
+        serviceType: 'complain',
+        baseUrl: 'http://134.249.164.53:7791/',
+        profile: {
+            description : 'Feedback about Servcie'},
+
+        forUserType: [CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.ADMIN, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT],
+        inputItems: [
+            {
+                order: 1,
+                name: 'phone',
+                inputType: 'string'
+            },
+            {
+                order: 2,
+                name: 'phoneProvider',
+                inputType: 'string'
+            },
+            {
+                order: 3,
+                name: 'providerType',
+                inputType: 'string'
+            },
+            {
+                order: 4,
+                name: 'description',
+                inputType: 'string'
+            }
+        ],
+        method: 'POST',
+        url: 'complainSmsBlock',
+        params: {
+            needUserAuth: false,
+            body: ['phone', 'phoneProvider', 'providerType', 'description']
+        }
+    },
+
     SERVICE_TMA_TRA_CHECK_MOBILE_VERIFICATION: {
         serviceProvider: 'TmaTraServices',
         serviceName: 'Check Mobile Verification',
@@ -235,6 +337,7 @@ module.exports = {
             onClick: '/sdadsadsa sadasdas'
         }
     },
+
     SERVICE_OIL: {
         serviceProvider: 'Oil retail',
         serviceName: 'OIL INVESTMENT',
