@@ -24,8 +24,9 @@ module.exports = function(db) {
 
 
     router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
-    //router.get('/crm/case', testTRACRMHandler.getCases);
-    router.get('/crm/auth', testTRACRMHandler.loginHttp);
+    router.get('/crm/case', testTRACRMHandler.getCases);
+    router.get('/crm/auth', testTRACRMHandler.authLogin);
+    router.get('/crm/auth2', testTRACRMHandler.loginHttp);
     router.get('/crm/auth/callback', testTRACRMHandler.authCallback);
     router.get('/crm/contacts', testTRACRMHandler.getContacts);
 

@@ -22,7 +22,7 @@ var CASE_FIELDS = [
     'Priority'
 ];
 
-var CRM_HOST = 'do-crm15'; //http://192.168.91.232/
+var CRM_HOST = 'http://192.168.91.232/'; //'do-crm15';
 var CRM_PORT = 80;
 var CRM_USER = '';
 var CRM_PASS = '';
@@ -34,83 +34,86 @@ var REDIRECT_URI = process.env.HOST + '/crm/auth/callback';
 var TestTRACRMHandler = function (db) {
     'use strict';
 
-    /*var dynamics = new dynamicsCRM({
-     domain: TRA.CRM_URL,
-     organizationid: TRA.CRM_ORGANIZATION_UNIQUE_NAME, //TODO GET IT
-     timeout: 2 * 60 * 1000  // Timeout of 5 minutes
-     });
+    var dynamics;
 
-     this.create = function (req, res, next) {
+    this.create = function (req, res, next) {
 
-     var body = req.body;
-     var crmAttributes = prepareCRMAttributes(body);
-     var options = {};
-     options.Attributes = crmAttributes; //[{key:'lastname', value :'Doe'}, {key:'firstname', value :'John'}];
-     options.LogicalName = ENTITY.CASE;
+        var body = req.body;
+        var crmAttributes = prepareCRMAttributes(body);
+        var options = {};
+        options.Attributes = crmAttributes; //[{key:'lastname', value :'Doe'}, {key:'firstname', value :'John'}];
+        options.LogicalName = ENTITY.CASE;
 
-     dynamics.Create(options, function (err, result) {
-     if (err) {
-     return next(err);
-     }
-     res.status(200).send(result);
-     });
-     };
+        dynamics.Create(options, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+            res.status(200).send(result);
+        });
+    };
 
-     function prepareCRMAttributes(bodyObject) {
-     var crmAttributes = [];
+    function prepareCRMAttributes(bodyObject) {
+        var crmAttributes = [];
 
-     for (var key in bodyObject) {
-     if (CASE_FIELDS.indexOf(key) > -1) {
-     crmAttributes.push({
-     key: key,
-     value: bodyObject[key]
-     });
-     }
-     }
-     return crmAttributes;
-     }
+        for (var key in bodyObject) {
+            if (CASE_FIELDS.indexOf(key) > -1) {
+                crmAttributes.push({
+                    key: key,
+                    value: bodyObject[key]
+                });
+            }
+        }
+        return crmAttributes;
+    }
 
-     function auth(callback) {
-     dynamics.Authenticate({username: TRA.CRM_USER, password: TRA.CRM_PASS}, function (err, result) {
-     if (err) {
-     console.error(err);
-     return callback(err);
-     }
-     console.log(result.auth);
-     return callback(null, result.auth);
-     });
-     }
+    function auth(callback) {
 
-     this.getCases = function (req, res, next) {
-     var options = {};
-     //options.id = '00000000-dddd-eeee-iiii-111111111111'; //Entity id - id for Case
-     options.EntityName = 'Case';
+        dynamics = new dynamicsCRM({
+            domain: '192.168.91.232',//CRM_HOST,
+            organizationid: TRA.CRM_ORGANIZATION_UNIQUE_NAME,
+            timeout: 2 * 60 * 1000
+        });
 
-     auth(function(err, result){
-     if (err) {
-     return next(err);
-     }
-     dynamics.Retrieve(options, function (err, result) {
-     if (err) {
-     return next(err);
-     }
-     res.status(200).send(result);
-     });
-     });
-     };
+        dynamics.Authenticate({username: TRA.CRM_USER, password: TRA.CRM_PASS}, function (err, result) {
+            if (err) {
+                console.error(err);
+                return callback(err);
+            }
+            console.log(result.auth);
+            return callback(null, result.auth);
+        });
+    }
 
-     this.execute = function (req, res, next) {
-     var options = {};
-     options.RequestName = 'account'; //method name
-     options.Parameters = [{}]; //Array of Key-Value strings with the method's parameters names and values
+    this.getCases = function (req, res, next) {
+        var options = {};
+        //options.id = '00000000-dddd-eeee-iiii-111111111111'; //Entity id - id for Case
+        options.EntityName = 'Case';
 
-     dynamics.Execute(options, function (err, result) {
-     if (err) {
-     return next(err);
-     }
-     res.status(200).send(result);
-     });
-     };*/
+        auth(function (err, result) {
+            if (err) {
+                return next(err);
+            }
+            dynamics.Retrieve(options, function (err, result) {
+                if (err) {
+                    return next(err);
+                }
+                res.status(200).send(result);
+            });
+        });
+    };
+
+    this.execute = function (req, res, next) {
+        var options = {};
+        options.RequestName = 'account'; //method name
+        options.Parameters = [{}]; //Array of Key-Value strings with the method's parameters names and values
+
+        dynamics.Execute(options, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+            res.status(200).send(result);
+        });
+    };
 
     this.getContacts = function (req, res, next) {
 
@@ -177,9 +180,9 @@ var TestTRACRMHandler = function (db) {
         };
 
         var options = {
-            host: CRM_HOST,
-            port: CRM_PORT,
-            path: '/XRMServices/2011/OrganizationData.svc/web?SdkClientVersion=6.1.0.533',
+            host: OAUTH_RESOURCE, //CRM_HOST,
+            port: 80, //CRM_PORT,
+            path: '/XRMServices/2011/Organization.svc',
             method: 'GET',
             rejectUnauthorized: false,
             headers: headers
@@ -267,14 +270,14 @@ var TestTRACRMHandler = function (db) {
             }
         };
 
-        request('http://do-crm15/TRA/XRMServices/2011/OrganizationData.svc', reqOptions, function (err, resGet, body) {
+        request(CRM_HOST + '/XRMServices/2011/OrganizationData.svc', reqOptions, function (err, resGet, body) {
 
             if (!err && resGet.statusCode == 200) {
                 return res.status(200).send(resGet.body);
             }
 
             var authHeader = resGet.headers['www-authenticate'];
-            if(!authHeader) {
+            if (!authHeader) {
                 return res.status(500).send({err: 'Not fount www-authenticate in header'})
             }
             var authUri = authHeader.replace('Bearer authorization_uri=', '');
