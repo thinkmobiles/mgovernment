@@ -11,7 +11,7 @@ var schedule = function (db) {
     var currentDate = new Date();
     var oneYearOldDate = new Date();
     //rule.dayOfWeek = [ new schedule.Range(0, 6)];
-    //console.log('rule2: ',rule);
+    //console.log('rule: ',rule);
     rule.second = 1;
 
     oneYearOldDate.setYear(currentDate.getFullYear() - 1);
@@ -57,8 +57,6 @@ var schedule = function (db) {
                 console.log('remove from EmailReports: ',collection);
             });
     }
-
-
 };
 
 module.exports = schedule;
