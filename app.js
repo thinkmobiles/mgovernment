@@ -11,7 +11,7 @@ var mainDb;
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')( session );
-var methodOverride = require('method-override')
+var methodOverride = require('method-override');
 
 app.use(logger('dev'));
 app.use(methodOverride('X-HTTP-Method-Override'));
@@ -45,6 +45,10 @@ mainDb = mongoose.createConnection( process.env.DB_HOST, process.env.DB_NAME, pr
 
 mainDb.on( 'error', console.error.bind( console, 'connection error:' ) );
 mainDb.once( 'open', function callback() {
+
+    var Schedule = require('./helpers/schedule');
+    var schedule = new Schedule(mainDb);
+
     console.log( "Connection to " + process.env.DB_NAME + " is success" );
 
     app.use(session({
@@ -70,6 +74,8 @@ mainDb.once( 'open', function callback() {
 });
 
 var logWriter = require('./helpers/logWriter')();
+
+
 
 process.on('uncaughtException', function(err) {
     console.log(err);
