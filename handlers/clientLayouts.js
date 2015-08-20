@@ -13,7 +13,7 @@ var Layout = function(db) {
         };
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         findLayoutByQuery(searchQuery, function (err, layout) {

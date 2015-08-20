@@ -12,6 +12,10 @@ module.exports = function(db){
     router.route('/')
         .get(servicesHandler.getServices);
 
+    router.route('/serviceNames')
+        .get(servicesHandler.getServiceNames);
+
+
     router.route('/:serviceId')
         .get(servicesHandler.getServiceOptions)
         .post(accessHandler.isAccessAvailable, servicesHandler.sendServiceRequest);

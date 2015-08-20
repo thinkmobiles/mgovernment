@@ -1,5 +1,6 @@
 var SessionHandler = require('../handlers/sessions');
 var TestTRAHandler = require('../handlers/testTRAHandler');
+var AttachmentHandler = require('../handlers/attachment');
 
 module.exports = function(app, db) {
     'use strict';
@@ -19,6 +20,7 @@ module.exports = function(app, db) {
 
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
+    var attachmentHandler = new AttachmentHandler(db);
 
     app.get('/', function (req, res, next) {
         res.status(200).send('Express start succeed');
@@ -36,11 +38,18 @@ module.exports = function(app, db) {
     app.use('/feedback', userFeedbackRouter);
     app.use('/emailReport', adminEmailReports);
     app.use('/tra_api/service', userTraServicesRouter);
-    app.use('/', testTRAServicesRouter);
+    app.get('/attachment/:attachmentId', session.isAdminBySession, attachmentHandler.getAttachmentById);
 
+    app.use('/', testTRAServicesRouter);
     app.get('/', function (req, res) {
         res.sendfile('./index.html');
     });
+
+    //app.get('/attachment/:attachmentId', session.isAdminBySession, function (req, res) {
+    //    res.send('test <img style="width:10px; height:10px; border: 1px solid black"> Hello');
+    //});
+
+
 
     function notFound(req, res, next) {
         next();

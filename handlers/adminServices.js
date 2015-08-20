@@ -10,6 +10,7 @@ var Service = function(db) {
     var Service = db.model(CONST.MODELS.SERVICE);
     var Layout = db.model(CONST.MODELS.LAYOUT);
     var historyHandler = new HistoryHandler(db);
+    var validation = require('../helpers/validation');
 
     function checkRecivedParamsFieldNamesWithItemsNames(recivedArray,arrayTocompareName){
         var foundEqualFieldName = false;
@@ -35,22 +36,27 @@ var Service = function(db) {
         };
 
         var body = req.body;
-        var myRegExp =/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
+        var errors =[];
 
         if (!body) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-        if (!myRegExp.test(body.baseUrl)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+
+        validation.checkUrlField(errors, true, body.baseUrl, 'Base Url');
+
+        if (errors.length) {
+            return res.status(400).send({error: errors});
         }
+
+
         if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
         if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
         if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
@@ -72,7 +78,7 @@ var Service = function(db) {
                     description: 'Update Service by _id'
                 };
                 historyHandler.pushlog(log);
-                res.status(200).send({success: model});
+                res.status(200).send(model);
             });
     };
 
@@ -82,22 +88,26 @@ var Service = function(db) {
 
         var body = req.body;
         var service;
-        var myRegExp =/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
+
 
         if (!body) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-        if (!myRegExp.test(body.baseUrl)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+
+        validation.checkUrlField(errors, true, body.baseUrl, 'Base Url');
+
+        if (errors.length) {
+            return res.status(400).send({error: errors});
         }
+
         if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
         if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
         if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
@@ -121,7 +131,7 @@ var Service = function(db) {
                     description: 'Create new Service'
                 };
                 historyHandler.pushlog(log);
-                res.status(200).send({success: model.toJSON()});
+                res.status(200).send(model.toJSON());
             })
     };
 
@@ -131,7 +141,7 @@ var Service = function(db) {
         };
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         findServiceByQuery(searchQuery, function (err, model) {
@@ -150,7 +160,7 @@ var Service = function(db) {
         };
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         Service
@@ -162,7 +172,7 @@ var Service = function(db) {
                     return next(err);
                 }
 
-                return res.status(200).send({result: RESPONSE.ON_ACTION.SUCCESS});
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
 

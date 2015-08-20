@@ -13,12 +13,14 @@ var Feedback = function(db) {
         var feedback;
 
         if (!body || !body.rate || !body.feedback || (!body.serviceId && !body.serviceName)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
+        var validation = require('../helpers/validation');
         var userRef = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var serviceRef = new ObjectId(body.serviceId);
         var rate = body.rate;
+        var errors = [];
 
         var feedbackData = {
             user: userRef,
@@ -28,8 +30,13 @@ var Feedback = function(db) {
             feedback: body.feedback
         };
 
+        validation.checkRate15(errors, true, rate, 'Rate');
+        if (errors.length) {
+            return res.status(400).send({error: errors});
+        }
+
         if (! /^[12345]$/.test(rate)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         feedback = new Feedback(feedbackData);

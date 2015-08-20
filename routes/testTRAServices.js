@@ -15,6 +15,8 @@ module.exports = function(db) {
     router.get('/searchMobile', testTRAHandler.searchMobileImei);
     router.get('/searchMobileBrand', testTRAHandler.searchMobileBrand);
     router.post('/complainSmsSpam', testTRAHandler.complainSmsSpam);
+    router.post('/complainSmsBlock', testTRAHandler.complainSmsBlock);
+
     router.post('/complainServiceProvider', testTRAHandler.complainServiceProvider);
     router.post('/complainTRAService', testTRAHandler.complainTRAService);
 

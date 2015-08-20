@@ -101,7 +101,8 @@ define([
 
         loadPage: function () {
             this.collection.fetch({
-                data: this.getFilters()
+                data: this.getFilters(),
+                reset: true
             });
         },
 

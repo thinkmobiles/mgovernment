@@ -3,6 +3,7 @@ module.exports = function(db) {
     "use strict";
 
     require('./user')(db);
+    require('./attachment')(db);
     require('./sessions')(db);
     require('./layout')(db);
     require('./service')(db);
