@@ -9,15 +9,16 @@ var IMAGES = require('./../testHelpers/imageTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
-var url = 'http://localhost:7791';
+var url = 'http://localhost:80';
 
-describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
+describe('User favourite', function () {
 
     var agent = request.agent(url);
     var userId;
     var serviceCollection;
 
     before(function (done) {
+        this.timeout(10000);
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
@@ -126,7 +127,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
                 if (err) {
                     return done(err)
                 }
-                //serviceCollection = res.body;
+                serviceCollection = res.body;
                 console.log(res.body);
                 done()
 

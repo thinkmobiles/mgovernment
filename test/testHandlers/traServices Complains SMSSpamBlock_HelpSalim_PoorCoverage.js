@@ -7,7 +7,7 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:7791';
+var url = 'http://localhost:80';
 
 describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function () {
     this.timeout(35000);
@@ -28,9 +28,9 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
                 preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CHECK_DOMAIN_AVAILABILITY_TMA_TRA_SERVICES),
                 preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET)
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_RATING_TMA_TRA_SERVICES)
             ],
             function (err, results) {
                 if (err) {

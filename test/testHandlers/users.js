@@ -9,7 +9,7 @@ var IMAGES = require('./../testHelpers/imageTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
-var url = 'http://localhost:7791';
+var url = 'http://localhost:80';
 
 describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', function () {
 
@@ -18,6 +18,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
     var serviceCollection;
 
     before(function (done) {
+        this.timeout(20000);
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
