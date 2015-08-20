@@ -127,12 +127,12 @@ module.exports = {
                 inputType: 'string'
             },
             {
-                order: 1,
+                order: 2,
                 name: 'start',
                 inputType: 'string'
             },
             {
-                order: 1,
+                order: 3,
                 name: 'end',
                 inputType: 'string'
             }
@@ -162,12 +162,12 @@ module.exports = {
                 inputType: 'string'
             },
             {
-                order: 1,
+                order: 2,
                 name: 'start',
                 inputType: 'string'
             },
             {
-                order: 1,
+                order: 3,
                 name: 'end',
                 inputType: 'string'
             }
@@ -440,7 +440,7 @@ module.exports = {
                 inputType: 'string'
             },
             {
-                order: 1,
+                order: 2,
                 name: 'location.longitude',
                 inputType: 'string'
             },

@@ -88,7 +88,7 @@ var Service = function(db) {
 
         var body = req.body;
         var service;
-
+        var errors =[];
 
         if (!body) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
