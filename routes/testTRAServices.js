@@ -3,12 +3,14 @@ var router = express.Router();
 
 var TestTRAHandler = require('../handlers/testTRAHandler');
 var TestTRACRMHandler = require('../handlers/testTRACRMHandler');
+var TestCRMNETHandler = require('../handlers/crmNetWrapper/testCrmNetWrapper');
 
 module.exports = function(db) {
     'use strict';
 
     var testTRAHandler = new TestTRAHandler(db);
     var testTRACRMHandler = new TestTRACRMHandler(db);
+    var testCRMNETHandler = new TestCRMNETHandler(db);
 
     router.get('/checkWhois', testTRAHandler.testWhois);
     router.get('/checkWhoisAvailable', testTRAHandler.testWhoisCheck);
@@ -30,6 +32,10 @@ module.exports = function(db) {
     router.get('/crm/auth', testTRACRMHandler.loginHttp);
     router.get('/crm/auth/callback', testTRACRMHandler.authCallback);
     router.get('/crm/contacts', testTRACRMHandler.getContacts);
+
+    //TODO test crm wrapper
+    router.get('/crmwrapper/case', testCRMNETHandler.getCases);
+    router.get('/crmwrapper/conn', testCRMNETHandler.connectCrm);
 
     return router;
 };
