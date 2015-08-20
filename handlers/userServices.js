@@ -44,7 +44,7 @@ var UserService = function(db) {
             userHistoryHandler.pushlog(log);
 
             if (err) {
-                return res.status(400).send({err: 'Service Option not found'});
+                return res.status(400).send({error: 'Service Option not found'});
             }
             return res.status(200).send(model);
         })
@@ -75,6 +75,38 @@ var UserService = function(db) {
             });
     };
 
+    this.getServiceNames = function (req, res, next) {
+
+        Service
+            .find()
+            .select('-_id serviceName')
+            .exec(function (err, collection) {
+                if (err) {
+                    return next(err);
+                }
+
+                var log = {
+                    userId: req.session.uId || 'Unauthorized',
+                    action: CONST.ACTION.GET,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: '',
+                    req: {params: req.params, body: req.params},
+                    res: collection,
+                    description: 'getServices'
+                };
+                var result = [];
+
+                userHistoryHandler.pushlog(log);
+
+                for (var i = collection.length-1; i >= 0; i--){
+                    result.push(collection[i].serviceName);
+                }
+
+                //return res.status(200).send(result);
+                return res.status(200).send(["complain Poor Coverage", "complain about TRA Service", "complain about Service Provider", "complain Enquiries", "complain Suggestion", "Rating service", "Help Salim", "SMS Spam Block", "SMS Spam Report", "Search Device By BrandName", "Search Device By Imei", "Check Domain Availability", "Get Domain Data"]);
+            });
+    };
+
     this.sendServiceRequest = function (req, res, next) {
 
         var userId = req.session.uId;
@@ -97,7 +129,7 @@ var UserService = function(db) {
         /// Async main process service Handlers
         async.waterfall(tasks, function (err,results){
             if (err) {
-                return res.status(400).send(err);
+                return res.status(400).send({error: err});
             }
 
             var log = {
@@ -129,7 +161,7 @@ var UserService = function(db) {
                         console.log('serviceOptions.params.needUserAuth= ',serviceOptions.params.needUserAuth)
 
                     }
-                        return callback(null, serviceOptions.params.needUserAuth);
+                    return callback(null, serviceOptions.params.needUserAuth);
                 })
             };
         }

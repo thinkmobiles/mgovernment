@@ -14,6 +14,7 @@ module.exports = {
     },
 
     MODELS: {
+        ATTACHMENT: 'Attachment',
         USER: 'User',
         PROFILE: 'Profile',
         LAYOUT: 'Layout',

@@ -89,16 +89,16 @@ var User = function(db) {
                 }
             }
             if (!found) {
-                return res.status(400).send({ err: RESPONSE.ON_ACTION.NOT_FOUND});
+                return res.status(400).send({ error: RESPONSE.ON_ACTION.NOT_FOUND});
             }
 
             User
                 .update({'_id': user._id, 'accounts.seviceName': account.seviceName }, {$set: {
                     'accounts.$': account}}, function (err, data) {
                     if (err) {
-                        return res.status(400).send({ err: err});
+                        return res.status(400).send({ error: err});
                     }
-                    return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful updating'});
+                    return res.status(200).send({ success: 'Account for Service:' + account.seviceName + 'was succesful updating'});
                 });
         });
     };
@@ -153,102 +153,109 @@ var User = function(db) {
                 }
             }
             if (found) {
-                return res.status(400).send({ err: 'You already have same service'});
+                return res.status(400).send({ error: 'You already have same service'});
             }
 
             User
                 .update({_id: user._id}, {$push: {'accounts': account}}, function (err, data) {
                     if (err) {
                     }
-                    return res.status(200).send({ succes: 'Account for Service:' + account.seviceName + 'was succesful created'});
+                    return res.status(200).send({ success: 'Account for Service:' + account.seviceName + 'was succesful created'});
                 });
         });
     };
 
     this.addServiceToFavorites = function ( req, res, next ) {
-        var serviceId= req.params.serviceId;
+        var serviceNames = req.body.serviceNames;
         var userId = req.session.uId;
+        var resultServiceNames = [];
         var found = false;
-        var favorite = ObjectId(serviceId);
+
+        console.log('serviceNames:', serviceNames);
+        console.log('userId:', userId);
 
         getUserById(userId, function (err, user) {
-           // console.dir(user);
+            // console.dir(user);
             user = user.toJSON();
 
             if (user.favorites) {
 
-                for (var i = user.favorites.length - 1; i >= 0; i--) {
-                    if (user.favorites[i].id == favorite.id) {
-                        found = true;
+                for (var j = serviceNames.length - 1; j >= 0; j--) {
+                    for (var i = user.favorites.length - 1; i >= 0; i--) {
+                        if (user.favorites[i] == serviceNames[j]) {
+                            found = true;
+                            //console.log(user.favorites[i],' = ',serviceNames[j], ' (',found,'}' );
+                        }
                     }
+                    if (!found) {
+                        resultServiceNames.push(serviceNames[j]);
+                    }
+                    found = false;
                 }
             }
 
-            if (found) {
-                return res.status(400).send(RESPONSE.ON_ACTION.NOT_FOUND);
-            }
-
             User
-                .update({_id: user._id}, {$push: {'favorites': favorite}}, function (err, data) {
+                .update({_id: user._id}, {$push: {'favorites': {$each: resultServiceNames}}}, function (err, data) {
                     if (err) {
-                        return res.status(400).send(err);
+                        return res.status(400).send({error: err});
                     }
-                    return res.status(200).send(RESPONSE.ON_ACTION.SUCCESS);
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };
 
     this.deleteServiceToFavorites = function ( req, res, next ) {
-        var serviceId= req.params.serviceId;
+        var serviceNames = req.body.serviceNames;
         var userId = req.session.uId;
+        var resultServiceNames = [];
         var found = false;
-        var favorite = ObjectId(serviceId);
-        var foundPosition = -1;
 
         getUserById(userId, function (err, user) {
-           // console.dir(user);
+            // console.dir(user);
             user = user.toJSON();
 
             if (user.favorites) {
 
                 for (var i = user.favorites.length - 1; i >= 0; i--) {
-                    if (user.favorites[i].id == favorite.id) {
-                        found = true;
-                        foundPosition = i;
+                    for (var j = serviceNames.length - 1; j >= 0; j--) {
+                        if (user.favorites[i] == serviceNames[j]) {
+                            found = true;
+                            //console.log(user.favorites[i],' = ',serviceNames[j], ' (',found,'}' );
+                        }
                     }
+                    if (!found) {
+                        resultServiceNames.push(user.favorites[i]);
+                    }
+                    found = false;
                 }
             }
-
-            if (!found) {
-                return res.status(400).send(RESPONSE.ON_ACTION.NOT_FOUND);
-            }
+            //console.log('serviceNames:', serviceNames);
+            //console.log('resultServiceNames:', resultServiceNames);
 
             User
-                .update({_id: user._id, favorites: favorite }, {$pull: {
-                    'favorites': favorite}}, function (err, data) {
+                .update({_id: user._id}, {$set: {
+                    'favorites': resultServiceNames}}, function (err, data) {
                     if (err) {
-                        return res.status(400).send(err);
+                        return res.status(400).send({error: err});
                     }
-                    return res.status(200).send(RESPONSE.ON_ACTION.SUCCESS);
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         });
     };
 
     this.getServicesFromFavorites = function ( req, res, next ) {
-        var serviceId= req.params.serviceId;
         var userId = req.session.uId;
-        var found = false;
-        var foundNumber = -1;
 
         User
             .findOne({_id: userId})
-            .populate('favorites')
-            .exec(function (err, models) {
+            //.populate('favorites')
+            .exec(function (err, model) {
 
                 if (err) {
-                    return res.status(400).send(err);
+                    return res.status(400).send({error: err});
                 }
-                return res.status(200).send(models.toJSON().favorites);
+                console.log(model.toJSON());
+                return res.status(200).send(model.toJSON().favorites);
 
             })
     };
@@ -261,7 +268,7 @@ var User = function(db) {
         var foundNumber = -1;
 
         getUserById(userId, function (err, user) {
-          //  console.dir(user);
+            //  console.dir(user);
             user = user.toJSON();
 
             for (var i = user.accounts.length - 1; i >= 0; i--) {
@@ -271,7 +278,7 @@ var User = function(db) {
                 }
             }
             if (!found) {
-                return res.status(400).send({ err: RESPONSE.ON_ACTION.NOT_FOUND});
+                return res.status(400).send({ error: RESPONSE.ON_ACTION.NOT_FOUND});
             }
 
             return res.status(200).send(user.accounts[foundNumber]);
@@ -413,7 +420,7 @@ var User = function(db) {
 
                 if (!model || model.toJSON().userType != CONST.USER_TYPE.ADMIN) {
 
-                    return res.status(400).send({ err: RESPONSE.AUTH.INVALID_CREDENTIALS});
+                    return res.status(400).send({ error: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
                 var deviceOptions = {
@@ -519,7 +526,7 @@ var User = function(db) {
         };
 
         if (!isValidUserType(userType)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         if (!body || !login || !pass) {
@@ -605,7 +612,7 @@ var User = function(db) {
                 user
                     .save(function (err, user) {
                         if (err) {
-                            return res.status(500).send(err);
+                            return res.status(500).send({error: err});
                         }
 
                         return res.status(200).send({success: RESPONSE.AUTH.REGISTER});
@@ -638,7 +645,7 @@ var User = function(db) {
         };
 
         if (!isValidUserType(userType)) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         if (!body || !login || !pass) {
@@ -664,9 +671,9 @@ var User = function(db) {
             User
                 .update({'_id': user._id}, {$set: userData}, function (err, data) {
                     if (err) {
-                        return res.status(400).send({ err: err});
+                        return res.status(400).send({ error: err});
                     }
-                    return res.status(200).send({ succes: 'User was succesful updating'});
+                    return res.status(200).send({ success: 'User was succesful updating'});
                 });
         });
     };
@@ -688,7 +695,7 @@ var User = function(db) {
         };
 
         if (!searchQuery._id) {
-            return res.status(400).send({err: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         User
@@ -700,7 +707,7 @@ var User = function(db) {
                     return next(err);
                 }
 
-                return res.status(200).send({result: RESPONSE.ON_ACTION.SUCCESS});
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
 

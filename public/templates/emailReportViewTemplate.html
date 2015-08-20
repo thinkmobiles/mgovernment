@@ -2,7 +2,7 @@
 
     <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
         <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
-            <span style="font-size: 22px; "><b>List of Feedbacks</b></span></div>
+            <span style="font-size: 22px; "><b>List of emailReports</b></span></div>
     </div>
     <div class = "tableFilter"><b> FILTER: </b>
         <b> <input type="checkbox" class="filterServiceType" id="filterHelpSalim"
@@ -10,6 +10,8 @@
         <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
         <b> <input type="checkbox" class="filterServiceType" id="filterSMSSpam"
                    value="SMS Spam" <%= filter.length ? ( filter.match(/SMS Spam/) ? '' : 'checked') : 'checked' %>> SMS Spam</b>
+        <b> <input type="checkbox" class="filterServiceType" id="filterSMSBlock"
+                   value="SMS Block" <%= filter.length ? ( filter.match(/SMS Block/) ? '' : 'checked') : 'checked' %>> SMS Block</b>
         <b> <input type="checkbox" class="filterServiceType" id="filterServiceProvider"
                    value="Service Provider"<%= filter.length ? ( filter.match(/Service Provider/) ? '' : 'checked') : 'checked' %>> Service Provider </b>
         <b> <input type="checkbox" class="filterServiceType" id="filterTRAService"
@@ -55,7 +57,9 @@
             <td><%= collection[i].title %></td>
             <td><%= collection[i].description %></td>
             <td style="text-align: center"><% if (collection[i].attachment) {%>
-            <a href="<%= collection[i].attachment %>" target="_blank"> <img src="<%= collection[i].attachment %>" style=" height: 40px"></a>
+            <!--<a href="<%= collection[i].attachment %>" target="_blank"> <img src="<%= collection[i].attachment %>" style=" height: 40px"></a>-->
+
+                <a href="/attachment/<%= collection[i].attachment %>" target="_blank"> <img src="../../img/attachment.png" style=" height: 40px" alt = "attachment"></a>
                 <% } %>
             </td>
             <td style=" word-break: break-all;"><%= collection[i].mailTo %></td>
