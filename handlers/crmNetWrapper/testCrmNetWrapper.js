@@ -41,10 +41,12 @@ var TestCRMNetHandler = function (db) {
              using System.Threading.Tasks;
 
              using Microsoft.Crm.Sdk.Messages;
-             using Microsoft.Xrm.Sdk.Query;
 
              using Microsoft.Xrm.Client;
              using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Metadata;
+             using System.Collections.Generic;
+             using Microsoft.Xrm.Sdk.Messages;
 
              public class Startup
              {
@@ -52,7 +54,7 @@ var TestCRMNetHandler = function (db) {
 
              public async Task<object> Invoke(object input)
              {
-             var connectionString = "Url=http://192.168.91.191/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;";
+             var connectionString = "Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;";
              // Establish a connection to the organization web service using CrmConnection.
              Microsoft.Xrm.Client.CrmConnection connection = CrmConnection.Parse(connectionString);
 
@@ -75,8 +77,32 @@ var TestCRMNetHandler = function (db) {
              (RetrieveVersionResponse)_orgService.Execute(versionRequest);
              Console.WriteLine("Microsoft Dynamics CRM version {0}.", versionResponse.Version);
 
-             return string.Format("Microsoft Dynamics CRM version {0}.", versionResponse.Version);
+             //return string.Format("Microsoft Dynamics CRM version {0}.", versionResponse.Version);
+
+             return GetEntities(_orgService);
              }
+             }
+
+             public static string[] GetEntities(OrganizationService organizationService)
+             {
+             Dictionary<string, string> attributesData = new Dictionary<string, string>();
+             RetrieveAllEntitiesRequest metaDataRequest = new RetrieveAllEntitiesRequest();
+             RetrieveAllEntitiesResponse metaDataResponse = new RetrieveAllEntitiesResponse();
+             metaDataRequest.EntityFilters = EntityFilters.All;
+
+             // Execute the request.
+
+             metaDataResponse = (RetrieveAllEntitiesResponse)organizationService.Execute(metaDataRequest);
+
+             var entities = metaDataResponse.EntityMetadata;
+             int len = entities.Length;
+
+             string[] temp = new string[len];
+             for(int i=0; i < len; i++)
+             {
+             temp[i] = entities[i].LogicalName;
+             }
+             return temp;
              }
              }
         */},
