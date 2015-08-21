@@ -24,9 +24,8 @@ define([
             'click #delInputItemsBlock' : 'delInputItemsBlock',
             'change .enabledCheckBox' : 'enableInput',
             'change .itemBlockName' : 'updateItemsInputNameArray',
-            'click .actionButtonAdd' : 'addItemToBodyArray',
+            'click .actionButtonAdd' : 'addItemToArray',
             'click .actionButtonDell' : 'dellLastItemFromArray'
-
         },
 
         initialize: function () {
@@ -117,7 +116,7 @@ define([
             }
         },
 
-        addItemToBodyArray: function(e) {
+        addItemToArray: function(e) {
             var el = this.$el;
             var id = $(e.target).attr('data-hash');
             var inputFieldName = el.find('#' + id + 'Input').val();
@@ -137,8 +136,6 @@ define([
             //TODO inputFieldName validate in inputFieldNames
 
             console.log('addButtonClicked');
-
-
 
             sendParams[id].push(el.find('#' + id + 'Input').val().trim());
             el.find('#' + id + 'Value').text(sendParams[id]);
@@ -193,7 +190,7 @@ define([
             };
 
             if (el.find('#uriSpecQuery')[0].checked) {
-                data.params.uriSpecQuery = el.find('#uriSpecQueryInput').val().replace(' ','').split(',');
+                data.params.uriSpecQuery = sendParams.uriSpecQuery;
             }
 
             if (el.find('#body')[0].checked) {
@@ -201,7 +198,7 @@ define([
             }
 
             if (el.find('#query')[0].checked) {
-                data.params.query =sendParams.query;
+                data.params.query = sendParams.query;
             }
 
             if (el.find('#port')[0].checked) {
