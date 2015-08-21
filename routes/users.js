@@ -12,7 +12,7 @@ module.exports = function(db){
     var session = new SessionHandler(db);
     var imageHandler = new ImageHandler(db);
 
-    router.route('/')
+       router.route('/')
         .post(session.isAdminBySession,users.createAccount)
         .get(session.isAdminBySession,users.getUserProfiles);
 

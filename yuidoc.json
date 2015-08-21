@@ -1,0 +1,10 @@
+{
+  "name": "MGoverment",
+  "description": "YUI 3 JavaScript Framework",
+  "version": "3.5.0",
+  "url": "http://localhost:7791/",
+  "options": {
+    "paths": ["./routes"],
+    "outdir": "./api"
+  }
+}
