@@ -2,27 +2,24 @@
 
     <form>
         <datalist id="standartFieldsName">
-            <option value="serviceName" />
-            <option value="checkUrl" />
-            <option value="title" />
+            <option value="serviceName"/>
+            <option value="checkUrl"/>
+            <option value="title"/>
             <option value="description"/>
-            <option value="serviceProvider" />
-            <option value="referenceNumber" />
-            <option value="attachment" />
-            <option value="rate" />
-            <option value="feedback" />
-            <option value="imei" />
-            <option value="start" />
-            <option value="end" />
-            <option value="brand" />
-            <option value="phone" />
-            <option value="phoneProvider" />
-            <option value="providerType" />
-            <option value="url" />
+            <option value="serviceProvider"/>
+            <option value="referenceNumber"/>
+            <option value="attachment"/>
+            <option value="rate"/>
+            <option value="feedback"/>
+            <option value="imei"/>
+            <option value="start"/>
+            <option value="end"/>
+            <option value="brand"/>
+            <option value="phone"/>
+            <option value="phoneProvider"/>
+            <option value="providerType"/>
+            <option value="url"/>
         </datalist>
-
-        <datalist id="currentFieldsName">
-             </datalist>
 
         <table class="tableView">
             <tr>
@@ -94,19 +91,18 @@
                 <td class="hiddenByDefault">
                     <input type="radio" name="Method" id="POST" value="POST" checked="checked"> POST
                     <input type="radio" name="Method" id="GET" value="GET"> GET
-                    </td>
+                </td>
 
                 <td class="hiddenByDefault">Choose method that server use when send request</td>
             </tr>
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port"
                                                        value="">Socket is used </b></td>
-                <td class="hiddenByDefault"> <b> PORT: </b><input type="text" name="name" id="portInput" size="6"
-                                                   maxlength="4" disabled></td>
+                <td class="hiddenByDefault"><b> PORT: </b><input type="text" name="name" id="portInput" size="6"
+                                                                 maxlength="4" disabled></td>
                 <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
                 </td>
             </tr>
-
 
 
             <tr>
@@ -132,16 +128,14 @@
             <tr style="vertical-align: top">
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="body" value="body">
                     .body </b></td>
-                <td class="hiddenByDefault" style=" word-break: break-all;"><p id="bodyShow" style="display: none;"> <b>body: [ </b><span id="bodyValue"></span><b> ]</b></p>
-                    <select style="width: 170px; height: 25px" id="bodyInput" disabled></select>
-                                                   &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"
-                                                               style=" text-decoration: none; font-size: 18px; color: green; display: none"> add </a>&nbsp
+                <td class="hiddenByDefault" style=" word-break: break-all;"><p id="bodyShow" style="display: none;"><b>body:
+                    [ </b><span id="bodyValue"></span><b> ]</b></p>
+                    <select style="width: 170px; height: 25px; display: none;" id="bodyInput"></select>
+                    &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"
+                            style=" text-decoration: none; font-size: 18px; color: green; display: none"> add </a>&nbsp
                     <a
-                        href="#" id="bodyDellInputButton" data-hash="body" class="actionButtonDell"
-                        style=" text-decoration: none; font-size: 18px; color: red;  display: none">dell</a>
-
-
-
+                            href="#" id="bodyDellInputButton" data-hash="body" class="actionButtonDell"
+                            style=" text-decoration: none; font-size: 18px; color: red;  display: none">dell</a>
                 </td>
                 <td class="hiddenByDefault"> Body is array, that have names of fields that will be nested to
                     Request.body, input the names of fields separated by commas without spaces
@@ -150,8 +144,14 @@
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="query" value="query">
                     .query </b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="queryInput" size="20" maxlength="40"  list="currentFieldsName"
-                                                   disabled></td>
+                <td class="hiddenByDefault"><p id="queryShow" style="display: none;"><b>query: [ </b><span
+                        id="queryValue"></span><b> ]</b></p>
+                    <select style="width: 170px; height: 25px; display: none;" id="queryInput"></select>
+                    &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"
+                            style=" text-decoration: none; font-size: 18px; color: green; display: none"> add </a>&nbsp
+                    <a
+                            href="#" id="queryDellInputButton" data-hash="query" class="actionButtonDell"
+                            style=" text-decoration: none; font-size: 18px; color: red;  display: none">dell</a></td>
                 <td class="hiddenByDefault"> Query is array, that have names of fields that will form standard query
                     Request, input the names of fields separated by commas without spaces
                 </td>
@@ -159,8 +159,14 @@
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="uriSpecQuery"
                                                        value="uriSpecQuery"> .uriSpecQuery </b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="uriSpecQueryInput" size="20"  list="currentFieldsName"
-                                                   maxlength="40" disabled></td>
+                <td class="hiddenByDefault"><p id="uriSpecQueryShow" style="display: none;"><b>uriSpecQuery: [ </b><span
+                        id="uriSpecQueryValue"></span><b> ]</b></p>
+                    <select style="width: 170px; height: 25px; display: none;" id="uriSpecQueryInput"></select>
+                    &nbsp<a href="#" id="uriSpecQueryAddInputButton" data-hash="uriSpecQuery" class="actionButtonAdd"
+                            style=" text-decoration: none; font-size: 18px; color: green; display: none"> add </a>&nbsp
+                    <a
+                            href="#" id="uriSpecQueryDellInputButton" data-hash="uriSpecQuery" class="actionButtonDell"
+                            style=" text-decoration: none; font-size: 18px; color: red;  display: none">dell</a></td>
                 <td class="hiddenByDefault"> uriSpecQuery is array, that have names of fields that will be added to url
                     of Request, input the names of fields separated by commas without spaces
                 </td>

@@ -214,6 +214,9 @@
  }
 
 .actionButtonAdd {
+
+    font-size: 18px;
+    color: green;
     text-align: center;
     vertical-align: middle;
     border: 1px solid gray;
@@ -227,13 +230,15 @@
     background-color: rgba(0, 0, 0, 0.1);
     opacity: 0.8;
     font-family: Arial;
-    font-size: 18px;
     font-weight: bold;
-    color: #000000;
     cursor: pointer;
     text-shadow: 1px 1px white;
+    text-decoration: none;
 }
 .actionButtonDell {
+    text-decoration: none;
+    font-size: 18px;
+    color: red;
     text-align: center;
     vertical-align: middle;
     border: 1px solid gray;
@@ -247,9 +252,7 @@
     background-color: rgba(0, 0, 0, 0.1);
     opacity: 0.8;
     font-family: Arial;
-    font-size: 18px;
     font-weight: bold;
-    color: #000000;
     cursor: pointer;
     text-shadow: 1px 1px white;
 }

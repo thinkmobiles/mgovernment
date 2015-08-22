@@ -1,8 +1,10 @@
+
 var SessionHandler = require('../handlers/sessions');
 var TestTRAHandler = require('../handlers/testTRAHandler');
 var AttachmentHandler = require('../handlers/attachment');
 
 module.exports = function(app, db) {
+
     'use strict';
 
     var logWriter = require('../helpers/logWriter')();

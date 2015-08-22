@@ -24,13 +24,14 @@ define([
             'click #delInputItemsBlock' : 'delInputItemsBlock',
             'change .enabledCheckBox' : 'enableInput',
             'change .itemBlockName' : 'updateItemsInputNameArray',
-            'click .actionButtonAdd' : 'addItemToBodyArray',
+            'click .actionButtonAdd' : 'addItemToArray',
             'click .actionButtonDell' : 'dellLastItemFromArray'
-
         },
 
         initialize: function () {
             itemBlockCount = 0;
+            sendParams = {};
+            itemsInputNameArray = [];
             this.render();
         },
 
@@ -102,23 +103,24 @@ define([
             var el = this.$el;
 
             if (e.target.checked) {
-                el.find('#'+ idName + 'Input').prop( "disabled", false );
+                el.find('#'+ idName + 'Input').css( "display", "inline" );
                 el.find('#'+ idName + 'Show').css( "display", "block" );
                 el.find('#'+ idName + 'AddInputButton').css( "display", "inline" );
                 el.find('#'+ idName + 'DellInputButton').css( "display", "inline" );
 
             } else {
-                el.find('#'+ idName + 'Input').prop( "disabled", true );
+                el.find('#'+ idName + 'Input').css( "display", "none" );
                 el.find('#'+ idName + 'Show').css( "display", "none" );
                 el.find('#'+ idName + 'AddInputButton').css( "display", "none" );
                 el.find('#'+ idName + 'DellInputButton').css( "display", "none" );
             }
         },
 
-        addItemToBodyArray: function(e) {
+        addItemToArray: function(e) {
             var el = this.$el;
             var id = $(e.target).attr('data-hash');
-            var inputFieldName = el.find('#' + id + 'Input').val().trim();
+            var inputFieldName = el.find('#' + id + 'Input').val();
+            console.log(id, ' ',  sendParams[id]);
 
             e.preventDefault();
             e.stopPropagation();
@@ -134,8 +136,6 @@ define([
             //TODO inputFieldName validate in inputFieldNames
 
             console.log('addButtonClicked');
-
-
 
             sendParams[id].push(el.find('#' + id + 'Input').val().trim());
             el.find('#' + id + 'Value').text(sendParams[id]);
@@ -153,7 +153,7 @@ define([
             e.stopPropagation();
             e.stopImmediatePropagation();
 
-            if (!el.find('#' +  id)[0].checked || !sendParams[id] ) {
+            if (!el.find('#' +  id)[0].checked || !sendParams[id].length ) {
                 return this;
             }
 
@@ -190,7 +190,7 @@ define([
             };
 
             if (el.find('#uriSpecQuery')[0].checked) {
-                data.params.uriSpecQuery = el.find('#uriSpecQueryInput').val().replace(' ','').split(',');
+                data.params.uriSpecQuery = sendParams.uriSpecQuery;
             }
 
             if (el.find('#body')[0].checked) {
@@ -198,7 +198,7 @@ define([
             }
 
             if (el.find('#query')[0].checked) {
-                data.params.query = el.find('#queryInput').val().replace(' ','').split(',');
+                data.params.query = sendParams.query;
             }
 
             if (el.find('#port')[0].checked) {
@@ -257,6 +257,8 @@ define([
             }
 
             el.find('#bodyInput').html(newOptionsValue);
+            el.find('#queryInput').html(newOptionsValue);
+            el.find('#uriSpecQueryInput').html(newOptionsValue);
 
             console.log('itemsInputNameArray: ', itemsInputNameArray);
 
