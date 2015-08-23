@@ -28,9 +28,8 @@ describe('TRA Services tests  CRM', function () {
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
                 preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET)
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_HELP_SALIM_TMA_TRA_SERVICES),
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
             ],
             function (err, results) {
                 if (err) {

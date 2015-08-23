@@ -1,60 +1,8 @@
 /**
- * Provides the operation with services for __admin__ acount
+ * Provides the operation with services for __admin__ account
  *
  * @class testTraServices
  *
- */
-
-/**
- * This __method__ get information about domain name <br>
- *
- * __URI:__ ___`/checkWhois`___
- *
- *  ## METHOD:
- * __GET__
- *
- *  ## Request:
- *     Query: checkUrl
- *     Exemple: /checkWhois?checkUrl=tra.gov.ae
- *
- *  ## Responses:
- *      status (200) JSON object: {object}
- *      status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}
- *
- *
- * @example
- *     {
- *      Domain Name: 'tra.gov.ae',
- *      Registrar ID: 'Etisalat',
- *      Registrar Name:  'Etisalat',
- *      Status: 'ok'
- *    }
- * @method testWhois
- * @for testTraServices
- */
-
-/**
- * This __method__ create complain about Poor Coverage <br>
- *
- * __URI:__ ___`/sendPoorCoverage`___
- *
- *  ## METHOD:
- * __POST__
- *
- *  ## Request:
- *     Body:
- *       address:
- *       location: {
- *          latitude:
- *          longitude:
- *       }
- *       signalLevel:
- *  ## Responses:
- *      status (200) JSON object: {object}
- *      status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}
- *
- * @method sendPoorCoverage
- * @for testTraServices
  */
 
 var express = require( 'express' );
@@ -69,6 +17,33 @@ module.exports = function(db) {
     var testTRAHandler = new TestTRAHandler(db);
     var testTRACRMHandler = new TestTRACRMHandler(db);
 
+    /**
+     * This __method__ get information about domain name
+     *
+     * __URI:__ ___`/checkWhois`___
+     *
+     *  ## METHOD:
+     * __GET__
+     *
+     *  ## Request:
+     *     Query: checkUrl
+     *     Exemple: /checkWhois?checkUrl=tra.gov.ae
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     *
+     * @example
+     *     {
+ *      Domain Name: 'tra.gov.ae',
+ *      Registrar ID: 'Etisalat',
+ *      Registrar Name:  'Etisalat',
+ *      Status: 'ok'
+ *    }
+     * @method testWhois
+     * @for testTraServices
+     */
     router.get('/checkWhois', testTRAHandler.testWhois);
     router.get('/checkWhoisAvailable', testTRAHandler.testWhoisCheck);
     router.get('/searchMobile', testTRAHandler.searchMobileImei);
@@ -81,9 +56,51 @@ module.exports = function(db) {
 
     router.post('/complainEnquiries', testTRAHandler.complainEnquiries);
     router.post('/sendSuggestion', testTRAHandler.sendSuggestion);
+
+    /**
+     * This __method__ create complain about Poor Coverage <br>
+     *
+     * __URI:__ ___`/sendPoorCoverage`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *     Body:
+     *       address:
+     *       location: {
+     *          latitude:
+     *          longitude:
+     *       }
+     *       signalLevel:
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     * @method sendPoorCoverage
+     * @for testTraServices
+     */
     router.post('/sendPoorCoverage', testTRAHandler.sendPoorCoverage);
 
-
+    /**
+     * This __method__ create complain about website with forbidden content  <br>
+     *
+     * __URI:__ ___`/sendHelpSalim`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *     Body:
+     *       url:
+     *       description:
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     * @method sendHelpSalim
+     * @for testTraServices
+     */
     router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
     //router.get('/crm/case', testTRACRMHandler.getCases);
     router.get('/crm/auth', testTRACRMHandler.loginHttp);
