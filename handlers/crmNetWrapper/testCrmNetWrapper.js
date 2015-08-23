@@ -8,11 +8,11 @@ var SessionHandler = require('./../sessions');
 var TestCRMNetHandler = function (db) {
     'use strict';
 
+    var edge = require('edge');
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
 
     this.getCases = function (req, res, next) {
-        var edge = require('edge');
 
         var helloWorld = edge.func(function () {/*
          async (input) => {
@@ -31,8 +31,6 @@ var TestCRMNetHandler = function (db) {
     }
 
     this.connectCrm = function(req, res, next) {
-        var edge = require('edge');
-
         var path = __dirname + "\\";
 
         var connect = edge.func({
@@ -54,6 +52,12 @@ var TestCRMNetHandler = function (db) {
              {
              private OrganizationService _orgService;
              private string _connectionString = "Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;";
+
+             public class Person
+             {
+             public string name = "default_name";
+             public string userid = "default_id";
+             }
 
              public async Task<object> Invoke(object input)
              {
@@ -109,22 +113,26 @@ var TestCRMNetHandler = function (db) {
              return temp;
              }
 
-             private static string[] GetAccountNames(OrganizationService organizationService)
+             private static Person[] GetAccountNames(OrganizationService organizationService)
              {
              QueryExpression qe = new QueryExpression();
              qe.EntityName = "account";
              qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("accountid");
              qe.ColumnSet.Columns.Add("name");
 
              EntityCollection ec = organizationService.RetrieveMultiple(qe);
 
              Console.WriteLine("Retrieved {0} entities", ec.Entities.Count);
-             string[] temp = new string[ec.Entities.Count];
+             Person[] temp = new Person[ec.Entities.Count];
              int i = 0;
              foreach (Entity act in ec.Entities)
              {
              Console.WriteLine("account name:" + act["name"]);
-             temp[i] = act["name"].ToString();
+             var t = new Person();
+             t.name = act["name"].ToString();
+             t.userid = act["accountid"].ToString();
+             temp[i] = t;
              i++;
              }
 
