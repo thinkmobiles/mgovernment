@@ -55,8 +55,10 @@ var TestCRMNetHandler = function (db) {
 
              public class Person
              {
+             public string accountid = "default_id";
              public string name = "default_name";
-             public string userid = "default_id";
+             public string email = "default_email";
+             public string phone = "default_phone";
              }
 
              public async Task<object> Invoke(object input)
@@ -120,6 +122,8 @@ var TestCRMNetHandler = function (db) {
              qe.ColumnSet = new ColumnSet();
              qe.ColumnSet.Columns.Add("accountid");
              qe.ColumnSet.Columns.Add("name");
+             qe.ColumnSet.Columns.Add("emailaddress1");
+             qe.ColumnSet.Columns.Add("telephone1");
 
              EntityCollection ec = organizationService.RetrieveMultiple(qe);
 
@@ -131,7 +135,9 @@ var TestCRMNetHandler = function (db) {
              Console.WriteLine("account name:" + act["name"]);
              var t = new Person();
              t.name = act["name"].ToString();
-             t.userid = act["accountid"].ToString();
+             t.accountid = act["accountid"].ToString();
+             t.email = act["emailaddress1"].ToString();
+             t.phone = act["telephone1"].ToString();
              temp[i] = t;
              i++;
              }
