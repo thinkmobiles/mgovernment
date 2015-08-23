@@ -122,8 +122,8 @@ var TestCRMNetHandler = function (db) {
              qe.ColumnSet = new ColumnSet();
              qe.ColumnSet.Columns.Add("accountid");
              qe.ColumnSet.Columns.Add("name");
-             qe.ColumnSet.Columns.Add("emailaddress1");
-             qe.ColumnSet.Columns.Add("telephone1");
+             //qe.ColumnSet.Columns.Add("emailaddress1");
+             //qe.ColumnSet.Columns.Add("telephone1");
 
              EntityCollection ec = organizationService.RetrieveMultiple(qe);
 
@@ -136,8 +136,8 @@ var TestCRMNetHandler = function (db) {
              var t = new Person();
              t.name = act["name"].ToString();
              t.accountid = act["accountid"].ToString();
-             t.email = act["emailaddress1"].ToString();
-             t.phone = act["telephone1"].ToString();
+             //t.email = act["emailaddress1"].ToString();
+             //t.phone = act["telephone1"].ToString();
              temp[i] = t;
              i++;
              }
@@ -157,9 +157,9 @@ var TestCRMNetHandler = function (db) {
              Entity incident = new Entity();
              incident.LogicalName = "incident";
 
-             incident["title"] = "TEST Case subject";
+             incident["title"] = "TEST Case subject 222";
              incident["description"] = "TEST description";
-             incident["casetypecode"] = 1;
+             incident["casetypecode"] = new OptionSetValue(1);
 
              Guid contactid = Guid.Parse(GetContactId(_orgService));
 
@@ -168,10 +168,7 @@ var TestCRMNetHandler = function (db) {
 
              EntityReference contactReference = new EntityReference("contact", contactid);
              incident["contactid"] = contactReference;
-
-             // Set contactid as contact to field "casecontactid"
-             EntityReference primaryContactId = new EntityReference("contact", contactid);
-             incident["casecontactid"] = primaryContactId;
+             incident["customerid"] = contactReference;
 
              _orgService.Create(incident);
 
@@ -192,18 +189,28 @@ var TestCRMNetHandler = function (db) {
              EntityCollection ec = service.RetrieveMultiple(qe);
 
              Console.WriteLine("Retrieved {0} entities", ec.Entities.Count);
+             int len = ec.Entities.Count > 20 ? 20 : ec.Entities.Count;
              Person[] temp = new Person[ec.Entities.Count];
-             int i = 0;
-             foreach (Entity act in ec.Entities)
+             for (int i = 0; i < len; i++)
              {
-             Console.WriteLine("contact name:" + act["fullname"] + " - contact id: " + act["contactid"]);
+             Entity contact = ec.Entities[i];
+             Console.WriteLine("contact name:" + contact["fullname"] + " - contact id: " + contact["contactid"]);
+
              var t = new Person();
-             t.name = act["name"].ToString();
-             t.accountid = act["contactid"].ToString();
-             t.email = act["emailaddress1"].ToString();
-             t.phone = act["telephone1"].ToString();
+             t.accountid = contact["contactid"].ToString();
+             if (contact.Contains("fullname"))
+             {
+             t.name = contact["fullname"].ToString();
+             }
+             if (contact.Contains("emailaddress1"))
+             {
+             t.email = contact["emailaddress1"].ToString();
+             }
+             if (contact.Contains("telephone1"))
+             {
+             t.phone = contact["telephone1"].ToString();
+             }
              temp[i] = t;
-             i++;
              }
 
              return temp[0].accountid;
