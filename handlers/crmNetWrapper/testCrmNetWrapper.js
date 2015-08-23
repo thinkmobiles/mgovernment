@@ -61,7 +61,7 @@ var TestCRMNetHandler = function (db) {
              public string phone = "default_phone";
              }
 
-             public async Task<object> Invoke(object input)
+             public async Task<object> InvokeFirst(object input)
              {
              // Establish a connection to the organization web service using CrmConnection.
              Microsoft.Xrm.Client.CrmConnection connection = CrmConnection.Parse(_connectionString);
@@ -145,7 +145,7 @@ var TestCRMNetHandler = function (db) {
              return temp;
              }
 
-             public async Task<object> CreateCase(object input)
+             public async Task<object> Invoke(object input)
              {
              // Establish a connection to the organization web service using CrmConnection.
              Microsoft.Xrm.Client.CrmConnection connection = CrmConnection.Parse(_connectionString);
@@ -161,16 +161,13 @@ var TestCRMNetHandler = function (db) {
              incident["description"] = "TEST description";
              incident["casetypecode"] = 1;
 
-             // Set customerid with some existing contact guid
-             // Guid customerid = new Guid("{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}");
-             Guid userid = ((WhoAmIResponse)_orgService.Execute(new WhoAmIRequest())).UserId;
+             Guid contactid = Guid.Parse(GetContactId(_orgService));
 
-             // Set customerid as contact to field "customerid"
-             EntityReference CustomerId = new EntityReference("contact", userid);
-             incident["customerid"] = CustomerId;
+             // EntityReference customerReference = new EntityReference("contact", contactid);
+             //crmCase.CustomerId = customerReference;
 
-             // Set contactid with some existing contact guid
-             Guid contactid = new Guid("{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}");
+             EntityReference contactReference = new EntityReference("contact", contactid);
+             incident["contactid"] = contactReference;
 
              // Set contactid as contact to field "casecontactid"
              EntityReference primaryContactId = new EntityReference("contact", contactid);
@@ -180,6 +177,36 @@ var TestCRMNetHandler = function (db) {
 
              return "ok";
              }
+             }
+
+             public static String GetContactId(OrganizationService service)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "contact";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("contactid");
+             qe.ColumnSet.Columns.Add("fullname");
+             qe.ColumnSet.Columns.Add("emailaddress1");
+             qe.ColumnSet.Columns.Add("telephone1");
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+
+             Console.WriteLine("Retrieved {0} entities", ec.Entities.Count);
+             Person[] temp = new Person[ec.Entities.Count];
+             int i = 0;
+             foreach (Entity act in ec.Entities)
+             {
+             Console.WriteLine("contact name:" + act["fullname"] + " - contact id: " + act["contactid"]);
+             var t = new Person();
+             t.name = act["name"].ToString();
+             t.accountid = act["contactid"].ToString();
+             t.email = act["emailaddress1"].ToString();
+             t.phone = act["telephone1"].ToString();
+             temp[i] = t;
+             i++;
+             }
+
+             return temp[0].accountid;
              }
              }
         */},
