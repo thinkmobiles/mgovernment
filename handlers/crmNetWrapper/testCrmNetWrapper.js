@@ -41,22 +41,24 @@ var TestCRMNetHandler = function (db) {
              using System.Threading.Tasks;
 
              using Microsoft.Crm.Sdk.Messages;
-
+             using Microsoft.Xrm.Sdk;
              using Microsoft.Xrm.Client;
              using Microsoft.Xrm.Client.Services;
              using Microsoft.Xrm.Sdk.Metadata;
              using System.Collections.Generic;
              using Microsoft.Xrm.Sdk.Messages;
+             using Microsoft.Xrm.Sdk.Client;
+             using Microsoft.Xrm.Sdk.Query;
 
              public class Startup
              {
              private OrganizationService _orgService;
+             private string _connectionString = "Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;";
 
              public async Task<object> Invoke(object input)
              {
-             var connectionString = "Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;";
              // Establish a connection to the organization web service using CrmConnection.
-             Microsoft.Xrm.Client.CrmConnection connection = CrmConnection.Parse(connectionString);
+             Microsoft.Xrm.Client.CrmConnection connection = CrmConnection.Parse(_connectionString);
 
              // Obtain an organization service proxy.
              // The using statement assures that the service proxy will be properly disposed.
@@ -67,6 +69,7 @@ var TestCRMNetHandler = function (db) {
 
              // Obtain information about the logged on user from the web service.
              Guid userid = ((WhoAmIResponse)_orgService.Execute(new WhoAmIRequest())).UserId;
+             Console.WriteLine("UserId from guid {0}.", userid);
              //var systemUser = _orgService.Retrieve("systemuser", userid,
              //new ColumnSet(new string[] { "firstname", "lastname" }));
              //Console.WriteLine("Logged on user is {0} {1}.", systemUser.FirstName, systemUser.LastName);
@@ -79,7 +82,8 @@ var TestCRMNetHandler = function (db) {
 
              //return string.Format("Microsoft Dynamics CRM version {0}.", versionResponse.Version);
 
-             return GetEntities(_orgService);
+             //return GetEntities(_orgService);
+             return GetAccountNames(_orgService);
              }
              }
 
@@ -103,6 +107,65 @@ var TestCRMNetHandler = function (db) {
              temp[i] = entities[i].LogicalName;
              }
              return temp;
+             }
+
+             private static string[] GetAccountNames(OrganizationService organizationService)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "account";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("name");
+
+             EntityCollection ec = organizationService.RetrieveMultiple(qe);
+
+             Console.WriteLine("Retrieved {0} entities", ec.Entities.Count);
+             string[] temp = new string[ec.Entities.Count];
+             int i = 0;
+             foreach (Entity act in ec.Entities)
+             {
+             Console.WriteLine("account name:" + act["name"]);
+             temp[i] = act["name"].ToString();
+             i++;
+             }
+
+             return temp;
+             }
+
+             public async Task<object> CreateCase(object input)
+             {
+             // Establish a connection to the organization web service using CrmConnection.
+             Microsoft.Xrm.Client.CrmConnection connection = CrmConnection.Parse(_connectionString);
+
+             // Obtain an organization service proxy.
+             // The using statement assures that the service proxy will be properly disposed.
+             using (_orgService = new OrganizationService(connection))
+             {
+             Entity incident = new Entity();
+             incident.LogicalName = "incident";
+
+             incident["title"] = "TEST Case subject";
+             incident["description"] = "TEST description";
+             incident["casetypecode"] = 1;
+
+             // Set customerid with some existing contact guid
+             // Guid customerid = new Guid("{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}");
+             Guid userid = ((WhoAmIResponse)_orgService.Execute(new WhoAmIRequest())).UserId;
+
+             // Set customerid as contact to field "customerid"
+             EntityReference CustomerId = new EntityReference("contact", userid);
+             incident["customerid"] = CustomerId;
+
+             // Set contactid with some existing contact guid
+             Guid contactid = new Guid("{xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx}");
+
+             // Set contactid as contact to field "casecontactid"
+             EntityReference primaryContactId = new EntityReference("contact", contactid);
+             incident["casecontactid"] = primaryContactId;
+
+             _orgService.Create(incident);
+
+             return "ok";
+             }
              }
              }
         */},
