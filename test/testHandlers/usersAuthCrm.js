@@ -11,22 +11,20 @@ var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:7791';
 
 describe('User register/ logIn / logOut', function () {
+    this.timeout(10000);
 
     var agent = request.agent(url);
     var userId;
     var serviceCollection;
 
     before(function (done) {
-        this.timeout(15000);
+        this.timeout(50000);
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
 
         async.series([
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
-            preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-            preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
-            preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
             preparingDb.toFillUsers(1)
         ], function (err,results)   {
             if (err) {
@@ -74,7 +72,6 @@ describe('User register/ logIn / logOut', function () {
             });
     });
 
-/*
     it('Register user', function (done) {
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
@@ -126,6 +123,6 @@ describe('User register/ logIn / logOut', function () {
                     });
             });
     });
-*/
+
 
 });

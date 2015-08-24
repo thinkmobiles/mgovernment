@@ -10,7 +10,7 @@ var PreparingDB = require('./preparingDB');
 var url = 'http://localhost:7791';
 
 describe('TRA CRM Services tests SMSSpam', function () {
-    this.timeout(30000);
+    this.timeout(40000);
 
     var agent = request.agent(url);
     var serviceCollection;
@@ -21,6 +21,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
         var preparingDb = new PreparingDB();
 
         async.series([
+                preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT)
             ],

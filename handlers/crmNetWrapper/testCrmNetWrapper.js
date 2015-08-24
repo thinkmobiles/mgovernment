@@ -34,7 +34,7 @@ var TestCRMNetHandler = function (db) {
 
             res.status(200).send(result);
         });
-    }
+    };
 
     this.connectCrm = function(req, res, next) {
         var path = __dirname + "\\";
@@ -261,7 +261,7 @@ var TestCRMNetHandler = function (db) {
         var loginOpt = {
             login: req.body.login,
             pass: req.body.pass
-        }
+        };
 
         var path = __dirname + "\\";
 
@@ -296,6 +296,8 @@ var TestCRMNetHandler = function (db) {
              string login = (string)input.login;
              string pass = (string)input.pass;
 
+             Console.WriteLine("User login: {0}  pass: {1}", login, pass);
+
              CrmConnection connection = CrmConnection.Parse(_connectionString);
 
              using (_orgService = new OrganizationService(connection))
@@ -324,22 +326,29 @@ var TestCRMNetHandler = function (db) {
              qe.ColumnSet = new ColumnSet();
              qe.ColumnSet.Columns.Add("contactid");
              qe.ColumnSet.Columns.Add("fullname");
-             qe.ColumnSet.Columns.Add("tra_PortalUserName");
-             qe.ColumnSet.Columns.Add("tra_Password");
+             qe.ColumnSet.Columns.Add("tra_portalusername");
+             qe.ColumnSet.Columns.Add("tra_password");
 
              FilterExpression filter = new FilterExpression();
 
              filter.FilterOperator = LogicalOperator.And;
-             filter.AddCondition(new ConditionExpression("tra_PortalUserName", ConditionOperator.Equal, new object[] { login }));
+             filter.AddCondition(new ConditionExpression("tra_portalusername", ConditionOperator.Equal, new object[] { login }));
 
              qe.Criteria = filter;
 
              EntityCollection ec = service.RetrieveMultiple(qe);
              Entity contact = null;
 
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
              if (ec.Entities.Count == 1)
              {
              contact = ec.Entities[0];
+
+             string hash = new CRMDataManagement.PasswordHash().createHash(pass);
+
+             Console.WriteLine("Found login: {0}  pass: {1}", contact["tra_portalusername"], contact["tra_password"]);
+             Console.WriteLine("Hashed pass: {0}", hash);
              }
 
              if (contact == null)
@@ -348,10 +357,10 @@ var TestCRMNetHandler = function (db) {
              }
              else
              {
-             string tra_pass = contact["tra_Password"].ToString();
-             if(new CRMDataManagement.PasswordHash().authenticatePassword(pass, tra_pass))
+             string tra_pass = contact["tra_password"].ToString();
+             if((new CRMDataManagement.PasswordHash().authenticatePassword(pass, tra_pass)))
              {
-             string contactId = contact["contactId"].ToString();
+             string contactId = contact["contactid"].ToString();
              return contactId;
              }
              return null;
@@ -419,6 +428,7 @@ var TestCRMNetHandler = function (db) {
              byte[] hash = Convert.FromBase64String(split[TRAUtility.PBKDF2_INDEX]);
 
              byte[] testHash = passwordBasedKeyDerivationFunction2(password, salt, iterations, hash.Length);
+
              return slowEquals(hash, testHash);
              }
 
@@ -471,6 +481,9 @@ var TestCRMNetHandler = function (db) {
             console.log(result);
 
             if (result.error) {
+                if (result.error === 'Not Found') {
+                    return res.status(400).send({error: RESPONSE.AUTH.INVALID_CREDENTIALS});
+                }
                 return next(new Error(result.error));
             }
 
