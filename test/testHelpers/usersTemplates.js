@@ -36,10 +36,15 @@ module.exports = {
     },
 
     CLIENT_REGISTER_DATA: {
-        login: 'testUser',
+        login: 'digiTest',
         pass: 'password777',
         gender: 'male',
-        phone: '+987654321'
+        phone: '+987654321',
+        email: 'darkvas90@gmail.com',
+        state: 'Dubai',
+        country: 'UAE', //may be better to remove
+        lastName: 'Digi',
+        firstName: 'Test'
     },
 
     CLIENT_CRM_DATA: {

@@ -10,7 +10,7 @@ var async = require ('async');
 var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:7791';
 
-describe('User register/ logIn / logOut', function () {
+describe('User CRM register/ logIn / logOut', function () {
     this.timeout(10000);
 
     var agent = request.agent(url);
@@ -72,12 +72,14 @@ describe('User register/ logIn / logOut', function () {
             });
     });
 
-    it('Register user', function (done) {
+    it('Register crm user', function (done) {
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
+        registerData.country = 1;
+        registerData.state = 1;
 
         agent
-            .post('/user/signOut')
+            .post('/crm/signOut')
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -86,7 +88,7 @@ describe('User register/ logIn / logOut', function () {
                 }
 
                 agent
-                    .post('/user/register')
+                    .post('/crm/register')
                     .send(registerData)
                     .expect(200)
                     .end(function (err, res) {
@@ -101,9 +103,11 @@ describe('User register/ logIn / logOut', function () {
     it('Register same user', function (done) {
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
+        registerData.country = 1;
+        registerData.state = 1;
 
         agent
-            .post('/user/signOut')
+            .post('/crm/signOut')
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -112,7 +116,7 @@ describe('User register/ logIn / logOut', function () {
                 }
 
                 agent
-                    .post('/user/register')
+                    .post('/crm/register')
                     .send(registerData)
                     .expect(400)
                     .end(function (err, res) {
