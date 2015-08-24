@@ -43,8 +43,8 @@ module.exports = {
         email: 'darkvas90@gmail.com',
         state: 'Dubai',
         country: 'UAE', //may be better to remove
-        lastName: 'Digi',
-        firstName: 'Test'
+        last: 'Digi',
+        first: 'Test'
     },
 
     CLIENT_CRM_DATA: {

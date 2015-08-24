@@ -24,7 +24,8 @@ var TestCRMNetHandler = function (db) {
          async (input) => {
          return ".NET Welcomes " + input.ToString();
          }
-         */});
+         */
+        });
 
         helloWorld('JavaScript', function (err, result) {
             if (err) {
@@ -36,11 +37,11 @@ var TestCRMNetHandler = function (db) {
         });
     };
 
-    this.connectCrm = function(req, res, next) {
+    this.connectCrm = function (req, res, next) {
         var path = __dirname + "\\";
 
         var connect = edge.func({
-            source: function() {/*
+            source: function () {/*
              using System;
              using System.Threading.Tasks;
 
@@ -222,7 +223,8 @@ var TestCRMNetHandler = function (db) {
              return temp[0].accountid;
              }
              }
-        */},
+             */
+            },
             references: [
                 'System.Data.dll',
                 'System.ServiceModel.dll',
@@ -250,7 +252,7 @@ var TestCRMNetHandler = function (db) {
         });
     };
 
-    this.signInClient = function(req, res, next) {
+    this.signInClient = function (req, res, next) {
 
         if (!req.body || !req.body.login || !req.body.pass) {
             var err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
@@ -495,11 +497,11 @@ var TestCRMNetHandler = function (db) {
         });
     };
 
-    this.signOutClient = function(req, res, next) {
+    this.signOutClient = function (req, res, next) {
         return sessionHandler.kill(req, res, next);
     };
 
-    this.registerClient = function(req, res, next) {
+    this.registerClient = function (req, res, next) {
 
         var body = req.body;
         var login = body.login;
@@ -512,185 +514,218 @@ var TestCRMNetHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        var registerClient = edge.func(function () {/*
-         using System;
-         using System.Threading.Tasks;
-         using Microsoft.Xrm.Sdk;
-         using Microsoft.Xrm.Client;
-         using Microsoft.Xrm.Client.Services;
-         using Microsoft.Xrm.Sdk.Query;
+        var path = __dirname + "\\";
 
-         public class Startup
-         {
-         private OrganizationService _orgService;
-         private string _connectionString = "Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;";
+        var registerClient = edge.func({
+            source: function () {/*
+             using System;
+             using System.Threading.Tasks;
 
-         public async Task<object> Invoke(dynamic input)
-         {
-         string login = (string)input.login;
+             using Microsoft.Crm.Sdk.Messages;
+             using Microsoft.Xrm.Sdk;
+             using Microsoft.Xrm.Client;
+             using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Metadata;
+             using System.Collections.Generic;
+             using Microsoft.Xrm.Sdk.Messages;
+             using Microsoft.Xrm.Sdk.Client;
+             using Microsoft.Xrm.Sdk.Query;
 
-         Console.WriteLine("User login: {0}", login);
+             public class Startup
+             {
+             private OrganizationService _orgService;
+             private string _connectionString = "Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;";
 
-         CrmConnection connection = CrmConnection.Parse(_connectionString);
+             public async Task<object> Invoke(dynamic input)
+             {
+             string login = (string)input.login;
 
-         using (_orgService = new OrganizationService(connection))
-         {
-         string contactId = FindContactByLogin(_orgService, login);
+             Console.WriteLine("User login: {0}", login);
 
-         if (contactId != null)
-         {
-         return "Login is used";
-         }
+             CrmConnection connection = CrmConnection.Parse(_connectionString);
 
-         CreateContact(input, _orgService);
+             using (_orgService = new OrganizationService(connection))
+             {
+             string contactId = FindContactByLogin(_orgService, login);
 
-         return "Created";
-         }
-         }
+             if (contactId != null)
+             {
+             return "Login is used";
+             }
 
-         public static string FindContactByLogin(OrganizationService service, string login)
-         {
-         QueryExpression qe = new QueryExpression();
-         qe.EntityName = "contact";
-         qe.ColumnSet = new ColumnSet();
-         qe.ColumnSet.Columns.Add("contactid");
-         qe.ColumnSet.Columns.Add("fullname");
-         qe.ColumnSet.Columns.Add("tra_portalusername");
+             CreateContact(input, _orgService);
 
-         FilterExpression filter = new FilterExpression();
+             return "Created";
+             }
+             }
 
-         filter.FilterOperator = LogicalOperator.And;
-         filter.AddCondition(new ConditionExpression("tra_portalusername", ConditionOperator.Equal, new object[] { login }));
+             public static string FindContactByLogin(OrganizationService service, string login)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "contact";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("contactid");
+             qe.ColumnSet.Columns.Add("fullname");
+             qe.ColumnSet.Columns.Add("tra_portalusername");
 
-         qe.Criteria = filter;
+             FilterExpression filter = new FilterExpression();
 
-         EntityCollection ec = service.RetrieveMultiple(qe);
-         Entity contact = null;
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("tra_portalusername", ConditionOperator.Equal, new object[] { login }));
 
-         Console.WriteLine("found count: {0}", ec.Entities.Count);
+             qe.Criteria = filter;
 
-         if (ec.Entities.Count == 1)
-         {
-         return contact["contactid"].ToString();
-         }
-         return null;
-         }
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Entity contact = null;
 
-         public static void CreateContact(dynamic contactData, OrganizationService orgService)
-         {
-         string login = (string)contactData.login;
-         string pass = (string)contactData.pass;
-         string email = (string)contactData.email;
-         string phone = (string)contactData.phone;
-         string first = (string)contactData.first;
-         string last = (string)contactData.last;
-         int country = (int)contactData.country;
-         int state = (int)contactData.state;
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
 
-         Entity contact = new Entity();
-         contact.LogicalName = "contact";
+             if (ec.Entities.Count > 0)
+             {
+             contact = ec.Entities[0];
+             return contact["contactid"].ToString();
+             }
+             return null;
+             }
 
-         contact["tra_portalusername"] = login;
-         contact["tra_password"] = new CRMDataManagement.PasswordHash().createHash(pass);
-         contact["firstname"] = first;
-         contact["lastname"] = last;
-         contact["emailaddress1"] = email;
-         contact["telephone1"] = phone;
-         contact["tra_country"] = new OptionSetValue(country);
-         contact["tra_state"] = new OptionSetValue(state);
+             public static void CreateContact(dynamic contactData, OrganizationService orgService)
+             {
+             string login = (string)contactData.login;
+             string pass = (string)contactData.pass;
+             string email = (string)contactData.email;
+             string phone = (string)contactData.phone;
+             string first = (string)contactData.first;
+             string last = (string)contactData.last;
+             int country = (int)contactData.country;
+             int state = (int)contactData.state;
 
-         orgService.Create(contact);
-         }
-         }
+             Console.WriteLine("login before createt: {0}", login);
 
-         namespace CRMDataManagement
-         {
-         using System;
-         using System.Security.Cryptography;
+             Entity contact = new Entity();
+             contact.LogicalName = "contact";
 
-         public class TRAUtility
-         {
-         public const string STATUS_IMPLEMENTED_CODE = "4";
-         public const string STATUS_WITHDRAWN_CODE = "3";
-         public const string STATUS_STAGE_CLOSED = "4";
-         public const string STATUS_PCR_AT_TRA = "1";
-         public const string STATUS_CASE_INPROGRESS = "1";
+             contact["tra_portalusername"] = login;
+             contact["tra_password"] = new CRMDataManagement.PasswordHash().createHash(pass);
+             contact["firstname"] = first;
+             contact["lastname"] = last;
+             contact["emailaddress1"] = email;
+             contact["telephone1"] = phone;
+             contact["tra_country"] = new OptionSetValue(country);
+             contact["tra_state"] = new OptionSetValue(state);
 
-         public const string STATUS_LICENSE_AT_TRA = "1";
-         public const string STAGE_APPROVAL_REQUIRED_PROCESSING_TEAM = "2";
+             Console.WriteLine("Prepared data: {0}", login);
 
-         public const string STATUS_APPROVED_LICENSE_REQUEST = "5";
-         public const string STAGE_PAYMENT_RECIEVED = "7";
+             orgService.Create(contact);
+             }
+             }
 
-         // The following constants may be changed without breaking existing hashes.
-         public const int SALT_BYTE_SIZE = 32;
-         public const int HASH_BYTE_SIZE = 32;
-         public const int PBKDF2_ITERATIONS = 1000;
+             namespace CRMDataManagement
+             {
+             using System;
+             using System.Security.Cryptography;
 
-         public const int ITERATION_INDEX = 0;
-         public const int SALT_INDEX = 1;
-         public const int PBKDF2_INDEX = 2;
-         }
+             public class TRAUtility
+             {
+             public const string STATUS_IMPLEMENTED_CODE = "4";
+             public const string STATUS_WITHDRAWN_CODE = "3";
+             public const string STATUS_STAGE_CLOSED = "4";
+             public const string STATUS_PCR_AT_TRA = "1";
+             public const string STATUS_CASE_INPROGRESS = "1";
 
-         public class PasswordHash
-         {
-         /// Creates a salted PBKDF2 hash of the password.
-         public string createHash(string password)
-         {
-         // Generate a random salt
-         RNGCryptoServiceProvider csprng = new RNGCryptoServiceProvider();
-         byte[] salt = new byte[TRAUtility.SALT_BYTE_SIZE];
-         csprng.GetBytes(salt);
+             public const string STATUS_LICENSE_AT_TRA = "1";
+             public const string STAGE_APPROVAL_REQUIRED_PROCESSING_TEAM = "2";
 
-         // Hash the password and encode the parameters
-         byte[] hash = passwordBasedKeyDerivationFunction2(password, salt, TRAUtility.PBKDF2_ITERATIONS, TRAUtility.HASH_BYTE_SIZE);
-         return TRAUtility.PBKDF2_ITERATIONS + ":" +
-         Convert.ToBase64String(salt) + ":" +
-         Convert.ToBase64String(hash);
-         }
+             public const string STATUS_APPROVED_LICENSE_REQUEST = "5";
+             public const string STAGE_PAYMENT_RECIEVED = "7";
 
-         /// Validates a password given a hash of the correct one.
-         public bool authenticatePassword(string password, string correctHash)
-         {
-         // Extract the parameters from the hash
-         char[] delimiter = { ':' };
-         string[] split = correctHash.Split(delimiter);
-         int iterations = Int32.Parse(split[TRAUtility.ITERATION_INDEX]);
-         byte[] salt = Convert.FromBase64String(split[TRAUtility.SALT_INDEX]);
-         byte[] hash = Convert.FromBase64String(split[TRAUtility.PBKDF2_INDEX]);
+             // The following constants may be changed without breaking existing hashes.
+             public const int SALT_BYTE_SIZE = 32;
+             public const int HASH_BYTE_SIZE = 32;
+             public const int PBKDF2_ITERATIONS = 1000;
 
-         byte[] testHash = passwordBasedKeyDerivationFunction2(password, salt, iterations, hash.Length);
+             public const int ITERATION_INDEX = 0;
+             public const int SALT_INDEX = 1;
+             public const int PBKDF2_INDEX = 2;
+             }
 
-         return slowEquals(hash, testHash);
-         }
+             public class PasswordHash
+             {
+             /// Creates a salted PBKDF2 hash of the password.
+             public string createHash(string password)
+             {
+             // Generate a random salt
+             RNGCryptoServiceProvider csprng = new RNGCryptoServiceProvider();
+             byte[] salt = new byte[TRAUtility.SALT_BYTE_SIZE];
+             csprng.GetBytes(salt);
 
-         /// Compares two byte arrays in length-constant time. This comparison
-         /// method is used so that password hashes cannot be extracted from
-         /// on-line systems using a timing attack and then attacked off-line.
-         public bool slowEquals(byte[] a, byte[] b)
-         {
-         uint diff = (uint)a.Length ^ (uint)b.Length;
-         for (int i = 0; i < a.Length && i < b.Length; i++)
-         diff |= (uint)(a[i] ^ b[i]);
-         return diff == 0;
-         }
+             // Hash the password and encode the parameters
+             byte[] hash = passwordBasedKeyDerivationFunction2(password, salt, TRAUtility.PBKDF2_ITERATIONS, TRAUtility.HASH_BYTE_SIZE);
+             return TRAUtility.PBKDF2_ITERATIONS + ":" +
+             Convert.ToBase64String(salt) + ":" +
+             Convert.ToBase64String(hash);
+             }
 
-         /// Computes the PBKDF2-SHA1 hash of a password.
-         public byte[] passwordBasedKeyDerivationFunction2(string password, byte[] salt, int iterations, int outputBytes)
-         {
-         Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt);
-         pbkdf2.IterationCount = iterations;
-         return pbkdf2.GetBytes(outputBytes);
-         }
-         }
-         }
-         */});
+             /// Validates a password given a hash of the correct one.
+             public bool authenticatePassword(string password, string correctHash)
+             {
+             // Extract the parameters from the hash
+             char[] delimiter = { ':' };
+             string[] split = correctHash.Split(delimiter);
+             int iterations = Int32.Parse(split[TRAUtility.ITERATION_INDEX]);
+             byte[] salt = Convert.FromBase64String(split[TRAUtility.SALT_INDEX]);
+             byte[] hash = Convert.FromBase64String(split[TRAUtility.PBKDF2_INDEX]);
+
+             byte[] testHash = passwordBasedKeyDerivationFunction2(password, salt, iterations, hash.Length);
+
+             return slowEquals(hash, testHash);
+             }
+
+             /// Compares two byte arrays in length-constant time. This comparison
+             /// method is used so that password hashes cannot be extracted from
+             /// on-line systems using a timing attack and then attacked off-line.
+             public bool slowEquals(byte[] a, byte[] b)
+             {
+             uint diff = (uint)a.Length ^ (uint)b.Length;
+             for (int i = 0; i < a.Length && i < b.Length; i++)
+             diff |= (uint)(a[i] ^ b[i]);
+             return diff == 0;
+             }
+
+             /// Computes the PBKDF2-SHA1 hash of a password.
+             public byte[] passwordBasedKeyDerivationFunction2(string password, byte[] salt, int iterations, int outputBytes)
+             {
+             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt);
+             pbkdf2.IterationCount = iterations;
+             return pbkdf2.GetBytes(outputBytes);
+             }
+             }
+             }
+             */
+            },
+            references: [
+                'System.Data.dll',
+                'System.ServiceModel.dll',
+                'System.Configuration.dll',
+                'System.Runtime.Serialization.dll',
+                path + 'Microsoft.Xrm.Sdk.dll',
+                path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+                path + 'Microsoft.IdentityModel.dll',
+                path + 'Microsoft.Crm.Sdk.Proxy.dll',
+                path + 'Microsoft.Xrm.Portal.Files.dll',
+                path + 'Microsoft.Xrm.Portal.dll',
+                path + 'Microsoft.Xrm.Client.dll',
+                path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+            ]
+        });
 
         registerClient(req.body, function (err, result) {
             if (err) {
                 return next(err);
             }
             console.log(result);
+            if (result == "Login is used") {
+                return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
+            }
 
             res.status(200).send(result);
         });
@@ -716,7 +751,8 @@ var TestCRMNetHandler = function (db) {
          async (input) => {
          return ".NET Welcomes " + input.ToString();
          }
-         */});
+         */
+        });
 
         createCase(caseOptions, function (err, result) {
             if (err) {

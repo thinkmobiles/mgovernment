@@ -11,7 +11,7 @@ var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:7791';
 
 describe('User CRM register/ logIn / logOut', function () {
-    this.timeout(10000);
+    this.timeout(20000);
 
     var agent = request.agent(url);
     var userId;
@@ -90,6 +90,34 @@ describe('User CRM register/ logIn / logOut', function () {
                 agent
                     .post('/crm/register')
                     .send(registerData)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        done();
+                    });
+            });
+    });
+
+    it('Login with registered GOOD credentials', function (done) {
+
+        var loginData = {
+            login: USERS.CLIENT_REGISTER_DATA.login,
+            pass: USERS.CLIENT_REGISTER_DATA.pass
+        };
+
+        agent
+            .post('/crm/signOut')
+            .send({})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                agent
+                    .post('/crm/signIn')
+                    .send(loginData)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
