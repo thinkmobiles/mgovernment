@@ -7,11 +7,11 @@ var Session = function ( db ) {
     var mongoose = require('mongoose');
     var User = db.model(CONST.MODELS.USER);
 
-    this.register = function ( req, res, userId, userType ) {
+    this.register = function (req, res, userId, userType) {
         req.session.loggedIn = true;
         req.session.uId = userId;
         req.session.type = userType;
-        res.status( 200 ).send( { success: RESPONSE.AUTH.LOG_IN } );
+        res.status(200).send({success: RESPONSE.AUTH.LOG_IN});
     };
 
     this.addToken = function ( req, token) {
@@ -30,14 +30,13 @@ var Session = function ( db ) {
 
     this.authenticatedUser = function ( req, res, next ) {
 
-        if( req.session && req.session.uId && req.session.loggedIn ) {
+        if(req.session && req.session.uId && req.session.loggedIn ) {
             next();
         } else {
             var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
             err.status = 401;
             next(err);
         }
-
     };
 
     this.isAdminBySession = function ( req, res, next ) {
@@ -83,7 +82,6 @@ var Session = function ( db ) {
 
     this.isAdmin = function ( req, res, next ) {
         var err;
-
 
         if (req.session && req.session.type === CONST.USER_TYPE.ADMIN) {
             return next()

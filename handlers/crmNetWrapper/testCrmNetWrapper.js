@@ -5,12 +5,18 @@ var TRA = require('../../constants/traServices');
 var request = require('request');
 var SessionHandler = require('./../sessions');
 
+var CASE_TYPE = {
+    COMPLAIN: 1,
+    COMPLAIN_TRA: 2,
+    SMS_SPAM: 3 //TODO Check and Complete
+};
+
 var TestCRMNetHandler = function (db) {
     'use strict';
 
     var edge = require('edge');
+    var sessionHandler = new SessionHandler(db);
     var mongoose = require('mongoose');
-    var ObjectId = mongoose.Types.ObjectId;
 
     this.getCases = function (req, res, next) {
 
@@ -235,6 +241,103 @@ var TestCRMNetHandler = function (db) {
         });
 
         connect('JavaScript', function (err, result) {
+            if (err) {
+                return next(err);
+            }
+            console.log(result);
+
+            res.status(200).send(result);
+        });
+    };
+
+    this.signInClient = function(req, res, next) {
+
+        if (!req.body || !req.body.login || !req.body.pass) {
+            var err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
+            err.status = 400;
+            return next(err);
+        }
+
+        var loginOpt = {
+            login: req.body.login,
+            pass: req.body.pass
+        }
+
+        var path = __dirname + "\\";
+
+        var signInFromNet = edge.func({
+            source: function () {/*
+             async (input) => {
+             return "Not login";
+             }
+             */
+            },
+            references: [
+                'System.Data.dll',
+                'System.ServiceModel.dll',
+                'System.Configuration.dll',
+                'System.Runtime.Serialization.dll',
+                path + 'Microsoft.Xrm.Sdk.dll',
+                path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+                path + 'Microsoft.IdentityModel.dll',
+                path + 'Microsoft.Crm.Sdk.Proxy.dll',
+                path + 'Microsoft.Xrm.Portal.Files.dll',
+                path + 'Microsoft.Xrm.Portal.dll',
+                path + 'Microsoft.Xrm.Client.dll',
+                path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+            ]
+        });
+
+        signInFromNet(loginOpt, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+
+            console.log(result);
+
+            if (result.error) {
+                return next(new Error(result.error));
+            }
+
+            if (!result.userId) {
+                return res.status(400).send({error: RESPONSE.AUTH.INVALID_CREDENTIALS});
+            }
+
+            return sessionHandler.register(req, res, result.userId, CONST.USER_TYPE.CLIENT);
+        });
+    };
+
+    this.signOutClient = function(req, res, next) {
+        res.status(500).send('Not implemented');
+    };
+
+    this.registerClient = function(req, res, next) {
+        res.status(500).send('Not implemented');
+    };
+
+    this.complainSmsSpam = function (req, res, next) {
+
+        var serviceType = 'SMS Spam';
+        var phoneSpam = req.body.phone;
+        var description = req.body.description;
+        var userId = req.session.uId;
+
+        var caseType = 1;//TODO const
+
+        var caseOptions = {
+            contactId: userId,
+            caseType: caseType,
+            title: serviceType + ' from ' + phoneSpam,
+            description: description
+        };
+
+        var createCase = edge.func(function () {/*
+         async (input) => {
+         return ".NET Welcomes " + input.ToString();
+         }
+         */});
+
+        createCase(caseOptions, function (err, result) {
             if (err) {
                 return next(err);
             }

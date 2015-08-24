@@ -42,6 +42,18 @@ module.exports = {
         phone: '+987654321'
     },
 
+    CLIENT_CRM_DATA: {
+        login: 'testUser',
+        pass: 'password777',
+        gender: 'male',
+        phone: '+9876543210123'
+    },
+
+    CLIENT_CRM_LOGIN_DATA: {
+        login: 'tarek001',
+        pass: 'qweasd'
+    },
+
     CLIENT_GOOD_USER_TYPE_FOR_DELETING: {
         login: 'clientForDeleting',
         pass: 'clientForDeleting',

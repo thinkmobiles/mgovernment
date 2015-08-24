@@ -17,6 +17,7 @@ module.exports = function(app, db) {
     var userFeedbackRouter = require('./userFeedback')(db);
     var adminEmailReports = require('./adminEmailReport')(db);
     var testTRAServicesRouter = require('./testTRAServices')(db);
+    var crmRouter = require('./crmServices')(db);
 
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
@@ -40,6 +41,7 @@ module.exports = function(app, db) {
     app.use('/tra_api/service', userTraServicesRouter);
     app.get('/attachment/:attachmentId', session.isAdminBySession, attachmentHandler.getAttachmentById);
 
+    app.use('/crm', crmRouter);
     app.use('/', testTRAServicesRouter);
     app.get('/', function (req, res) {
         res.sendfile('./index.html');
