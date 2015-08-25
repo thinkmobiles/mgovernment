@@ -546,6 +546,10 @@ var TestCRMNetHandler = function (db) {
         var userId = req.session.uId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.SMS_SPAM;
 
+        if (!phoneSpam || !description) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
         var caseOptions = {
             contactId: userId,
             caseType: caseType,

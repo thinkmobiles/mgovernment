@@ -16,11 +16,11 @@ module.exports = function(db) {
     router.post('/register', crmNetWrapperHandler.registerClient);
     router.post('/signOut', crmNetWrapperHandler.signOutClient);
 
-    router.post('/complainSmsSpam', session.authenticatedUser, crmNetWrapperHandler.complainInquiries);
-    router.post('/complainServiceProvider', crmNetWrapperHandler.complainServiceProvider);
-    router.post('/complainTRAService', crmNetWrapperHandler.complainTRAService);
-    router.post('/complainEnquiries', crmNetWrapperHandler.complainInquiries);
-    router.post('/sendSuggestion', crmNetWrapperHandler.sendSuggestion);
+    router.post('/complainSmsSpam', session.authenticatedUser, crmNetWrapperHandler.complainSmsSpam);
+    router.post('/complainServiceProvider', session.authenticatedUser, crmNetWrapperHandler.complainServiceProvider);
+    router.post('/complainTRAService', session.authenticatedUser, crmNetWrapperHandler.complainTRAService);
+    router.post('/complainEnquiries', session.authenticatedUser, crmNetWrapperHandler.complainInquiries);
+    router.post('/sendSuggestion', session.authenticatedUser, crmNetWrapperHandler.sendSuggestion);
 
 //    router.post('/complainSmsBlock', crmNetWrapperHandler.complainSmsBlock);
 //    router.post('/sendPoorCoverage', crmNetWrapperHandler.sendPoorCoverage);

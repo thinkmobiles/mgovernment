@@ -189,7 +189,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
     //</editor-fold>
-
+/*
     //<editor-fold desc="Complain Inquiries">
     it('SEND complainEnquiries', function (done) {
 
@@ -381,7 +381,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
     //</editor-fold>
-
+*/
     /* TODO ServiceProvider
     //<editor-fold desc="Complain Service Provider">
     it('SEND complainServiceProvider', function (done) {
