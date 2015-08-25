@@ -38,9 +38,30 @@ module.exports = {
     EMAIL_COMPLAIN_FROM: 'testTRA@testTRA.ae',
 
     EMAIL_COMPLAINSMSSPAM: 'smsspam@ukr.net',// password: smsspam
-    EMAIL_HELP_SALIM: 'helpsalim@ukr.net'// password: helpsalim
+    EMAIL_HELP_SALIM: 'helpsalim@ukr.net',// password: helpsalim
 
     //TODO use for test server
     //'allcomplaintra@mail.com',// pass:allcomplaintra1q
 
+    CRM_ENUM: {
+        STATE: {
+            'Abu Dhabi': 1,
+            'Ajman': 2,
+            'Dubai': 3,
+            'Fujairah': 4,
+            'Ras al-Khaiman': 5,
+            'Sharjah': 6,
+            'Umm al-Quwain': 7
+        },
+        COUNTRY: {
+            UAE: 1
+        },
+        CASE_TYPE: {
+            SMS_SPAM: 5,
+            SUGGESTION: 1,
+            INQUIRY: 2,
+            COMPLAINT_TRA: 3,
+            COMPLAINT_SERVICE_PROVIDER: 4
+        }
+    }
 };

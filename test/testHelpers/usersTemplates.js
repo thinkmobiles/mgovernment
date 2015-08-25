@@ -36,15 +36,17 @@ module.exports = {
     },
 
     CLIENT_REGISTER_DATA: {
-        login: 'digiTest',
+        login: 'digiTest2',
         pass: 'password777',
         gender: 'male',
-        phone: '+987654321',
+        landline: '+987654321',
+        mobile: '+987654321',
         email: 'darkvas90@gmail.com',
-        state: 'Dubai',
-        country: 'UAE', //may be better to remove
+        address: 'some street, 23/5',
+        state: 3,
         last: 'Digi',
-        first: 'Test'
+        first: 'Test',
+        emiratesId: '784-1990-NNNNNNN-C'
     },
 
     CLIENT_CRM_DATA: {

@@ -75,8 +75,6 @@ describe('User CRM register/ logIn / logOut', function () {
     it('Register crm user', function (done) {
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
-        registerData.country = 1;
-        registerData.state = 1;
 
         agent
             .post('/crm/signOut')
@@ -131,8 +129,6 @@ describe('User CRM register/ logIn / logOut', function () {
     it('Register same user', function (done) {
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
-        registerData.country = 1;
-        registerData.state = 1;
 
         agent
             .post('/crm/signOut')
