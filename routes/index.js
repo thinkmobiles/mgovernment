@@ -19,6 +19,7 @@ module.exports = function(app, db) {
     var userFeedbackRouter = require('./userFeedback')(db);
     var adminEmailReports = require('./adminEmailReport')(db);
     var testTRAServicesRouter = require('./testTRAServices')(db);
+    var whoIsAndMobileRouter = require('./whoIsAndMobile')(db);
 
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
@@ -43,6 +44,7 @@ module.exports = function(app, db) {
     app.get('/attachment/:attachmentId', session.isAdminBySession, attachmentHandler.getAttachmentById);
 
     app.use('/', testTRAServicesRouter);
+    app.use('/', whoIsAndMobileRouter);
     app.get('/', function (req, res) {
         res.sendfile('./index.html');
     });

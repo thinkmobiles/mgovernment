@@ -36,7 +36,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                 if (err) {
                     return done(err)
                 }
-                //console.log('BD preparing completed')
+                console.log('BD preparing completed');
                 done();
             });
     });

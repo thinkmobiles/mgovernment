@@ -30,6 +30,7 @@ define([
 
         initialize: function () {
             itemBlockCount = 0;
+            profileBlockCount = 0;
             sendParams = {};
             itemsInputNameArray = [];
             this.render();
@@ -103,16 +104,16 @@ define([
             var el = this.$el;
 
             if (e.target.checked) {
-                el.find('#'+ idName + 'Input').css( "display", "inline" );
+                //el.find('#'+ idName + 'Input').css( "display", "inline" );
                 el.find('#'+ idName + 'Show').css( "display", "block" );
-                el.find('#'+ idName + 'AddInputButton').css( "display", "inline" );
-                el.find('#'+ idName + 'DellInputButton').css( "display", "inline" );
+                //el.find('#'+ idName + 'AddInputButton').css( "display", "inline" );
+                //el.find('#'+ idName + 'DellInputButton').css( "display", "inline" );
 
             } else {
-                el.find('#'+ idName + 'Input').css( "display", "none" );
+                //el.find('#'+ idName + 'Input').css( "display", "none" );
                 el.find('#'+ idName + 'Show').css( "display", "none" );
-                el.find('#'+ idName + 'AddInputButton').css( "display", "none" );
-                el.find('#'+ idName + 'DellInputButton').css( "display", "none" );
+                //el.find('#'+ idName + 'AddInputButton').css( "display", "none" );
+                //el.find('#'+ idName + 'DellInputButton').css( "display", "none" );
             }
         },
 
