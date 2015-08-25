@@ -554,7 +554,9 @@ var TestCRMNetHandler = function (db) {
             contactId: userId,
             caseType: caseType,
             title: 'SMS Spam from ' + phoneSpam,
-            description: description
+            description: description,
+            attachment: null,
+            attachmentName: null
         };
 
         createCase(caseOptions, function (err, result) {
@@ -720,7 +722,7 @@ var TestCRMNetHandler = function (db) {
             var imageTypeDetected = imageData
                 .type
                 .match(imageTypeRegularExpression);
-            imageData.extention = imageTypeDetected;
+            imageData.extention = imageTypeDetected[1];
         }
         return imageData;
     }

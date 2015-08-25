@@ -146,7 +146,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 agent
                     .post('/crm/complainTRAService')
                     .send(data)
-                    .expect(200)
+                    .expect(401)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
