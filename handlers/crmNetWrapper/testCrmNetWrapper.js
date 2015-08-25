@@ -593,6 +593,7 @@ var TestCRMNetHandler = function (db) {
              string description = (string)input.description;
              int caseType = (int)input.caseType;
              string attachment = (string)input.attachment;
+             string attachmentName = (string)input.attachmentName;
 
              CrmConnection connection = CrmConnection.Parse(connectionString);
              using (orgService = new OrganizationService(connection))
@@ -617,7 +618,7 @@ var TestCRMNetHandler = function (db) {
              note.LogicalName = "annotation";
              note["objectid"] = new EntityReference("incident", incidentId);
              note["documentbody"] = attachment;
-             //note["filename"] = ;
+             note["filename"] = attachmentName;
              orgService.Create(note);
              }
 
@@ -675,14 +676,19 @@ var TestCRMNetHandler = function (db) {
 
         var userId = req.session.uId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
-        var attachment = req.body.attachment || null;
+        var attachmentData = null;
+
+        if (req.body.attachment) {
+            attachmentData = prepareAttachment(req.body.attachment);
+        }
 
         var caseOptions = {
             contactId: userId,
             caseType: caseType,
             title: title,
             description: description,
-            attachment: attachment
+            attachment: attachmentData ? attachmentData.data : null,
+            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null
         };
 
         createCase(caseOptions, function (err, result) {
@@ -694,6 +700,30 @@ var TestCRMNetHandler = function (db) {
             res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
         });
     };
+
+    function prepareAttachment(dataString) {
+
+        var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+        var imageData = {};
+
+        if (!matches || matches.length !== 3) {
+
+            imageData.type = 'image/png';
+            imageData.data = dataString;
+            imageData.extention = 'png';
+
+        } else {
+            imageData.type = matches[1];
+            imageData.data = matches[2];
+
+            var imageTypeRegularExpression = /\/(.*?)$/;
+            var imageTypeDetected = imageData
+                .type
+                .match(imageTypeRegularExpression);
+            imageData.extention = imageTypeDetected;
+        }
+        return imageData;
+    }
 
     this.complainInquiries = function (req, res, next) {
 
