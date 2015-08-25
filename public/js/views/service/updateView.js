@@ -279,6 +279,7 @@ define([
             var service = App.selectedService.toJSON();
 
             service.port =  service.port || undefined;
+            service.profile =  service.profile
 
             this.$el.html(this.template( service));
             itemBlockCount =  App.selectedService.toJSON().inputItems.length;

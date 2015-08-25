@@ -31,5 +31,21 @@
     "request": "^2.58.0",
     "supertest": "^1.0.1",
     "yuidocjs": "^0.9.0"
+  },
+  "apidoc": {
+    "title": "Custom apiDoc browser title",
+    "url": "http://192.168.88.122"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-uglify": "^0.9.1",
+    "grunt-jsdoc": "^0.6.8",
+    "jsdoc": "^3.3.2",
+    "open": "0.0.5",
+    "sinon": "^1.16.1",
+    "supertest": "^1.0.1"
   }
 }
