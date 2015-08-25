@@ -6,11 +6,11 @@ var request = require('request');
 var SessionHandler = require('./../sessions');
 
 var REGISTER_FIELDS = [
+    'login',
+    'pass',
     'first',
     'last',
     'emiratesId',
-    'username',
-    'pass',
     'address',
     'state',
     'landline',
@@ -535,6 +535,7 @@ var TestCRMNetHandler = function (db) {
                 return callback(RESPONSE.NOT_ENOUGH_PARAMS + ': ' + REGISTER_FIELDS[i]);
             }
         }
+        callback();
         //'784-YYYY-NNNNNNN-C'
     }
 
@@ -566,6 +567,8 @@ var TestCRMNetHandler = function (db) {
     function createCase(options, callback) {
 
         options.connectionString = TRA.CRM_CONNECTION;
+
+        var path = __dirname + "\\";
 
         var createCaseNet = edge.func({
             source: function () {/*

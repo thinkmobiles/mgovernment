@@ -16,7 +16,7 @@ module.exports = function(db) {
     router.post('/register', crmNetWrapperHandler.registerClient);
     router.post('/signOut', crmNetWrapperHandler.signOutClient);
 
-    router.post('/complainSmsSpam', crmNetWrapperHandler.complainSmsSpam);
+    router.post('/complainSmsSpam', session.authenticatedUser, crmNetWrapperHandler.complainSmsSpam);
     /*router.post('/complainSmsBlock', crmNetWrapperHandler.complainSmsBlock);
 
     router.post('/complainServiceProvider', crmNetWrapperHandler.complainServiceProvider);

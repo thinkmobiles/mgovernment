@@ -11,7 +11,7 @@ var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:7791';
 
 describe('User CRM register/ logIn / logOut', function () {
-    this.timeout(20000);
+    this.timeout(10000);
 
     var agent = request.agent(url);
     var userId;
@@ -73,6 +73,7 @@ describe('User CRM register/ logIn / logOut', function () {
     });
 
     it('Register crm user', function (done) {
+        this.timeout(60000);
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
 
@@ -127,6 +128,7 @@ describe('User CRM register/ logIn / logOut', function () {
     });
 
     it('Register same user', function (done) {
+        this.timeout(60000);
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
 

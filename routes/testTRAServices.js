@@ -33,9 +33,5 @@ module.exports = function(db) {
     router.get('/crm/auth/callback', testTRACRMHandler.authCallback);
     router.get('/crm/contacts', testTRACRMHandler.getContacts);
 
-    //TODO test crm wrapper
-    router.get('/crmwrapper/case', testCRMNETHandler.getCases);
-    router.get('/crmwrapper/conn', testCRMNETHandler.connectCrm);
-
     return router;
 };
