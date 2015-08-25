@@ -26,12 +26,7 @@ module.exports = function(db) {
     router.post('/sendSuggestion', testTRAHandler.sendSuggestion);
     router.post('/sendPoorCoverage', testTRAHandler.sendPoorCoverage);
 
-
     router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
-    //router.get('/crm/case', testTRACRMHandler.getCases);
-    router.get('/crm/auth', testTRACRMHandler.loginHttp);
-    router.get('/crm/auth/callback', testTRACRMHandler.authCallback);
-    router.get('/crm/contacts', testTRACRMHandler.getContacts);
 
     return router;
 };

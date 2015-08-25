@@ -541,7 +541,6 @@ var TestCRMNetHandler = function (db) {
 
     this.complainSmsSpam = function (req, res, next) {
 
-        var serviceType = 'SMS Spam';
         var phoneSpam = req.body.phone;
         var description = req.body.description;
         var userId = req.session.uId;
@@ -550,7 +549,7 @@ var TestCRMNetHandler = function (db) {
         var caseOptions = {
             contactId: userId,
             caseType: caseType,
-            title: serviceType + ' from ' + phoneSpam,
+            title: 'SMS Spam from ' + phoneSpam,
             description: description
         };
 
@@ -560,7 +559,7 @@ var TestCRMNetHandler = function (db) {
             }
             console.log(result);
 
-            res.status(200).send(result);
+            res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
         });
     };
 
@@ -580,8 +579,6 @@ var TestCRMNetHandler = function (db) {
 
              public class Startup
              {
-             // "Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;";
-
              public async Task<object> Invoke(dynamic input)
              {
              OrganizationService orgService;
@@ -591,6 +588,7 @@ var TestCRMNetHandler = function (db) {
              string title = (string)input.title;
              string description = (string)input.description;
              int caseType = (int)input.caseType;
+             string attachment = (string)input.attachment;
 
              CrmConnection connection = CrmConnection.Parse(connectionString);
              using (orgService = new OrganizationService(connection))
@@ -607,7 +605,17 @@ var TestCRMNetHandler = function (db) {
              incident["contactid"] = contactReference;
              incident["customerid"] = contactReference;
 
-             orgService.Create(incident);
+             Guid incidentId = orgService.Create(incident);
+
+             if (attachment != null && !string.IsNullOrWhiteSpace(attachment))
+             {
+             Entity note = new Entity();
+             note.LogicalName = "annotation";
+             note["objectid"] = new EntityReference("incident", incidentId);
+             note["documentbody"] = attachment;
+             //note["filename"] = ;
+             orgService.Create(note);
+             }
 
              return true;
              }
@@ -633,6 +641,117 @@ var TestCRMNetHandler = function (db) {
 
         createCaseNet(options, callback);
     }
+
+    this.complainServiceProvider = function (req, res, next) {
+
+        return res.status(500).send({error: 'Not Implemented'});
+
+        var serviceType = 'Service Provider';
+        var description = req.body.description;
+        var title = req.body.title;
+        var userId = req.session.uId;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
+
+        if (!title || !description) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var attachment = req.body.attachment;
+
+    };
+
+    this.complainTRAService = function (req, res, next) {
+
+        var description = req.body.description;
+        var title = req.body.title;
+
+        if (!title || !description) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var userId = req.session.uId;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
+        var attachment = req.body.attachment || null;
+
+        var caseOptions = {
+            contactId: userId,
+            caseType: caseType,
+            title: title,
+            description: description,
+            attachment: attachment
+        };
+
+        createCase(caseOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+            console.log(result);
+
+            res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+        });
+    };
+
+    this.complainInquiries = function (req, res, next) {
+
+        var description = req.body.description;
+        var title = req.body.title;
+
+        if (!title || !description) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var userId = req.session.uId;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.INQUIRY;
+        var attachment = req.body.attachment || null;
+
+        var caseOptions = {
+            contactId: userId,
+            caseType: caseType,
+            title: title,
+            description: description,
+            attachment: attachment
+        };
+
+        createCase(caseOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+            console.log(result);
+
+            res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+        });
+    };
+
+    this.sendSuggestion = function (req, res, next) {
+
+        var description = req.body.description;
+        var title = req.body.title;
+
+        if (!title || !description) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var userId = req.session.uId;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
+        var attachment = req.body.attachment || null;
+
+        var caseOptions = {
+            contactId: userId,
+            caseType: caseType,
+            title: title,
+            description: description,
+            attachment: attachment
+        };
+
+        createCase(caseOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+            console.log(result);
+
+            res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+        });
+    };
 
 };
 
