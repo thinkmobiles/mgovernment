@@ -4,6 +4,9 @@
   "description": "mGovernment proto",
   "main": "app.js",
   "license": "ISC",
+   "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "apn": "^1.7.3",
     "async": "^0.9.0",
@@ -32,6 +35,7 @@
     "supertest": "^1.0.1",
     "yuidocjs": "^0.9.0"
   },
+  
   "apidoc": {
     "title": "Custom apiDoc browser title",
     "url": "http://192.168.88.122"
