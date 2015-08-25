@@ -1,3 +1,4 @@
+
 .pagination {
     width: 100%;
     float: right;
@@ -223,7 +224,7 @@
     width: 70px;
     height: 30px;
     line-height: 30px;
-    clear: both;
+    /*clear: both;*/
     border-radius: 4px;
     -moz-border-radius: 5px;
     -khtml-border-radius: 10px;
@@ -235,17 +236,21 @@
     text-shadow: 1px 1px white;
     text-decoration: none;
 }
-.actionButtonDell {
+.actionButtonAdd:hover {
     text-decoration: none;
+}
+
+.actionButtonDell{
+
     font-size: 18px;
     color: red;
     text-align: center;
     vertical-align: middle;
     border: 1px solid gray;
-    width: 70px;
+    width: 75px;
     height: 30px;
     line-height: 30px;
-    clear: both;
+    /*clear: both;*/
     border-radius: 4px;
     -moz-border-radius: 5px;
     -khtml-border-radius: 10px;
@@ -255,7 +260,13 @@
     font-weight: bold;
     cursor: pointer;
     text-shadow: 1px 1px white;
+    text-decoration: none;
 }
+
+.actionButtonDell:hover {
+    text-decoration: none;
+}
+
 
 .actionButtonWhite {
     text-align: center;
