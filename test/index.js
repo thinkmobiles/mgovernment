@@ -9,7 +9,6 @@ var app = require('../app');
 //require('./testHandlers/services');
 //require('./testHandlers/userServices');
 
-
 //require('./testHandlers/usersAuth'); //added register
 require('./testHandlers/usersAuthCrm');
 require('./testHandlers/traServicesCrm');
