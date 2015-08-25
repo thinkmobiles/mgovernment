@@ -36,7 +36,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
     it('SEND data to ComplainSmsSpam', function (done) {
 
-        var loginData = USERS.CLIENT_CRM_LOGIN_DATA;
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
             phone: '505050440',
             description: 'I receive 10 sms from this number 505050440'
@@ -59,7 +59,35 @@ describe('TRA CRM Services tests SMSSpam', function () {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
+                        done();
+                    });
+            });
+    });
+
+    it('SEND data to ComplainSmsSpam UnAuthorized', function (done) {
+
+        var data = {
+            phone: '0995248763',
+            description: 'I receive 1000 sms from phone number 0995248763'
+        };
+
+        agent
+            .post('/crm/signOut')
+            .send({})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/crm/complainSmsSpam')
+                    .send(data)
+                    .expect(401)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
                         done();
                     });
             });

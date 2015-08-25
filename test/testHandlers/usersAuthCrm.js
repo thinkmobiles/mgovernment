@@ -37,8 +37,8 @@ describe('User CRM register/ logIn / logOut', function () {
     it('Login with GOOD credentials', function (done) {
 
         var loginData = {
-            login: USERS.CLIENT_CRM_LOGIN_DATA.login,
-            pass: USERS.CLIENT_CRM_LOGIN_DATA.pass
+            login: USERS.CLIENT_CRM_LOGIN_TAREK.login,
+            pass: USERS.CLIENT_CRM_LOGIN_TAREK.pass
         };
 
         agent
@@ -56,8 +56,8 @@ describe('User CRM register/ logIn / logOut', function () {
     it('Login with BAD credentials - wrong pass', function (done) {
 
         var loginData = {
-            login: USERS.CLIENT_CRM_LOGIN_DATA.login,
-            pass: USERS.CLIENT_CRM_LOGIN_DATA.pass + 'badpass'
+            login: USERS.CLIENT_CRM_LOGIN_TAREK.login,
+            pass: USERS.CLIENT_CRM_LOGIN_TAREK.pass + 'badpass'
         };
 
         agent

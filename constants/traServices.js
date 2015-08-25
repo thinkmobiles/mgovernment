@@ -13,6 +13,8 @@ module.exports = {
       https://ta-uat.tra.gov.ae:65004/tasserver/v1/imei?method=search
     */
 
+    CRM_CONNECTION: 'Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;',
+
     CRM_USER: 'TRA\crm.acc',
     CRM_PASS: 'TRA_#admin',
     CRM_URL: 'do-crm15',

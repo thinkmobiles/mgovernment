@@ -56,9 +56,14 @@ module.exports = {
         phone: '+9876543210123'
     },
 
-    CLIENT_CRM_LOGIN_DATA: {
+    CLIENT_CRM_LOGIN_TAREK: {
         login: 'tarek001',
         pass: 'qweasd'
+    },
+
+    CLIENT_CRM_LOGIN_DIGI: {
+        login: 'digiTest',
+        pass: 'password777'
     },
 
     CLIENT_GOOD_USER_TYPE_FOR_DELETING: {
