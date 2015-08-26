@@ -66,10 +66,7 @@ module.exports = function(db) {
      *
      * @example
      *     {
-     *      Domain Name: 'tra.gov.ae',
-     *      Registrar ID: 'Etisalat',
-     *      Registrar Name:  'Etisalat',
-     *      Status: 'ok'
+     *      Not Available
      *      }
      *
      * @method checkWhoisAvailable
@@ -79,7 +76,7 @@ module.exports = function(db) {
     router.get('/checkWhoisAvailable', whoIsAndMobileHandler.testWhoisCheck);
 
     /**
-     * This __method__ get information about phone by IMEI or TAC code
+     * This __method__ search Device by Imei or TAC code
      *
      * __URI:__ ___`/searchMobile`___
      *
@@ -87,7 +84,11 @@ module.exports = function(db) {
      * __GET__
      *
      *  ## Request:
-     *     Query: imei
+     *     Query:
+     *      imei
+     *      start //not require
+     *      end //not require
+     *
      *     Exemple: /searchMobile?imei=01385100
      *
      *  ## Responses:
@@ -96,12 +97,22 @@ module.exports = function(db) {
      *
      *
      * @example
-     *     {
-     *      Domain Name: 'tra.gov.ae',
-     *      Registrar ID: 'Etisalat',
-     *      Registrar Name:  'Etisalat',
-     *      Status: 'ok'
-     *      }
+     *  [{
+     *  "tac": "01355500",
+     *  "marketingName": "Apple iPhone 5 A1429",
+     *  "designationType": "A1429",
+     *  "manufacturer": "Apple Inc",
+     *  "bands": "GSM 1800, GSM 1900, GSM 900, GSM850 (GSM800), HSDPA, HSUPA, LTE FDD BAND 1, LTE FDD BAND 13, LTE FDD BAND 15, LTE FDD BAND 3, LTE FDD BAND 5, WCDMA FDD Band I, WCDMA FDD Band II, WCDMA FDD Band V, WCDMA FDD Band VIII, WiFi.",
+     *  "allocationDate": "2012-12-05",
+     *  "countryCode": "310",
+     *  "fixedCode": "MAN",
+     *  "radioInterface": "EDGE, GPRS",
+     *  "manufacturerCode": "205157",
+     *  "startIndex": 0,
+     *  "endIndex": 1000,
+     *  "count": 1,
+     *  "totalNumberofRecords": 1
+     *  }]
      *
      * @method searchMobile
      *
@@ -109,7 +120,7 @@ module.exports = function(db) {
     router.get('/searchMobile', whoIsAndMobileHandler.searchMobileImei);
 
     /**
-     * This __method__ get information about phones by Brand
+     * This __method__ search device By BrandName
      *
      * __URI:__ ___`/searchMobileBrand`___
      *
@@ -117,8 +128,11 @@ module.exports = function(db) {
      * __GET__
      *
      *  ## Request:
-     *     Query: brand
-     *     Exemple: /searchMobileBrand?brand=Apple
+     *      imei
+     *      start //not require
+     *      end //not require
+     *
+     *     Exemple: /searchMobileBrand?brand=Appl%&start=2&end=5
      *
      *  ## Responses:
      *      status (200) JSON object: {object}
@@ -126,12 +140,23 @@ module.exports = function(db) {
      *
      *
      * @example
-     *     {
-     *      Domain Name: 'tra.gov.ae',
-     *      Registrar ID: 'Etisalat',
-     *      Registrar Name:  'Etisalat',
-     *      Status: 'ok'
-     *      }
+     *  [{
+     *  ""tac"": ""01275800"",
+     *  ""marketingName"": ""iPhone 4 (A1332)"",
+     *  ""designationType"": ""iPhone 4 (A1332)"",
+     *  ""manufacturer"": ""Apple Inc"",
+     *  ""bands"": ""GSM 1800, GSM 1900, GSM 900, GSM850 (GSM800), WCDMA FDD Band I, WCDMA FDD Band II, WCDMA FDD Band V, WCDMA FDD Band VIII"",
+     *  ""allocationDate"": ""2011-03-24"",
+     *  ""countryCode"": ""310"",
+     *  ""fixedCode"": ""MAN"",
+     *  ""radioInterface"": ""NONE"",
+     *  ""manufacturerCode"": ""205157"",
+     *  ""startIndex"": 2,
+     *  ""endIndex"": 5,
+     *  ""count"": 3,
+     *  ""totalNumberofRecords"": 1247
+     *  },
+     *  .... ]
      *
      * @method searchMobileBrand
      *
