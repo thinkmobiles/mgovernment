@@ -75,14 +75,14 @@ mainDb.once( 'open', function callback() {
     });
 });
 
-var logWriter = require('./helpers/logWriter')();
+/*var logWriter = require('./helpers/logWriter')();
 
 
 
 process.on('uncaughtException', function(err) {
     console.log(err);
     logWriter.log(err);
-});
+});*/
 
 module.exports = app;
 

@@ -50,25 +50,7 @@ module.exports = function(db) {
      */
     router.post('/sendPoorCoverage', testTRAHandler.sendPoorCoverage);
 
-    /**
-     * This __method__ create complain about website with forbidden content  <br>
-     *
-     * __URI:__ ___`/sendHelpSalim`___
-     *
-     *  ## METHOD:
-     * __POST__
-     *
-     *  ## Request:
-     *     Body:
-     *       url:
-     *       description:
-     *  ## Responses:
-     *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     *
-     * @method sendHelpSalim
-     * @for testTraServices
-     */
+
     router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
     //router.get('/crm/case', testTRACRMHandler.getCases);
     router.get('/crm/auth', testTRACRMHandler.loginHttp);
