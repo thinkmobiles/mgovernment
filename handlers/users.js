@@ -679,7 +679,7 @@ var User = function(db) {
                         action: CONST.ACTION.UPDATE,
                         model: CONST.MODELS.USER,
                         modelId: user._id,
-                        description:'Create users account'
+                        description:'Update users account'
                     };
 
                     historyHandler.pushlog(log);
@@ -716,6 +716,15 @@ var User = function(db) {
                 if (err) {
                     return next(err);
                 }
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.USER,
+                    modelId: req.params.id,
+                    description:'Delete users account'
+                };
+
+                historyHandler.pushlog(log);
 
                 return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });

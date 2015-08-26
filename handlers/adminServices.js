@@ -172,6 +172,15 @@ var Service = function(db) {
                     return next(err);
                 }
 
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: req.params.id,
+                    description: 'Delete Service'
+                };
+                historyHandler.pushlog(log);
+
                 return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
