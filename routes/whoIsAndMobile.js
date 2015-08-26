@@ -10,12 +10,10 @@ var router = express.Router();
 
 var WhoIsAndMobileHandler = require('../handlers/whoIsAndMobileHandler');
 
-
 module.exports = function(db) {
     'use strict';
 
     var whoIsAndMobileHandler = new WhoIsAndMobileHandler(db);
-
 
     /**
      * This __method__ get information about domain name
@@ -72,7 +70,6 @@ module.exports = function(db) {
      * @method checkWhoisAvailable
      *
      */
-
     router.get('/checkWhoisAvailable', whoIsAndMobileHandler.testWhoisCheck);
 
     /**
@@ -161,7 +158,7 @@ module.exports = function(db) {
      * @method searchMobileBrand
      *
      */
-
     router.get('/searchMobileBrand', whoIsAndMobileHandler.searchMobileBrand);
+
     return router;
 };
