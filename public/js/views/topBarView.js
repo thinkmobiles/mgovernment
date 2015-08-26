@@ -7,10 +7,7 @@ define([
         template: _.template(topBarTemplate),
 
         events: {
-            'click #navigateServicesView': 'navigateToByDataHash',
-            'click #navigateUsersView': 'navigateToByDataHash',
-            'click #navigateFeedbacksView': 'navigateToByDataHash',
-            'click #navigateEmailReportsView': 'navigateToByDataHash'
+            'click .topBarButton': 'navigateToByDataHash'
         },
 
         initialize: function () {

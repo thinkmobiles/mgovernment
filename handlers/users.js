@@ -557,7 +557,7 @@ var User = function(db) {
                 }
 
                 var log = {
-                    userId: req.session.uId,
+                    user: req.session.uId,
                     action: CONST.ACTION.CREATE,
                     model: CONST.MODELS.USER,
                     modelId: user._id,
@@ -673,6 +673,16 @@ var User = function(db) {
                     if (err) {
                         return res.status(400).send({ error: err});
                     }
+
+                    var log = {
+                        user: req.session.uId,
+                        action: CONST.ACTION.UPDATE,
+                        model: CONST.MODELS.USER,
+                        modelId: user._id,
+                        description:'Create users account'
+                    };
+
+                    historyHandler.pushlog(log);
                     return res.status(200).send({ success: 'User was succesful updating'});
                 });
         });

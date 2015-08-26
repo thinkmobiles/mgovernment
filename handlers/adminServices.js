@@ -71,7 +71,7 @@ var Service = function(db) {
                     return next(err);
                 }
                 var log = {
-                    userId: req.session.uId,
+                    user: req.session.uId,
                     action: CONST.ACTION.UPDATE,
                     model: CONST.MODELS.SERVICE,
                     modelId: searchQuery._id,
@@ -124,7 +124,7 @@ var Service = function(db) {
                 }
 
                 var log = {
-                    userId: req.session.uId,
+                    user: req.session.uId,
                     action: CONST.ACTION.CREATE,
                     model: CONST.MODELS.SERVICE,
                     modelId: model._id,

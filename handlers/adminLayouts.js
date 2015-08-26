@@ -28,7 +28,7 @@ var Layout = function(db) {
                     return next(err);
                 }
                 var log = {
-                    userId: req.session.uId,
+                    user: req.session.uId,
                     action: CONST.ACTION.UPDATE,
                     model: CONST.MODELS.LAYOUT,
                     modelId: searchQuery._id,
@@ -55,7 +55,7 @@ var Layout = function(db) {
                     return next(err);
                 }
                 var log = {
-                    userId: req.session.uId,
+                    user: req.session.uId,
                     action: CONST.ACTION.CREATE,
                     model: CONST.MODELS.LAYOUT,
                     modelId: layoutModel._id,
@@ -169,7 +169,7 @@ var Layout = function(db) {
                     }
 
                     var log = {
-                        userId: req.session.uId,
+                        user: req.session.uId,
                         action: CONST.ACTION.CREATE,
                         model: CONST.MODELS.LAYOUT,
                         modelId: searchQuery._id,
@@ -210,7 +210,7 @@ var Layout = function(db) {
                     }
 
                     var log = {
-                        userId: req.session.uId,
+                        user: req.session.uId,
                         action: CONST.ACTION.UPDATE,
                         model: CONST.MODELS.LAYOUT,
                         modelId: searchQuery._id,
