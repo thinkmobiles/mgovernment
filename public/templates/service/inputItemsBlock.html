@@ -1,14 +1,14 @@
 <tr id="itemBlockOrder<%= i %>">
     <td class="hiddenByDefault"><b>item[<%= i %>].order:</b></td>
     <td class="hiddenByDefault"><input type="number" id="order<%= i %>" size="4" style="width: 50px"
-                                       value=""></td>
+                                       value="<%= i %>"></td>
     <td class="hiddenByDefault"> Input order of item[<%= i %>]:</td>
 </tr>
 
 <tr id="itemBlockName<%= i %>">
     <td class="hiddenByDefault"><b>item[<%= i %>].name:</b></td>
     <td class="hiddenByDefault"><input type="text" id="name<%= i %>" size="20" maxlength="20"
-                                       value=""></td>
+                                       value="" class="itemBlockName" list="standartFieldsName"></td>
     <td class="hiddenByDefault"> Input name of item[<%= i %>]:</td>
 </tr>
 

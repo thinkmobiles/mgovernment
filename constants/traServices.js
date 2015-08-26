@@ -7,6 +7,13 @@ module.exports = {
     WHOIS_PORT: 43,
 
     MOBILE_SEARCH_URL: 'https://ta-uat.tra.gov.ae:65004/tasserver/v1/imei?method=search',
+    /*Hostname: ta-uat
+      DNS name: ta-uat.tra.gov.ae
+      IP address: 192.168.91.98
+      https://ta-uat.tra.gov.ae:65004/tasserver/v1/imei?method=search
+    */
+
+    CRM_CONNECTION: 'Url=http://192.168.91.232/TRA; Domain=TRA; Username=crm.acc; Password=TRA_#admin;',
 
     CRM_USER: 'TRA\crm.acc',
     CRM_PASS: 'TRA_#admin',
@@ -33,9 +40,30 @@ module.exports = {
     EMAIL_COMPLAIN_FROM: 'testTRA@testTRA.ae',
 
     EMAIL_COMPLAINSMSSPAM: 'smsspam@ukr.net',// password: smsspam
-    EMAIL_HELP_SALIM: 'helpsalim@ukr.net'// password: helpsalim
+    EMAIL_HELP_SALIM: 'helpsalim@ukr.net',// password: helpsalim
 
     //TODO use for test server
     //'allcomplaintra@mail.com',// pass:allcomplaintra1q
 
+    CRM_ENUM: {
+        STATE: {
+            'Abu Dhabi': 1,
+            'Ajman': 2,
+            'Dubai': 3,
+            'Fujairah': 4,
+            'Ras al-Khaiman': 5,
+            'Sharjah': 6,
+            'Umm al-Quwain': 7
+        },
+        COUNTRY: {
+            UAE: 1
+        },
+        CASE_TYPE: {
+            SMS_SPAM: 5,
+            SUGGESTION: 1,
+            INQUIRY: 2,
+            COMPLAINT_TRA: 3,
+            COMPLAINT_SERVICE_PROVIDER: 4
+        }
+    }
 };

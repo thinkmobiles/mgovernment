@@ -17,6 +17,8 @@ module.exports = function(app, db) {
     var userFeedbackRouter = require('./userFeedback')(db);
     var adminEmailReports = require('./adminEmailReport')(db);
     var testTRAServicesRouter = require('./testTRAServices')(db);
+    var whoIsAndMobileRouter = require('./whoIsAndMobile')(db);
+    var crmRouter = require('./crmServices')(db);
 
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
@@ -24,10 +26,6 @@ module.exports = function(app, db) {
 
     app.get('/', function (req, res, next) {
         res.status(200).send('Express start succeed');
-    });
-
-    app.post('/complainSmsSpam', function (req, res, next) {
-        testTRAHandler.complainSmsSpam(req, res, next);
     });
 
     app.use('/user', usersRouter);
@@ -40,7 +38,10 @@ module.exports = function(app, db) {
     app.use('/tra_api/service', userTraServicesRouter);
     app.get('/attachment/:attachmentId', session.isAdminBySession, attachmentHandler.getAttachmentById);
 
+    app.use('/', crmRouter);
     app.use('/', testTRAServicesRouter);
+    app.use('/', whoIsAndMobileRouter);
+
     app.get('/', function (req, res) {
         res.sendfile('./index.html');
     });
@@ -48,8 +49,6 @@ module.exports = function(app, db) {
     //app.get('/attachment/:attachmentId', session.isAdminBySession, function (req, res) {
     //    res.send('test <img style="width:10px; height:10px; border: 1px solid black"> Hello');
     //});
-
-
 
     function notFound(req, res, next) {
         next();

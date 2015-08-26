@@ -12,7 +12,7 @@ var schedule = function (db) {
     var oneYearOldDate = new Date();
     //rule.dayOfWeek = [ new schedule.Range(0, 6)];
     //console.log('rule: ',rule);
-    rule.second = 1;
+    rule.minute = 30;
 
     oneYearOldDate.setYear(currentDate.getFullYear() - 1);
     console.log('Schedule helper started');

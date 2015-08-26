@@ -1,11 +1,30 @@
 <div style="align-content: center; margin-top: 5px; padding-bottom: 5px">
-
+    <% var showElement = "display: none" %>
     <form>
+        <datalist id="standartFieldsName">
+            <option value="serviceName"/>
+            <option value="checkUrl"/>
+            <option value="title"/>
+            <option value="description"/>
+            <option value="serviceProvider"/>
+            <option value="referenceNumber"/>
+            <option value="attachment"/>
+            <option value="rate"/>
+            <option value="feedback"/>
+            <option value="imei"/>
+            <option value="start"/>
+            <option value="end"/>
+            <option value="brand"/>
+            <option value="phone"/>
+            <option value="phoneProvider"/>
+            <option value="providerType"/>
+            <option value="url"/>
+        </datalist>
 
-        <table>
+        <table class="tableView">
             <tr>
-                <th>List of properties</th>
-                <th>Input, set properties</th>
+                <th style="width:20%">List of properties</th>
+                <th style="width:30%">Input, set properties</th>
                 <th>Description of properties</th>
             </tr>
 
@@ -33,7 +52,8 @@
             <% if (profile){ var i = 0; %>
             <% for (var k in profile){ %>
             <tr id="profileFieldBlock<%= i %>">
-                <td><b>profile.</b><input type="text" name="" id="profileFieldName<%= i %>" size="10" maxlength="20" value="<%= k %>"></td>
+                <td><b>profile.</b><input type="text" name="" id="profileFieldName<%= i %>" size="10" maxlength="20"
+                                          value="<%= k %>"></td>
                 <td><input type="text" name="" id="profileFieldValue<%= i %>" size="20" maxlength="40"
                            value="<%= profile[k] %>"></td>
                 <td> Input profile. fileds name and fields value</td>
@@ -129,10 +149,12 @@
             </tr>
 
             <tr>
-                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= port ? 'checked' : '' %> >Socket is used </b></td>
-                <td class="hiddenByDefault"> <b> PORT: </b><input type="text" name="name" id="portInput" size="6"
-                                                                  maxlength="4" <%= !port ? 'disabled' : '' %> value="<%=
-                    port ? port :'' %>"></td>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= port ?
+                    'checked' : '' %> >Socket is used </b></td>
+                <td class="hiddenByDefault"><b> PORT: </b><input type="text" name="name" id="portInput" size="6"
+                                                                 maxlength="4" <%= !port ? 'disabled' : '' %> value="<%=
+                    port ? port :'' %>">
+                </td>
                 <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
                 </td>
             </tr>
@@ -159,33 +181,59 @@
                 <td class="hiddenByDefault"></td>
                 <td class="hiddenByDefault">What params waiting from client? and how use them</td>
             </tr>
-            <tr>
-                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="body" value="body"
-                    <%= params.body ? 'checked':''%> > .body </b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="bodyInput" size="20" maxlength="40" <%=
-                    !params.body ? 'disabled':''%> value="<%= params.body ? params.body.join(','):''%>">
+
+            <tr style="vertical-align: top">
+                <td class="hiddenByDefault">
+                    <b> <input type="checkbox" class="enabledCheckBox" id="body" value="body" <%= params.body ?
+                        'checked':''%> > .body </b></td>
+                <% if (params.body) { showElement = '' } %>
+                <td class="hiddenByDefault" style=" word-break: break-all;">
+                    <div id="bodyShow" style="<%= showElement %>"><p><b>body:
+                        [ </b><span id="bodyValue"><%=  params.body ? params.body.join(','):'' %></span><b> ]</b></p>
+                        <select style="width: 170px; height: 25px;" id="bodyInput"></select>
+                        &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"> add </a>&nbsp
+                        <a href="#" id="bodyDellInputButton" data-hash="body" class="actionButtonDell">&nbspdell&nbsp</a>
+                    </div>
+
                 </td>
-                <td class="hiddenByDefault"> Body is array, that have names of fields that will be nested to
-                    Request.body, input the names of fields separated by commas without spaces
-                </td>
+
             </tr>
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="query" value="query"
-                    <%= params.query ? 'checked':''%>> .query </b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="queryInput" size="20" maxlength="40" <%=
-                    !params.query ? 'disabled':''%> value="<%= params.query ? params.query.join(','):'' %>">
+                    <%= params.query ? 'checked':''%>>
+                    .query </b></td>
+
+                <% showElement = "display: none"%>
+                <% if (params.query) { showElement = ''; } %>
+                <td class="hiddenByDefault">
+                    <div id="queryShow" style="<%= showElement %>"><p><b>query: [ </b><span
+                            id="queryValue"><%= params.query ? params.query.join(','):''%></span><b> ]</b></p>
+                        <select style="width: 170px; height: 25px;" id="queryInput"></select>
+                        &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"> add </a>&nbsp
+                        <a href="#" id="queryDellInputButton" data-hash="query" class="actionButtonDell">&nbspdell&nbsp</a>
+                    </div>
                 </td>
+
                 <td class="hiddenByDefault"> Query is array, that have names of fields that will form standard query
                     Request, input the names of fields separated by commas without spaces
                 </td>
+
             </tr>
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="uriSpecQuery"
-                                                       value="uriSpecQuery" <%= params.uriSpecQuery ? 'checked':''%>>
+                                                       value="uriSpecQuery"<%= params.uriSpecQuery ? 'checked':''%>>
                     .uriSpecQuery </b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="uriSpecQueryInput" size="20"
-                                                   maxlength="40" <%= !params.uriSpecQuery ? 'disabled':''%> value="<%=
-                    params.uriSpecQuery ? params.uriSpecQuery.join(','):'' %>" >
+                <% showElement = "display: none"%>
+                <% if (params.uriSpecQuery) { showElement = ''; } %>
+                <td class="hiddenByDefault">
+                    <div id="uriSpecQueryShow" style="<%= showElement %>"><p><b>uriSpecQuery: [ </b><span
+                            id="uriSpecQueryValue"><%= params.uriSpecQuery ? params.uriSpecQuery.join(','):''%></span><b>
+                        ]</b></p>
+                        <select style="width: 170px; height: 25px;" id="uriSpecQueryInput"></select>
+                        &nbsp<a href="#" id="uriSpecQueryAddInputButton" data-hash="uriSpecQuery"
+                                class="actionButtonAdd"> add </a>&nbsp
+                        <a href="#" id="uriSpecQueryDellInputButton" data-hash="uriSpecQuery"
+                                class="actionButtonDell">&nbspdell&nbsp</a>
                 </td>
                 <td class="hiddenByDefault"> uriSpecQuery is array, that have names of fields that will be added to url
                     of Request, input the names of fields separated by commas without spaces

@@ -36,10 +36,33 @@ module.exports = {
     },
 
     CLIENT_REGISTER_DATA: {
+        login: 'digiTest2',
+        pass: 'password777',
+        first: 'Test',
+        last: 'Digi',
+        emiratesId: '784-1990-NNNNNNN-C',
+        address: 'some street, 23/5',
+        state: 3,
+        landline: '+987654321',
+        mobile: '+987654321',
+        email: 'darkvas90@gmail.com'
+    },
+
+    CLIENT_CRM_DATA: {
         login: 'testUser',
         pass: 'password777',
         gender: 'male',
-        phone: '+987654321'
+        phone: '+9876543210123'
+    },
+
+    CLIENT_CRM_LOGIN_TAREK: {
+        login: 'tarek001',
+        pass: 'qweasd'
+    },
+
+    CLIENT_CRM_LOGIN_DIGI: {
+        login: 'digiTest',
+        pass: 'password777'
     },
 
     CLIENT_GOOD_USER_TYPE_FOR_DELETING: {
