@@ -53,8 +53,6 @@ module.exports = function(app, db) {
     //    res.send('test <img style="width:10px; height:10px; border: 1px solid black"> Hello');
     //});
 
-
-
     function notFound(req, res, next) {
         next();
     }
