@@ -40,7 +40,7 @@ module.exports = {
     EMAIL_COMPLAIN_FROM: 'testTRA@testTRA.ae',
 
     EMAIL_COMPLAINSMSSPAM: 'allcomplaintra@mail.com',// password: smsspam
-    EMAIL_HELP_SALIM: 'allcomplaintra@mail.com'// password: helpsalim
+    EMAIL_HELP_SALIM: 'allcomplaintra@mail.com',// password: helpsalim
 
     //TODO use for test server
     //'allcomplaintra@mail.com',// pass:allcomplaintra1q
