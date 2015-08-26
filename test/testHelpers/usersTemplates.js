@@ -41,9 +41,7 @@ module.exports = {
         first: 'Test',
         last: 'Digi',
         emiratesId: '784-1990-NNNNNNN-C',
-        address: 'some street, 23/5',
         state: 3,
-        landline: '+987654321',
         mobile: '+987654321',
         email: 'darkvas90@gmail.com'
     },

@@ -11,9 +11,7 @@ var REGISTER_FIELDS = [
     'first',
     'last',
     'emiratesId',
-    'address',
     'state',
-    'landline',
     'mobile',
     'email'
 ];
