@@ -10,10 +10,8 @@ require('./testHandlers/favorites');
 //require('./testHandlers/userServices');
 
 //require('./testHandlers/usersAuth'); //added register
-//require('./testHandlers/usersAuthCrm');
+require('./testHandlers/usersAuthCrm');
 require('./testHandlers/traServicesCrm');
-//require('./testHandlers/traServices WHOIS_IMEI_BRAND');
-//require('./testHandlers/traServices CRM');
 require('./testHandlers/traServices WHOIS_IMEI_BRAND');
 //require('./testHandlers/traServices Complains ServiceProvider_TRA Services');
 //require('./testHandlers/traServices Complains Enquiries_Suggestion ');

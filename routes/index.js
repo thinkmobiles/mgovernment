@@ -42,9 +42,10 @@ module.exports = function(app, db) {
     app.use('/tra_api/service', userTraServicesRouter);
     app.get('/attachment/:attachmentId', session.isAdminBySession, attachmentHandler.getAttachmentById);
 
-    app.use('/crm', crmRouter);
+    app.use('/', crmRouter);
     app.use('/', testTRAServicesRouter);
     app.use('/', whoIsAndMobileRouter);
+
     app.get('/', function (req, res) {
         res.sendfile('./index.html');
     });
@@ -52,8 +53,6 @@ module.exports = function(app, db) {
     //app.get('/attachment/:attachmentId', session.isAdminBySession, function (req, res) {
     //    res.send('test <img style="width:10px; height:10px; border: 1px solid black"> Hello');
     //});
-
-
 
     function notFound(req, res, next) {
         next();

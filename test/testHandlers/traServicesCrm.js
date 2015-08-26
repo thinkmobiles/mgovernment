@@ -53,7 +53,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainSmsSpam')
+                    .post('/complainSmsSpam')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -82,7 +82,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainSmsSpam')
+                    .post('/complainSmsSpam')
                     .send(data)
                     .expect(401)
                     .end(function (err, res) {
@@ -114,7 +114,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainTRAService')
+                    .post('/complainTRAService')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -144,7 +144,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainTRAService')
+                    .post('/complainTRAService')
                     .send(data)
                     .expect(401)
                     .end(function (err, res) {
@@ -176,7 +176,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainTRAService')
+                    .post('/complainTRAService')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -209,7 +209,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainEnquiries')
+                    .post('/complainEnquiries')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -240,7 +240,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainEnquiries')
+                    .post('/complainEnquiries')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -272,7 +272,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainEnquiries')
+                    .post('/complainEnquiries')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -305,7 +305,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/sendSuggestion')
+                    .post('/sendSuggestion')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -336,7 +336,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/sendSuggestion')
+                    .post('/sendSuggestion')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -368,7 +368,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/sendSuggestion')
+                    .post('/sendSuggestion')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -404,7 +404,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainServiceProvider')
+                    .post('/complainServiceProvider')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -437,7 +437,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainServiceProvider')
+                    .post('/complainServiceProvider')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -471,7 +471,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/crm/complainServiceProvider')
+                    .post('/complainServiceProvider')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
