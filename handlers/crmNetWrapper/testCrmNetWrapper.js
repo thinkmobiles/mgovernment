@@ -582,6 +582,7 @@ var TestCRMNetHandler = function (db) {
              using Microsoft.Xrm.Sdk;
              using Microsoft.Xrm.Client;
              using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Query;
 
              public class Startup
              {
@@ -595,14 +596,14 @@ var TestCRMNetHandler = function (db) {
              string description = (string)input.description;
              int caseType = (int)input.caseType;
              string attachment = (string)input.attachment;
-             string attachmentName = (string)input.attachmentName;
+             string licensee = (string)input.licensee;
 
              CrmConnection connection = CrmConnection.Parse(connectionString);
+
              using (orgService = new OrganizationService(connection))
              {
              Entity incident = new Entity();
              incident.LogicalName = "incident";
-
              incident["title"] = title;
              incident["description"] = description;
              incident["casetypecode"] = new OptionSetValue(caseType);
@@ -612,10 +613,26 @@ var TestCRMNetHandler = function (db) {
              incident["contactid"] = contactReference;
              incident["customerid"] = contactReference;
 
+             if (licensee != null && !string.IsNullOrWhiteSpace(licensee))
+             {
+             string licenseeReferenceNo = (string)input.licenseeReferenceNo;
+             string foundLicenseeId = FindLicenseId(orgService, licensee);
+
+             if (foundLicenseeId != null)
+             {
+             Guid licenseeId = Guid.Parse(foundLicenseeId);
+             EntityReference licenseeReference = new EntityReference("tra_licensee", licenseeId);
+
+             incident["tra_licensee"] = licenseeReference;
+             incident["tra_licenseereferenceno"] = licenseeReferenceNo;
+             }
+             }
+
              Guid incidentId = orgService.Create(incident);
 
              if (attachment != null && !string.IsNullOrWhiteSpace(attachment))
              {
+             string attachmentName = (string)input.attachmentName;
              Entity note = new Entity();
              note.LogicalName = "annotation";
              note["objectid"] = new EntityReference("incident", incidentId);
@@ -623,9 +640,35 @@ var TestCRMNetHandler = function (db) {
              note["filename"] = attachmentName;
              orgService.Create(note);
              }
-
              return true;
              }
+             }
+
+             public static string FindLicenseId(OrganizationService service, string licensee)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "tra_licensee";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("tra_licenseeId");
+             qe.ColumnSet.Columns.Add("tra_firstname");
+
+             FilterExpression filter = new FilterExpression();
+
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("tra_firstname", ConditionOperator.Equal, new object[] { licensee }));
+
+             qe.Criteria = filter;
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
+             if (ec.Entities.Count == 1)
+             {
+             Entity contact = ec.Entities[0];
+             return contact["tra_licenseeId"].ToString();
+             }
+
+             return null;
              }
              }
              */
@@ -651,20 +694,56 @@ var TestCRMNetHandler = function (db) {
 
     this.complainServiceProvider = function (req, res, next) {
 
-        return res.status(500).send({error: 'Not Implemented'});
-
-        var serviceType = 'Service Provider';
         var description = req.body.description;
         var title = req.body.title;
-        var userId = req.session.uId;
-        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
+        var serviceProvider = req.body.serviceProvider;
+        var referenceNumber = req.body.referenceNumber;
 
         if (!title || !description) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        var attachment = req.body.attachment;
+        if (!serviceProvider) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': service provider'});
+        }
 
+        if (!(serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.DU
+            || serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.ETISALAT
+            || serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.YAHSAT)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': service provider is not from allowed list'});
+        }
+
+        if (!referenceNumber) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': input reference number or "none"'});
+        }
+
+        var userId = req.session.uId;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
+        var attachmentData = null;
+
+        if (req.body.attachment) {
+            attachmentData = prepareAttachment(req.body.attachment);
+        }
+
+        var caseOptions = {
+            contactId: userId,
+            caseType: caseType,
+            title: title,
+            description: description,
+            attachment: attachmentData ? attachmentData.data : null,
+            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null,
+            licensee: serviceProvider,
+            licenseeReferenceNo: referenceNumber
+        };
+
+        createCase(caseOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+            console.log(result);
+
+            res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+        });
     };
 
     this.complainTRAService = function (req, res, next) {
@@ -690,7 +769,8 @@ var TestCRMNetHandler = function (db) {
             title: title,
             description: description,
             attachment: attachmentData ? attachmentData.data : null,
-            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null
+            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null,
+            licensee: null
         };
 
         createCase(caseOptions, function (err, result) {
@@ -750,7 +830,8 @@ var TestCRMNetHandler = function (db) {
             title: title,
             description: description,
             attachment: attachmentData ? attachmentData.data : null,
-            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null
+            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null,
+            licensee: null
         };
 
         createCase(caseOptions, function (err, result) {
@@ -786,7 +867,8 @@ var TestCRMNetHandler = function (db) {
             title: title,
             description: description,
             attachment: attachmentData ? attachmentData.data : null,
-            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null
+            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null,
+            licensee: null
         };
 
         createCase(caseOptions, function (err, result) {

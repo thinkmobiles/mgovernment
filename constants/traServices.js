@@ -64,6 +64,11 @@ module.exports = {
             INQUIRY: 2,
             COMPLAINT_TRA: 3,
             COMPLAINT_SERVICE_PROVIDER: 4
+        },
+        SERVICE_PROVIDER: {
+            DU: 'du .',
+            ETISALAT: 'Etisalat .',
+            YAHSAT: 'Yahsat .'
         }
     }
 };

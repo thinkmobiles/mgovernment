@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Provides the operation with services for __admin__ account
+ * Provides the REST API for __CRM Services__
  *
  * @class crmServices
  *
@@ -19,9 +19,9 @@ module.exports = function(db) {
     var crmNetWrapperHandler = new CrmNetWrapperHandler(db);
 
     /**
-     * This __method__ for user signIn in CRM
+     * This __method__ for user  register in CRM
      *
-     * __URI:__ ___`/crm/signIn`___
+     * __URI:__ ___`/crm/register`___
      *
      *  ## METHOD:
      * __POST__
@@ -56,13 +56,13 @@ module.exports = function(db) {
      *      email: 'darkvas90@gmail.com'
      *      }
      *
-     * @method signIn
+     * @method register
      * @for crmServices
      */
 
-    router.post('/crm/register', crmNetWrapperHandler.signInClient);
+    router.post('/crm/register', crmNetWrapperHandler.registerClient);
     /**
-     * This __method__  for user  register in CRM
+     * This __method__  for user signIn in CRM
      *
      * __URI:__ ___`/crm/signIn`___
      *
@@ -82,11 +82,12 @@ module.exports = function(db) {
      *      login: 'testUser',
      *      pass: 'password777'
      *      }
-     *
-     * @method register
+     * @method signIn
      * @for crmServices
+     *
      */
-    router.post('/crm/register', crmNetWrapperHandler.registerClient);
+
+    router.post('/crm/signIn', crmNetWrapperHandler.signInClient);
 
     /**
      * This __method__ for user signOut from CRM
@@ -101,9 +102,9 @@ module.exports = function(db) {
      *  ## Responses:
      *      status (200) JSON object: {object}
      *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     *
      * @method signOut
      * @for crmServices
+     *
      */
 
     router.post('/crm/signOut', crmNetWrapperHandler.signOutClient);
