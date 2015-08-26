@@ -1,5 +1,5 @@
 /**
- * Provides the operation with services for __admin__ account
+ * Provides the REST API for services that get information about url or IMEI
  *
  * @class testTraServices
  *
