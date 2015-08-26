@@ -1,5 +1,5 @@
 /**
- * Provides the operation with services for __admin__ account
+ * Provides the REST API for services that get information about url or IMEI
  *
  * @class testTraServices
  *
@@ -14,6 +14,29 @@ module.exports = function(db) {
     'use strict';
 
     var testTRAHandler = new TestTRAHandler(db);
+
+    /**
+     * This __method__ create SMS Spam Block
+     *
+     * __URI:__ ___`/complainSmsBlock`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *     Body:
+     *      phone: from whom spam
+     *      phoneProvider: provider number
+     *      providerType: elesat or du
+     *      description: text
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     * @method complainSmsBlock
+     * @for testTraServices
+     */
 
     router.post('/complainSmsBlock', testTRAHandler.complainSmsBlock);
 
@@ -41,6 +64,27 @@ module.exports = function(db) {
      * @for testTraServices
      */
     router.post('/sendPoorCoverage', testTRAHandler.sendPoorCoverage);
+
+    /**
+     * This __method__ create complain about TRA Service
+     *
+     * __URI:__ ___`/sendHelpSalim`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *     Body:
+     *      url:
+     *      description:
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     * @method sendHelpSalim
+     * @for testTraServices
+     */
 
     router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
 

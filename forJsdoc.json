@@ -2,6 +2,7 @@
   "tags": {
     "allowUnknownTags": true
   },
+
   "plugins": ["plugins/markdown"],
   "templates": {
     "cleverLinks": true,
@@ -20,8 +21,20 @@
     "highlightTutorialCode": true,
     "syntaxTheme": "dark"
   },
+
   "markdown": {
     "parser": "gfm",
     "hardwrap": true
+  },
+
+  "source": {
+    "include": ["handlers/", "routes/", "models/" ],
+    "includePattern": ".+\\.js(doc)?$"
+  },
+
+  "opts": {
+    "destination": "./doc/",
+    "template": "node_modules/grunt-jsdoc/node_modules/ink-docstrap/template"
   }
+
 }
