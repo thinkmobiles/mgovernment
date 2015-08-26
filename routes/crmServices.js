@@ -150,6 +150,15 @@ module.exports = function(db) {
      *      status (200) JSON object: {object}
      *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
+     * @example
+     *      {
+     *      title: 'It works slowly',
+     *      serviceProvider: 'du',
+     *      description: 'Amazon is awefull',
+     *      referenceNumber: '12312412',
+     *      attachment: data:image/png;base64,iVB
+     *      }
+     *
      * @method complainServiceProvider
      * @for crmServices
      */
@@ -172,6 +181,7 @@ module.exports = function(db) {
      *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method complainTRAService
+     *
      * @for crmServices
      */
 

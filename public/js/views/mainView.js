@@ -10,34 +10,12 @@ define([
         template: _.template(mainTemplate),
 
         events: {
-            'mouseover .actionButton': 'changePointer',
-            'mouseout .actionButton': 'clearDecoration',
-            'mouseover .actionButtonWhite': 'changePointerWhite',
-            'mouseout .actionButtonWhite': 'clearDecorationWhite',
-            "click #signOut": "SignOutAdmin"
+                  "click #signOut": "SignOutAdmin"
         },
 
         initialize: function () {
-           console.log('Main View Inicialize');
+           console.log('Main View Initialized');
             this.render();
-        },
-
-        clearDecoration:function(e) {
-            $(e.target).css({"background-color":"rgba(0, 0, 0, 0.1)"});
-        },
-
-        changePointer: function(e) {
-            $(e.target).css({"cursor":"pointer"});
-            $(e.target).css({"background-color":"rgba(0, 0, 0, 0.01)"});
-        },
-
-        clearDecorationWhite:function(e) {
-            $(e.target).css({"background-color":"white"});
-        },
-
-        changePointerWhite: function(e) {
-            $(e.target).css({"cursor":"pointer"});
-            $(e.target).css({"background-color":"rgba(0, 0, 0, 0.1)"});
         },
 
         SignOutAdmin: function(e) {
@@ -64,8 +42,7 @@ define([
         },
 
         render: function () {
-            //console.log('Main View render');
-            //console.log('hello', App.authorized);
+
             this.$el.html(this.template());
             new topBarView();
             return this;

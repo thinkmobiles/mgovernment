@@ -9,10 +9,6 @@ define([
         el: '#dataBlock',
         events: {
             'change .filterServiceType': 'changeCollectionFilter',
-            'click #createService': 'createService',
-            'click #cloneService': 'cloneService',
-            'click #deleteService': 'deleteService',
-            'click #updateService': 'updateService',
             "click .oe_sortable": "goSort"
         },
 

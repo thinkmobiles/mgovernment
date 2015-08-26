@@ -1,0 +1,46 @@
+<div style=" padding-bottom: 5px;margin-left: 5px; margin-right: 5px; vertical-align: top">
+
+     <!--<div style="clear: both; margin: 1%">-->
+    <!--</div>-->
+
+    <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
+        <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
+            <span style="font-size: 22px; "><b>List of AdminHistoryLogs</b></span></div>
+            </div>
+
+    <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
+        <tr>
+            <th class="oe_sortable" data-sort="userId">userId</th>
+            <th class="oe_sortable" data-sort="action">action</th>
+            <th class="oe_sortable" data-sort="model">model</th>
+            <th class="oe_sortable" data-sort="modelId">modelId</th>
+            <th class="oe_sortable" data-sort="req">req</th>
+            <th class="oe_sortable" data-sort="res">res</th>
+            <th class="oe_sortable" data-sort="description">description</th>
+            <th class="oe_sortable" data-sort="createdAt">createdAt</th>
+        </tr>
+
+        <% if (collection.length) { %>
+        <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
+        <tr>
+            <td><%= collection[i].userId %></td>
+            <td><%= collection[i].action %></td>
+            <td><%= collection[i].model %></td>
+            <td><%= collection[i].modelId %></td>
+            <td><%= collection[i].req ? "[Object]": "" %></td>
+            <td><%= collection[i].res ? "[Object]": "" %></td>
+            <td><%= collection[i].description %></td>
+            <td><%= collection[i].createdAt %></td>
+        </tr>
+
+        <% } %>
+        <% } %>
+
+        </table>
+
+    <div style="clear:both; "></div>
+
+    <div id="paginationDiv" style="">
+    </div>
+
+</div>

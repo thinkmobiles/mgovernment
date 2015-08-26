@@ -13,6 +13,7 @@ module.exports = function(app, db) {
     var adminLayoutsRouter = require('./adminLayouts')(db);
     var adminServicesRouter = require('./adminServices')(db);
     var adminHistoryLogRouter = require('./adminHistoryLog')(db);
+    var userHistoryLogRouter = require('./userHistoryLog')(db);
     var userServicesRouter = require('./userServices')(db);
     var userTraServicesRouter = require('./userTraServices')(db);
     var userFeedbackRouter = require('./userFeedback')(db);
@@ -34,6 +35,7 @@ module.exports = function(app, db) {
     app.use('/adminLayout', session.isAdminBySession, adminLayoutsRouter);
     app.use('/adminService', session.isAdminBySession, adminServicesRouter);
     app.use('/adminHistory', session.isAdminBySession, adminHistoryLogRouter);
+    app.use('/userHistory', session.isAdminBySession, userHistoryLogRouter);
     app.use('/service', userServicesRouter);
     app.use('/feedback', userFeedbackRouter);
     app.use('/emailReport', adminEmailReports);

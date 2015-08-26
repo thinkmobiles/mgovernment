@@ -4,6 +4,9 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ],function(content, UsersCollection, paginationTemplate, PaginationView){
+    var propertyList = '';
+    var properties = '';
+
     var usersView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -39,6 +42,10 @@ define([
             console.log('usersView render');
             this.$el.html(this.template());
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+
+            propertyList =  $("#propertyList");
+            properties = $("#properties");
+
             this.updateUserList();
         },
 
@@ -100,8 +107,8 @@ define([
 
             this.selectedUserId = id;
 
-            $("#propertyList").text("").append(str);
-            $("#properties").text( selectedUser.login );
+            propertyList.text("").append(str);
+            properties.text( selectedUser.login );
             //$("#properties").text( selectedUser.login + " properties ");
         },
 

@@ -16,6 +16,7 @@ var HistoryHandler = function(db) {
                 }
             });
     };
+
     this.getAllRecords = function (req, res, next) {
 
         var sortField = req.query.orderBy || 'createdAt';

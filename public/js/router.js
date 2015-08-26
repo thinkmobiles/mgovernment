@@ -10,8 +10,10 @@ define([
     'views/user/updateView',
     'views/feedbacksView',
     'views/emailReportsView',
-    'views/adminHistoryLogView'
-], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView, FeedbacksView, EmailReportsView, AdminHistoryLogView ) {
+    'views/adminHistoryLogView',
+    'views/userHistoryLogView'
+
+], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView, FeedbacksView, EmailReportsView, AdminHistoryLogView, UserHistoryLogView ) {
     var Router = Backbone.Router.extend({
 
         mainView: null,
@@ -22,6 +24,7 @@ define([
             "services(/p=:page)(/c=:countPerPage)": "toServicesView",
             "feedbacks(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toFeedbacksView",
             "adminHistoryLog(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toAdminHistoryLogView",
+            "userHistoryLog(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toUserHistoryLogView",
             "emailReports(/p=:page)(/c=:countPerPage)(/f=:filter)(/ob=:orderBy)(/o=:order)": "toEmailReportsView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
@@ -126,6 +129,24 @@ define([
             }
 
             this.contentView = new AdminHistoryLogView({
+                page: page,
+                countPerPage: countPerPage,
+                orderBy: orderBy,
+                order: order
+            });
+        },
+
+        toUserHistoryLogView: function (page, countPerPage, orderBy, order) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+            orderBy = orderBy || 'createdAt';
+            order = order || 1;
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+
+            this.contentView = new UserHistoryLogView({
                 page: page,
                 countPerPage: countPerPage,
                 orderBy: orderBy,

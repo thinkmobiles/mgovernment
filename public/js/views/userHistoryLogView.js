@@ -1,25 +1,26 @@
 define([
-    'text!templates/feedbacksViewTemplate.html',
-    'collections/feedbacks',
+    'text!templates/userHistoryLogView.html',
+    'collections/userHistoryLogs',
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
-], function (content, FeedbacksCollection, paginationTemplate, PaginationView) {
-    var feedbacksView = Backbone.View.extend({
+], function (content, userHistoryLogsCollection, paginationTemplate, PaginationView) {
+    var userHistoryLogView = Backbone.View.extend({
 
         el: '#dataBlock',
         events: {
-            "click .oe_sortable": "goSort"
+            'click .DbList': 'showFeedbackInfo',
+             "click .oe_sortable": "goSort"
         },
 
         template: _.template(content),
 
         initialize: function (options) {
-            this.feedbacksCollection = new FeedbacksCollection();
+            this.userHistoryLogsCollection = new userHistoryLogsCollection();
             this.paginationView = new PaginationView({
-                collection: this.feedbacksCollection,
+                collection: this.userHistoryLogsCollection,
                 countPerPage: options.countPerPage,
-                url: 'feedbacks',
-                urlGetCount: '/feedback/getCount',
+                url: 'userHistoryLog',
+                urlGetCount: '/userHistory/getCount',
                 padding: 2,
                 page: options.page,
                 ends: true,
@@ -30,7 +31,7 @@ define([
                 }
             });
 
-            this.listenTo(this.feedbacksCollection, 'reset remove', this.render);
+            this.listenTo(this.userHistoryLogsCollection, 'reset remove', this.render);
             this.render();
         },
 
@@ -69,15 +70,15 @@ define([
 
         render: function () {
 
-            console.log('feedbacksView render');
-            if (this.feedbacksCollection.toJSON().length) {
+            console.log('userHistoryLogs render');
+            if (this.userHistoryLogsCollection.toJSON().length) {
                 console.log('this.feedbacksCollection.toJSON() has items')
             }
 
-            this.$el.html(this.template({collection: this.feedbacksCollection.toJSON()}));
+            this.$el.html(this.template({collection: this.userHistoryLogsCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
         }
     });
 
-    return feedbacksView;
+    return userHistoryLogView;
 });

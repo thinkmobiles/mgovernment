@@ -4,6 +4,8 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ],function(content, ServicesCollection, paginationTemplate, PaginationView){
+    var propertyList = '';
+    var properties = '';
     var servicesView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -107,8 +109,8 @@ define([
 
             this.selectedServiceId = id;
 
-            $("#propertyList").text("").append(str);
-            $("#properties").text( selectedService.serviceName);
+            propertyList.text("").append(str);
+            properties.text( selectedService.serviceName);
 
         },
 
@@ -153,6 +155,10 @@ define([
 
             this.$el.html(this.template());
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+
+            propertyList =  $("#propertyList");
+            properties = $("#properties");
+
             this.updateServiceList();
         }
     });

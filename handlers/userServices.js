@@ -67,7 +67,7 @@ var UserService = function(db) {
                     modelId: '',
                     req: {params: req.params, body: req.params},
                     res: collection,
-                    description: 'getServices'
+                    description: 'Get Services'
                 };
                 userHistoryHandler.pushlog(log);
 
@@ -92,7 +92,7 @@ var UserService = function(db) {
                     modelId: '',
                     req: {params: req.params, body: req.params},
                     res: collection,
-                    description: 'getServices'
+                    description: 'Get Services Names'
                 };
                 var result = [];
 
