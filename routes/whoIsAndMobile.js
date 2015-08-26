@@ -1,7 +1,7 @@
 /**
  * Provides the operation with services for __admin__ account
  *
- * @class testTraServices
+ * @class WhoIsAndMobile
  *
  */
 
@@ -41,7 +41,7 @@ module.exports = function(db) {
      *      }
      *
      * @method testWhois
-     *
+     * @for WhoIsAndMobile
      */
     router.get('/checkWhois', whoIsAndMobileHandler.testWhois);
 
@@ -68,7 +68,7 @@ module.exports = function(db) {
      *      }
      *
      * @method checkWhoisAvailable
-     *
+     * @for WhoIsAndMobile
      */
     router.get('/checkWhoisAvailable', whoIsAndMobileHandler.testWhoisCheck);
 
@@ -81,7 +81,7 @@ module.exports = function(db) {
      * __GET__
      *
      *  ## Request:
-     *     Query:
+     *      Query:
      *      imei
      *      start //not require
      *      end //not require
@@ -94,25 +94,26 @@ module.exports = function(db) {
      *
      *
      * @example
-     *  [{
-     *  "tac": "01355500",
-     *  "marketingName": "Apple iPhone 5 A1429",
-     *  "designationType": "A1429",
-     *  "manufacturer": "Apple Inc",
-     *  "bands": "GSM 1800, GSM 1900, GSM 900, GSM850 (GSM800), HSDPA, HSUPA, LTE FDD BAND 1, LTE FDD BAND 13, LTE FDD BAND 15, LTE FDD BAND 3, LTE FDD BAND 5, WCDMA FDD Band I, WCDMA FDD Band II, WCDMA FDD Band V, WCDMA FDD Band VIII, WiFi.",
-     *  "allocationDate": "2012-12-05",
-     *  "countryCode": "310",
-     *  "fixedCode": "MAN",
-     *  "radioInterface": "EDGE, GPRS",
-     *  "manufacturerCode": "205157",
-     *  "startIndex": 0,
-     *  "endIndex": 1000,
-     *  "count": 1,
-     *  "totalNumberofRecords": 1
-     *  }]
+     *      [{
+     *      "tac": "01355500",
+     *      "marketingName": "Apple iPhone 5 A1429",
+     *      "designationType": "A1429",
+     *      "manufacturer": "Apple Inc",
+     *      "bands": "GSM 1800, GSM 1900, GSM 900, GSM850 (GSM800), HSDPA, HSUPA, LTE FDD BAND 1, LTE FDD BAND 13, LTE FDD BAND 15, LTE FDD BAND 3, LTE FDD BAND 5, WCDMA FDD Band I, WCDMA FDD Band II, WCDMA FDD Band V, WCDMA FDD Band VIII, WiFi.",
+     *      "allocationDate": "2012-12-05",
+     *      "countryCode": "310",
+     *      "fixedCode": "MAN",
+     *      "radioInterface": "EDGE, GPRS",
+     *      "manufacturerCode": "205157",
+     *      "startIndex": 0,
+     *      "endIndex": 1000,
+     *      "count": 1,
+     *      "totalNumberofRecords": 1
+     *      }]
+     *
      *
      * @method searchMobile
-     *
+     * @for WhoIsAndMobile
      */
     router.get('/searchMobile', whoIsAndMobileHandler.searchMobileImei);
 
@@ -125,6 +126,7 @@ module.exports = function(db) {
      * __GET__
      *
      *  ## Request:
+     *      Query:
      *      imei
      *      start //not require
      *      end //not require
@@ -137,26 +139,26 @@ module.exports = function(db) {
      *
      *
      * @example
-     *  [{
-     *  ""tac"": ""01275800"",
-     *  ""marketingName"": ""iPhone 4 (A1332)"",
-     *  ""designationType"": ""iPhone 4 (A1332)"",
-     *  ""manufacturer"": ""Apple Inc"",
-     *  ""bands"": ""GSM 1800, GSM 1900, GSM 900, GSM850 (GSM800), WCDMA FDD Band I, WCDMA FDD Band II, WCDMA FDD Band V, WCDMA FDD Band VIII"",
-     *  ""allocationDate"": ""2011-03-24"",
-     *  ""countryCode"": ""310"",
-     *  ""fixedCode"": ""MAN"",
-     *  ""radioInterface"": ""NONE"",
-     *  ""manufacturerCode"": ""205157"",
-     *  ""startIndex"": 2,
-     *  ""endIndex"": 5,
-     *  ""count"": 3,
-     *  ""totalNumberofRecords"": 1247
-     *  },
-     *  .... ]
+     *      [{
+     *      "tac": "01275800",
+     *      "marketingName": "iPhone 4 (A1332)",
+     *      "designationType": "iPhone 4 (A1332)",
+     *      "manufacturer": "Apple Inc",
+     *      "bands": "GSM 1800, GSM 1900, GSM 900, GSM850 (GSM800), WCDMA FDD Band I, WCDMA FDD Band II, WCDMA FDD Band V, WCDMA FDD Band VIII",
+     *      "allocationDate": "2011-03-24",
+     *      "countryCode": "310",
+     *      "fixedCode": "MAN",
+     *      "radioInterface": "NONE",
+     *      "manufacturerCode": "205157",
+     *      "startIndex": 2,
+     *      "endIndex": 5,
+     *      "count": 3,
+     *      "totalNumberofRecords": 1247
+     *      },*  ....
+     *      ]
      *
      * @method searchMobileBrand
-     *
+     * @for WhoIsAndMobile
      */
     router.get('/searchMobileBrand', whoIsAndMobileHandler.searchMobileBrand);
 

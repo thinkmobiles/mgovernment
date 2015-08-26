@@ -45,22 +45,9 @@
  *            needUserAuth: false,
  *            query: ['checkUrl']
  *        }
- *    }
+ *      }
  * @method createService
  * @for adminServices
- */
-
-
-
-/**
- * # Base
- * ___url___ for build __requests__ is `http://192.168.88.122:8089/customers`
- *
- * This __method__ allows get all customers based on `type`
- *
- * @method customers
- * @for Customer
- * @namespace EasyERP
  */
 
 
@@ -73,6 +60,23 @@ module.exports = function(db){
 
     var router = express.Router();
     var servicesHandler = new ServicesHandler(db);
+
+    /**
+     * This __method__ get all services from DB
+     *
+     * __URI:__ ___`/adminServices`___  <br>
+     *
+     * ## METHOD:
+     * __GET__
+     *
+     *  ## Responses:
+     *      status (200) Array of JSON objects: {[ServiceModel]}
+     *      status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     *
+     * @method getServices
+     * @for adminServices
+     */
 
     router.route('/')
         .post(servicesHandler.createService)
@@ -88,19 +92,3 @@ module.exports = function(db){
 
     return router;
 };
-/**
- * This __method__ get all services from DB
- *
- * __URI:__ ___`/adminServices`___  <br>
- *
- * ## METHOD:
- * __GET__
- *
- *  ## Responses:
- *      status (200) Array of JSON objects: {[ServiceModel]}
- *      status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}
- *
- *
- * @method getServices
- * @for adminServices
- */
