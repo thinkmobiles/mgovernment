@@ -707,6 +707,12 @@ var TestCRMNetHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': service provider'});
         }
 
+        if (!(serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.DU
+            || serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.ETISALAT
+            || serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.YAHSAT)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': service provider is not from allowed list'});
+        }
+
         if (!referenceNumber) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': input reference number or "none"'});
         }
