@@ -1,3 +1,5 @@
+require('pmx').init();
+
 var cluster = require('cluster');
 var http = require('http');
 var numCPUs = require('os').cpus().length;

@@ -7,40 +7,40 @@ var Session = function ( db ) {
     var mongoose = require('mongoose');
     var User = db.model(CONST.MODELS.USER);
 
-    this.register = function ( req, res, userId, userType ) {
+    this.register = function (req, res, userId, userType) {
         req.session.loggedIn = true;
         req.session.uId = userId;
         req.session.type = userType;
-        res.status( 200 ).send( { success: RESPONSE.AUTH.LOG_IN } );
+        res.status(200).send({success: RESPONSE.AUTH.LOG_IN});
     };
 
-    this.addToken = function ( req, token) {
+    this.addToken = function (req, token) {
         //req.session.loggedIn = true;
         //req.session.uId = userId;
         req.session.token = token;
     };
 
-    this.kill = function ( req, res, next ) {
+    this.kill = function (req, res, next) {
 
-        if(req.session) {
+        if (req.session) {
             req.session.destroy();
         }
-        res.status(200).send({ success: RESPONSE.AUTH.LOG_OUT });
+
+        res.status(200).send({success: RESPONSE.AUTH.LOG_OUT});
     };
 
-    this.authenticatedUser = function ( req, res, next ) {
+    this.authenticatedUser = function (req, res, next) {
 
-        if( req.session && req.session.uId && req.session.loggedIn ) {
+        if (req.session && req.session.uId && req.session.loggedIn) {
             next();
         } else {
             var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
             err.status = 401;
             next(err);
         }
-
     };
 
-    this.isAdminBySession = function ( req, res, next ) {
+    this.isAdminBySession = function (req, res, next) {
 
         if (!( req.session && req.session.uId && req.session.loggedIn)) {
             var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
@@ -63,7 +63,7 @@ var Session = function ( db ) {
     };
 
 
-    function getUserTypeById (userId, callback){
+    function getUserTypeById(userId, callback) {
 
         User
             .findOne({_id: userId})
@@ -81,9 +81,8 @@ var Session = function ( db ) {
             });
     }
 
-    this.isAdmin = function ( req, res, next ) {
+    this.isAdmin = function (req, res, next) {
         var err;
-
 
         if (req.session && req.session.type === CONST.USER_TYPE.ADMIN) {
             return next()
@@ -95,13 +94,13 @@ var Session = function ( db ) {
         next(err);
     };
 
-    this.isAdminApi = function( req, res, next ) {
-        res.status( 401).send({error: RESPONSE.AUTH.UN_AUTHORIZED });
+    this.isAdminApi = function (req, res, next) {
+        res.status(401).send({error: RESPONSE.AUTH.UN_AUTHORIZED});
     };
 
-    this.isAuthenticatedUser = function ( req, res, next ) {
-        if( req.session && req.session.uId && req.session.loggedIn ) {
-            res.status( 200 ).send( {uId: req.session.uId } );
+    this.isAuthenticatedUser = function (req, res, next) {
+        if (req.session && req.session.uId && req.session.loggedIn) {
+            res.status(200).send({uId: req.session.uId});
         } else {
             var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
             err.status = 401;

@@ -30,6 +30,7 @@ define([
         initialize: function (options) {
             cloneService = options ? options.cloneService : undefined;
             itemBlockCount = 0;
+            profileBlockCount = 0;
             sendParams = {};
             itemsInputNameArray = [];
 
@@ -101,16 +102,16 @@ define([
             var el = this.$el;
 
             if (e.target.checked) {
-                el.find('#'+ idName + 'Input').css( "display", "inline" );
+                //el.find('#'+ idName + 'Input').css( "display", "inline" );
                 el.find('#'+ idName + 'Show').css( "display", "block" );
-                el.find('#'+ idName + 'AddInputButton').css( "display", "inline" );
-                el.find('#'+ idName + 'DellInputButton').css( "display", "inline" );
+                //el.find('#'+ idName + 'AddInputButton').css( "display", "inline" );
+                //el.find('#'+ idName + 'DellInputButton').css( "display", "inline" );
 
             } else {
-                el.find('#'+ idName + 'Input').css( "display", "none" );
+                //el.find('#'+ idName + 'Input').css( "display", "none" );
                 el.find('#'+ idName + 'Show').css( "display", "none" );
-                el.find('#'+ idName + 'AddInputButton').css( "display", "none" );
-                el.find('#'+ idName + 'DellInputButton').css( "display", "none" );
+                //el.find('#'+ idName + 'AddInputButton').css( "display", "none" );
+                //el.find('#'+ idName + 'DellInputButton').css( "display", "none" );
             }
         },
         updateService: function(e){
@@ -278,6 +279,7 @@ define([
             var service = App.selectedService.toJSON();
 
             service.port =  service.port || undefined;
+            service.profile =  service.profile
 
             this.$el.html(this.template( service));
             itemBlockCount =  App.selectedService.toJSON().inputItems.length;

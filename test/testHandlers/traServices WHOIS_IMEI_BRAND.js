@@ -28,15 +28,13 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
                 preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET)
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
             ],
             function (err, results) {
                 if (err) {
                     return done(err)
                 }
-                //console.log('BD preparing completed')
+                console.log('BD preparing completed');
                 done();
             });
     });

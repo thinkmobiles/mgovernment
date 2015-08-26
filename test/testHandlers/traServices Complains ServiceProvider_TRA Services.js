@@ -24,7 +24,6 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
-                preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
                 preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
                 preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),

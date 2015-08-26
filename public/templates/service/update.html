@@ -187,13 +187,14 @@
                     <b> <input type="checkbox" class="enabledCheckBox" id="body" value="body" <%= params.body ?
                         'checked':''%> > .body </b></td>
                 <% if (params.body) { showElement = '' } %>
-                <td class="hiddenByDefault" style=" word-break: break-all;"><p id="bodyShow" style="<%= showElement %>"><b>body:
-                    [ </b><span id="bodyValue"><%=  params.body ? params.body.join(','):'' %></span><b> ]</b></p>
-                    <select style="width: 170px; height: 25px; <%= showElement %>" id="bodyInput" ></select>
-                    &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"
-                            style="text-decoration: none;<%= showElement %>"> add </a>&nbsp
-                    <a href="#" id="bodyDellInputButton" data-hash="body" class="actionButtonDell"
-                       style="text-decoration: none;<%= showElement %>">dell</a>
+                <td class="hiddenByDefault" style=" word-break: break-all;">
+                    <div id="bodyShow" style="<%= showElement %>"><p><b>body:
+                        [ </b><span id="bodyValue"><%=  params.body ? params.body.join(','):'' %></span><b> ]</b></p>
+                        <select style="width: 170px; height: 25px;" id="bodyInput"></select>
+                        &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"> add </a>&nbsp
+                        <a href="#" id="bodyDellInputButton" data-hash="body" class="actionButtonDell">&nbspdell&nbsp</a>
+                    </div>
+
                 </td>
 
             </tr>
@@ -204,14 +205,13 @@
 
                 <% showElement = "display: none"%>
                 <% if (params.query) { showElement = ''; } %>
-                <td class="hiddenByDefault"><p id="queryShow" style="<%= showElement %>"><b>query: [ </b><span
-                        id="queryValue"><%= params.query ? params.query.join(','):''%></span><b> ]</b></p>
-                    <select style="width: 170px; height: 25px; <%= showElement %>" id="queryInput"></select>
-                    &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"
-                            style=" text-decoration: none; font-size: 18px; color: green; <%= showElement %>"> add </a>&nbsp
-                    <a
-                            href="#" id="queryDellInputButton" data-hash="query" class="actionButtonDell"
-                            style=" text-decoration: none; font-size: 18px; color: red; <%= showElement %>">dell</a>
+                <td class="hiddenByDefault">
+                    <div id="queryShow" style="<%= showElement %>"><p><b>query: [ </b><span
+                            id="queryValue"><%= params.query ? params.query.join(','):''%></span><b> ]</b></p>
+                        <select style="width: 170px; height: 25px;" id="queryInput"></select>
+                        &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"> add </a>&nbsp
+                        <a href="#" id="queryDellInputButton" data-hash="query" class="actionButtonDell">&nbspdell&nbsp</a>
+                    </div>
                 </td>
 
                 <td class="hiddenByDefault"> Query is array, that have names of fields that will form standard query
@@ -221,17 +221,20 @@
             </tr>
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="uriSpecQuery"
-                                                       value="uriSpecQuery"<%= params.uriSpecQuery ? 'checked':''%>> .uriSpecQuery </b></td>
+                                                       value="uriSpecQuery"<%= params.uriSpecQuery ? 'checked':''%>>
+                    .uriSpecQuery </b></td>
                 <% showElement = "display: none"%>
                 <% if (params.uriSpecQuery) { showElement = ''; } %>
-                <td class="hiddenByDefault"><p id="uriSpecQueryShow" style="<%= showElement %>"><b>uriSpecQuery: [ </b><span
-                        id="uriSpecQueryValue"><%= params.uriSpecQuery ? params.uriSpecQuery.join(','):''%></span><b> ]</b></p>
-                    <select style="width: 170px; height: 25px;<%= showElement %>" id="uriSpecQueryInput"></select>
-                    &nbsp<a href="#" id="uriSpecQueryAddInputButton" data-hash="uriSpecQuery" class="actionButtonAdd"
-                            style=" text-decoration: none; font-size: 18px; color: green; <%= showElement %>"> add </a>&nbsp
-                    <a
-                            href="#" id="uriSpecQueryDellInputButton" data-hash="uriSpecQuery" class="actionButtonDell"
-                            style=" text-decoration: none; font-size: 18px; color: red;  <%= showElement %>">dell</a></td>
+                <td class="hiddenByDefault">
+                    <div id="uriSpecQueryShow" style="<%= showElement %>"><p><b>uriSpecQuery: [ </b><span
+                            id="uriSpecQueryValue"><%= params.uriSpecQuery ? params.uriSpecQuery.join(','):''%></span><b>
+                        ]</b></p>
+                        <select style="width: 170px; height: 25px;" id="uriSpecQueryInput"></select>
+                        &nbsp<a href="#" id="uriSpecQueryAddInputButton" data-hash="uriSpecQuery"
+                                class="actionButtonAdd"> add </a>&nbsp
+                        <a href="#" id="uriSpecQueryDellInputButton" data-hash="uriSpecQuery"
+                                class="actionButtonDell">&nbspdell&nbsp</a>
+                </td>
                 <td class="hiddenByDefault"> uriSpecQuery is array, that have names of fields that will be added to url
                     of Request, input the names of fields separated by commas without spaces
                 </td>
