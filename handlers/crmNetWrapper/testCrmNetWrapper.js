@@ -738,14 +738,19 @@ var TestCRMNetHandler = function (db) {
 
         var userId = req.session.uId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.INQUIRY;
-        var attachment = req.body.attachment || null;
+        var attachmentData = null;
+
+        if (req.body.attachment) {
+            attachmentData = prepareAttachment(req.body.attachment);
+        }
 
         var caseOptions = {
             contactId: userId,
             caseType: caseType,
             title: title,
             description: description,
-            attachment: attachment
+            attachment: attachmentData ? attachmentData.data : null,
+            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null
         };
 
         createCase(caseOptions, function (err, result) {
@@ -769,14 +774,19 @@ var TestCRMNetHandler = function (db) {
 
         var userId = req.session.uId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
-        var attachment = req.body.attachment || null;
+        var attachmentData = null;
+
+        if (req.body.attachment) {
+            attachmentData = prepareAttachment(req.body.attachment);
+        }
 
         var caseOptions = {
             contactId: userId,
             caseType: caseType,
             title: title,
             description: description,
-            attachment: attachment
+            attachment: attachmentData ? attachmentData.data : null,
+            attachmentName: attachmentData ? ('image.' + attachmentData.extention) : null
         };
 
         createCase(caseOptions, function (err, result) {

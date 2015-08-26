@@ -5,14 +5,6 @@ var TRA = require('../constants/traServices');
 var request = require('request');
 var SessionHandler = require('./sessions');
 
-var AVAILABLE_STATUS = {
-    AVAILABLE: 'Available',
-    NOT_AVAILABLE: 'Not Available',
-    RESERVED: 'Reserved'
-};
-
-var NO_DATA_FOUND = '';
-
 var TestTRAHandler = function (db) {
     'use strict';
 
@@ -67,49 +59,6 @@ var TestTRAHandler = function (db) {
         }
     }
 
-    this.complainSmsSpam = function (req, res, next) {
-
-        var serviceType = 'SMS Spam';
-        var phoneSpam = req.body.phone;
-        //var phoneProvider = req.body.phoneProvider;
-        //var providerType = req.body.providerType;
-        var description = req.body.description;
-        var title = 'SMS Spam From ' + phoneSpam;
-        var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
-        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
-        var templateName = 'public/templates/mail/complainSmsSpam.html';
-        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-
-        var mailOptions = {
-            templateData: {
-                serviceType: serviceType,
-                title: title,
-                description: description,
-                userId: userId
-            },
-            templateName: templateName,
-            from: from,
-            mailTo: mailTo,
-            title: title
-        };
-
-        mailer.sendReport(mailOptions, function (errMail, data) {
-
-            //TODO remove console.logs
-
-            var emailReport = new EmailReport({
-                serviceType: serviceType,
-                title: title,
-                description: description,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
-            });
-
-            emailReportAndAttachmentSave(res, emailReport, errMail);
-        });
-    };
-
     this.complainSmsBlock = function (req, res, next) {
 
         var serviceType = 'SMS Block';
@@ -119,7 +68,7 @@ var TestTRAHandler = function (db) {
         var description = req.body.description + ' / phoneProvider: ' + phoneProvider + ' / providerType: ' + providerType + ' /';
         var title = 'Block SMS Spam From ' + phoneSpam;
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
-        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainSmsBlock.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
@@ -153,201 +102,6 @@ var TestTRAHandler = function (db) {
         });
     };
 
-    this.complainServiceProvider = function (req, res, next) {
-
-        var serviceType = 'Service Provider';
-        var description = req.body.description;
-        var title = req.body.title;
-
-        if (!title || !description){
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
-        var mailTo = TRA.EMAIL_COMPLAIN_SERVICE_PROVIDER;
-        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
-        var serviceProvider = req.body.serviceProvider;
-        var templateName = 'public/templates/mail/complainServiceProvider.html';
-        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-        var referenceNumber = req.body.referenceNumber;
-        var attachment = req.body.attachment;
-
-        var mailOptions = {
-            templateData: {
-                serviceProvider: serviceProvider,
-                title: title,
-                description: description,
-                userId: userId,
-                referenceNumber: referenceNumber
-            },
-            templateName: templateName,
-            from: from,
-            mailTo: mailTo,
-            title: title,
-            attachment: attachment
-        };
-
-        mailer.sendReport(mailOptions, function (errMail, data) {
-
-            //TODO remove console.logs
-            console.log(attachment);
-
-            var emailReport = new EmailReport({
-                attachment: attachment,
-                serviceType: serviceType,
-                serviceProvider: serviceProvider,
-                title: title,
-                description: description + ' referenceNumber:' + referenceNumber,
-                mailTo: mailTo,
-                user: userId,
-                referenceNumber: referenceNumber,
-                response: data || errMail
-            });
-
-            emailReportAndAttachmentSave(res, emailReport, errMail);
-        });
-    };
-
-    this.complainTRAService = function (req, res, next) {
-
-        var serviceType = 'TRA Service';
-        var description = req.body.description;
-        var title = req.body.title;
-
-        if (!title || !description){
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
-        var mailTo = TRA.EMAIL_COMPLAIN_TRA_SERVICE;
-        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
-        var templateName = 'public/templates/mail/complainTRAService.html';
-        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-        var attachment = req.body.attachment;
-
-        var mailOptions = {
-            templateData: {
-                title: title,
-                description: description,
-                userId: userId
-            },
-            templateName: templateName,
-            from: from,
-            mailTo: mailTo,
-            title: title,
-            attachment: attachment
-        };
-
-        mailer.sendReport(mailOptions, function (errMail, data) {
-
-            //TODO remove console.logs
-
-            var emailReport = new EmailReport({
-                attachment: attachment,
-                serviceType: serviceType,
-                title: title,
-                description: description,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
-            });
-
-            emailReportAndAttachmentSave(res, emailReport, errMail);
-        });
-    };
-
-    this.complainEnquiries = function (req, res, next) {
-
-        var serviceType = 'Enquiries';
-        var description = req.body.description;
-        var title = req.body.title;
-
-        if (!title || !description){
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
-        var mailTo = TRA.EMAIL_COMPLAIN_ENQUIRIES;
-        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
-        var templateName = 'public/templates/mail/complainEnquiries.html';
-        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-        var attachment = req.body.attachment;
-
-        var mailOptions = {
-            templateData: {
-                title: title,
-                description: description,
-                userId: userId
-            },
-            templateName: templateName,
-            from: from,
-            mailTo: mailTo,
-            title: title,
-            attachment: attachment
-        };
-
-        mailer.sendReport(mailOptions, function (errMail, data) {
-
-            //TODO remove console.logs
-
-            var emailReport = new EmailReport({
-                attachment: attachment,
-                serviceType: serviceType,
-                title: title,
-                description: description,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
-            });
-
-            emailReportAndAttachmentSave(res, emailReport, errMail);
-        });
-    };
-
-    this.sendSuggestion = function (req, res, next) {
-
-        var serviceType = 'Suggestion';
-        var description = req.body.description;
-        var title = req.body.title;
-
-        if (!title || !description){
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
-        var mailTo = TRA.EMAIL_COMPLAIN_ENQUIRIES;
-        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
-        var templateName = 'public/templates/mail/suggestion.html';
-        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-        var attachment = req.body.attachment;
-
-        var mailOptions = {
-            templateData: {
-                title: title,
-                description: description,
-                userId: userId
-            },
-            templateName: templateName,
-            from: from,
-            mailTo: mailTo,
-            title: title,
-            attachment: attachment
-        };
-
-        mailer.sendReport(mailOptions, function (errMail, data) {
-
-            //TODO remove console.logs
-
-            var emailReport = new EmailReport({
-                attachment: attachment,
-                serviceType: serviceType,
-                title: title,
-                description: description,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
-            });
-
-            emailReportAndAttachmentSave(res, emailReport, errMail);
-        });
-    };
-
     this.sendPoorCoverage = function (req, res, next) {
 
         var serviceType = 'Poor Coverage';
@@ -365,7 +119,7 @@ var TestTRAHandler = function (db) {
             ? ('Location.latitude: ' + location.latitude + ', location.longitude: ' + location.longitude + ' Signal level: ' + signalLevel)
             : address + ' Signal level: ' + signalLevel;
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
-        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 

@@ -189,7 +189,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
     //</editor-fold>
-/*
+
     //<editor-fold desc="Complain Inquiries">
     it('SEND complainEnquiries', function (done) {
 
@@ -224,7 +224,6 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
     it('SEND complainEnquiries Unauthorized', function (done) {
 
-        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
             title: 'I dont like inquirie',
             description: 'I dont like such enquiries. Because...'
@@ -232,7 +231,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
         agent
             .post('/crm/signOut')
-            .send(loginData)
+            .send({})
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -242,7 +241,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 agent
                     .post('/complainEnquiries')
                     .send(data)
-                    .expect(200)
+                    .expect(401)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
@@ -255,7 +254,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
     it('SEND complainEnquiries with Attachments', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
             title: 'I dont like inquiries',
             description: 'I dont like such inquiries. Because...',
@@ -263,7 +262,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
         };
 
         agent
-            .post('/crm/signOut')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -320,7 +319,6 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
     it('SEND Suggestion Unauthorized', function (done) {
 
-        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
             title: 'Need new license of service',
             description: 'Need new license of service... I license number: 2323324232432'
@@ -328,7 +326,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
         agent
             .post('/crm/signOut')
-            .send(loginData)
+            .send({})
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -338,7 +336,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 agent
                     .post('/sendSuggestion')
                     .send(data)
-                    .expect(200)
+                    .expect(401)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
@@ -359,7 +357,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
         };
 
         agent
-            .post('/crm/signOut')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -381,7 +379,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
     //</editor-fold>
-*/
+
     /* TODO ServiceProvider
     //<editor-fold desc="Complain Service Provider">
     it('SEND complainServiceProvider', function (done) {

@@ -35,6 +35,7 @@ describe('User CRM register/ logIn / logOut', function () {
     });
 
     it('Login with GOOD credentials', function (done) {
+        this.timeout(20000);
 
         var loginData = {
             login: USERS.CLIENT_CRM_LOGIN_TAREK.login,
