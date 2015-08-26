@@ -10,7 +10,7 @@ var app = require('../app');
 //require('./testHandlers/userServices');
 
 //require('./testHandlers/usersAuth'); //added register
-require('./testHandlers/usersAuthCrm');
+//require('./testHandlers/usersAuthCrm');
 require('./testHandlers/traServicesCrm');
 //require('./testHandlers/traServices WHOIS_IMEI_BRAND');
 //require('./testHandlers/traServices Complains ServiceProvider_TRA Services');

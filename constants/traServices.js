@@ -66,9 +66,9 @@ module.exports = {
             COMPLAINT_SERVICE_PROVIDER: 4
         },
         SERVICE_PROVIDER: {
-            DU: 'du .',
-            ETISALAT: 'Etisalat .',
-            YAHSAT: 'Yahsat .'
+            DU: 'du',
+            ETISALAT: 'Etisalat',
+            YAHSAT: 'Yahsat'
         }
     }
 };

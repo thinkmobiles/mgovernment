@@ -34,7 +34,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 done();
             });
     });
-
+/*
     //<editor-fold desc="SMS spam">
     it('SEND complainSmsSpam', function (done) {
 
@@ -285,7 +285,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
     //</editor-fold>
-
+*/
     //<editor-fold desc="Suggestion">
     it('SEND Suggestion', function (done) {
 
@@ -387,7 +387,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
         var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
             title: 'It works slowly',
-            serviceProvider: TRA.CRM_ENUM.SERVICE_PROVIDER.DU,
+            serviceProvider: TRA.CRM_ENUM.SERVICE_PROVIDER.ETISALAT,
             description: 'Amazon is awefull',
             referenceNumber: '123456'
         };
@@ -417,7 +417,6 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
     it('SEND complainServiceProvider UnAuthorized', function (done) {
 
-        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
             title: 'It works good, but i dont like img in header.',
             serviceProvider: TRA.CRM_ENUM.SERVICE_PROVIDER.ETISALAT,
@@ -427,7 +426,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
         agent
             .post('/crm/signOut')
-            .send(loginData)
+            .send({})
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -460,7 +459,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
         };
 
         agent
-            .post('/crm/signOut')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {

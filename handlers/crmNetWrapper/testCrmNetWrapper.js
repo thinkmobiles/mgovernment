@@ -649,8 +649,9 @@ var TestCRMNetHandler = function (db) {
              QueryExpression qe = new QueryExpression();
              qe.EntityName = "tra_licensee";
              qe.ColumnSet = new ColumnSet();
-             qe.ColumnSet.Columns.Add("tra_licenseeId");
+             qe.ColumnSet.Columns.Add("tra_licenseeid");
              qe.ColumnSet.Columns.Add("tra_firstname");
+             Console.WriteLine("licensee: {0}", licensee);
 
              FilterExpression filter = new FilterExpression();
 
@@ -660,12 +661,12 @@ var TestCRMNetHandler = function (db) {
              qe.Criteria = filter;
 
              EntityCollection ec = service.RetrieveMultiple(qe);
-             Console.WriteLine("found count: {0}", ec.Entities.Count);
+             Console.WriteLine("license count: {0}", ec.Entities.Count);
 
-             if (ec.Entities.Count == 1)
+             if (ec.Entities.Count > 0)
              {
              Entity contact = ec.Entities[0];
-             return contact["tra_licenseeId"].ToString();
+             return contact["tra_licenseeid"].ToString();
              }
 
              return null;
@@ -718,7 +719,7 @@ var TestCRMNetHandler = function (db) {
         }
 
         var userId = req.session.uId;
-        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
         var attachmentData = null;
 
         if (req.body.attachment) {
