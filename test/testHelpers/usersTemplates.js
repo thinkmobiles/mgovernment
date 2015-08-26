@@ -36,7 +36,7 @@ module.exports = {
     },
 
     CLIENT_REGISTER_DATA: {
-        login: 'digiTest2',
+        login: 'digiTest3',
         pass: 'password777',
         first: 'Test',
         last: 'Digi',
