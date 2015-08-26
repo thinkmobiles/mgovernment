@@ -26,8 +26,8 @@ describe('User register/ logIn / logOut', function () {
         async.series([
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-            preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
-            preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
+            //preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
+            //preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
             preparingDb.toFillUsers(1)
         ], function (err,results)   {
             if (err) {
