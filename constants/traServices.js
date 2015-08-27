@@ -6,7 +6,7 @@ module.exports = {
     WHOIS_CHECK_URL: 'whois-check.aeda.net.ae',
     WHOIS_PORT: 43,
 
-    MOBILE_SEARCH_URL: 'https://ta-uat.tra.gov.ae:65004/tasserver/v1/imei?method=search',
+    MOBILE_SEARCH_URL: 'https://192.168.91.98:65104/tasserver/v1/imei?method=search',
     /*Hostname: ta-uat
       DNS name: ta-uat.tra.gov.ae
       IP address: 192.168.91.98

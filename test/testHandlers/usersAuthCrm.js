@@ -14,14 +14,11 @@ describe('User CRM register/ logIn / logOut', function () {
     this.timeout(10000);
 
     var agent = request.agent(url);
-    var userId;
-    var serviceCollection;
+    var preparingDb = new PreparingBd();
 
     before(function (done) {
         this.timeout(50000);
         console.log('>>> before');
-
-        var preparingDb = new PreparingBd();
 
         async.series([
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
@@ -50,7 +47,21 @@ describe('User CRM register/ logIn / logOut', function () {
                 if (err) {
                     return done(err)
                 }
-                done();
+
+                preparingDb
+                    .User
+                    .findOne({login: loginData.login})
+                    .exec(function (err, model) {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        if (!model) {
+                            return done('Not Exist Middleware user');
+                        }
+
+                        done();
+                    });
             });
     });
 
@@ -95,7 +106,21 @@ describe('User CRM register/ logIn / logOut', function () {
                         if (err) {
                             return done(err)
                         }
-                        done();
+
+                        preparingDb
+                            .User
+                            .findOne({login: registerData.login})
+                            .exec(function (err, model) {
+                                if (err) {
+                                    return done(err);
+                                }
+
+                                if (!model) {
+                                    return done('Not Exist Middleware user');
+                                }
+
+                                done();
+                            });
                     });
             });
     });
@@ -123,7 +148,21 @@ describe('User CRM register/ logIn / logOut', function () {
                         if (err) {
                             return done(err)
                         }
-                        done();
+
+                        preparingDb
+                            .User
+                            .findOne({login: registerData.login})
+                            .exec(function (err, model) {
+                                if (err) {
+                                    return done(err);
+                                }
+
+                                if (!model) {
+                                    return done('Not Exist Middleware user');
+                                }
+
+                                done();
+                            });
                     });
             });
     });

@@ -23,6 +23,7 @@ PreparingDb = function (){
     var User = dbConnection.model(CONST.MODELS.USER);
     var Service = dbConnection.model(CONST.MODELS.SERVICE);
 
+    this.User = User;
 
     this.dropCollection = function (collection) {
         return function (callback) {
