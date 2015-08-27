@@ -4,6 +4,8 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ], function (content, userHistoryLogsCollection, paginationTemplate, PaginationView) {
+    'use strict';
+
     var userHistoryLogView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -77,6 +79,8 @@ define([
 
             this.$el.html(this.template({collection: this.userHistoryLogsCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+
+            return this;
         }
     });
 

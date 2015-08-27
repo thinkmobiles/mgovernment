@@ -4,6 +4,8 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ],function(content, ServicesCollection, paginationTemplate, PaginationView){
+    'use strict';
+
     var propertyList = '';
     var properties = '';
     var servicesView = Backbone.View.extend({
@@ -145,8 +147,6 @@ define([
                         text(textContent);
                 }
             }
-
-            return this;
         },
 
         render: function () {
@@ -160,6 +160,8 @@ define([
             properties = $("#properties");
 
             this.updateServiceList();
+
+            return this;
         }
     });
 

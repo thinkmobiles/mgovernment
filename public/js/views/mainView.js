@@ -4,6 +4,8 @@ define([
     'models/adminSignOut'
 
 ], function (mainTemplate, topBarView, adminSignOut) {
+    'use strict';
+
     var mainView = Backbone.View.extend({
         el: '#content',
 
@@ -45,6 +47,7 @@ define([
 
             this.$el.html(this.template());
             new topBarView();
+
             return this;
         }
     });

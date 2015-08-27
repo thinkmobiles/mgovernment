@@ -4,6 +4,9 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ], function (content, EmailReportsCollecion, paginationTemplate, PaginationView) {
+    'use strict';
+
+    var filterCheckbox;
     var feedbacksView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -18,14 +21,18 @@ define([
             var el = this.$el;
             var filter = '';
 
-            filter += el.find('#filterHelpSalim')[0].checked ? '' : 'Help Salim,';
-            filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMS Spam,';
-            filter += el.find('#filterSMSBlock')[0].checked ? '' : 'SMS Block,';
-            filter += el.find('#filterServiceProvider')[0].checked ? '' : 'Service Provider,';
-            filter += el.find('#filterTRAService')[0].checked ? '' : 'TRA Service,';
-            filter += el.find('#filterEnquiries')[0].checked ? '' : 'Enquiries,';
-            filter += el.find('#filterSuggestion')[0].checked ? '' : 'Suggestion,';
-            filter += el.find('#filterPoorCoverage')[0].checked ? '' : 'Poor Coverage,';
+            for (var i = filterCheckbox.length - 1; i >= 0; i-- ){
+                filter += filterCheckbox[i].checked ? '' : filterCheckbox[i].value + ',';
+            }
+
+            //filter += el.find('#filterHelpSalim')[0].checked ? '' : 'Help Salim,';
+            //filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMS Spam,';
+            //filter += el.find('#filterSMSBlock')[0].checked ? '' : 'SMS Block,';
+            //filter += el.find('#filterServiceProvider')[0].checked ? '' : 'Service Provider,';
+            //filter += el.find('#filterTRAService')[0].checked ? '' : 'TRA Service,';
+            //filter += el.find('#filterEnquiries')[0].checked ? '' : 'Enquiries,';
+            //filter += el.find('#filterSuggestion')[0].checked ? '' : 'Suggestion,';
+            //filter += el.find('#filterPoorCoverage')[0].checked ? '' : 'Poor Coverage,';
 
             filter = filter.replace(/\,$/, '');
             console.log('filter', filter);
@@ -106,11 +113,16 @@ define([
         render: function () {
             console.log('emailReportsView render');
             console.log('filter: ', this.paginationView.stateModel.toJSON().data);
+
             this.$el.html(this.template({
                 collection: this.emailReportsCollecion.toJSON(),
                 filter: this.paginationView.stateModel.toJSON().data.filter
             }));
+
+            filterCheckbox = document.querySelectorAll('input.filterServiceType');
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+
+            return this;
         }
     });
 

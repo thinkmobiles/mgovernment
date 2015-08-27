@@ -4,6 +4,8 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ],function(content, UsersCollection, paginationTemplate, PaginationView){
+    'use strict';
+
     var propertyList = '';
     var properties = '';
 
@@ -47,6 +49,8 @@ define([
             properties = $("#properties");
 
             this.updateUserList();
+
+            return this;
         },
 
         createUser: function(e){
@@ -141,8 +145,6 @@ define([
                         text(textContent);
                 }
             }
-
-            return this;
         }
     });
 

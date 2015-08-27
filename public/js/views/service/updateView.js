@@ -5,6 +5,8 @@ define([
     'validation'
 
 ], function (content,inputBlockTemplate, ServiceModel, Validation) {
+    'use strict';
+
     var itemBlockCount = 0;
     var profileBlockCount = 0;
     var cloneService = false;
@@ -48,6 +50,7 @@ define([
                 insertBefore("#profileBlock");
 
             profileBlockCount++;
+            return this;
         },
 
         delProfileFieldBlock: function(e) {
@@ -59,6 +62,7 @@ define([
 
             $("#profileFieldBlock" + profileBlockCount).
                 remove();
+            return this;
         },
 
 
@@ -68,33 +72,37 @@ define([
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
-            $("#itemBlock").before(_.template(inputBlockTemplate)({i: itemBlockCount}));
+
+            el.find("#itemBlock").before(_.template(inputBlockTemplate)({i: itemBlockCount}));
 
             itemBlockCount++;
         },
 
         delInputItemsBlock: function(e) {
+            var el = this.$el;
+
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
 
             if (itemBlockCount === 0) {
-                return;
+                return this;
             }
             itemBlockCount--;
 
-            $("#itemBlockName" + itemBlockCount).
+            el.find("#itemBlockName" + itemBlockCount).
                 empty().
                 remove();
 
-            $("#itemBlockInputType" + itemBlockCount).
+            el.find("#itemBlockInputType" + itemBlockCount).
                 empty().
                 remove();
 
-            $("#itemBlockOrder" + itemBlockCount).
+            el.find("#itemBlockOrder" + itemBlockCount).
                 empty().
                 remove();
-
+            this.updateItemsInputNameArray();
+            return this;
         },
 
         enableInput: function(e) {
@@ -102,18 +110,13 @@ define([
             var el = this.$el;
 
             if (e.target.checked) {
-                //el.find('#'+ idName + 'Input').css( "display", "inline" );
-                el.find('#'+ idName + 'Show').css( "display", "block" );
-                //el.find('#'+ idName + 'AddInputButton').css( "display", "inline" );
-                //el.find('#'+ idName + 'DellInputButton').css( "display", "inline" );
-
+                el.find('#'+ idName + 'Show').show();
             } else {
-                //el.find('#'+ idName + 'Input').css( "display", "none" );
-                el.find('#'+ idName + 'Show').css( "display", "none" );
-                //el.find('#'+ idName + 'AddInputButton').css( "display", "none" );
-                //el.find('#'+ idName + 'DellInputButton').css( "display", "none" );
+                el.find('#'+ idName + 'Show').hide();
             }
+            return this;
         },
+
         updateService: function(e){
             var model = new ServiceModel();
             var el = this.$el;
@@ -172,7 +175,6 @@ define([
                 }
             }
 
-            //console.log(itemBlockCount);
             console.dir(data);
 
             Validation.checkUrlField(errors, true, data.baseUrl, 'Base Url');
@@ -204,13 +206,13 @@ define([
                     }
                 });
             }
+            return this;
         },
 
         addItemToArray: function(e) {
             var el = this.$el;
             var id = $(e.target).attr('data-hash');
             var inputFieldName = el.find('#' + id + 'Input').val();
-            //console.log(id, ' ',  sendParams[id]);
 
             e.preventDefault();
             e.stopPropagation();
@@ -223,7 +225,6 @@ define([
             if (!el.find('#' +  id)[0].checked || !inputFieldName || sendParams[id].indexOf(inputFieldName) >= 0 ) {
                 return this;
             }
-            //TODO inputFieldName validate in inputFieldNames
 
             console.log('addButtonClicked');
             sendParams[id].push(el.find('#' + id + 'Input').val().trim());
@@ -236,7 +237,6 @@ define([
         dellLastItemFromArray: function(e) {
             var el = this.$el;
             var id = $(e.target).attr('data-hash');
-            //var inputFieldName = el.find('#' + id + 'Input').val().trim();
 
             e.preventDefault();
             e.stopPropagation();
@@ -249,7 +249,6 @@ define([
             console.log('dellButtonClicked');
             sendParams[id].pop();
             el.find('#' + id + 'Value').text(sendParams[id]);
-            //console.log(id, ' ',  sendParams[id]);
 
             return this;
         },
@@ -258,12 +257,16 @@ define([
             var el = this.$el;
             var newOptionsValue = '';
             var value ='';
+
             itemsInputNameArray = [];
 
             for (var i = itemBlockCount - 1; i >= 0; i-- ){
                 value = el.find('#name' + i).val().trim();
-                itemsInputNameArray.push(value);
-                newOptionsValue = '<option>' + value + '</option>' + newOptionsValue;
+
+                if (value) {
+                    itemsInputNameArray.push(value);
+                    newOptionsValue = '<option>' + value + '</option>' + newOptionsValue;
+                }
             }
 
             el.find('#bodyInput').html(newOptionsValue);
@@ -282,11 +285,13 @@ define([
             service.profile =  service.profile
 
             this.$el.html(this.template( service));
+
             itemBlockCount =  App.selectedService.toJSON().inputItems.length;
             profileBlockCount =  Object.keys(App.selectedService.toJSON().profile).length;
-            //console.log(itemBlockCount);
             sendParams = App.selectedService.toJSON().params;
+
             this.updateItemsInputNameArray();
+
             return this;
         }
     });
