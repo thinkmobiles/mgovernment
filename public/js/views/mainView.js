@@ -47,6 +47,7 @@ define([
 
             this.$el.html(this.template());
             new topBarView();
+
             return this;
         }
     });

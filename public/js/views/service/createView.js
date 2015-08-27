@@ -107,10 +107,10 @@ define([
             var el = this.$el;
 
             if (e.target.checked) {
-                el.find('#'+ idName + 'Show').css( "display", "block" );
+                el.find('#'+ idName + 'Show').show();
 
             } else {
-                el.find('#'+ idName + 'Show').css( "display", "none" );
+                el.find('#'+ idName + 'Show').hide();
             }
             return this;
         },

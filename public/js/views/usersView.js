@@ -49,7 +49,8 @@ define([
             properties = $("#properties");
 
             this.updateUserList();
-            this.render();
+
+            return this;
         },
 
         createUser: function(e){
@@ -144,8 +145,6 @@ define([
                         text(textContent);
                 }
             }
-
-            return this;
         }
     });
 

@@ -77,7 +77,8 @@ define([
 
             this.$el.html(this.template({collection: this.feedbacksCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
-            this.render();
+
+            return this;
         }
     });
 

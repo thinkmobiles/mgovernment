@@ -160,7 +160,8 @@ define([
             properties = $("#properties");
 
             this.updateServiceList();
-            this.render();
+
+            return this;
         }
     });
 
