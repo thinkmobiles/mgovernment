@@ -4,6 +4,8 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ], function (content, FeedbacksCollection, paginationTemplate, PaginationView) {
+    'use strict';
+
     var feedbacksView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -31,7 +33,6 @@ define([
             });
 
             this.listenTo(this.feedbacksCollection, 'reset remove', this.render);
-            this.render();
         },
 
         goSort: function (e) {
@@ -76,6 +77,7 @@ define([
 
             this.$el.html(this.template({collection: this.feedbacksCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+            this.render();
         }
     });
 

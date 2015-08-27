@@ -4,6 +4,8 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ], function (content, EmailReportsCollecion, paginationTemplate, PaginationView) {
+    'use strict';
+
     var filterCheckbox;
     var feedbacksView = Backbone.View.extend({
 
@@ -118,8 +120,9 @@ define([
             }));
 
             filterCheckbox = document.querySelectorAll('input.filterServiceType');
-
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+
+            return this;
         }
     });
 

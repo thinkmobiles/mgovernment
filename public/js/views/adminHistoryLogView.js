@@ -4,6 +4,8 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ], function (content, AdminHistoryLogsCollection, paginationTemplate, PaginationView) {
+    'use strict';
+
     var adminHistoryLogView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -32,8 +34,7 @@ define([
             });
 
             this.listenTo(this.adminHistoryLogsCollection, 'reset remove', this.render);
-            this.render();
-        },
+          },
 
         goSort: function (e) {
             var target$ = $(e.target);
@@ -66,6 +67,7 @@ define([
                     break;
             }
             this.paginationView.setData({orderBy: sortBy, order: sortOrder});
+            return this;
         },
 
         render: function () {
@@ -77,6 +79,8 @@ define([
 
             this.$el.html(this.template({collection: this.adminHistoryLogsCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+
+            return this;
         }
     });
 

@@ -4,12 +4,12 @@ define([
     'models/service',
     'validation'
 ], function (content,inputBlockTemplate, ServiceModel, Validation) {
+    'use strict';
+
     var itemBlockCount = 0;
     var itemsInputNameArray = [];
     var profileBlockCount = 0;
     var sendParams ={};
-
-
 
     var serviceCreateView = Backbone.View.extend({
 
@@ -37,9 +37,9 @@ define([
         },
 
         addProfileFieldBlock: function(e) {
-            //e.preventDefault();
-            //e.stopPropagation();
-            //e.stopImmediatePropagation();
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
 
             var textContent = '<td><b>profile.</b><input type="text" name="" id="profileFieldName' + profileBlockCount + '" size="10" maxlength="20"></td><td><input type="text" name="" id="profileFieldValue' + profileBlockCount + '" size="20" maxlength="40"></td><td> Input profile. fileds name and fields value </td>';
 
@@ -52,17 +52,18 @@ define([
         },
 
         delProfileFieldBlock: function(e) {
-            //e.preventDefault();
-            //e.stopPropagation();
-            //e.stopImmediatePropagation();
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
 
             if (profileBlockCount === 0) {
-                return;
+                return this;
             }
             profileBlockCount--;
 
             $("#profileFieldBlock" + profileBlockCount).
                 remove();
+            return this;
         },
 
         addInputItemsBlock: function(e) {
@@ -72,6 +73,7 @@ define([
             e.stopImmediatePropagation();
             $("#itemBlock").before(_.template(inputBlockTemplate)({i: itemBlockCount}));
             itemBlockCount++;
+            return this;
         },
 
         delInputItemsBlock: function(e) {
@@ -95,7 +97,8 @@ define([
             $("#itemBlockOrder" + itemBlockCount).
                 empty().
                 remove();
-            updateItemsInputNameArray();
+
+            this.updateItemsInputNameArray();
             return this;
         },
 
@@ -104,17 +107,12 @@ define([
             var el = this.$el;
 
             if (e.target.checked) {
-                //el.find('#'+ idName + 'Input').css( "display", "inline" );
                 el.find('#'+ idName + 'Show').css( "display", "block" );
-                //el.find('#'+ idName + 'AddInputButton').css( "display", "inline" );
-                //el.find('#'+ idName + 'DellInputButton').css( "display", "inline" );
 
             } else {
-                //el.find('#'+ idName + 'Input').css( "display", "none" );
                 el.find('#'+ idName + 'Show').css( "display", "none" );
-                //el.find('#'+ idName + 'AddInputButton').css( "display", "none" );
-                //el.find('#'+ idName + 'DellInputButton').css( "display", "none" );
             }
+            return this;
         },
 
         addItemToArray: function(e) {
@@ -134,13 +132,9 @@ define([
             if (!el.find('#' +  id)[0].checked || !inputFieldName || sendParams[id].indexOf(inputFieldName) >= 0 ) {
                 return this;
             }
-            //TODO inputFieldName validate in inputFieldNames
-
-            console.log('addButtonClicked');
 
             sendParams[id].push(el.find('#' + id + 'Input').val().trim());
             el.find('#' + id + 'Value').text(sendParams[id]);
-            //console.log(id, ' ',  sendParams[id]);
 
             return this;
         },
@@ -148,7 +142,6 @@ define([
         dellLastItemFromArray: function(e) {
             var el = this.$el;
             var id = $(e.target).attr('data-hash');
-            //var inputFieldName = el.find('#' + id + 'Input').val().trim();
 
             e.preventDefault();
             e.stopPropagation();
@@ -161,7 +154,6 @@ define([
             console.log('dellButtonClicked');
             sendParams[id].pop();
             el.find('#' + id + 'Value').text(sendParams[id]);
-            //console.log(id, ' ',  sendParams[id]);
 
             return this;
         },
@@ -231,7 +223,7 @@ define([
 
             if (errors.length){
                 alert(errors);
-                return;
+                return this;
             }
 
             model.save(data, {
@@ -243,6 +235,7 @@ define([
                     alert(xhr.responseText);
                 }
             });
+            return this;
         },
 
         updateItemsInputNameArray: function () {
@@ -253,9 +246,14 @@ define([
 
             for (var i = itemBlockCount - 1; i >= 0; i-- ){
                 value = el.find('#name' + i).val().trim();
-                itemsInputNameArray.push(value);
-                newOptionsValue = '<option>' + value + '</option>' + newOptionsValue;
+
+                if (value) {
+                    itemsInputNameArray.push(value);
+                    newOptionsValue = '<option>' + value + '</option>' + newOptionsValue;
+                }
             }
+
+//TODO if  often using this View need cashing this 3 element
 
             el.find('#bodyInput').html(newOptionsValue);
             el.find('#queryInput').html(newOptionsValue);
@@ -267,7 +265,6 @@ define([
         },
 
         render: function () {
-
             this.$el.html(this.template());
             return this;
         }

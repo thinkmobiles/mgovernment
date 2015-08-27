@@ -1,6 +1,8 @@
 define([
     'text!templates/topBarTemplate.html',
 ], function (topBarTemplate) {
+    'use strict';
+
     var topBarView = Backbone.View.extend({
         el: '#topBar',
 
