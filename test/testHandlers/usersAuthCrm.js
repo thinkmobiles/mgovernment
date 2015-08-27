@@ -151,7 +151,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
                         preparingDb
                             .User
-                            .findOne({login: registerData.login})
+                            .findOne({login: loginData.login})
                             .exec(function (err, model) {
                                 if (err) {
                                     return done(err);

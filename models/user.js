@@ -18,6 +18,7 @@ module.exports = function (db) {
             firstName: {type: String},
             lastName: String,
             gender: String,
+            email: String,
             phone: String,
             createdAt: {type: Date, default: Date.now}
         },
