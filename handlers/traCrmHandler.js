@@ -22,6 +22,8 @@ var TRACRMHandler = function (db) {
     var sessionHandler = new SessionHandler(db);
     var traCrmNetWrapper = new TraCrmNetWrapper();
     var mongoose = require('mongoose');
+    var crypto = require('crypto');
+    var User = db.model(CONST.MODELS.USER);
 
     this.signInClient = function (req, res, next) {
 
@@ -37,11 +39,10 @@ var TRACRMHandler = function (db) {
         };
 
         traCrmNetWrapper.signInCrm(loginOpt, function (err, result) {
+
             if (err) {
                 return next(err);
             }
-
-            console.log(result);
 
             if (result.error) {
                 if (result.error === 'Not Found') {
@@ -54,9 +55,58 @@ var TRACRMHandler = function (db) {
                 return res.status(400).send({error: RESPONSE.AUTH.INVALID_CREDENTIALS});
             }
 
-            return sessionHandler.register(req, res, result.userId, CONST.USER_TYPE.CLIENT);
+            loginOpt.crmId = result.userId;
+
+            loginMiddleware(loginOpt, function(err, user) {
+                if (err) {
+                    return next(err);
+                }
+
+                return sessionHandler.register(req, res, user._id.toString(), user.userType, loginOpt.crmId);
+            });
         });
     };
+
+    function loginMiddleware(loginOpt, callback) {
+        User
+            .findOne({login: loginOpt.login})
+            .exec(function (err, model) {
+                if (err) {
+                    return callback(err);
+                }
+
+                if (model) {
+                    return callback(null, model);
+                }
+
+                createMiddlewareUser(loginOpt, callback);
+            });
+    }
+
+    function createMiddlewareUser(loginOpt, callback){
+
+        var pass = loginOpt.pass;
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
+
+        var userData = {
+            login: loginOpt.login,
+            pass: pass,
+            userType: CONST.USER_TYPE.CLIENT,
+            profile: {}
+        };
+
+        var user = new User(userData);
+        user
+            .save(function (err, userModel) {
+                if (err) {
+                    return callback(err);
+                }
+
+                return callback(null, userModel);
+            });
+    }
 
     this.signOutClient = function (req, res, next) {
         return sessionHandler.kill(req, res, next);
@@ -78,13 +128,15 @@ var TRACRMHandler = function (db) {
                 if (err) {
                     return next(err);
                 }
-                console.log(result);
 
                 if (result == "Login is used") {
                     return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
                 }
 
-                res.status(200).send(result);
+                registerMiddlewareUser(body, function (err, userModel) {
+                    //WARNING: no error handling - cause login has logic to create middleware user
+                    res.status(200).send({success: result});
+                });
             });
         });
     };
@@ -95,15 +147,48 @@ var TRACRMHandler = function (db) {
                 return callback(RESPONSE.NOT_ENOUGH_PARAMS + ': ' + REGISTER_FIELDS[i]);
             }
         }
+        if ((typeof data.state) !== "number") {
+            data.state = parseInt(data.state);
+        }
         callback();
         //'784-YYYY-NNNNNNN-C'
+    }
+
+    function registerMiddlewareUser(registerData, callback) {
+
+        var pass = registerData.pass;
+        var shaSum = crypto.createHash('sha256');
+        shaSum.update(pass);
+        pass = shaSum.digest('hex');
+
+        var userData = {
+            login: registerData.login,
+            pass: pass,
+            userType: CONST.USER_TYPE.CLIENT,
+            profile: {
+                firstName: registerData.first,
+                lastName: registerData.last,
+                phone: registerData.mobile,
+                email: registerData.email
+            }
+        };
+
+        var user = new User(userData);
+        user
+            .save(function (err, userModel) {
+                if (err) {
+                    return callback(err);
+                }
+
+                return callback(null, userModel);
+            });
     }
 
     this.complainSmsSpam = function (req, res, next) {
 
         var phoneSpam = req.body.phone;
         var description = req.body.description;
-        var userId = req.session.uId;
+        var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.SMS_SPAM;
 
         if (!phoneSpam || !description) {
@@ -111,7 +196,7 @@ var TRACRMHandler = function (db) {
         }
 
         var caseOptions = {
-            contactId: userId,
+            contactId: crmUserId,
             caseType: caseType,
             title: 'SMS Spam from ' + phoneSpam,
             description: description,
@@ -154,7 +239,7 @@ var TRACRMHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': input reference number or "none"'});
         }
 
-        var userId = req.session.uId;
+        var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
         var attachmentData = null;
 
@@ -163,7 +248,7 @@ var TRACRMHandler = function (db) {
         }
 
         var caseOptions = {
-            contactId: userId,
+            contactId: crmUserId,
             caseType: caseType,
             title: title,
             description: description,
@@ -192,7 +277,7 @@ var TRACRMHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        var userId = req.session.uId;
+        var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
         var attachmentData = null;
 
@@ -201,7 +286,7 @@ var TRACRMHandler = function (db) {
         }
 
         var caseOptions = {
-            contactId: userId,
+            contactId: crmUserId,
             caseType: caseType,
             title: title,
             description: description,
@@ -253,7 +338,7 @@ var TRACRMHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        var userId = req.session.uId;
+        var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.INQUIRY;
         var attachmentData = null;
 
@@ -262,7 +347,7 @@ var TRACRMHandler = function (db) {
         }
 
         var caseOptions = {
-            contactId: userId,
+            contactId: crmUserId,
             caseType: caseType,
             title: title,
             description: description,
@@ -290,7 +375,7 @@ var TRACRMHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        var userId = req.session.uId;
+        var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
         var attachmentData = null;
 
@@ -299,7 +384,7 @@ var TRACRMHandler = function (db) {
         }
 
         var caseOptions = {
-            contactId: userId,
+            contactId: crmUserId,
             caseType: caseType,
             title: title,
             description: description,

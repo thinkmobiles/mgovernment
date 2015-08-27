@@ -58,8 +58,8 @@ module.exports = function(db) {
      * @method register
      * @for crmServices
      */
-
     router.post('/crm/register', traCrmHandler.registerClient);
+
     /**
      * This __method__  for user signIn in CRM
      *
@@ -85,7 +85,6 @@ module.exports = function(db) {
      * @for crmServices
      *
      */
-
     router.post('/crm/signIn', traCrmHandler.signInClient);
 
     /**
@@ -105,7 +104,6 @@ module.exports = function(db) {
      * @for crmServices
      *
      */
-
     router.post('/crm/signOut', traCrmHandler.signOutClient);
 
     /**
@@ -129,6 +127,7 @@ module.exports = function(db) {
      * @for crmServices
      */
     router.post('/complainSmsSpam', session.authenticatedUser, traCrmHandler.complainSmsSpam);
+
     /**
      * This __method__ create complain about Service Provider
      *
@@ -162,6 +161,7 @@ module.exports = function(db) {
      * @for crmServices
      */
     router.post('/complainServiceProvider', session.authenticatedUser, traCrmHandler.complainServiceProvider);
+
     /**
      * This __method__ create complain about TRA Service
      *
@@ -183,8 +183,8 @@ module.exports = function(db) {
      *
      * @for crmServices
      */
-
     router.post('/complainTRAService', session.authenticatedUser, traCrmHandler.complainTRAService);
+
     /**
      * This __method__ create Enquiries <br>
      *
@@ -205,8 +205,8 @@ module.exports = function(db) {
      * @method complainEnquiries
      * @for crmServices
      */
-
     router.post('/complainEnquiries', session.authenticatedUser, traCrmHandler.complainInquiries);
+
     /**
      * This __method__ create Suggestion <br>
      *
