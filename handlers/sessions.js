@@ -7,10 +7,13 @@ var Session = function ( db ) {
     var mongoose = require('mongoose');
     var User = db.model(CONST.MODELS.USER);
 
-    this.register = function (req, res, userId, userType) {
+    this.register = function (req, res, userId, userType, crmId) {
         req.session.loggedIn = true;
         req.session.uId = userId;
         req.session.type = userType;
+        if (crmId) {
+            req.session.crmId = crmId;
+        }
         res.status(200).send({success: RESPONSE.AUTH.LOG_IN});
     };
 

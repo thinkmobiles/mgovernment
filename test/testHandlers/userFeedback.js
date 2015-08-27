@@ -8,15 +8,16 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDB');
-var url = 'http://localhost:80';
+var url = 'http://localhost:7791';
 
 describe('Feedback tests - Create, Get ,', function () {
+    this.timeout(10000);
 
     var agent = request.agent(url);
     var serviceCollection;
 
     before(function (done) {
-        this.timeout(10000);
+        this.timeout(40000);
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
@@ -28,9 +29,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
                 preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_HELP_SALIM_TMA_TRA_SERVICES),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GET_DOMAIN_DATA_TMA_TRA_SERVICES)
+                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
             ],
             function (err, results) {
                 if (err) {
@@ -43,7 +42,7 @@ describe('Feedback tests - Create, Get ,', function () {
     it('Unauthorized GET serviceList', function (done) {
 
         agent
-            .post('/user/signOut')
+            .post('/crm/signOut')
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -67,8 +66,8 @@ describe('Feedback tests - Create, Get ,', function () {
 
     it('SEND Good feedback', function (done) {
 
-        var service = serviceCollection[1];
-        var loginData = USERS.CLIENT;
+        var service = serviceCollection[0];
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var feedback = {
             serviceName: service.serviceName,
             serviceId: service._id,
@@ -77,7 +76,7 @@ describe('Feedback tests - Create, Get ,', function () {
         };
 
         agent
-            .post('/user/signIn')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -101,8 +100,8 @@ describe('Feedback tests - Create, Get ,', function () {
 
     it('SEND Bad feedback', function (done) {
 
-        var service = serviceCollection[2];
-        var loginData = USERS.COMPANY;
+        var service = serviceCollection[0];
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var feedback = {
             serviceName: service.serviceName,
             rate: 1,
@@ -110,7 +109,7 @@ describe('Feedback tests - Create, Get ,', function () {
         };
 
         agent
-            .post('/user/signIn')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -134,8 +133,8 @@ describe('Feedback tests - Create, Get ,', function () {
 
     it('SEND GOOD feedback UnAuthorized', function (done) {
 
-        var service = serviceCollection[2];
-        var loginData = USERS.CLIENT;
+        var service = serviceCollection[0];
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var feedback = {
             serviceName: service.serviceName,
             serviceId: service._id,
@@ -144,7 +143,7 @@ describe('Feedback tests - Create, Get ,', function () {
         };
 
         agent
-            .post('/user/signOut')
+            .post('/crm/signOut')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -194,10 +193,10 @@ describe('Feedback tests - Create, Get ,', function () {
 
     it('GET ALL feedback by NOT Admin', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
 
         agent
-            .post('/user/signIn')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {

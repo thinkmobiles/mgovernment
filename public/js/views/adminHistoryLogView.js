@@ -1,27 +1,28 @@
 define([
-    'text!templates/feedbacksViewTemplate.html',
-    'collections/feedbacks',
+    'text!templates/adminHistoryLogView.html',
+    'collections/adminHistoryLogs',
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
-], function (content, FeedbacksCollection, paginationTemplate, PaginationView) {
+], function (content, AdminHistoryLogsCollection, paginationTemplate, PaginationView) {
     'use strict';
 
-    var feedbacksView = Backbone.View.extend({
+    var adminHistoryLogView = Backbone.View.extend({
 
         el: '#dataBlock',
         events: {
-            "click .oe_sortable": "goSort"
+            'click .DbList': 'showFeedbackInfo',
+             "click .oe_sortable": "goSort"
         },
 
         template: _.template(content),
 
         initialize: function (options) {
-            this.feedbacksCollection = new FeedbacksCollection();
+            this.adminHistoryLogsCollection = new AdminHistoryLogsCollection();
             this.paginationView = new PaginationView({
-                collection: this.feedbacksCollection,
+                collection: this.adminHistoryLogsCollection,
                 countPerPage: options.countPerPage,
-                url: 'feedbacks',
-                urlGetCount: '/feedback/getCount',
+                url: 'adminHistoryLog',
+                urlGetCount: '/adminHistory/getCount',
                 padding: 2,
                 page: options.page,
                 ends: true,
@@ -32,8 +33,8 @@ define([
                 }
             });
 
-            this.listenTo(this.feedbacksCollection, 'reset remove', this.render);
-        },
+            this.listenTo(this.adminHistoryLogsCollection, 'reset remove', this.render);
+          },
 
         goSort: function (e) {
             var target$ = $(e.target);
@@ -66,21 +67,22 @@ define([
                     break;
             }
             this.paginationView.setData({orderBy: sortBy, order: sortOrder});
+            return this;
         },
 
         render: function () {
 
-            console.log('feedbacksView render');
-            if (this.feedbacksCollection.toJSON().length) {
+            console.log('adminHistoryLogs render');
+            if (this.adminHistoryLogsCollection.toJSON().length) {
                 console.log('this.feedbacksCollection.toJSON() has items')
             }
 
-            this.$el.html(this.template({collection: this.feedbacksCollection.toJSON()}));
+            this.$el.html(this.template({collection: this.adminHistoryLogsCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
 
             return this;
         }
     });
 
-    return feedbacksView;
+    return adminHistoryLogView;
 });

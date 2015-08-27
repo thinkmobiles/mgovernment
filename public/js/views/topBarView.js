@@ -1,16 +1,15 @@
 define([
     'text!templates/topBarTemplate.html',
 ], function (topBarTemplate) {
+    'use strict';
+
     var topBarView = Backbone.View.extend({
         el: '#topBar',
 
         template: _.template(topBarTemplate),
 
         events: {
-            'click #navigateServicesView': 'navigateToByDataHash',
-            'click #navigateUsersView': 'navigateToByDataHash',
-            'click #navigateFeedbacksView': 'navigateToByDataHash',
-            'click #navigateEmailReportsView': 'navigateToByDataHash'
+            'click .topBarButton': 'navigateToByDataHash'
         },
 
         initialize: function () {
@@ -23,12 +22,14 @@ define([
 
             e.preventDefault();
             e.stopPropagation();
+
             Backbone.history.fragment = '';
             Backbone.history.navigate(hash, {trigger: true});
         },
 
         render: function () {
             this.$el.html(this.template());
+
             return this;
         }
     });

@@ -4,6 +4,11 @@ define([
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
 ],function(content, UsersCollection, paginationTemplate, PaginationView){
+    'use strict';
+
+    var propertyList = '';
+    var properties = '';
+
     var usersView = Backbone.View.extend({
 
         el: '#dataBlock',
@@ -39,7 +44,13 @@ define([
             console.log('usersView render');
             this.$el.html(this.template());
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+
+            propertyList =  $("#propertyList");
+            properties = $("#properties");
+
             this.updateUserList();
+
+            return this;
         },
 
         createUser: function(e){
@@ -100,8 +111,8 @@ define([
 
             this.selectedUserId = id;
 
-            $("#propertyList").text("").append(str);
-            $("#properties").text( selectedUser.login );
+            propertyList.text("").append(str);
+            properties.text( selectedUser.login );
             //$("#properties").text( selectedUser.login + " properties ");
         },
 
@@ -134,8 +145,6 @@ define([
                         text(textContent);
                 }
             }
-
-            return this;
         }
     });
 

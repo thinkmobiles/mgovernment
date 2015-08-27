@@ -4,9 +4,10 @@ module.exports = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var ObjectId = mongoose.Schema.Types.ObjectId;
 
     var historyLogSchema = mongoose.Schema({
-            userId: {type: String},
+            user: {type: ObjectId, ref: CONST.MODELS.USER, default: null},
             action: {type: String},
             model: {type: String},
             modelId: {type: String},
@@ -14,14 +15,14 @@ module.exports = function (db) {
             description: {type: String}
         },
         {
-            collection: CONST.MODELS.HISTORY + 's'
+            collection: CONST.MODELS.ADMIN_HISTORY + 's'
         });
 
-    db.model(CONST.MODELS.HISTORY, historyLogSchema);
+    db.model(CONST.MODELS.ADMIN_HISTORY, historyLogSchema);
 
     if (!mongoose.Schemas) {
         mongoose.Schemas = {};
     }
-    mongoose.Schemas[CONST.MODELS.HISTORY] = historyLogSchema;
+    mongoose.Schemas[CONST.MODELS.ADMIN_HISTORY] = historyLogSchema;
 };
 

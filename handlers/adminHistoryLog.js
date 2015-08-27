@@ -5,15 +5,14 @@ var HistoryHandler = function(db) {
     'use strict';
 
     var mongoose = require('mongoose');
-    var UserHistory = db.model(CONST.MODELS.USER_HISTORY);
+    var AdminHistory = db.model(CONST.MODELS.ADMIN_HISTORY);
 
     this.pushlog = function(log) {
-        var userHistory = new UserHistory(log);
-        userHistory
+        var adminHistory = new AdminHistory(log);
+        adminHistory
             .save(function (err, user) {
                 if (err) {
-                    //return res.status(500).send(err)
-                 console.log(err)
+                    return res.status(500).send(err)
                 }
             });
     };
@@ -28,7 +27,7 @@ var HistoryHandler = function(db) {
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
 
-        UserHistory
+        AdminHistory
             .find({})
             .sort(sortOrder)
             .skip(skipCount)
@@ -46,7 +45,7 @@ var HistoryHandler = function(db) {
 
     this.getCount = function (req, res, next) {
 
-        UserHistory
+        AdminHistory
             .count({}, function (err, count) {
                 if (err) {
                     return next(err);
@@ -54,7 +53,6 @@ var HistoryHandler = function(db) {
                 return res.status(200).send({count: count});
             });
     };
-
 };
 
 module.exports = HistoryHandler;

@@ -26,8 +26,8 @@ describe('User favourite', function () {
         async.series([
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-            preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
-            preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
+            //preparingDb.dropCollection(CONST.MODELS.ADMIN_HISTORY + 's'),
+            //preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_GET_DOMAIN_DATA_TMA_TRA_SERVICES),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_CHECK_DOMAIN_AVAILABILITY_TMA_TRA_SERVICES),
             preparingDb.createServiceByTemplate(SERVICES.SERVICE_SEARCH_DEVCIE_BY_IMEI_TMA_TRA_SERVICES),

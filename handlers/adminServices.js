@@ -1,6 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
-var HistoryHandler = require('./historyLog');
+var HistoryHandler = require('./adminHistoryLog');
 
 var Service = function(db) {
     'use strict';
@@ -9,7 +9,7 @@ var Service = function(db) {
     var logWriter = require('../helpers/logWriter')();
     var Service = db.model(CONST.MODELS.SERVICE);
     var Layout = db.model(CONST.MODELS.LAYOUT);
-    var historyHandler = new HistoryHandler(db);
+    var adminHistoryHandler = new HistoryHandler(db);
     var validation = require('../helpers/validation');
 
     function checkRecivedParamsFieldNamesWithItemsNames(recivedArray,arrayTocompareName){
@@ -71,13 +71,13 @@ var Service = function(db) {
                     return next(err);
                 }
                 var log = {
-                    userId: req.session.uId,
+                    user: req.session.uId,
                     action: CONST.ACTION.UPDATE,
                     model: CONST.MODELS.SERVICE,
                     modelId: searchQuery._id,
                     description: 'Update Service by _id'
                 };
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
                 res.status(200).send(model);
             });
     };
@@ -124,13 +124,13 @@ var Service = function(db) {
                 }
 
                 var log = {
-                    userId: req.session.uId,
+                    user: req.session.uId,
                     action: CONST.ACTION.CREATE,
                     model: CONST.MODELS.SERVICE,
                     modelId: model._id,
                     description: 'Create new Service'
                 };
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
                 res.status(200).send(model.toJSON());
             })
     };
@@ -171,6 +171,15 @@ var Service = function(db) {
                 if (err) {
                     return next(err);
                 }
+
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: req.params.id,
+                    description: 'Delete Service'
+                };
+                adminHistoryHandler.pushlog(log);
 
                 return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });

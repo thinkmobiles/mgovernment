@@ -19,7 +19,7 @@ module.exports = {
         PROFILE: 'Profile',
         LAYOUT: 'Layout',
         SESSION: 'Session',
-        HISTORY: 'HistoryLog',
+        ADMIN_HISTORY: 'AdminHistoryLog',
         USER_HISTORY: 'UserHistoryLog',
         SERVICE: 'Service',
         IMAGE: 'Image',

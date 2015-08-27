@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Provides the REST API for __CRM Services__
  *
@@ -10,13 +8,14 @@ var express = require('express');
 var router = express.Router();
 var UserHandler = require('../handlers/users');
 var SessionHandler = require('../handlers/sessions');
-var CrmNetWrapperHandler = require('../handlers/crmNetWrapper/testCrmNetWrapper');
+var TraCrmHandler = require('../handlers/traCrmHandler');
 
 module.exports = function(db) {
+    'use strict';
 
     var users = new UserHandler(db);
     var session = new SessionHandler(db);
-    var crmNetWrapperHandler = new CrmNetWrapperHandler(db);
+    var traCrmHandler = new TraCrmHandler(db);
 
     /**
      * This __method__ for user  register in CRM
@@ -59,8 +58,8 @@ module.exports = function(db) {
      * @method register
      * @for crmServices
      */
+    router.post('/crm/register', traCrmHandler.registerClient);
 
-    router.post('/crm/register', crmNetWrapperHandler.registerClient);
     /**
      * This __method__  for user signIn in CRM
      *
@@ -86,8 +85,7 @@ module.exports = function(db) {
      * @for crmServices
      *
      */
-
-    router.post('/crm/signIn', crmNetWrapperHandler.signInClient);
+    router.post('/crm/signIn', traCrmHandler.signInClient);
 
     /**
      * This __method__ for user signOut from CRM
@@ -106,8 +104,7 @@ module.exports = function(db) {
      * @for crmServices
      *
      */
-
-    router.post('/crm/signOut', crmNetWrapperHandler.signOutClient);
+    router.post('/crm/signOut', traCrmHandler.signOutClient);
 
     /**
      * This __method__ create SMS Spam Report
@@ -124,12 +121,13 @@ module.exports = function(db) {
      *
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method complainSmsSpam
      * @for crmServices
      */
-    router.post('/complainSmsSpam', session.authenticatedUser, crmNetWrapperHandler.complainSmsSpam);
+    router.post('/complainSmsSpam', session.authenticatedUser, traCrmHandler.complainSmsSpam);
+
     /**
      * This __method__ create complain about Service Provider
      *
@@ -148,12 +146,22 @@ module.exports = function(db) {
      *
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     * @example
+     *      {
+     *      title: 'It works slowly',
+     *      serviceProvider: 'du',
+     *      description: 'Amazon is awefull',
+     *      referenceNumber: '12312412',
+     *      attachment: data:image/png;base64,iVB
+     *      }
      *
      * @method complainServiceProvider
      * @for crmServices
      */
-    router.post('/complainServiceProvider', session.authenticatedUser, crmNetWrapperHandler.complainServiceProvider);
+    router.post('/complainServiceProvider', session.authenticatedUser, traCrmHandler.complainServiceProvider);
+
     /**
      * This __method__ create complain about TRA Service
      *
@@ -169,13 +177,14 @@ module.exports = function(db) {
      *      attachment: //optional img in Base64
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method complainTRAService
+     *
      * @for crmServices
      */
+    router.post('/complainTRAService', session.authenticatedUser, traCrmHandler.complainTRAService);
 
-    router.post('/complainTRAService', session.authenticatedUser, crmNetWrapperHandler.complainTRAService);
     /**
      * This __method__ create Enquiries <br>
      *
@@ -191,13 +200,13 @@ module.exports = function(db) {
      *      attachment: //optional img in Base64
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method complainEnquiries
      * @for crmServices
      */
+    router.post('/complainEnquiries', session.authenticatedUser, traCrmHandler.complainInquiries);
 
-    router.post('/complainEnquiries', session.authenticatedUser, crmNetWrapperHandler.complainInquiries);
     /**
      * This __method__ create Suggestion <br>
      *
@@ -213,12 +222,12 @@ module.exports = function(db) {
      *      attachment: //optional img in Base64
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method sendSuggestion
      * @for crmServices
      */
-    router.post('/sendSuggestion', session.authenticatedUser, crmNetWrapperHandler.sendSuggestion);
+    router.post('/sendSuggestion', session.authenticatedUser, traCrmHandler.sendSuggestion);
 
     return router;
 };
