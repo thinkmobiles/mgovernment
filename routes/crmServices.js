@@ -10,7 +10,7 @@ var express = require('express');
 var router = express.Router();
 var UserHandler = require('../handlers/users');
 var SessionHandler = require('../handlers/sessions');
-var CrmNetWrapperHandler = require('../handlers/crmNetWrapper/testCrmNetWrapper');
+var CrmNetWrapperHandler = require('../handlers/crmNetWrapper/traCrmNetWrapper');
 
 module.exports = function(db) {
 
