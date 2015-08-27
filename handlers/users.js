@@ -1,7 +1,7 @@
 var SessionHandler = require('./sessions');
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
-var HistoryHandler = require('./historyLog');
+var HistoryHandler = require('./adminHistoryLog');
 
 var User = function(db) {
     'use strict';
@@ -16,7 +16,7 @@ var User = function(db) {
     var Service = db.model(CONST.MODELS.SERVICE);
 
     var crypto = require('crypto');
-    var historyHandler = new HistoryHandler(db);
+    var adminHistoryHandler = new HistoryHandler(db);
     createDefaultAdmin();
 
     function createDefaultAdmin() {
@@ -564,7 +564,7 @@ var User = function(db) {
                     description:'Create users account'
                 };
 
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
 
                 res.status(200).send(user);
             });
@@ -682,7 +682,7 @@ var User = function(db) {
                         description:'Update users account'
                     };
 
-                    historyHandler.pushlog(log);
+                    adminHistoryHandler.pushlog(log);
                     return res.status(200).send({ success: 'User was succesful updating'});
                 });
         });
@@ -724,7 +724,7 @@ var User = function(db) {
                     description:'Delete users account'
                 };
 
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
 
                 return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });

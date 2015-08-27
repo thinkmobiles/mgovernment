@@ -7,7 +7,7 @@ module.exports = function(db) {
     require('./sessions')(db);
     require('./layout')(db);
     require('./service')(db);
-    require('./historyLog')(db);
+    require('./adminHistoryLog')(db);
     require('./userHistoryLog')(db);
     require('./image')(db);
     require('./feedback')(db);

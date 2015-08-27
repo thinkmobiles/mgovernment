@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Provides the REST API for __CRM Services__
  *
@@ -13,6 +11,7 @@ var SessionHandler = require('../handlers/sessions');
 var CrmNetWrapperHandler = require('../handlers/crmNetWrapper/testCrmNetWrapper');
 
 module.exports = function(db) {
+    'use strict';
 
     var users = new UserHandler(db);
     var session = new SessionHandler(db);
@@ -124,7 +123,7 @@ module.exports = function(db) {
      *
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method complainSmsSpam
      * @for crmServices
@@ -148,7 +147,7 @@ module.exports = function(db) {
      *
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @example
      *      {
@@ -178,7 +177,7 @@ module.exports = function(db) {
      *      attachment: //optional img in Base64
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method complainTRAService
      *
@@ -201,7 +200,7 @@ module.exports = function(db) {
      *      attachment: //optional img in Base64
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method complainEnquiries
      * @for crmServices
@@ -223,7 +222,7 @@ module.exports = function(db) {
      *      attachment: //optional img in Base64
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method sendSuggestion
      * @for crmServices

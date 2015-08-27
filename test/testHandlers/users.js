@@ -25,7 +25,7 @@ describe('User create/ logIn / logOut / getProfile / Device, Account (CRUD) ,', 
         async.series([
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-            preparingDb.dropCollection(CONST.MODELS.HISTORY + 's'),
+            preparingDb.dropCollection(CONST.MODELS.ADMIN_HISTORY + 's'),
             //preparingDb.dropCollection(CONST.MODELS.USER_HISTORY + 's'),
             //preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
             //preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
