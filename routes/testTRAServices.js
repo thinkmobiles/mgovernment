@@ -32,7 +32,7 @@ module.exports = function(db) {
      *
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method complainSmsBlock
      * @for testTraServices
@@ -58,7 +58,7 @@ module.exports = function(db) {
      *       signalLevel:
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (400, 401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method sendPoorCoverage
      * @for testTraServices
@@ -80,7 +80,7 @@ module.exports = function(db) {
      *
      *  ## Responses:
      *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *      status (401, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @method sendHelpSalim
      * @for testTraServices

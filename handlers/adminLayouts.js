@@ -1,6 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
-var HistoryHandler = require('./historyLog');
+var HistoryHandler = require('./adminHistoryLog');
 
 var Layout = function(db) {
     'use strict';
@@ -8,7 +8,7 @@ var Layout = function(db) {
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();
     var Layout = db.model(CONST.MODELS.LAYOUT);
-    var historyHandler = new HistoryHandler(db);
+    var adminHistoryHandler = new HistoryHandler(db);
 
     this.updateLayoutById = function (req, res, next) {
         var searchQuery = {
@@ -34,7 +34,7 @@ var Layout = function(db) {
                     modelId: searchQuery._id,
                     description: 'Update Layout by _id'
                 };
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
                 res.status(200).send(layoutModel);
             });
     };
@@ -61,7 +61,7 @@ var Layout = function(db) {
                     modelId: layoutModel._id,
                     description: 'Create new Layout'
                 };
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
                 res.status(200).send(layoutModel);
             })
     };
@@ -176,7 +176,7 @@ var Layout = function(db) {
                         description:'Create new Item'
                     };
 
-                    historyHandler.pushlog(log);
+                    adminHistoryHandler.pushlog(log);
 
                     return res.status(201).send(model);
                 });
@@ -217,7 +217,7 @@ var Layout = function(db) {
                         description:'Update Item with id: ' +  searchQuery['items.id']
                     };
 
-                    historyHandler.pushlog(log);
+                    adminHistoryHandler.pushlog(log);
 
                     return res.status(202).send(dataResponse);
                 });

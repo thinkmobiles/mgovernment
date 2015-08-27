@@ -5,11 +5,11 @@ var HistoryHandler = function(db) {
     'use strict';
 
     var mongoose = require('mongoose');
-    var History = db.model(CONST.MODELS.HISTORY);
+    var AdminHistory = db.model(CONST.MODELS.ADMIN_HISTORY);
 
     this.pushlog = function(log) {
-        var history = new History(log);
-        history
+        var adminHistory = new AdminHistory(log);
+        adminHistory
             .save(function (err, user) {
                 if (err) {
                     return res.status(500).send(err)
@@ -27,7 +27,7 @@ var HistoryHandler = function(db) {
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
 
-        History
+        AdminHistory
             .find({})
             .sort(sortOrder)
             .skip(skipCount)
@@ -45,7 +45,7 @@ var HistoryHandler = function(db) {
 
     this.getCount = function (req, res, next) {
 
-        History
+        AdminHistory
             .count({}, function (err, count) {
                 if (err) {
                     return next(err);

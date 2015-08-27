@@ -4,8 +4,10 @@ module.exports = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var ObjectId = mongoose.Schema.Types.ObjectId;
+
     var userHistoryLogSchema = mongoose.Schema({
-            userId: {type: String},
+            user: {type: ObjectId, ref: CONST.MODELS.USER, default: null},
             action: {type: String},
             model: {type: String},
             modelId: {type: String},
