@@ -159,15 +159,18 @@ var TestTRAHandler = function (db) {
     function sendSearchRequest(reqBody, callback) {
 
         var reqOptions = {
-            method: 'GET',
+            method: 'POST',
             headers: {'api_key': 'int'},
             body: reqBody,
-            json: true
+            json: true,
+            rejectUnauthorized: false,
+            requestCert: true,
+            agent: false
         };
 
         request(TRA.MOBILE_SEARCH_URL, reqOptions, function (err, res, body) {
             if (!err && res.statusCode == 200) {
-                return callback(null, res.body)
+                return callback(null, res.body);
             }
             return callback(err)
         });
