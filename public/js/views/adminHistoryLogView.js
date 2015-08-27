@@ -10,7 +10,6 @@ define([
 
         el: '#dataBlock',
         events: {
-            'click .DbList': 'showFeedbackInfo',
              "click .oe_sortable": "goSort"
         },
 

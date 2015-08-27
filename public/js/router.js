@@ -14,6 +14,7 @@ define([
     'views/userHistoryLogView'
 
 ], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView, FeedbacksView, EmailReportsView, AdminHistoryLogView, UserHistoryLogView ) {
+//], function (Backbone, MainView, LoginView ) {
     var Router = Backbone.Router.extend({
 
         mainView: null,

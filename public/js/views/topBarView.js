@@ -1,5 +1,5 @@
 define([
-    'text!templates/topBarTemplate.html',
+    'text!templates/topBarTemplate.html'
 ], function (topBarTemplate) {
     'use strict';
 

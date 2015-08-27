@@ -21,7 +21,7 @@
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
-            <td><%= collection[i].user ? collection[i].user.login : "" %></td>
+            <td><%= collection[i].user ? collection[i].user.login : "Unauthorized" %></td>
             <td><%= collection[i].action %></td>
             <td><%= collection[i].model %></td>
             <td><%= collection[i].modelId %></td>
