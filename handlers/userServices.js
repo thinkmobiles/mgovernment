@@ -32,7 +32,7 @@ var UserService = function(db) {
         getServiceOptionsById(searchQuery, function (err, model) {
 
             var log = {
-                userId: req.session.uId || 'Unauthorized',
+                user: req.session.uId || null,
                 action: CONST.ACTION.GET,
                 model: CONST.MODELS.SERVICE,
                 modelId: searchQuery._id,
@@ -61,7 +61,7 @@ var UserService = function(db) {
                 }
 
                 var log = {
-                    userId: req.session.uId || 'Unauthorized',
+                    user: req.session.uId || null,
                     action: CONST.ACTION.GET,
                     model: CONST.MODELS.SERVICE,
                     modelId: '',
@@ -86,7 +86,7 @@ var UserService = function(db) {
                 }
 
                 var log = {
-                    userId: req.session.uId || 'Unauthorized',
+                    user: req.session.uId || null,
                     action: CONST.ACTION.GET,
                     model: CONST.MODELS.SERVICE,
                     modelId: '',
@@ -133,7 +133,7 @@ var UserService = function(db) {
             }
 
             var log = {
-                userId: req.session.uId || 'Unauthorized',
+                user: req.session.uId || null,
                 action: CONST.ACTION.POST,
                 model: CONST.MODELS.SERVICE,
                 modelId: serviceId,

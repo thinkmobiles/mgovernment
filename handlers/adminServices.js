@@ -1,6 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
-var HistoryHandler = require('./historyLog');
+var HistoryHandler = require('./adminHistoryLog');
 
 var Service = function(db) {
     'use strict';
@@ -9,7 +9,7 @@ var Service = function(db) {
     var logWriter = require('../helpers/logWriter')();
     var Service = db.model(CONST.MODELS.SERVICE);
     var Layout = db.model(CONST.MODELS.LAYOUT);
-    var historyHandler = new HistoryHandler(db);
+    var adminHistoryHandler = new HistoryHandler(db);
     var validation = require('../helpers/validation');
 
     function checkRecivedParamsFieldNamesWithItemsNames(recivedArray,arrayTocompareName){
@@ -77,7 +77,7 @@ var Service = function(db) {
                     modelId: searchQuery._id,
                     description: 'Update Service by _id'
                 };
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
                 res.status(200).send(model);
             });
     };
@@ -130,7 +130,7 @@ var Service = function(db) {
                     modelId: model._id,
                     description: 'Create new Service'
                 };
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
                 res.status(200).send(model.toJSON());
             })
     };
@@ -179,7 +179,7 @@ var Service = function(db) {
                     modelId: req.params.id,
                     description: 'Delete Service'
                 };
-                historyHandler.pushlog(log);
+                adminHistoryHandler.pushlog(log);
 
                 return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });

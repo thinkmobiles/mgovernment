@@ -22,13 +22,8 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
 
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
-                preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
-                preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-                preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),
-                preparingDb.createUsersByTemplate(USERS.CLIENT),
-                preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
+                preparingDb.createUsersByTemplate(USERS.CLIENT)
             ],
             function (err, results) {
                 if (err) {
@@ -39,7 +34,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             });
     });
 
-
+/*
     it('WHOIS GET Data for Exist url', function (done) {
 
         var existUrl = 'google.ae';
@@ -109,7 +104,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                 done();
             });
     });
-
+*/
     it('SEARCH IMEI real', function (done) {
 
         var imeiCode = '01385100'; //013851002659853
@@ -122,7 +117,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                     return done(err)
                 }
                 console.dir(res.body);
-                expect(res.body).to.have.property('devices');
+                expect(res.body).to.be.instanceof(Array);
                 done();
             });
     });
@@ -139,8 +134,8 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                     return done(err)
                 }
                 console.dir(res.body);
-                expect(res.body).to.have.property('devices');
-                expect(res.body.devices).equal([]);
+                expect(res.body).to.be.instanceof(Array);
+                expect(res.body).to.be.empty;
                 done();
             });
     });
@@ -157,7 +152,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                     return done(err)
                 }
                 console.dir(res.body);
-                expect(res.body).to.have.property('devices');
+                expect(res.body).to.be.instanceof(Array);
                 done();
             });
     });

@@ -5,7 +5,7 @@
 
     <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
         <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
-            <span style="font-size: 22px; "><b>List of AdminHistoryLogs</b></span></div>
+            <span style="font-size: 22px; "><b>List of UserHistoryLogs</b></span></div>
             </div>
 
     <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
@@ -23,7 +23,7 @@
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
-            <td><%= collection[i].userId %></td>
+            <td><%= collection[i].user ? collection[i].user.login : "Unauthorized" %></td>
             <td><%= collection[i].action %></td>
             <td><%= collection[i].model %></td>
             <td><%= collection[i].modelId %></td>
