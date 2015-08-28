@@ -26,12 +26,12 @@ define([
             "feedbacks(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toFeedbacksView",
             "adminHistoryLog(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toAdminHistoryLogView",
             "userHistoryLog(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toUserHistoryLogView",
-            "emailReports(/p=:page)(/c=:countPerPage)(/f=:filter)(/ob=:orderBy)(/o=:order)": "toEmailReportsView",
+            "emailReports(/p=:page)(/c=:countPerPage)(/f=:filter)(/ob=:orderBy)(/o=:order)(/s=:searchTerm)": "toEmailReportsView",
             "login": "toLoginView",
             "createService": "toCreateServiceView",
             "updateService": "toUpdateServiceView",
             "cloneService": "toUpdateServiceViewWithCloneKey",
-            "users(/p=:page)(/c=:countPerPage)": "toUsersView",
+            "users(/p=:page)(/c=:countPerPage)(/s=:searchTerm)": "toUsersView",
             "createUser": "toCreateUserView",
             "updateUser": "toUpdateUserView"
         },
@@ -155,7 +155,7 @@ define([
             });
         },
 
-        toEmailReportsView: function (page, countPerPage, filter, orderBy, order) {
+        toEmailReportsView: function (page, countPerPage, filter, orderBy, order, searchTerm) {
 
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
@@ -173,11 +173,12 @@ define([
                 countPerPage: countPerPage,
                 filter: filter,
                 orderBy: orderBy,
-                order: order
+                order: order,
+                searchTerm: searchTerm
             });
         },
 
-        toUsersView: function (page, countPerPage) {
+        toUsersView: function (page, countPerPage, searchTerm) {
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
 
@@ -187,7 +188,8 @@ define([
 
             this.contentView = new UsersView({
                 page: page,
-                countPerPage: countPerPage
+                countPerPage: countPerPage,
+                searchTerm: searchTerm
             });
         },
 

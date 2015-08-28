@@ -34,7 +34,9 @@ define([
                 page         : options.page,
                 ends         : true,
                 steps        : true,
-                data         : {}
+                data         : {
+                    searchTerm: options.searchTerm
+                }
             });
 
             this.listenTo(this.usersCollection, 'reset remove', this.render);

@@ -55,7 +55,8 @@ define([
                 data: {
                     filter: options.filter,
                     orderBy: options.orderBy,
-                    order: options.order
+                    order: options.order,
+                    searchTerm: options.searchTerm
                 }
             });
 
