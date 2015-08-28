@@ -107,17 +107,18 @@ var TestTRAHandler = function (db) {
         var serviceType = 'Poor Coverage';
         var signalLevel = req.body.signalLevel;
         var errors = [];
-
-        validation.checkRate15(errors, true, signalLevel, 'Signal level');
-        if (errors.length) {
-            return res.status(400).send({error: errors});
-        }
-
         var location = req.body.location;
         var address = req.body.address;
-        var title = (location && location.latitude)
+
+        validation.checkRate15(errors, true, signalLevel, 'Signal level');
+
+        if (errors.length || !((location && location.latitude && location.longitude) || address ) ) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var title = (location && location.latitude && location.longitude)
             ? ('Location.latitude: ' + location.latitude + ', location.longitude: ' + location.longitude + ' Signal level: ' + signalLevel)
-            : address + ' Signal level: ' + signalLevel;
+            :  "Address: " +address + ' Signal level: ' + signalLevel;
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
         var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
