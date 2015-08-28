@@ -36,6 +36,7 @@ module.exports = function(db) {
      *
      * @method complainSmsBlock
      * @for testTraServices
+     * @memberOf testTraServices
      */
 
     router.post('/complainSmsBlock', testTRAHandler.complainSmsBlock);
@@ -62,6 +63,7 @@ module.exports = function(db) {
      *
      * @method sendPoorCoverage
      * @for testTraServices
+     * @memberOf testTraServices
      */
     router.post('/sendPoorCoverage', testTRAHandler.sendPoorCoverage);
 
@@ -84,6 +86,7 @@ module.exports = function(db) {
      *
      * @method sendHelpSalim
      * @for testTraServices
+     * @memberOf testTraServices
      */
 
     router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);

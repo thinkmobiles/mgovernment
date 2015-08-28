@@ -42,6 +42,7 @@ module.exports = function(db) {
      *
      * @method testWhois
      * @for WhoIsAndMobile
+     * @memberOf WhoIsAndMobile
      */
     router.get('/checkWhois', whoIsAndMobileHandler.testWhois);
 
@@ -69,6 +70,7 @@ module.exports = function(db) {
      *
      * @method checkWhoisAvailable
      * @for WhoIsAndMobile
+     * @memberOf WhoIsAndMobile
      */
     router.get('/checkWhoisAvailable', whoIsAndMobileHandler.testWhoisCheck);
 
@@ -114,6 +116,7 @@ module.exports = function(db) {
      *
      * @method searchMobile
      * @for WhoIsAndMobile
+     * @memberOf WhoIsAndMobile
      */
     router.get('/searchMobile', whoIsAndMobileHandler.searchMobileImei);
 
@@ -159,6 +162,7 @@ module.exports = function(db) {
      *
      * @method searchMobileBrand
      * @for WhoIsAndMobile
+     * @memberOf WhoIsAndMobile
      */
     router.get('/searchMobileBrand', whoIsAndMobileHandler.searchMobileBrand);
 

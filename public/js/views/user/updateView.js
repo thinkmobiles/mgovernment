@@ -44,13 +44,6 @@ define([
             App.selectedUser.save(data, {
                 success: function(model, response){
                     Backbone.history.history.back();
-                    //Backbone.history.fragment = '';
-                    //Backbone.history.navigate('users', {trigger: true});
-                    //console.log('Success updated');
-                    //console.log(model);
-                    //console.log(response);
-                    //alert(model);
-
                 },
                 error: function(err, xhr, model, response){
                     console.log('Error updating',xhr);
@@ -61,7 +54,6 @@ define([
 
         render: function () {
             var user = App.selectedUser.toJSON();
-            //console.log(user);
 
             this.$el.html(this.template(user));
             return this;

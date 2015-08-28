@@ -57,6 +57,7 @@ module.exports = function(db) {
      *
      * @method register
      * @for crmServices
+     * @memberOf crmServices
      */
     router.post('/crm/register', traCrmHandler.registerClient);
 
@@ -83,6 +84,7 @@ module.exports = function(db) {
      *      }
      * @method signIn
      * @for crmServices
+     * @memberOf crmServices
      *
      */
     router.post('/crm/signIn', traCrmHandler.signInClient);
@@ -102,7 +104,7 @@ module.exports = function(db) {
      *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
      * @method signOut
      * @for crmServices
-     *
+     * @memberOf crmServices
      */
     router.post('/crm/signOut', traCrmHandler.signOutClient);
 
@@ -125,6 +127,7 @@ module.exports = function(db) {
      *
      * @method complainSmsSpam
      * @for crmServices
+     * @memberOf crmServices
      */
     router.post('/complainSmsSpam', session.authenticatedUser, traCrmHandler.complainSmsSpam);
 
@@ -159,6 +162,7 @@ module.exports = function(db) {
      *
      * @method complainServiceProvider
      * @for crmServices
+     * @memberOf crmServices
      */
     router.post('/complainServiceProvider', session.authenticatedUser, traCrmHandler.complainServiceProvider);
 
@@ -182,6 +186,7 @@ module.exports = function(db) {
      * @method complainTRAService
      *
      * @for crmServices
+     * @memberOf crmServices
      */
     router.post('/complainTRAService', session.authenticatedUser, traCrmHandler.complainTRAService);
 
@@ -204,6 +209,7 @@ module.exports = function(db) {
      *
      * @method complainEnquiries
      * @for crmServices
+     * @memberOf crmServices
      */
     router.post('/complainEnquiries', session.authenticatedUser, traCrmHandler.complainInquiries);
 
@@ -226,6 +232,7 @@ module.exports = function(db) {
      *
      * @method sendSuggestion
      * @for crmServices
+     * @memberOf crmServices
      */
     router.post('/sendSuggestion', session.authenticatedUser, traCrmHandler.sendSuggestion);
 

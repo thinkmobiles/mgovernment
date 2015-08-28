@@ -32,6 +32,8 @@ module.exports = function(db){
      *
      * @method getServices
      * @for userServices
+     * @memberOf userServices
+     *
      */
 
     router.route('/')
@@ -60,6 +62,7 @@ module.exports = function(db){
      *
      * @method getServiceNames
      * @for userServices
+     * @memberOf userServices
      */
 
     router.route('/serviceNames')

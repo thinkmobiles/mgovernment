@@ -42,13 +42,6 @@ define([
             model.save(data, {
                 success: function(model, response){
                     Backbone.history.history.back();
-                    //Backbone.history.fragment = '';
-                    //Backbone.history.navigate('users', {trigger: true});
-                    //console.log('Success created');
-                    //console.log(model);
-                    //console.log(response);
-                    //alert(model);
-
                 },
                 error: function(err, xhr, model, response){
                     console.log('Error created',xhr);

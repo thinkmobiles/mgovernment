@@ -15,12 +15,12 @@ var cookieParser = require('cookie-parser');
 var MongoStore = require('connect-mongo')( session );
 var methodOverride = require('method-override');
 
-app.use(logger('dev'));
-app.use(methodOverride('X-HTTP-Method-Override'));
+app.use( logger('dev') );
+app.use( methodOverride('X-HTTP-Method-Override') );
 app.use( express.static( path.join(__dirname, 'public') ) );
 app.use( bodyParser.json({strict: false, limit: 1024 * 1024 * 200}) );
 app.use( bodyParser.urlencoded( { extended: false } ) );
-app.use( cookieParser());
+app.use( cookieParser() );
 
 
 // TODO change NODE_ENV for production server
@@ -76,8 +76,6 @@ mainDb.once( 'open', function callback() {
 });
 
 /*var logWriter = require('./helpers/logWriter')();
-
-
 
 process.on('uncaughtException', function(err) {
     console.log(err);

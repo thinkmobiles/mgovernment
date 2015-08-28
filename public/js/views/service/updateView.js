@@ -37,7 +37,6 @@ define([
             itemsInputNameArray = [];
 
             this.render();
-            //console.dir(Backbone.history);
         },
 
         addProfileFieldBlock: function(e) {
