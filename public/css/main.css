@@ -37,6 +37,7 @@
     background-repeat: no-repeat;
     float: left;
 }
+
 .pagination #firstShowPage,
 .pagination #lastShowPage {
     width: 30px;

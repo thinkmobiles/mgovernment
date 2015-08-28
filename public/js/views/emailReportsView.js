@@ -60,6 +60,10 @@ define([
                 }
             });
 
+            if (!options.searchTerm) {
+                App.searchTerm = '';
+            }
+
             //this.listenTo(this.emailReportsCollecion, 'sync reset remove', this.render);
             this.listenTo(this.emailReportsCollecion, 'reset remove', this.render);
             this.render();

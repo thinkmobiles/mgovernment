@@ -527,11 +527,12 @@ var User = function(db) {
             firstName: body.firstName,
             lastName: body.lastName,
             gender: body.gender,
-            phone: body.phone
+            phone: body.phone,
+            email: body.email
         };
         var account = {
-            seviceName: body.seviceName,
-            seviceOptions:body.seviceName,
+            serviceName: body.serviceName,
+            serviceOptions:body.serviceName,
             serviceLogin: body.serviceLogin,
             servicePass: body.servicePass
         };
@@ -556,7 +557,7 @@ var User = function(db) {
             userData.devices = [device];
         }
 
-        if (account.seviceName && account.serviceLogin && account.servicePass) {
+        if (account.serviceName && account.serviceLogin && account.servicePass) {
             userData.accounts = [account];
         }
 
@@ -636,8 +637,6 @@ var User = function(db) {
         var body = req.body;
         var login = body.login;
         var pass = body.pass;
-        var gender = body.gender;
-        var phone = body.phone;
         var userType = body.userType;
         var userId = req.params.id;
         var err;
@@ -652,6 +651,7 @@ var User = function(db) {
             lastName: body.lastName,
             gender: body.gender,
             phone: body.phone,
+            email: body.email,
             createdAt: new Date()
         };
 

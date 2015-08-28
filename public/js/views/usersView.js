@@ -39,6 +39,10 @@ define([
                 }
             });
 
+            if (!options.searchTerm) {
+                App.searchTerm = '';
+            }
+
             this.listenTo(this.usersCollection, 'reset remove', this.render);
             this.render();
         },
@@ -78,14 +82,13 @@ define([
                 return;
             }
 
-            var service = this.usersCollection.models[this.selectedUserId];
+            var user = this.usersCollection.models[this.selectedUserId];
             var self = this;
 
-            service.destroy ({
+            user.destroy ({
                 success: function(model, response, options){
                     alert('User deleted');
                     self.usersCollection.reset();
-                    //Backbone.history.navigate('users', {trigger: true});
                 },
 
                 error: function(model, xhr, options){

@@ -1,8 +1,8 @@
-<div style="align-content: center; margin-top: 5px; padding-bottom: 40px">
+<div style="align-content: center; margin-top: 5px; padding-bottom: 5px">
 
     <form>
 
-        <table>
+        <table class="tableView" style="width: 100%">
             <tr>
                 <th>List of properties</th>
                 <th>Input, set properties</th>
@@ -60,6 +60,12 @@
                 <td class="hiddenByDefault"><input type="text" name="name" id="lastName" size="20" maxlength="40"
                                                    value="<%=profile ? profile.lastName || '' : ''%>"></td>
                 <td class="hiddenByDefault"> Input last name.</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>email</b></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="email" size="20" maxlength="40" value ="<%=profile ? profile.email || '' : ''%>"></td>
+                <td class="hiddenByDefault"> Input email.</td>
             </tr>
 
 

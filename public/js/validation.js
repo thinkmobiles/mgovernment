@@ -523,7 +523,7 @@ define(
             //checkMoneyField:checkMoneyField,
             //checkFirstDateIsGreater:checkFirstDateIsGreater,
             //checkNotesField:checkNotesField,
-            //checkEmailField:checkEmailField,
+            checkEmailField:checkEmailField,
             checkUrlField:checkUrlField,
             checkCompanyNameField: checkCompanyNameField,
             //checkStreetField:checkStreetField,
