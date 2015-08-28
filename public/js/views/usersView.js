@@ -16,7 +16,8 @@ define([
             'click .DbList': 'showUsersInfo',
             'click #createUser': 'createUser',
             'click #deleteUser': 'deleteUser',
-            'click #updateUser': 'updateUser'
+            'click #updateUser': 'updateUser',
+            'keyup #searchTerm': 'searchByTerm'
         },
 
         template: _.template(content),
@@ -38,6 +39,15 @@ define([
 
             this.listenTo(this.usersCollection, 'reset remove', this.render);
             this.render();
+        },
+
+        searchByTerm: function(e){
+            var searchTerm =  e.target.value;
+
+            App.searchTerm = searchTerm;
+
+            console.log('serchTerm:',searchTerm);
+            this.paginationView.setData({searchTerm: searchTerm});
         },
 
         render: function () {
@@ -124,6 +134,8 @@ define([
             var serviceDiv;
             var serviceId;
             var service;
+
+            $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
 
             for (var i = usersCollection.length-1; i>=0; i--){
                 service = usersCollection[i];

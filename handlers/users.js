@@ -307,13 +307,24 @@ var User = function(db) {
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
         var sortOrder = {};
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
+
+        if (searchTerm) {
+            searchQuery = {
+                $or: [ { 'login':  { $regex: searchTerm, $options: 'i' }}, { 'profile.firstName':  { $regex: searchTerm, $options: 'i' }}, { 'profile.lastName':  { $regex: searchTerm, $options: 'i' }}, { 'profile.email':  { $regex: searchTerm, $options: 'i' }} ]
+            };
+        }
+
         sortOrder[sortField] = sortDirection;
 
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
 
+
+
         User
-            .find({})
+            .find(searchQuery)
             .select( 'login userType devices profile accounts')
             .sort(sortOrder)
             .skip(skipCount)
@@ -689,9 +700,17 @@ var User = function(db) {
     };
 
     this.getCount = function (req, res, next) {
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
+
+        if (searchTerm) {
+            searchQuery = {
+                $or: [ { 'login':  { $regex: searchTerm, $options: 'i' }}, { 'profile.firstName':  { $regex: searchTerm, $options: 'i' }}, { 'profile.lastName':  { $regex: searchTerm, $options: 'i' }}, { 'profile.email':  { $regex: searchTerm, $options: 'i' }} ]
+            };
+        }
 
         User
-            .count({}, function (err, count) {
+            .count(searchQuery, function (err, count) {
                 if (err) {
                     return next(err);
                 }

@@ -1,8 +1,15 @@
 <div style=" padding-bottom: 5px;margin-left: 5px; margin-right: 5px; vertical-align: top">
 
     <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
-        <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
-            <span style="font-size: 22px; "><b>List of emailReports</b></span></div>
+        <div style="width: 79%;margin-right: 7px; background-color: lightsteelblue;  float: left; text-align: center; opacity: 0.8;">
+            <span style="font-size: 22px; "><b>List of emailReports</b></span>
+        </div>
+        <div style="text-align: right">
+            <input id="searchTerm" style="border-color: #595959; width: 200px; height: 30px;"
+                   class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" type="text" placeholder="Search a Report">
+            <!--ng-keydown="customersCtrl.getCustomersList()" ng-model="customersCtrl.searchTerm"-->
+
+        </div>
     </div>
     <div class = "tableFilter"><b> Show: </b>
         <b> <input type="checkbox" class="filterServiceType" id="filterHelpSalim"

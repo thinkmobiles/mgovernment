@@ -12,7 +12,8 @@ define([
         el: '#dataBlock',
         events: {
             'change .filterServiceType': 'changeCollectionFilter',
-            "click .oe_sortable": "goSort"
+            "click .oe_sortable": "goSort",
+            'keyup #searchTerm': "searchByTerm"
         },
 
         template: _.template(content),
@@ -63,6 +64,19 @@ define([
             this.render();
         },
 
+        searchByTerm: function(e){
+            var sortOrder = this.paginationView.stateModel.toJSON().data.orderBy;
+            var sortBy = this.paginationView.stateModel.toJSON().data.order;
+            var filter = this.paginationView.stateModel.toJSON().data.filter;
+            var searchTerm =  e.target.value;
+
+            App.searchTerm = searchTerm;
+
+            console.log('serchTerm:',searchTerm);
+            this.paginationView.setData({searchTerm: searchTerm});
+            this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter, searchTerm: searchTerm});
+        },
+
         goSort: function (e) {
             var target$ = $(e.target);
             //var currentParrentSortClass = target$.attr('class');
@@ -71,6 +85,7 @@ define([
             var previousOrderBy = this.paginationView.stateModel.toJSON().data.orderBy;
             var previousOrder = this.paginationView.stateModel.toJSON().data.order;
             var filter = this.paginationView.stateModel.toJSON().data.filter;
+            var searchTerm = this.paginationView.stateModel.toJSON().data.searchTerm;
             var sortClass;
 
             var sortBy = target$.data('sort');
@@ -107,7 +122,7 @@ define([
             //this.fetchSortCollection(sortObject);
             //this.changeLocationHash(1, this.defaultItemsNumber);
             //this.getTotalLength(null, this.defaultItemsNumber, this.filter);
-            this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter});
+            this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter,  searchTerm: searchTerm});
         },
 
         render: function () {
@@ -121,7 +136,7 @@ define([
 
             filterCheckbox = document.querySelectorAll('input.filterServiceType');
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
-
+            $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
             return this;
         }
     });
