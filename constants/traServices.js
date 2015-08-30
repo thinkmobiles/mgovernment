@@ -2,8 +2,8 @@
 
 module.exports = {
 
-    WHOIS_URL: 'whois.aeda.net.ae',
-    WHOIS_CHECK_URL: 'whois-check.aeda.net.ae',
+    WHOIS_URL: '79.98.120.25', //'whois.aeda.net.ae',
+    WHOIS_CHECK_URL: '79.98.120.29', //'whois-check.aeda.net.ae',
     WHOIS_PORT: 43,
 
     MOBILE_SEARCH_URL: 'https://192.168.91.98:65104/tasserver/v1/imei?method=search',
