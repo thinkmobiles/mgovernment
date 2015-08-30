@@ -34,7 +34,6 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             });
     });
 
-/*
     it('WHOIS GET Data for Exist url', function (done) {
 
         var existUrl = 'google.ae';
@@ -104,7 +103,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                 done();
             });
     });
-*/
+
     it('SEARCH IMEI real', function (done) {
 
         var imeiCode = '01385100'; //013851002659853
