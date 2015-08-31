@@ -44,7 +44,7 @@ define([
             }
 
             this.listenTo(this.usersCollection, 'reset remove', this.render);
-            this.render();
+           // this.render();
         },
 
         searchByTerm: function(e){
@@ -125,16 +125,13 @@ define([
             }
 
             this.selectedUserId = id;
-
             propertyList.text("").append(str);
-            properties.text( selectedUser.login );
-
+            properties.text(selectedUser.login);
         },
 
         updateUserList: function(){
 
             var usersCollection = this.usersCollection.toJSON();
-            var itemTextColor = '#0A0EF2';
             var textContent;
             var serviceDiv;
             var serviceId;
@@ -151,13 +148,14 @@ define([
                 if (!serviceDiv.length) {
                     $("<div> </div>").
                         attr("id", "DbList" + serviceId).
-                        attr("class", "DbList").css({"color": itemTextColor}).
+                        attr("class", "DbList").
                         attr("data-hash", "" + i).
                         text(textContent).
                         appendTo("#databaseList");
                 } else {
+                    console.log('update list used');
                     $("#DbList" + serviceId).
-                        attr("class", "DbList").css({"color": itemTextColor}).
+                        attr("class", "DbList").
                         attr("data-hash", "" + i).
                         text(textContent);
                 }

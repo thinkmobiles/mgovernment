@@ -36,9 +36,10 @@ define([
 
             model.save(loginData, {
                 success: function(model, response) {
-                    //e.preventDefault();
-                    //e.stopPropagation();
-                    //e.stopImmediatePropagation();
+                    e.preventDefault();
+                    e.stopPropagation();
+                    e.stopImmediatePropagation();
+
                     App.authorized = true;
                     Backbone.history.fragment = '';
                     Backbone.history.navigate('index', {trigger: true, replace: true});

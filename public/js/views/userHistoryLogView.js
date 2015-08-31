@@ -7,16 +7,15 @@ define([
     'use strict';
 
     var userHistoryLogView = Backbone.View.extend({
-
         el: '#dataBlock',
         events: {
               "click .oe_sortable": "goSort"
         },
-
         template: _.template(content),
 
         initialize: function (options) {
             this.userHistoryLogsCollection = new userHistoryLogsCollection();
+
             this.paginationView = new PaginationView({
                 collection: this.userHistoryLogsCollection,
                 countPerPage: options.countPerPage,
@@ -33,16 +32,14 @@ define([
             });
 
             this.listenTo(this.userHistoryLogsCollection, 'reset remove', this.render);
-            this.render();
+           // this.render();
         },
 
         goSort: function (e) {
             var target$ = $(e.target);
             var previousOrderBy = this.paginationView.stateModel.toJSON().data.orderBy;
             var previousOrder = this.paginationView.stateModel.toJSON().data.order;
-
             var sortClass;
-
             var sortBy = target$.data('sort');
             var sortOrder = 1;
 
@@ -72,10 +69,6 @@ define([
         render: function () {
 
             console.log('userHistoryLogs render');
-            if (this.userHistoryLogsCollection.toJSON().length) {
-                console.log('this.feedbacksCollection.toJSON() has items')
-            }
-
             this.$el.html(this.template({collection: this.userHistoryLogsCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
 

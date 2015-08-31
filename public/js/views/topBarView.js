@@ -5,9 +5,7 @@ define([
 
     var topBarView = Backbone.View.extend({
         el: '#topBar',
-
         template: _.template(topBarTemplate),
-
         events: {
             'click .topBarButton': 'navigateToByDataHash'
         },

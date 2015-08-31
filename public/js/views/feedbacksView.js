@@ -71,10 +71,6 @@ define([
         render: function () {
 
             console.log('feedbacksView render');
-            if (this.feedbacksCollection.toJSON().length) {
-                console.log('this.feedbacksCollection.toJSON() has items')
-            }
-
             this.$el.html(this.template({collection: this.feedbacksCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
 

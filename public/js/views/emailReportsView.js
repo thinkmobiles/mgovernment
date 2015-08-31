@@ -66,7 +66,7 @@ define([
 
             //this.listenTo(this.emailReportsCollecion, 'sync reset remove', this.render);
             this.listenTo(this.emailReportsCollecion, 'reset remove', this.render);
-            this.render();
+            //this.render();
         },
 
         searchByTerm: function(e){
@@ -102,10 +102,7 @@ define([
 
             sortClass = (sortOrder == -1) ? 'sortUp' : 'sortDn';
 
-            // if (!sortClass) {
-            //    target$.addClass('sortDn');
-            //    sortClass = "sortDn";
-            //}
+            //TODO add feature ^ up and down show order or delete this code
 
             switch (sortClass) {
                 case "sortDn":
@@ -123,10 +120,7 @@ define([
                 }
                     break;
             }
-            //sortObject[sortBy] = sortConst;
-            //this.fetchSortCollection(sortObject);
-            //this.changeLocationHash(1, this.defaultItemsNumber);
-            //this.getTotalLength(null, this.defaultItemsNumber, this.filter);
+
             this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter,  searchTerm: searchTerm});
         },
 
@@ -139,7 +133,14 @@ define([
                 filter: this.paginationView.stateModel.toJSON().data.filter
             }));
 
-            filterCheckbox = document.querySelectorAll('input.filterServiceType');
+            //TODO querySelectorAll VS JQuery $('.class') VS getElementsByClassName
+            // querySelectorAll - native and faster browser command,  but JQuery is more supported
+            //filterCheckbox = document.querySelectorAll('input.filterServiceType');
+            //filterCheckbox = $('.filterServiceType');
+            filterCheckbox = document.getElementsByClassName('filterServiceType');
+
+           // console.log('filterCheckbox : ',filterCheckbox);
+
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
             $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
             return this;

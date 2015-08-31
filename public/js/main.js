@@ -19,7 +19,7 @@ require.config({
 });
 
 var App = App || {
-        description: 'This is global object for my application'
+        description: 'This is global object for Mgovernment application'
     };
 
 require(['app'], function(app){
