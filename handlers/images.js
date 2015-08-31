@@ -133,6 +133,7 @@ var Image = function(db) {
 
     this.getImageUrl = function (imageId, callback) {
         var imageUrl = process.env.HOST + 'image/' + imageId;
+
         return callback(null, imageUrl);
     };
 

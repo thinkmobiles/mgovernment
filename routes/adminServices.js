@@ -1,3 +1,10 @@
+/**
+ * Provides ability  CRUD Service for Admin
+ *
+ * @class adminServices
+ *
+ */
+
 var express = require( 'express' );
 var ServicesHandler = require('../handlers/adminServices');
 

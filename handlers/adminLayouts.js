@@ -40,7 +40,9 @@ var Layout = function(db) {
     };
 
     this.createLayout = function (req, res, next) {
+
         var body = req.body;
+
         body.updatedAt = new Date();
 
         if (!body.layoutName || !body.layoutId || !body._id) {
@@ -61,6 +63,7 @@ var Layout = function(db) {
                     modelId: layoutModel._id,
                     description: 'Create new Layout'
                 };
+
                 adminHistoryHandler.pushlog(log);
                 res.status(200).send(layoutModel);
             })
@@ -86,11 +89,11 @@ var Layout = function(db) {
     this.getLayouts = function (req, res, next) {
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
-        var sortOrder = {};
-        sortOrder[sortField] = sortDirection;
-
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
+        var sortOrder = {};
+
+        sortOrder[sortField] = sortDirection;
 
         Layout
             .find({})
@@ -131,14 +134,10 @@ var Layout = function(db) {
             if (err) {
                 return next(err);
             }
+
             for (var i = layout.items.length-1; i>=0; i-- ){
                 if(layout.items[i].id == req.params.itemId ){
-                    responseItem.order = layout.items[i].order;
-                    responseItem.name = layout.items[i].name;
-                    responseItem.itemType = layout.items[i].itemType;
-                    responseItem.dataSource = layout.items[i].dataSource;
-                    responseItem.id = layout.items[i].id;
-                    responseItem.action = layout.action;
+                    responseItem = layout.items[i];
                 }
             }
             return res.status(200).send(responseItem);
@@ -148,7 +147,6 @@ var Layout = function(db) {
     this.createItemByIdAndLayoutId = function (req, res, next) {
         var searchQuery = {
             '_id': req.params.id
-            //'items.id': req.params.itemId
         };
         var updatedAt = new Date();
         var data = req.body.items[0];
@@ -191,9 +189,7 @@ var Layout = function(db) {
         var data = req.body.items[0];
         var updatedAt = new Date();
 
-        //var responseItem = {};
-
-        if (!searchQuery._id || !searchQuery['items.id']) {
+         if (!searchQuery._id || !searchQuery['items.id']) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 

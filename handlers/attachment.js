@@ -1,3 +1,8 @@
+/**
+ * This method used for sending to UI Attachment (*.img in Base64) that users add to theirs complains
+ * @type {*|exports|module.exports}
+ */
+
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 
@@ -27,30 +32,9 @@ var Attachment = function(db) {
                     return res.status(404).send({error: 'Not Found Attachment'})
                 }
                 srcBase64 = model.toJSON().attachment;
-                //res.contentType(model.contentType);
                 res.status(200).send(' <img src ="' + srcBase64 +'">');
             });
     };
-
-
-    //this.removeImage = function (req, res, next) {
-    //
-    //    var imageId = req.params.id;
-    //
-    //    if (!ObjectId.isValid(imageId)) {
-    //        return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-    //    }
-    //
-    //    Image
-    //        .findByIdAndRemove(imageId)
-    //        .exec(function (err, model) {
-    //            if (err) {
-    //                return next(err);
-    //            }
-    //
-    //            res.status(200).send({imageId: imageId});
-    //        });
-    //};
 };
 
 module.exports = Attachment;

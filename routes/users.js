@@ -1,3 +1,13 @@
+/**
+ * Provides ability for:
+ *  -   CRUD Users Account,
+ *  -   USer: Register/ SignIn /SignOut,
+ *  -   CRUD Users Favorites Services
+ *  -   CRUD Uers Services accounts
+ *
+ * @class users
+ *
+ */
 
 var express = require( 'express' );
 var router = express.Router();

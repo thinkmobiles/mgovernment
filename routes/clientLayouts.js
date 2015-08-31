@@ -1,3 +1,9 @@
+/**
+ * Provides ability for client to get Layouts (screen for mobile)
+ *
+ * @class clientLayouts
+ *
+ */
 
 var express = require( 'express' );
 var LayoutHandler = require('../handlers/clientLayouts');
