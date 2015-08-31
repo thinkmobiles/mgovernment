@@ -1,6 +1,7 @@
 
 var logWriter = function () {
     var fs = require('fs');
+
     function erfunc(destination, errorString) {
         var _dest = 'log.txt';
         var _error = errorString;

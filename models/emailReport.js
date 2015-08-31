@@ -5,9 +5,9 @@ module.exports = function (db) {
 
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Schema.Types.ObjectId;
-    var schema = mongoose.Schema;
+    var Schema = mongoose.Schema;
 
-    var emailReport = new schema({
+    var emailReport = new Schema({
         response: {},
         title: String,
         attachment: String,
