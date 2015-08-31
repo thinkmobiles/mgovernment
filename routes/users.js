@@ -40,21 +40,21 @@ module.exports = function(db){
 
     router.post('/signOut', users.signOutClient);
 
-    router.get('/profile', session.authenticatedUser,  users.getUserProfileBySession);
+    router.get('/profile', session.isAuthenticatedUser,  users.getUserProfileBySession);
 
 
     router.route('/account/:serviceId')
-        .get(session.authenticatedUser, users.getServicesAccountById);
+        .get(session.isAuthenticatedUser, users.getServicesAccountById);
 
     router.route('/account')
-      //  .get(session.authenticatedUser, users.getServicesAccounts)
-        .post(session.authenticatedUser, users.createServicesAccount)
-        .put(session.authenticatedUser, users.updateServicesAccount);
+      //  .get(session.isAuthenticatedUser, users.getServicesAccounts)
+        .post(session.isAuthenticatedUser, users.createServicesAccount)
+        .put(session.isAuthenticatedUser, users.updateServicesAccount);
 
     router.route('/favorites/')
-        .post(session.authenticatedUser, users.addServiceToFavorites)
-        .get(session.authenticatedUser, users.getServicesFromFavorites)
-        .delete(session.authenticatedUser, users.deleteServiceToFavorites);
+        .post(session.isAuthenticatedUser, users.addServiceToFavorites)
+        .get(session.isAuthenticatedUser, users.getServicesFromFavorites)
+        .delete(session.isAuthenticatedUser, users.deleteServiceToFavorites);
 
     router.route('/account/image')
         .post(imageHandler.uploadImageReq);

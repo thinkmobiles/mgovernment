@@ -129,7 +129,7 @@ module.exports = function(db) {
      * @for crmServices
      * @memberOf crmServices
      */
-    router.post('/complainSmsSpam', session.authenticatedUser, traCrmHandler.complainSmsSpam);
+    router.post('/complainSmsSpam', session.isAuthenticatedUser, traCrmHandler.complainSmsSpam);
 
     /**
      * This __method__ create complain about Service Provider
@@ -164,7 +164,7 @@ module.exports = function(db) {
      * @for crmServices
      * @memberOf crmServices
      */
-    router.post('/complainServiceProvider', session.authenticatedUser, traCrmHandler.complainServiceProvider);
+    router.post('/complainServiceProvider', session.isAuthenticatedUser, traCrmHandler.complainServiceProvider);
 
     /**
      * This __method__ create complain about TRA Service
@@ -188,7 +188,7 @@ module.exports = function(db) {
      * @for crmServices
      * @memberOf crmServices
      */
-    router.post('/complainTRAService', session.authenticatedUser, traCrmHandler.complainTRAService);
+    router.post('/complainTRAService', session.isAuthenticatedUser, traCrmHandler.complainTRAService);
 
     /**
      * This __method__ create Enquiries <br>
@@ -211,7 +211,7 @@ module.exports = function(db) {
      * @for crmServices
      * @memberOf crmServices
      */
-    router.post('/complainEnquiries', session.authenticatedUser, traCrmHandler.complainInquiries);
+    router.post('/complainEnquiries', session.isAuthenticatedUser, traCrmHandler.complainInquiries);
 
     /**
      * This __method__ create Suggestion <br>
@@ -234,7 +234,7 @@ module.exports = function(db) {
      * @for crmServices
      * @memberOf crmServices
      */
-    router.post('/sendSuggestion', session.authenticatedUser, traCrmHandler.sendSuggestion);
+    router.post('/sendSuggestion', session.isAuthenticatedUser, traCrmHandler.sendSuggestion);
 
     return router;
 };

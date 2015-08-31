@@ -115,7 +115,6 @@ var TRACRMHandler = function (db) {
     this.registerClient = function (req, res, next) {
 
         var body = req.body;
-        var userType = CONST.USER_TYPE.CLIENT;
 
         validateRegisterData(body, function (errMsg) {
             if (errMsg) {

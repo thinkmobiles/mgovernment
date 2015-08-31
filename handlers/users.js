@@ -7,7 +7,6 @@ var User = function(db) {
     'use strict';
 
     var mongoose = require('mongoose');
-    var ObjectId = mongoose.Types.ObjectId;
     var session = new SessionHandler(db);
 
     var lodash = require('lodash');
@@ -23,9 +22,10 @@ var User = function(db) {
         User
             .findOne({userType:'admin'})
             .exec(function (err, model) {
-                if (!model) {
-                    var pass = 'defaultAdmin';
 
+                if (!model) {
+
+                    var pass = 'defaultAdmin';
                     var shaSum = crypto.createHash('sha256');
                     shaSum.update(pass);
                     pass = shaSum.digest('hex');
@@ -48,6 +48,7 @@ var User = function(db) {
 
     function isValidUserType(userType) {
         var validate = false;
+
         for (var k in CONST.USER_TYPE) {
             if  (CONST.USER_TYPE[k] === userType) {
                 validate = true;
@@ -58,6 +59,7 @@ var User = function(db) {
 
     function isValidDeviceOs(deviceOs){
         var validate = false;
+
         for (var k in CONST. DEVICE_TYPE) {
             if  (CONST. DEVICE_TYPE[k] === deviceOs) {
                 validate = true;
@@ -71,6 +73,7 @@ var User = function(db) {
         var userId = req.session.uId;
         var found = false;
         var foundPosition= -1;
+
         var account = {
             serviceName: body.serviceName,
             serviceOptions:body.serviceOptions,
@@ -108,8 +111,8 @@ var User = function(db) {
         var userId = req.params.id;
 
         getUserById(userId, function (err, profile) {
-
             profile = profile.toJSON();
+
             if (err) {
                 return next(err);
             }
@@ -118,10 +121,11 @@ var User = function(db) {
     };
 
     this.getUserProfileBySession = function ( req, res, next ) {
-
         var userId = req.session.uId;
+
         getUserById(userId, function (err, profile) {
             profile = profile.toJSON();
+
             if (err) {
                 return next(err);
             }
@@ -145,7 +149,6 @@ var User = function(db) {
             user = user.toJSON();
 
             if (user.favorites) {
-
                 for (var i = user.accounts.length - 1; i >= 0; i--) {
                     if (user.accounts[i].seviceName === account.seviceName) {
                         found = true;
@@ -171,11 +174,7 @@ var User = function(db) {
         var resultServiceNames = [];
         var found = false;
 
-        console.log('serviceNames:', serviceNames);
-        console.log('userId:', userId);
-
         getUserById(userId, function (err, user) {
-            // console.dir(user);
             user = user.toJSON();
 
             if (user.favorites) {
@@ -184,7 +183,6 @@ var User = function(db) {
                     for (var i = user.favorites.length - 1; i >= 0; i--) {
                         if (user.favorites[i] == serviceNames[j]) {
                             found = true;
-                            //console.log(user.favorites[i],' = ',serviceNames[j], ' (',found,'}' );
                         }
                     }
                     if (!found) {
@@ -211,7 +209,6 @@ var User = function(db) {
         var found = false;
 
         getUserById(userId, function (err, user) {
-            // console.dir(user);
             user = user.toJSON();
 
             if (user.favorites) {
@@ -220,7 +217,6 @@ var User = function(db) {
                     for (var j = serviceNames.length - 1; j >= 0; j--) {
                         if (user.favorites[i] == serviceNames[j]) {
                             found = true;
-                            //console.log(user.favorites[i],' = ',serviceNames[j], ' (',found,'}' );
                         }
                     }
                     if (!found) {
@@ -229,8 +225,6 @@ var User = function(db) {
                     found = false;
                 }
             }
-            //console.log('serviceNames:', serviceNames);
-            //console.log('resultServiceNames:', resultServiceNames);
 
             User
                 .update({_id: user._id}, {$set: {
@@ -248,7 +242,6 @@ var User = function(db) {
 
         User
             .findOne({_id: userId})
-            //.populate('favorites')
             .exec(function (err, model) {
 
                 if (err) {
@@ -268,7 +261,6 @@ var User = function(db) {
         var foundNumber = -1;
 
         getUserById(userId, function (err, user) {
-            //  console.dir(user);
             user = user.toJSON();
 
             for (var i = user.accounts.length - 1; i >= 0; i--) {
@@ -485,6 +477,7 @@ var User = function(db) {
         if (!isLoginedAndValidDeviceToken(req, device)) {
             return session.kill(req, res, next);
         }
+
         var userId = req.session.uId;
 
         getUserById(userId, function (err, model) {
@@ -669,7 +662,12 @@ var User = function(db) {
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
-        var userData ={login: login, pass: pass, userType: userType, profile: profile};
+        var userData = {
+            login: login,
+            pass: pass,
+            userType: userType,
+            profile: profile
+        };
 
         if (device.deviceOs && device.deviceToken && isValidDeviceOs(device.deviceOs)) {
             userData.devices = [device];
@@ -677,7 +675,6 @@ var User = function(db) {
 
         getUserById(userId, function (err, user) {
             user = user.toJSON();
-            console.dir(user);
 
             User
                 .update({'_id': user._id}, {$set: userData}, function (err, data) {
@@ -694,7 +691,7 @@ var User = function(db) {
                     };
 
                     adminHistoryHandler.pushlog(log);
-                    return res.status(200).send({ success: 'User was succesful updating'});
+                    return res.status(200).send({ success: 'User was successful updating'});
                 });
         });
     };
@@ -748,15 +745,6 @@ var User = function(db) {
                 return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
-
-    //TODO REMOVE - test image upload
-    this.updateUserImage = function(req, res, next) {
-
-    };
-
-    this.getUserImage = function(req, res, next) {
-
-    }
 };
 
 module.exports = User;
