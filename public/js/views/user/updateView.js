@@ -53,7 +53,7 @@ define([
         render: function () {
             var user = App.selectedUser.toJSON();
 
-            this.$el.html(this.template(user));
+            this.$el.html(this.template({user: user}));
             return this;
         }
     });
