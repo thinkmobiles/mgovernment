@@ -26,17 +26,8 @@ define([
                 filter += filterCheckbox[i].checked ? '' : filterCheckbox[i].value + ',';
             }
 
-            //filter += el.find('#filterHelpSalim')[0].checked ? '' : 'Help Salim,';
-            //filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMS Spam,';
-            //filter += el.find('#filterSMSBlock')[0].checked ? '' : 'SMS Block,';
-            //filter += el.find('#filterServiceProvider')[0].checked ? '' : 'Service Provider,';
-            //filter += el.find('#filterTRAService')[0].checked ? '' : 'TRA Service,';
-            //filter += el.find('#filterEnquiries')[0].checked ? '' : 'Enquiries,';
-            //filter += el.find('#filterSuggestion')[0].checked ? '' : 'Suggestion,';
-            //filter += el.find('#filterPoorCoverage')[0].checked ? '' : 'Poor Coverage,';
-
             filter = filter.replace(/\,$/, '');
-            console.log('filter', filter);
+            console.log('filter: ', filter);
             this.paginationView.setData({filter: filter});
         },
 
@@ -64,7 +55,6 @@ define([
                 App.searchTerm = '';
             }
 
-            //this.listenTo(this.emailReportsCollecion, 'sync reset remove', this.render);
             this.listenTo(this.emailReportsCollecion, 'reset remove', this.render);
             //this.render();
         },
@@ -133,14 +123,7 @@ define([
                 filter: this.paginationView.stateModel.toJSON().data.filter
             }));
 
-            //TODO querySelectorAll VS JQuery $('.class') VS getElementsByClassName
-            // querySelectorAll - native and faster browser command,  but JQuery is more supported
-            //filterCheckbox = document.querySelectorAll('input.filterServiceType');
-            //filterCheckbox = $('.filterServiceType');
-            filterCheckbox = document.getElementsByClassName('filterServiceType');
-
-           // console.log('filterCheckbox : ',filterCheckbox);
-
+            filterCheckbox = $('.filterServiceType');
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
             $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
             return this;

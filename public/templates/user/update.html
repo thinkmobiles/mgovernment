@@ -25,7 +25,8 @@
 
             <tr>
                 <td class="hiddenByDefault"><b>gender:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="gender" size="10" maxlength="10"  value="<%= profile ? profile.gender: '' %>" ></td>
+                <td class="hiddenByDefault"><input type="radio" name="gender" id="gender" value="male" <%= (gender == 'male') ? 'checked' : ''%>> male
+                    <input type="radio" name="gender" id="genderFemale" value="female" <%= (gender == 'male') ? '' : 'checked'%>> female</td>
                 <td class="hiddenByDefault"> Input gender</td>
             </tr>
 

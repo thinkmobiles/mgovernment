@@ -17,15 +17,13 @@ define([
         },
 
         updateUser: function(e){
-            console.log('Update Button pressed');
             var el = this.$el;
             var errors = [];
             var data ={};
 
             data.login = el.find('#login').val().trim();
             data.pass = el.find('#pass').val().trim();
-
-            data.gender = el.find('#gender').val().trim();
+            data.gender = el.find('#gender')[0].checked ? 'male' : 'female';
             data.phone = el.find('#phone').val().trim();
             data.email = el.find('#email').val().trim();
             data.firstName = el.find('#firstName').val().trim();
