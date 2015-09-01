@@ -49,7 +49,7 @@ define([
                 insertBefore("#profileBlock");
 
             profileBlockCount++;
-            return this;
+
         },
 
         delProfileFieldBlock: function(e) {
@@ -61,7 +61,7 @@ define([
 
             $("#profileFieldBlock" + profileBlockCount).
                 remove();
-            return this;
+
         },
 
 
@@ -101,7 +101,7 @@ define([
                 empty().
                 remove();
             this.updateItemsInputNameArray();
-            return this;
+
         },
 
         enableInput: function(e) {
@@ -113,7 +113,7 @@ define([
             } else {
                 el.find('#'+ idName + 'Show').hide();
             }
-            return this;
+
         },
 
         updateService: function(e){
@@ -205,7 +205,7 @@ define([
                     }
                 });
             }
-            return this;
+
         },
 
         addItemToArray: function(e) {
@@ -230,7 +230,7 @@ define([
             el.find('#' + id + 'Value').text(sendParams[id]);
             console.log(id, ' ',  sendParams[id]);
 
-            return this;
+
         },
 
         dellLastItemFromArray: function(e) {
@@ -249,7 +249,6 @@ define([
             sendParams[id].pop();
             el.find('#' + id + 'Value').text(sendParams[id]);
 
-            return this;
         },
 
         updateItemsInputNameArray: function () {
@@ -274,8 +273,7 @@ define([
 
             console.log('itemsInputNameArray: ', itemsInputNameArray);
 
-            return this;
-        },
+              },
 
         render: function () {
             var service = App.selectedService.toJSON();
