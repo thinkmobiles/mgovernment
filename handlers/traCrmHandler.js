@@ -24,6 +24,8 @@ var TRACRMHandler = function (db) {
     var mongoose = require('mongoose');
     var crypto = require('crypto');
     var User = db.model(CONST.MODELS.USER);
+    var validation = require('../helpers/validation');
+
 
     this.signInClient = function (req, res, next) {
 
@@ -189,12 +191,20 @@ var TRACRMHandler = function (db) {
         var description = req.body.description;
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.SMS_SPAM;
+        var caseOptions;
+        var validatesErrors;
 
-        if (!phoneSpam || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
 
-        var caseOptions = {
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
+
+        caseOptions = {
             contactId: crmUserId,
             caseType: caseType,
             title: 'SMS Spam from ' + phoneSpam,
@@ -219,28 +229,24 @@ var TRACRMHandler = function (db) {
         var title = req.body.title;
         var serviceProvider = req.body.serviceProvider;
         var referenceNumber = req.body.referenceNumber;
+        var crmUserId = req.session.crmId;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
+        var attachmentData = null;
+        var validatesErrors;
 
-        if (!title || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
 
-        if (!serviceProvider) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': service provider'});
-        }
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
 
-        if (!(serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.DU
-            || serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.ETISALAT
-            || serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.YAHSAT)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': service provider is not from allowed list'});
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
         }
 
         if (!referenceNumber) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': input reference number or "none"'});
         }
-
-        var crmUserId = req.session.crmId;
-        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
-        var attachmentData = null;
 
         if (req.body.attachment) {
             attachmentData = prepareAttachment(req.body.attachment);
@@ -271,14 +277,20 @@ var TRACRMHandler = function (db) {
 
         var description = req.body.description;
         var title = req.body.title;
-
-        if (!title || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
         var attachmentData = null;
+        var validatesErrors;
+
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
 
         if (req.body.attachment) {
             attachmentData = prepareAttachment(req.body.attachment);
@@ -332,14 +344,20 @@ var TRACRMHandler = function (db) {
 
         var description = req.body.description;
         var title = req.body.title;
-
-        if (!title || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.INQUIRY;
         var attachmentData = null;
+        var validatesErrors;
+
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
 
         if (req.body.attachment) {
             attachmentData = prepareAttachment(req.body.attachment);
@@ -369,14 +387,20 @@ var TRACRMHandler = function (db) {
 
         var description = req.body.description;
         var title = req.body.title;
+        var crmUserId = req.session.crmId;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.SUGGESTION;
+        var attachmentData = null;
+        var validatesErrors;
 
-        if (!title || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
 
-        var crmUserId = req.session.crmId;
-        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
-        var attachmentData = null;
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
 
         if (req.body.attachment) {
             attachmentData = prepareAttachment(req.body.attachment);

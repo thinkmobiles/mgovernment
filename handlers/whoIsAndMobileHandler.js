@@ -24,6 +24,12 @@ var TestTRAHandler = function (db) {
     this.testWhois = function (req, res, next) {
 
         var checkUrl = req.query.checkUrl;
+        //var errors = [];
+        //
+        //validation.checkUrlField(errors, true, checkUrl, 'url');
+        //if (errors.length) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + errors.join('')});
+        //}
 
         handleWhoisSocket(checkUrl, TRA.WHOIS_URL, function (err, data) {
             if (err) {
@@ -42,6 +48,12 @@ var TestTRAHandler = function (db) {
     this.testWhoisCheck = function (req, res, next) {
 
         var checkUrl = req.query.checkUrl;
+        //var errors = [];
+        //
+        //validation.checkUrlField(errors, true,checkUrl, 'url');
+        //if (errors.length) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + errors.join('')});
+        //}
 
         handleWhoisSocket(checkUrl, TRA.WHOIS_CHECK_URL, function (err, data) {
             if (err) {

@@ -27,8 +27,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
                 preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
-                preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
+                preparingDb.createUsersByTemplate(USERS.COMPANY)
             ],
             function (err, results) {
                 if (err) {
@@ -70,7 +69,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
         var data = {
             phone: '505050440',
             phoneProvider: '2020',
-            providerType: 'elesat',
+            providerType: 'du',
             description: 'I receive 10 sms from  number 505050440. Please block him'
         };
 
@@ -88,13 +87,36 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
+                        console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
                         done();
                     });
             });
+    });
+
+    it('SEND data to ComplainSmsBlock with BAD values', function (done) {
+
+        var loginData = USERS.CLIENT;
+        var data = {
+            phone: 505050440,
+            phoneProvider: '2020',
+            providerType: 'Elesat'
+        };
+
+        agent
+            .post('/complainSmsBlock')
+            .send(data)
+            .expect(400)
+            .end(function (err, res) {
+                console.dir(res.body);
+                if (err) {
+                    return done(err)
+                }
+                done();
+            });
+
     });
 
     it('SEND data to ComplainSmsBlock UnAuthorized', function (done) {
@@ -161,6 +183,26 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
             });
     });
 
+    it('SEND data to Help Salim with BAD values', function (done) {
+
+        var data = {
+            url: 'blabla.',
+            description: 1221212
+        };
+
+        agent
+            .post('/sendHelpSalim')
+            .send(data)
+            .expect(400)
+            .end(function (err, res) {
+                console.dir(res.body);
+                if (err) {
+                    return done(err)
+                }
+                done();
+            });
+    });
+
     it('SEND data to Help Salim UnAuthorized', function (done) {
 
         var loginData = USERS.CLIENT;
@@ -192,7 +234,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
             });
     });
 
-    it('SEND Poor Coverage', function (done) {
+    it('SEND Poor Coverage ', function (done) {
 
         var loginData = USERS.CLIENT;
         var data = {
@@ -226,12 +268,35 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
             });
     });
 
+    it('SEND Poor Coverage  with BAD values', function (done) {
+
+        var data = {
+            location: {
+                latitude: '24.9821547'
+
+            },
+            signalLevel: 7
+        };
+
+        agent
+            .post('/sendPoorCoverage')
+            .send(data)
+            .expect(200)
+            .end(function (err, res) {
+                console.dir(res.body);
+                if (err) {
+                    return done(err)
+                }
+                done();
+            });
+    });
+
+
     it('SEND Poor Coverage UnAuthorized', function (done) {
 
         var loginData = USERS.CLIENT;
         var data = {
-            address: 'New York main street',
-            signalLevel: 4
+            address: 'New York main street'
         };
 
         agent

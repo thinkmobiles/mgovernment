@@ -1,5 +1,7 @@
 module.exports = new function () {
-
+    'use strict';
+    var TRA = require('../constants/traServices');
+    var validateServiceModel = {};
     //Removed cyrillic chars
     var phoneRegExp = /^[0-9\+]?([0-9-\s()])+[0-9()]$/,
         intNumberRegExp = /[0-9]+/,
@@ -20,7 +22,7 @@ module.exports = new function () {
         emailRegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         urlRegExp = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i,
         loggedRegExp = /^([0-9]{1,9})\.?([0-9]{1,2})?$/;
-        var MIN_LENGTH = 2,
+    var MIN_LENGTH = 2,
         LOGIN_MIN_LENGTH = 4,
         WORKFLOW_MIN_LENGTH = 3;
 
@@ -40,7 +42,7 @@ module.exports = new function () {
         return loginRegExp.test(validatedString);
     };
 
-   var validateRate15 = function (validatedString) {
+    var validateRate15 = function (validatedString) {
         return rate15RegExp.test(validatedString);
     };
 
@@ -536,6 +538,124 @@ module.exports = new function () {
         }
     };
 
+    validateServiceModel[TRA.CRM_ENUM.CASE_TYPE.SMS_SPAM] = {
+        required: {
+            phone: 'string',
+            description: 'string'
+        }
+    };
+
+    validateServiceModel[TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER] = {
+        required: {
+            title: 'string',
+            description: 'string',
+            serviceProvider: 'string'
+            //referenceNumber: 'string'
+        },
+        inRange:{
+            serviceProvider: [TRA.CRM_ENUM.SERVICE_PROVIDER.DU, TRA.CRM_ENUM.SERVICE_PROVIDER.ETISALAT, TRA.CRM_ENUM.SERVICE_PROVIDER.YAHSAT]
+        }
+    };
+
+    validateServiceModel[TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA] = {
+        required: {
+            title: 'string',
+            description: 'string'
+        }
+    };
+
+    validateServiceModel[TRA.CRM_ENUM.CASE_TYPE.INQUIRY] = {
+        required: {
+            title: 'string',
+            description: 'string'
+        }
+    };
+
+    validateServiceModel[TRA.CRM_ENUM.CASE_TYPE.SUGGESTION] = {
+        required: {
+            title: 'string',
+            description: 'string'
+        }
+    };
+
+    validateServiceModel[TRA.NO_CRM_ENUM.CASE_TYPE.SMS_BLOCK] = {
+        required: {
+            phone: 'string',
+            providerType: 'string',
+            phoneProvider: 'string',
+            description: 'string'
+        },
+        inRange:{
+            providerType: [TRA.CRM_ENUM.SERVICE_PROVIDER.DU, TRA.CRM_ENUM.SERVICE_PROVIDER.ETISALAT, TRA.CRM_ENUM.SERVICE_PROVIDER.YAHSAT]
+        }
+    };
+
+    validateServiceModel[TRA.NO_CRM_ENUM.CASE_TYPE.POOR_COVERAGE] = {
+        required: {
+            signalLevel: 'number'
+        },
+        regExp: {
+            signalLevel: validateRate15
+        }
+    };
+
+    validateServiceModel[TRA.NO_CRM_ENUM.CASE_TYPE.HELP_SALIM] = {
+        required: {
+            description: 'string',
+            url: 'string'
+        },
+        regExp: {
+            url: checkUrlField
+        }
+    };
+
+    function hasCaseTypeModel(caseType) {
+        var model = validateServiceModel[caseType];
+
+        if (!model) {
+            console.log('Error: There is no validate model for this caseType');
+            return false;
+        }
+        return true;
+    }
+
+    function validateByCaseTypeModel(caseType, body){
+        var error = [];
+        var model = validateServiceModel[caseType];
+
+        if (!model) {
+            console.log ('Error: There is no validate model for this caseType');
+            return error;
+        }
+
+        if (model.required) {
+            for (var k in model.required) {
+                if (!body[k]) {
+                    error.push(k + ' is required');
+                }
+
+                if (typeof(body[k]) !== model.required[k]) {
+                    error.push(k + ' has bad type');
+                }
+            }
+        }
+
+        if (model.inRange) {
+            for (var k in model.inRange) {
+                if (model.inRange[k].indexOf(body[k]) < 0) {
+                    error.push(k + ' is not from allowed list');
+                }
+            }
+        }
+
+        if (model.regExp){
+            for (var k in model.inRange) {
+                model.regExp[k](error,false,body[k],k);
+            }
+        }
+        return error;
+    }
+
     return {
         //comparePasswords:comparePasswords,
         checkPasswordField: checkPasswordField,
@@ -567,7 +687,8 @@ module.exports = new function () {
         //checkLogedField:checkLogedField,
         //checkWorkflowNameField:checkWorkflowNameField,
         //checkSkypeField:checkSkypeField,
-        checkPriceField: checkPriceField
+        checkPriceField: checkPriceField,
+        validateByCaseTypeModel: validateByCaseTypeModel,
+        hasCaseTypeModel: hasCaseTypeModel
     };
 }
-
