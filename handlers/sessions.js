@@ -44,12 +44,12 @@ var Session = function (db) {
     };
 
     this.isAdminBySession = function (req, res, next) {
+        var err;
 
         if (!( req.session && req.session.uId && req.session.loggedIn)) {
-
-            var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
-
+            err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
             err.status = 401;
+
             return next(err);
         }
 
@@ -60,9 +60,9 @@ var Session = function (db) {
             if (userType === CONST.USER_TYPE.ADMIN) {
                 return next();
             }
-
             err = new Error(RESPONSE.AUTH.NO_PERMISSIONS);
             err.status = 403;
+
             return next(err);
         });
     };
@@ -75,7 +75,6 @@ var Session = function (db) {
                 if (err) {
                     return callback(err);
                 }
-
                 if (model) {
                     return callback(null, model.userType);
                 } else {
@@ -83,7 +82,6 @@ var Session = function (db) {
                 }
             });
     }
-
 };
 
 module.exports = Session;

@@ -52,7 +52,6 @@ var HistoryHandler = function(db) {
                 return res.status(200).send({count: count});
             });
     };
-
 };
 
 module.exports = HistoryHandler;

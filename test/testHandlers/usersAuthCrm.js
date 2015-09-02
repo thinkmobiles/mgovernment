@@ -103,6 +103,7 @@ describe('User CRM register/ logIn / logOut', function () {
                     .send(registerData)
                     .expect(200)
                     .end(function (err, res) {
+                       console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
@@ -111,6 +112,7 @@ describe('User CRM register/ logIn / logOut', function () {
                             .User
                             .findOne({login: registerData.login})
                             .exec(function (err, model) {
+                                console.dir(res.body);
                                 if (err) {
                                     return done(err);
                                 }

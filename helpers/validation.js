@@ -492,7 +492,7 @@ module.exports = new function () {
             url: 'string'
         },
         regExpFunction: {
-            url: checkUrlField
+       //     url: checkUrlField
         }
     };
     validateServiceModel[TRA.NO_CRM_ENUM.REGISTER] = {

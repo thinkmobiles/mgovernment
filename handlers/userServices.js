@@ -40,7 +40,6 @@ var UserService = function(db) {
                 res: model,
                 description: 'getServiceOptions'
             };
-
             userHistoryHandler.pushlog(log);
 
             if (err) {
@@ -56,11 +55,12 @@ var UserService = function(db) {
             .find()
             .select('_id serviceProvider serviceName serviceType profile forUserType method baseUrl')
             .exec(function (err, collection) {
+                var log;
                 if (err) {
                     return next(err);
                 }
 
-                var log = {
+                log = {
                     user: req.session.uId || null,
                     action: CONST.ACTION.GET,
                     model: CONST.MODELS.SERVICE,
@@ -69,8 +69,8 @@ var UserService = function(db) {
                     res: collection,
                     description: 'Get Services'
                 };
-                userHistoryHandler.pushlog(log);
 
+                userHistoryHandler.pushlog(log);
                 return res.status(200).send(collection);
             });
     };
@@ -81,11 +81,14 @@ var UserService = function(db) {
             .find()
             .select('-_id serviceName')
             .exec(function (err, collection) {
+                var result = [];
+                var log;
+
                 if (err) {
                     return next(err);
                 }
 
-                var log = {
+                log = {
                     user: req.session.uId || null,
                     action: CONST.ACTION.GET,
                     model: CONST.MODELS.SERVICE,
@@ -94,8 +97,6 @@ var UserService = function(db) {
                     res: collection,
                     description: 'Get Services Names'
                 };
-                var result = [];
-
                 userHistoryHandler.pushlog(log);
 
                 for (var i = collection.length-1; i >= 0; i--){
@@ -158,7 +159,6 @@ var UserService = function(db) {
                     if (err) {
                         return callback(err);
                     }
-
                     serviceOptions = model.toJSON();
                     return callback(null, serviceOptions.params.needUserAuth);
                 })
@@ -175,7 +175,6 @@ var UserService = function(db) {
                     if (err) {
                         return callback(err);
                     }
-
                     return callback(null, result);
                 });
             };
@@ -185,7 +184,6 @@ var UserService = function(db) {
             return function (needUserAuth, callback) {
 
                 if (!needUserAuth || !userId) {
-
                     return callback();
                 }
 
@@ -201,6 +199,7 @@ var UserService = function(db) {
                     if (!found) {
                         return callback('Service Account not found');
                     }
+
                     serviceAccount = user.accounts[foundNumber];
                     return callback();
                 });

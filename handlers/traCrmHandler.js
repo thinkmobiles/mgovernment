@@ -29,16 +29,18 @@ var TRACRMHandler = function (db) {
 
     this.signInClient = function (req, res, next) {
 
-        if (!req.body || !req.body.login || !req.body.pass) {
-            var err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
-            err.status = 400;
-            return next(err);
-        }
-
+        var err;
         var loginOpt = {
             login: req.body.login,
             pass: req.body.pass
         };
+
+        if (!req.body || !req.body.login || !req.body.pass) {
+            err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
+            err.status = 400;
+
+            return next(err);
+        }
 
         traCrmNetWrapper.signInCrm(loginOpt, function (err, result) {
 
@@ -56,7 +58,6 @@ var TRACRMHandler = function (db) {
             if (!result.userId) {
                 return res.status(400).send({error: RESPONSE.AUTH.INVALID_CREDENTIALS});
             }
-
             loginOpt.crmId = result.userId;
 
             loginMiddleware(loginOpt, function(err, user) {
@@ -89,17 +90,20 @@ var TRACRMHandler = function (db) {
 
         var pass = loginOpt.pass;
         var shaSum = crypto.createHash('sha256');
+        var userData;
+        var user;
+
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
-        var userData = {
+        userData = {
             login: loginOpt.login,
             pass: pass,
             userType: CONST.USER_TYPE.CLIENT,
             profile: {}
         };
 
-        var user = new User(userData);
+        user = new User(userData);
         user
             .save(function (err, userModel) {
                 if (err) {
@@ -123,11 +127,14 @@ var TRACRMHandler = function (db) {
         if (!validation.hasCaseTypeModel(caseType)) {
             return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
-
         validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
 
         if (validatesErrors.length) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
+
+        if ((typeof body.state) !== "number") {
+            body.state = parseInt(body.state);
         }
 
         body.country = TRA.CRM_ENUM.COUNTRY.UAE;
@@ -149,27 +156,17 @@ var TRACRMHandler = function (db) {
 
     };
 
-    function validateRegisterData(data, callback) {
-        for (var i = 0; i < REGISTER_FIELDS.length; i++) {
-            if (!(REGISTER_FIELDS[i] in data)) {
-                return callback(RESPONSE.NOT_ENOUGH_PARAMS + ': ' + REGISTER_FIELDS[i]);
-            }
-        }
-        if ((typeof data.state) !== "number") {
-            data.state = parseInt(data.state);
-        }
-        callback();
-        //'784-YYYY-NNNNNNN-C'
-    }
-
     function registerMiddlewareUser(registerData, callback) {
 
         var pass = registerData.pass;
         var shaSum = crypto.createHash('sha256');
+        var userData;
+        var user
+
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
-        var userData = {
+        userData = {
             login: registerData.login,
             pass: pass,
             userType: CONST.USER_TYPE.CLIENT,
@@ -181,7 +178,7 @@ var TRACRMHandler = function (db) {
             }
         };
 
-        var user = new User(userData);
+        user = new User(userData);
         user
             .save(function (err, userModel) {
                 if (err) {
@@ -204,7 +201,6 @@ var TRACRMHandler = function (db) {
         if (!validation.hasCaseTypeModel(caseType)) {
             return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
-
         validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
 
         if (validatesErrors.length) {
@@ -239,12 +235,12 @@ var TRACRMHandler = function (db) {
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
         var attachmentData = null;
+        var caseOptions;
         var validatesErrors;
 
         if (!validation.hasCaseTypeModel(caseType)) {
             return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
-
         validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
 
         if (validatesErrors.length) {
@@ -259,7 +255,7 @@ var TRACRMHandler = function (db) {
             attachmentData = prepareAttachment(req.body.attachment);
         }
 
-        var caseOptions = {
+        caseOptions = {
             contactId: crmUserId,
             caseType: caseType,
             title: title,
@@ -287,12 +283,12 @@ var TRACRMHandler = function (db) {
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
         var attachmentData = null;
+        var caseOptions;
         var validatesErrors;
 
         if (!validation.hasCaseTypeModel(caseType)) {
             return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
-
         validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
 
         if (validatesErrors.length) {
@@ -303,7 +299,7 @@ var TRACRMHandler = function (db) {
             attachmentData = prepareAttachment(req.body.attachment);
         }
 
-        var caseOptions = {
+        caseOptions = {
             contactId: crmUserId,
             caseType: caseType,
             title: title,
@@ -327,9 +323,10 @@ var TRACRMHandler = function (db) {
 
         var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
         var imageData = {};
+        var imageTypeRegularExpression = /\/(.*?)$/;
+        var imageTypeDetected;
 
         if (!matches || matches.length !== 3) {
-
             imageData.type = 'image/png';
             imageData.data = dataString;
             imageData.extention = 'png';
@@ -338,8 +335,7 @@ var TRACRMHandler = function (db) {
             imageData.type = matches[1];
             imageData.data = matches[2];
 
-            var imageTypeRegularExpression = /\/(.*?)$/;
-            var imageTypeDetected = imageData
+            imageTypeDetected = imageData
                 .type
                 .match(imageTypeRegularExpression);
             imageData.extention = imageTypeDetected[1];
@@ -359,7 +355,6 @@ var TRACRMHandler = function (db) {
         if (!validation.hasCaseTypeModel(caseType)) {
             return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
-
         validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
 
         if (validatesErrors.length) {
@@ -397,12 +392,12 @@ var TRACRMHandler = function (db) {
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.SUGGESTION;
         var attachmentData = null;
+        var caseOptions;
         var validatesErrors;
 
         if (!validation.hasCaseTypeModel(caseType)) {
             return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
-
         validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
 
         if (validatesErrors.length) {
@@ -413,7 +408,7 @@ var TRACRMHandler = function (db) {
             attachmentData = prepareAttachment(req.body.attachment);
         }
 
-        var caseOptions = {
+        caseOptions = {
             contactId: crmUserId,
             caseType: caseType,
             title: title,
@@ -432,7 +427,6 @@ var TRACRMHandler = function (db) {
             res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
         });
     };
-
 };
 
 module.exports = TRACRMHandler;

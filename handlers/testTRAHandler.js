@@ -36,9 +36,10 @@ var TestTRAHandler = function (db) {
                     return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         };
+        var attachmentImg;
 
         if (attachment) {
-            var attachmentImg = new Attachment({
+            attachmentImg = new Attachment({
                 attachment: attachment
             });
 

@@ -156,7 +156,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         var loginData = USERS.CLIENT;
         var data = {
-            url: 'blabla.com.ae',
+            url: 'http://blabla.com.ae',
             description: 'On this site, I saw illegal content. Please pay attention to the site, check it and possibly block.'
         };
 
@@ -174,10 +174,10 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
+                        console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
                         done();
                     });
             });

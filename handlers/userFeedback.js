@@ -11,18 +11,18 @@ var Feedback = function(db) {
     this.createFeedback = function (req, res, next) {
         var body = req.body;
         var feedback;
-
-        if (!body || !body.rate || !body.feedback || (!body.serviceId && !body.serviceName)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
         var validation = require('../helpers/validation');
         var userRef = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var serviceRef = new ObjectId(body.serviceId);
         var rate = body.rate;
         var errors = [];
+        var feedbackData
 
-        var feedbackData = {
+        if (!body || !body.rate || !body.feedback || (!body.serviceId && !body.serviceName)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        feedbackData = {
             user: userRef,
             service: serviceRef,
             serviceName: body.serviceName,
@@ -89,4 +89,4 @@ var Feedback = function(db) {
     };
 };
 
-    module.exports = Feedback;
+module.exports = Feedback;

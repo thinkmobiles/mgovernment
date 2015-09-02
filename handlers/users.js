@@ -359,6 +359,7 @@ var User = function(db) {
             deviceOs: body.deviceOs,
             deviceToken: body.deviceToken
         };
+        var shaSum = crypto.createHash('sha256');
 
         if (!body || !login || !pass) {
             err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
@@ -366,7 +367,6 @@ var User = function(db) {
             return next(err);
         }
 
-        var shaSum = crypto.createHash('sha256');
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
@@ -378,7 +378,6 @@ var User = function(db) {
                 }
 
                 if (!model) {
-
                     return res.status(400).send({error: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
@@ -403,6 +402,7 @@ var User = function(db) {
             deviceOs: body.deviceOs,
             deviceToken: body.deviceToken
         };
+        var shaSum = crypto.createHash('sha256');
 
         if (!body || !login || !pass) {
             err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
@@ -410,23 +410,23 @@ var User = function(db) {
             return next(err);
         }
 
-        var shaSum = crypto.createHash('sha256');
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
         User
             .findOne({login: login, pass: pass})
             .exec(function (err, model) {
+                var deviceOptions;
+
                 if (err) {
                     return next(err)
                 }
 
                 if (!model || model.toJSON().userType != CONST.USER_TYPE.ADMIN) {
-
                     return res.status(400).send({ error: RESPONSE.AUTH.INVALID_CREDENTIALS});
                 }
 
-                var deviceOptions = {
+                deviceOptions = {
                     model: model,
                     device: device
                 };
@@ -459,9 +459,6 @@ var User = function(db) {
 
         User
             .update({_id: model._id}, {$push: {'devices': device}}, function (err, data) {
-                if (err) {
-
-                }
                 return callback();
             });
     }
@@ -473,23 +470,25 @@ var User = function(db) {
             deviceOs: body.deviceOs,
             deviceToken: body.deviceToken
         };
+        var userId;
 
         if (!isLoginedAndValidDeviceToken(req, device)) {
             return session.kill(req, res, next);
         }
 
-        var userId = req.session.uId;
+        userId = req.session.uId;
 
         getUserById(userId, function (err, model) {
+            var deviceOptions;
+
             model = model.toJSON();
             console.dir(model);
 
             if (!model) {
-
                 return session.kill(req, res, next);
             }
 
-            var deviceOptions = {
+            deviceOptions = {
                 model: model,
                 device: device
             };
@@ -529,6 +528,8 @@ var User = function(db) {
             serviceLogin: body.serviceLogin,
             servicePass: body.servicePass
         };
+        var shaSum = crypto.createHash('sha256');
+        var userData;
 
         if (!isValidUserType(userType)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
@@ -540,16 +541,14 @@ var User = function(db) {
             return next(err);
         }
 
-        var shaSum = crypto.createHash('sha256');
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
-        var userData ={login: login, pass: pass, userType: userType, profile: profile};
+        userData ={login: login, pass: pass, userType: userType, profile: profile};
 
         if (device.deviceOs && device.deviceToken && isValidDeviceOs(device.deviceOs)) {
             userData.devices = [device];
         }
-
         if (account.serviceName && account.serviceLogin && account.servicePass) {
             userData.accounts = [account];
         }
@@ -557,20 +556,20 @@ var User = function(db) {
         user = new User(userData);
         user.
             save(function (err, user) {
+                var log;
+
                 if (err) {
                     return res.status(500).send(err)
                 }
 
-                var log = {
+                log = {
                     user: req.session.uId,
                     action: CONST.ACTION.CREATE,
                     model: CONST.MODELS.USER,
                     modelId: user._id,
                     description:'Create users account'
                 };
-
                 adminHistoryHandler.pushlog(log);
-
                 res.status(200).send(user);
             });
     };
@@ -584,24 +583,24 @@ var User = function(db) {
         var phone = body.phone;
         var userType = CONST.USER_TYPE.CLIENT;
 
-        if (!body || !login || !pass || !gender || !phone) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
-        if (!(gender === 'male' || gender === 'female')) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': incorrect gender (male/female)'});
-        }
-
         var profile = {
             gender: gender,
             phone: phone
         };
 
         var shaSum = crypto.createHash('sha256');
+        var userData;
+
+        if (!body || !login || !pass || !gender || !phone) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (!(gender === 'male' || gender === 'female')) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': incorrect gender (male/female)'});
+        }
+
         shaSum.update(pass);
         pass = shaSum.digest('hex');
-
-        var userData = {login: login, pass: pass, userType: userType, profile: profile};
+        userData = {login: login, pass: pass, userType: userType, profile: profile};
 
         User
             .findOne({login: login})
@@ -648,6 +647,9 @@ var User = function(db) {
             createdAt: new Date()
         };
 
+        var shaSum = crypto.createHash('sha256');
+        var userData;
+
         if (!isValidUserType(userType)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
@@ -658,11 +660,10 @@ var User = function(db) {
             return next(err);
         }
 
-        var shaSum = crypto.createHash('sha256');
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
-        var userData = {
+        userData = {
             login: login,
             pass: pass,
             userType: userType,
@@ -678,18 +679,18 @@ var User = function(db) {
 
             User
                 .update({'_id': user._id}, {$set: userData}, function (err, data) {
+                    var log;
                     if (err) {
                         return res.status(400).send({ error: err});
                     }
 
-                    var log = {
+                    log = {
                         user: req.session.uId,
                         action: CONST.ACTION.UPDATE,
                         model: CONST.MODELS.USER,
                         modelId: user._id,
                         description:'Update users account'
                     };
-
                     adminHistoryHandler.pushlog(log);
                     return res.status(200).send({ success: 'User was successful updating'});
                 });
@@ -728,11 +729,13 @@ var User = function(db) {
             .findOne(searchQuery)
             .remove()
             .exec(function (err, model) {
+                var log;
 
                 if (err) {
                     return next(err);
                 }
-                var log = {
+
+                log = {
                     user: req.session.uId,
                     action: CONST.ACTION.DELETE,
                     model: CONST.MODELS.USER,
@@ -741,7 +744,6 @@ var User = function(db) {
                 };
 
                 adminHistoryHandler.pushlog(log);
-
                 return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };

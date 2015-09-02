@@ -24,12 +24,6 @@ var TestTRAHandler = function (db) {
     this.testWhois = function (req, res, next) {
 
         var checkUrl = req.query.checkUrl;
-        //var errors = [];
-        //
-        //validation.checkUrlField(errors, true, checkUrl, 'url');
-        //if (errors.length) {
-        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + errors.join('')});
-        //}
 
         handleWhoisSocket(checkUrl, TRA.WHOIS_URL, function (err, data) {
             if (err) {
@@ -48,12 +42,6 @@ var TestTRAHandler = function (db) {
     this.testWhoisCheck = function (req, res, next) {
 
         var checkUrl = req.query.checkUrl;
-        //var errors = [];
-        //
-        //validation.checkUrlField(errors, true,checkUrl, 'url');
-        //if (errors.length) {
-        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + errors.join('')});
-        //}
 
         handleWhoisSocket(checkUrl, TRA.WHOIS_CHECK_URL, function (err, data) {
             if (err) {
@@ -119,11 +107,6 @@ var TestTRAHandler = function (db) {
     this.searchMobileImei = function (req, res, next) {
 
         var imei = req.query.imei;
-
-        if (!imei) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': IMEI'});
-        }
-
         var startIndex = req.query.start || 0;
         var endIndex = req.query.end || 10;
 
@@ -132,6 +115,10 @@ var TestTRAHandler = function (db) {
             endIndex: endIndex,
             tac: imei
         };
+
+        if (!imei) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': IMEI'});
+        }
 
         sendSearchRequest(requestBody, function (err, result) {
             if (err) {
@@ -144,11 +131,6 @@ var TestTRAHandler = function (db) {
     this.searchMobileBrand = function (req, res, next) {
 
         var brand = req.query.brand;
-
-        if (!brand) {
-            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': brand'});
-        }
-
         var startIndex = req.query.start || 0;
         var endIndex = req.query.end || 10;
 
@@ -157,6 +139,10 @@ var TestTRAHandler = function (db) {
             endIndex: endIndex,
             manufacturer: brand
         };
+
+        if (!brand) {
+            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': brand'});
+        }
 
         sendSearchRequest(requestBody, function (err, result) {
             if (err) {
@@ -185,7 +171,6 @@ var TestTRAHandler = function (db) {
             return callback(err)
         });
     }
-
 };
 
 module.exports = TestTRAHandler;
