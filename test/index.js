@@ -10,10 +10,10 @@ var app = require('../app');
 //require('./testHandlers/userServices');
 
 //require('./testHandlers/usersAuth'); //added register
-//require('./testHandlers/usersAuthCrm');
+require('./testHandlers/usersAuthCrm');
 //require('./testHandlers/traServicesCrm');
-require('./testHandlers/traServicesWhoIsImeiBrand');
-require('./testHandlers/traServicesComplainsServiceProviderTRAServices');
-require('./testHandlers/traServicesComplainsEnquiriesSuggestion ');
-require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
+//require('./testHandlers/traServicesWhoIsImeiBrand');
+//require('./testHandlers/traServicesComplainsServiceProviderTRAServices');
+//require('./testHandlers/traServicesComplainsEnquiriesSuggestion ');
+//require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
 //require('./testHandlers/userFeedback');

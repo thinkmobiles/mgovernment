@@ -117,29 +117,36 @@ var TRACRMHandler = function (db) {
     this.registerClient = function (req, res, next) {
 
         var body = req.body;
+        var caseType = TRA.NO_CRM_ENUM.REGISTER;
+        var validatesErrors;
 
-        validateRegisterData(body, function (errMsg) {
-            if (errMsg) {
-                return res.status(400).send({error: errMsg});
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
+
+        body.country = TRA.CRM_ENUM.COUNTRY.UAE;
+
+        traCrmNetWrapper.registerCrm(body, function (err, result) {
+            if (err) {
+                return next(err);
             }
 
-            body.country = TRA.CRM_ENUM.COUNTRY.UAE;
+            if (result == "Login is used") {
+                return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
+            }
 
-            traCrmNetWrapper.registerCrm(body, function (err, result) {
-                if (err) {
-                    return next(err);
-                }
-
-                if (result == "Login is used") {
-                    return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
-                }
-
-                registerMiddlewareUser(body, function (err, userModel) {
-                    //WARNING: no error handling - cause login has logic to create middleware user
-                    res.status(200).send({success: result});
-                });
+            registerMiddlewareUser(body, function (err, userModel) {
+                //WARNING: no error handling - cause login has logic to create middleware user
+                res.status(200).send({success: result});
             });
         });
+
     };
 
     function validateRegisterData(data, callback) {

@@ -73,6 +73,7 @@ module.exports = {
     },
 
     NO_CRM_ENUM:{
+        REGISTER: 'register',
         CASE_TYPE: {
             SMS_BLOCK: 11,
             POOR_COVERAGE: 12,
