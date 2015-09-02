@@ -26,12 +26,25 @@ var TestTRAHandler = function (db) {
         var checkUrl = req.query.checkUrl;
 
         handleWhoisSocket(checkUrl, TRA.WHOIS_URL, function (err, data) {
+            var parsedData;
+            var responseObj = {};
+            var tempStr;
+
             if (err) {
                 return next(err);
             }
-            var parsedData = parseDataToJson(data);
 
-            return res.status(200).send({urlData: parsedData});
+            parsedData = parseDataToJson(data);
+            parsedData = parsedData.split('\r\n');
+
+            for (var i = parsedData.length - 1; i >= 0 ; i --) {
+                tempStr = parsedData[i].replace(/:\s*.*/, '');
+                if (tempStr) {
+                    responseObj[tempStr] = parsedData[i].replace(/.*:\s*/, '');
+                }
+            }
+
+            return res.status(200).send(responseObj);
         });
     };
 
