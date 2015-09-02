@@ -25,7 +25,7 @@ var TestTRAHandler = function (db) {
                     if (model) {
                         console.log('emailReport saved');
                     } else {
-                        console.log('emailReport err saved: ', err);
+                        console.log('emailReport error saved: ', err);
                     }
 
                     if (errMail) {
@@ -51,7 +51,6 @@ var TestTRAHandler = function (db) {
                     } else {
                         console.log('Attachment err saved: ', err);
                     }
-
                     saveEmail();
                 });
         } else {

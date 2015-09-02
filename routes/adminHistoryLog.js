@@ -1,3 +1,10 @@
+/**
+ * Provides ability for getting records of adminHistoryLog for Admin
+ *
+ * @class adminHistoryLog
+ *
+ */
+
 var express = require('express');
 var router = express.Router();
 

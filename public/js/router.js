@@ -14,7 +14,7 @@ define([
     'views/userHistoryLogView'
 
 ], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView, FeedbacksView, EmailReportsView, AdminHistoryLogView, UserHistoryLogView ) {
-//], function (Backbone, MainView, LoginView ) {
+
     var Router = Backbone.Router.extend({
 
         mainView: null,
@@ -37,27 +37,21 @@ define([
         },
 
         initialize: function () {
-
             this.mainView = new MainView();
         },
-
 
         toMainView: function () {
             if (this.mainView) {
                 this.mainView.undelegateEvents();
             }
-            //console.log('MainView routed');
-            this.mainView = new MainView();
-
+             this.mainView = new MainView();
         },
 
         toLoginView: function () {
             if (this.mainView) {
                 this.mainView.undelegateEvents();
             }
-
             this.mainView = new LoginView();
-
         },
 
         toCreateServiceView: function () {
@@ -65,7 +59,6 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-
             this.contentView = new ServiceCreateView();
         },
 
@@ -74,7 +67,6 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-           console.log('updateServices clicked');
             this.contentView = new ServiceUpdateView();
         },
 
@@ -83,8 +75,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('updateServices clicked');
-            this.contentView = new ServiceUpdateView({cloneService: true});
+              this.contentView = new ServiceUpdateView({cloneService: true});
         },
 
         toServicesView: function (page, countPerPage) {
@@ -156,13 +147,11 @@ define([
         },
 
         toEmailReportsView: function (page, countPerPage, filter, orderBy, order, searchTerm) {
-
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             filter = filter || '';
             orderBy = orderBy || 'createdAt';
             order = order || 1;
-
 
             if(this.contentView){
                 this.contentView.undelegateEvents();
@@ -198,7 +187,6 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('createUser clicked');
             this.contentView = new UserCreateView();
         },
 
@@ -207,7 +195,6 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            //console.log('updateSUser clicked');
             this.contentView = new UserUpdateView();
         }
     });

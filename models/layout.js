@@ -4,8 +4,9 @@ module.exports = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var Schema = mongoose.Schema;
 
-    var layoutSchema = mongoose.Schema({
+    var layoutSchema = new Schema({
             layoutName: {type: String},
             layoutType: {type: String},
             layoutId:{type: String, unique: true},
@@ -28,6 +29,7 @@ module.exports = function (db) {
 
     db.model(CONST.MODELS.LAYOUT, layoutSchema);
 
+    //TODO Have question? for what this???
     if (!mongoose.Schemas) {
         mongoose.Schemas = {};
     }

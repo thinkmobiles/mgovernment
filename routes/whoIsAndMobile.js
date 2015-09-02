@@ -1,7 +1,7 @@
 /**
  * Provides the operation with services for __admin__ account
  *
- * @class WhoIsAndMobile
+ * @class whoIsAndMobile
  *
  */
 
@@ -41,8 +41,8 @@ module.exports = function(db) {
      *      }
      *
      * @method testWhois
-     * @for WhoIsAndMobile
-     * @memberOf WhoIsAndMobile
+     * @for whoIsAndMobile
+     * @memberOf whoIsAndMobile
      */
     router.get('/checkWhois', whoIsAndMobileHandler.testWhois);
 
@@ -69,8 +69,8 @@ module.exports = function(db) {
      *      }
      *
      * @method checkWhoisAvailable
-     * @for WhoIsAndMobile
-     * @memberOf WhoIsAndMobile
+     * @for whoIsAndMobile
+     * @memberOf whoIsAndMobile
      */
     router.get('/checkWhoisAvailable', whoIsAndMobileHandler.testWhoisCheck);
 
@@ -115,8 +115,8 @@ module.exports = function(db) {
      *
      *
      * @method searchMobile
-     * @for WhoIsAndMobile
-     * @memberOf WhoIsAndMobile
+     * @for whoIsAndMobile
+     * @memberOf whoIsAndMobile
      */
     router.get('/searchMobile', whoIsAndMobileHandler.searchMobileImei);
 
@@ -161,8 +161,8 @@ module.exports = function(db) {
      *      ]
      *
      * @method searchMobileBrand
-     * @for WhoIsAndMobile
-     * @memberOf WhoIsAndMobile
+     * @for whoIsAndMobile
+     * @memberOf whoIsAndMobile
      */
     router.get('/searchMobileBrand', whoIsAndMobileHandler.searchMobileBrand);
 

@@ -1,3 +1,10 @@
+/**
+ * Provides ability for getting records of userFeedback for Admin, and create Feedback for user
+ *
+ * @class userFeedback
+ *
+ */
+
 var express = require('express');
 var router = express.Router();
 

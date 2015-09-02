@@ -1,3 +1,9 @@
+/**
+ * Provides ability CRUD Layouts for Admin (screen for mobile)
+ *
+ * @class adminLayouts
+ *
+ */
 
 var express = require( 'express' );
 var LayoutHandler = require('../handlers/adminLayouts');

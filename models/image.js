@@ -4,9 +4,9 @@ module.exports = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
-    var schema = mongoose.Schema;
+    var Schema = mongoose.Schema;
 
-    var image = new schema({
+    var image = new Schema({
         data: Buffer,
         contentType: String
     }, {

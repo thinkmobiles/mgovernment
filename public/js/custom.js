@@ -1,6 +1,7 @@
 define([],function () {
     var runApplication = function (err, data) {
         var url;
+
         url =  Backbone.history.fragment || Backbone.history.getFragment();
 
         if ((url === '')) {

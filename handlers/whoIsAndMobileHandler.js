@@ -17,7 +17,6 @@ var TestTRAHandler = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
-    var ObjectId = mongoose.Types.ObjectId;
     var validation = require('../helpers/validation');
     var session = new SessionHandler(db);
 
@@ -31,6 +30,7 @@ var TestTRAHandler = function (db) {
                 return next(err);
             }
             var parsedData = parseDataToJson(data);
+
             return res.status(200).send({urlData: parsedData});
         });
     };
@@ -63,10 +63,9 @@ var TestTRAHandler = function (db) {
         });
 
         clientSocket.on('data', function (data) {
-            console.log('Received: ' + data);
-            //client.destroy();
             var strData = data.toString('utf8');
 
+            console.log('Received: ' + data);
             callback(null, strData);
         });
 
@@ -101,7 +100,6 @@ var TestTRAHandler = function (db) {
 
         clientSocket.on('error', function (err) {
             console.log('Error occurred: ' + err.message);
-
             callback(err);
         });
     }
@@ -111,7 +109,7 @@ var TestTRAHandler = function (db) {
         var imei = req.query.imei;
 
         if (!imei) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': IMEI'});
         }
 
         var startIndex = req.query.start || 0;
@@ -136,7 +134,7 @@ var TestTRAHandler = function (db) {
         var brand = req.query.brand;
 
         if (!brand) {
-            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': brand'});
         }
 
         var startIndex = req.query.start || 0;

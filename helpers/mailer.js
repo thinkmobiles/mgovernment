@@ -38,9 +38,6 @@ module.exports = new function () {
                 imageData.data = matches[2];
             }
             imageData.expansion = imageData.type.replace(/image\//,'');
-            //console.log(imageData.type);
-            //console.log(imageData.expansion);
-            //console.log(imageData.data);
 
             attachments[0] = {
                 filename: 'atachment.' + imageData.expansion,

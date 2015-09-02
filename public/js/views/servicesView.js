@@ -36,9 +36,8 @@ define([
             });
 
             this.listenTo(this.servicesCollection, 'reset remove', this.render);
-            this.render();
+            //this.render();
         },
-
 
         createService: function(e){
             e.preventDefault();
@@ -52,6 +51,7 @@ define([
             if (!this.selectedServiceId) {
                 return;
             }
+
             var service = this.servicesCollection.models[this.selectedServiceId];
             var self = this;
 
@@ -72,10 +72,10 @@ define([
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
-            console.log('clone service');
 
             if (!this.selectedServiceId) return;
 
+            console.log('clone service');
             App.selectedService = this.servicesCollection.models[this.selectedServiceId];
             Backbone.history.fragment = '';
             Backbone.history.navigate('cloneService', {trigger: true});
@@ -119,7 +119,6 @@ define([
         updateServiceList: function(){
 
             var servicesCollection = this.servicesCollection.toJSON();
-            var itemTextColor = '#0A0EF2';
             var textContent;
             var serviceDiv;
             var serviceId;
@@ -136,13 +135,13 @@ define([
                 if (!serviceDiv.length) {
                     $("<div> </div>").
                         attr("id", "DbList" + serviceId).
-                        attr("class", "DbList").css({"color": itemTextColor}).
+                        attr("class", "DbList").
                         attr("data-hash", "" + i).
                         text(textContent).
                         appendTo("#databaseList");
                 } else {
                     $("#DbList" + serviceId).
-                        attr("class", "DbList").css({"color": itemTextColor}).
+                        attr("class", "DbList").
                         attr("data-hash", "" + i).
                         text(textContent);
                 }

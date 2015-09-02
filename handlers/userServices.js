@@ -102,7 +102,11 @@ var UserService = function(db) {
                     result.push(collection[i].serviceName);
                 }
 
+                //TODO this is  RIGHT response but at now mobile need static array[] of servicesNames. Change back.
+
                 //return res.status(200).send(result);
+
+                //TODO this is temporary solution.
                 return res.status(200).send(["complain Poor Coverage", "complain about TRA Service", "complain about Service Provider", "complain Enquiries", "complain Suggestion", "Rating service", "Help Salim", "SMS Spam Block", "SMS Spam Report", "Search Device By BrandName", "Search Device By Imei", "Check Domain Availability", "Get Domain Data"]);
             });
     };
@@ -156,11 +160,6 @@ var UserService = function(db) {
                     }
 
                     serviceOptions = model.toJSON();
-
-                    if (serviceOptions.params.needUserAuth) {
-                        console.log('serviceOptions.params.needUserAuth= ',serviceOptions.params.needUserAuth)
-
-                    }
                     return callback(null, serviceOptions.params.needUserAuth);
                 })
             };

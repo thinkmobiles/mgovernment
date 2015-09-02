@@ -163,10 +163,12 @@
 .DbList{
     background-color: white;
     cursor: pointer;
+    color: #0A0EF2;
 }
 
 .DbList:hover{
     background-color: #d3d3d3;
+    font-weight: bold;
 }
 
 .topBarButton {
@@ -195,25 +197,25 @@
 }
 
 .actionButton {
-     text-align: center;
-     vertical-align: middle;
-     border: 1px solid gray;
-     width: 70px;
-     height: 30px;
-     line-height: 30px;
-     clear: both;
-     border-radius: 4px;
-     -moz-border-radius: 5px;
-     -khtml-border-radius: 10px;
-     background-color: rgba(0, 0, 0, 0.1);
-     opacity: 0.8;
-     font-family: Arial;
-     font-size: 18px;
-     font-weight: bold;
-     color: #000000;
-     cursor: pointer;
-     text-shadow: 1px 1px white;
- }
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid gray;
+    width: 70px;
+    height: 30px;
+    line-height: 30px;
+    clear: both;
+    border-radius: 4px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    cursor: pointer;
+    text-shadow: 1px 1px white;
+}
 
 .actionButtonAdd {
 

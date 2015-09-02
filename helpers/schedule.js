@@ -31,13 +31,13 @@ var schedule = function (db) {
 
         Feedback
             .find({'createdAt': { $lt: oneYearOldDate } })
+            //TODO uncomment this for real remove from DB
             //.remove()
             .exec(function (err, collection) {
                 if (err) {
                     console.log(err);
                 }
-
-                console.log('remove from Feedback: ',collection);
+                console.log('Remove from Feedback: ',collection);
             });
     }
 
@@ -48,16 +48,15 @@ var schedule = function (db) {
 
         EmailReport
             .find({'createdAt': { $lt: oneYearOldDate } })
+            //TODO uncomment this for real remove from DB
             //.remove()
             .exec(function (err, collection) {
                 if (err) {
                     console.log (err);
                 }
-
-                console.log('remove from EmailReports: ',collection);
+                console.log('Remove from EmailReports: ',collection);
             });
     }
 };
 
 module.exports = schedule;
-

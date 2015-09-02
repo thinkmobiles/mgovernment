@@ -12,7 +12,7 @@
             <tr>
                 <td class="hiddenByDefault"><b>login:</b></td>
                 <td class="hiddenByDefault"><input type="text" name="name" id="login" size="20" maxlength="40"
-                                                   value="<%=login%>"></td>
+                                                   value="<%= user.login%>"></td>
                 <td class="hiddenByDefault"> Input login.</td>
             </tr>
 
@@ -25,13 +25,16 @@
 
             <tr>
                 <td class="hiddenByDefault"><b>gender:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="gender" size="10" maxlength="10"  value="<%= profile ? profile.gender: '' %>" ></td>
+                <td class="hiddenByDefault">
+                    <input type="radio" name="gender" id="gender" value="male" <%= (user.profile.gender == 'male') ? 'checked' : ''%>> male
+                    <input type="radio" name="gender" id="genderFemale" value="female" <%= (user.profile.gender == 'male') ? '' : 'checked'%>> female
+                </td>
                 <td class="hiddenByDefault"> Input gender</td>
             </tr>
 
             <tr>
                 <td class="hiddenByDefault"><b>phone:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="phone" size="15" maxlength="20" value="<%=  profile ? profile.phone: '' %>" ></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="phone" size="15" maxlength="20" value="<%=  user.profile ? user.profile.phone: '' %>" ></td>
                 <td class="hiddenByDefault"> Input phone</td>
             </tr>
 
@@ -41,47 +44,43 @@
                 <td class="hiddenByDefault"></td>
             </tr>
 
-            <% if (accounts.length){ %>
+            <% if (user.accounts.length){ %>
 
-            <% for (var i= 0, len = accounts.length - 1; i <= len; i ++){ %>
-            <tr><td class = "hiddenByDefault"><b>serviceProvider:</b></td>  <td class = "hiddenByDefault" style="color: #003eff"> <%= accounts[i].serviceProvider %></td><td class = "hiddenByDefault"> </td></tr>
+            <% for (var i= 0, len = user.accounts.length - 1; i <= len; i ++){ %>
+            <tr><td class = "hiddenByDefault"><b>serviceProvider:</b></td>  <td class = "hiddenByDefault" style="color: #003eff"> <%= user.accounts[i].serviceProvider %></td><td class = "hiddenByDefault"> </td></tr>
            <% } %>
            <% } %>
 
             <tr>
                 <td class="hiddenByDefault"><b>first name</b></td>
                 <td class="hiddenByDefault"><input type="text" name="name" id="firstName" size="20" maxlength="40"
-                                                   value="<%=profile ? profile.firstName || '' : ''%>"></td>
+                                                   value="<%= user.profile ? user.profile.firstName || '' : ''%>"></td>
                 <td class="hiddenByDefault"> Input first name:</td>
             </tr>
 
             <tr>
                 <td class="hiddenByDefault"><b>last name</b></td>
                 <td class="hiddenByDefault"><input type="text" name="name" id="lastName" size="20" maxlength="40"
-                                                   value="<%=profile ? profile.lastName || '' : ''%>"></td>
+                                                   value="<%= user.profile ? user.profile.lastName || '' : ''%>"></td>
                 <td class="hiddenByDefault"> Input last name.</td>
             </tr>
 
             <tr>
                 <td class="hiddenByDefault"><b>email</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="email" size="20" maxlength="40" value ="<%=profile ? profile.email || '' : ''%>"></td>
+                <td class="hiddenByDefault"><input type="text" name="name" id="email" size="20" maxlength="40" value ="<%= user.profile ? user.profile.email || '' : ''%>"></td>
                 <td class="hiddenByDefault"> Input email.</td>
             </tr>
-
-
-
             <tr>
                 <td class="hiddenByDefault"><b>user type</b></td>
                 <td class="hiddenByDefault">
-                    <input type="radio" name="userType" id="client" value="client" <%= userType == 'client' ?
+                    <input type="radio" name="userType" id="client" value="client" <%= user.userType == 'client' ?
                     'checked':''%>>client
-                    <input type="radio" name="userType" id="admin" value="admin" <%= userType == 'admin' ? 'checked':''
+                    <input type="radio" name="userType" id="admin" value="admin" <%= user.userType == 'admin' ? 'checked':''
                     %>> admin <br>
-                    <input type="radio" name="userType" id="company" value="company" <%= userType == 'company' ?
+                    <input type="radio" name="userType" id="company" value="company" <%= user.userType == 'company' ?
                     'checked':'' %>>company
-                    <input type="radio" name="userType" id="government" value="government" <%= userType == 'government'
+                    <input type="radio" name="userType" id="government" value="government" <%= user.userType == 'government'
                     ? 'checked':''%>> government <br>
-
                 </td>
                 <td class="hiddenByDefault">Choose user type, it check when service access</td>
             </tr>

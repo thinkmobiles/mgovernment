@@ -26,17 +26,8 @@ define([
                 filter += filterCheckbox[i].checked ? '' : filterCheckbox[i].value + ',';
             }
 
-            //filter += el.find('#filterHelpSalim')[0].checked ? '' : 'Help Salim,';
-            //filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMS Spam,';
-            //filter += el.find('#filterSMSBlock')[0].checked ? '' : 'SMS Block,';
-            //filter += el.find('#filterServiceProvider')[0].checked ? '' : 'Service Provider,';
-            //filter += el.find('#filterTRAService')[0].checked ? '' : 'TRA Service,';
-            //filter += el.find('#filterEnquiries')[0].checked ? '' : 'Enquiries,';
-            //filter += el.find('#filterSuggestion')[0].checked ? '' : 'Suggestion,';
-            //filter += el.find('#filterPoorCoverage')[0].checked ? '' : 'Poor Coverage,';
-
             filter = filter.replace(/\,$/, '');
-            console.log('filter', filter);
+            console.log('filter: ', filter);
             this.paginationView.setData({filter: filter});
         },
 
@@ -64,9 +55,8 @@ define([
                 App.searchTerm = '';
             }
 
-            //this.listenTo(this.emailReportsCollecion, 'sync reset remove', this.render);
             this.listenTo(this.emailReportsCollecion, 'reset remove', this.render);
-            this.render();
+            //this.render();
         },
 
         searchByTerm: function(e){
@@ -102,10 +92,7 @@ define([
 
             sortClass = (sortOrder == -1) ? 'sortUp' : 'sortDn';
 
-            // if (!sortClass) {
-            //    target$.addClass('sortDn');
-            //    sortClass = "sortDn";
-            //}
+            //TODO add feature ^ up and down show order or delete this code
 
             switch (sortClass) {
                 case "sortDn":
@@ -123,10 +110,7 @@ define([
                 }
                     break;
             }
-            //sortObject[sortBy] = sortConst;
-            //this.fetchSortCollection(sortObject);
-            //this.changeLocationHash(1, this.defaultItemsNumber);
-            //this.getTotalLength(null, this.defaultItemsNumber, this.filter);
+
             this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter,  searchTerm: searchTerm});
         },
 
@@ -139,7 +123,7 @@ define([
                 filter: this.paginationView.stateModel.toJSON().data.filter
             }));
 
-            filterCheckbox = document.querySelectorAll('input.filterServiceType');
+            filterCheckbox = $('.filterServiceType');
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
             $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
             return this;

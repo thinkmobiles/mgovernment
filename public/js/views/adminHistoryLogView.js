@@ -72,10 +72,6 @@ define([
         render: function () {
 
             console.log('adminHistoryLogs render');
-            if (this.adminHistoryLogsCollection.toJSON().length) {
-                console.log('this.feedbacksCollection.toJSON() has items')
-            }
-
             this.$el.html(this.template({collection: this.adminHistoryLogsCollection.toJSON()}));
             this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
 

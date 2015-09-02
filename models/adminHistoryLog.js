@@ -5,8 +5,9 @@ module.exports = function (db) {
 
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Schema.Types.ObjectId;
+    var Schema = mongoose.Schema;
 
-    var historyLogSchema = mongoose.Schema({
+    var historyLogSchema = new Schema({
             user: {type: ObjectId, ref: CONST.MODELS.USER, default: null},
             action: {type: String},
             model: {type: String},

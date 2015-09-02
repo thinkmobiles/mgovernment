@@ -1,7 +1,7 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 
-var Session = function ( db ) {
+var Session = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
@@ -11,6 +11,7 @@ var Session = function ( db ) {
         req.session.loggedIn = true;
         req.session.uId = userId;
         req.session.type = userType;
+
         if (crmId) {
             req.session.crmId = crmId;
         }
@@ -18,8 +19,6 @@ var Session = function ( db ) {
     };
 
     this.addToken = function (req, token) {
-        //req.session.loggedIn = true;
-        //req.session.uId = userId;
         req.session.token = token;
     };
 
@@ -32,12 +31,13 @@ var Session = function ( db ) {
         res.status(200).send({success: RESPONSE.AUTH.LOG_OUT});
     };
 
-    this.authenticatedUser = function (req, res, next) {
+    this.isAuthenticatedUser = function (req, res, next) {
 
         if (req.session && req.session.uId && req.session.loggedIn) {
             next();
         } else {
             var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
+
             err.status = 401;
             next(err);
         }
@@ -46,7 +46,9 @@ var Session = function ( db ) {
     this.isAdminBySession = function (req, res, next) {
 
         if (!( req.session && req.session.uId && req.session.loggedIn)) {
+
             var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
+
             err.status = 401;
             return next(err);
         }
@@ -65,51 +67,22 @@ var Session = function ( db ) {
         });
     };
 
-
     function getUserTypeById(userId, callback) {
 
         User
-            .findOne({_id: userId})
+            .findOne({'_id': userId})
             .exec(function (err, model) {
                 if (err) {
                     return callback(err);
                 }
 
                 if (model) {
-
                     return callback(null, model.userType);
                 } else {
-                    return callback(new Error('No one was found with such _id '));
+                    return callback(new Error(RESPONSE.ON_ACTION.NOT_FOUND));
                 }
             });
     }
-
-    this.isAdmin = function (req, res, next) {
-        var err;
-
-        if (req.session && req.session.type === CONST.USER_TYPE.ADMIN) {
-            return next()
-        }
-
-        err = new Error(RESPONSE.AUTH.NO_PERMISSIONS);
-        err.status = 403;
-
-        next(err);
-    };
-
-    this.isAdminApi = function (req, res, next) {
-        res.status(401).send({error: RESPONSE.AUTH.UN_AUTHORIZED});
-    };
-
-    this.isAuthenticatedUser = function (req, res, next) {
-        if (req.session && req.session.uId && req.session.loggedIn) {
-            res.status(200).send({uId: req.session.uId});
-        } else {
-            var err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
-            err.status = 401;
-            next(err);
-        }
-    };
 
 };
 

@@ -12,8 +12,7 @@ var HistoryHandler = function(db) {
         userHistory
             .save(function (err, user) {
                 if (err) {
-                    //return res.status(500).send(err)
-                 console.log(err)
+                    return next(err);
                 }
             });
     };
@@ -22,11 +21,10 @@ var HistoryHandler = function(db) {
 
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
-        var sortOrder = {};
-        sortOrder[sortField] = sortDirection;
-
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
+        var sortOrder = {};
+        sortOrder[sortField] = sortDirection;
 
         UserHistory
             .find({})
