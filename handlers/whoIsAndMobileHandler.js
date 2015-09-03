@@ -32,12 +32,12 @@ var TestTRAHandler = function (db) {
             if (err) {
                 return next(err);
             }
-            data = 'Domain Name:                     bs.ae\r\nRegistrar ID:                    AESERVER\r\nRegistrar Name:                  AESERVER\r\nStatus:                          ok\r\n\r\nRegistrant Contact ID:           AE1FB4F82F\r\nRegistrant Contact Name:         HE QINGHUA\r\nRegistrant Contact Email:        Visit whois.aeda.ae for Web based WhoIs\r\n\r\nTech Contact ID:                 AESERVER\r\nTech Contact Name:               AEserver.com | Accredited .AE Registrar |\r\nTech Contact Email:              Visit whois.aeda.ae for Web based WhoIs\r\n\r\nName Server:                     ns30.aeserver.com\r\nName Server:                     ns31.aeserver.com\r\n';
+            //data = 'Domain Name:                     bs.ae\r\nRegistrar ID:                    AESERVER\r\nRegistrar Name:                  AESERVER\r\nStatus:                          ok\r\n\r\nRegistrant Contact ID:           AE1FB4F82F\r\nRegistrant Contact Name:         HE QINGHUA\r\nRegistrant Contact Email:        Visit whois.aeda.ae for Web based WhoIs\r\n\r\nTech Contact ID:                 AESERVER\r\nTech Contact Name:               AEserver.com | Accredited .AE Registrar |\r\nTech Contact Email:              Visit whois.aeda.ae for Web based WhoIs\r\n\r\nName Server:                     ns30.aeserver.com\r\nName Server:                     ns31.aeserver.com\r\n';
 
             //data = 'No Data Found\r\n';
 
             responseData = {
-                'urlData': data
+                'urlData': typeof(data) === 'object'? JSON.stringify(data) : data.trim()
             };
 
             if (parse) {

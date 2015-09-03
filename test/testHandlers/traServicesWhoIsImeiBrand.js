@@ -35,7 +35,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
     });
 
 
-    it('WHOIS GET Data for Exist url', function (done) {
+    it('WHOIS GET Data for Exist url WITHOUT parse', function (done) {
 
         var existUrl = 'google.ae';
 
@@ -48,12 +48,12 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                     return done(err)
                 }
 
-                expect(res.body).to.have.property('Domain Name');
+                expect(res.body).to.have.property('urlData');
                 done();
             });
     });
 
-    it('WHOIS GET Data for Exist url with parse key', function (done) {
+    it('WHOIS GET Data for Exist url WITH parse key', function (done) {
 
         var existUrl = 'google.ae';
 
