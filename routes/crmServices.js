@@ -109,6 +109,68 @@ module.exports = function(db) {
     router.post('/crm/signOut', traCrmHandler.signOutClient);
 
     /**
+     * This __method__ for user forgot password for CRM
+     *
+     * __URI:__ ___`/crm/forgotPass`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *      Body:
+     *       email
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @method forgotPass
+     * @for crmServices
+     * @memberOf crmServices
+     */
+    router.post('/crm/forgotPass', traCrmHandler.forgotPass);
+
+    /**
+     * This __method__ get form to change pass for CRM
+     *
+     * __URI:__ ___`/crm/changePass`___
+     *
+     *  ## METHOD:
+     * __GET__
+     *
+     *  ## Request:
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @method changePassForm
+     * @for crmServices
+     * @memberOf crmServices
+     */
+    router.get('/crm/changePass/:token', traCrmHandler.changePassForm);
+
+    /**
+     * This __method__ change pass for CRM
+     *
+     * __URI:__ ___`/crm/changePass`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *      Body:
+     *       pass,
+     *       confirmPass
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @method changePass
+     * @for crmServices
+     * @memberOf crmServices
+     */
+    router.post('/crm/changePass/:token', traCrmHandler.changePass);
+
+    /**
      * This __method__ create SMS Spam Report
      *
      * __URI:__ ___`/complainSmsSpam`___

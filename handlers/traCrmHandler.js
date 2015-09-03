@@ -25,6 +25,8 @@ var TRACRMHandler = function (db) {
     var crypto = require('crypto');
     var User = db.model(CONST.MODELS.USER);
 
+    //<editor-fold desc="Crm Login, Logout, Register, Forgot">
+
     this.signInClient = function (req, res, next) {
 
         if (!req.body || !req.body.login || !req.body.pass) {
@@ -182,6 +184,70 @@ var TRACRMHandler = function (db) {
                 return callback(null, userModel);
             });
     }
+
+    this.forgotPass = function(req, res, next) {
+
+        if (!req.body || !req.body.email) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        User
+            .findOne({'profile.email': req.body.email})
+            .exec(function (err, model) {
+                if (err) {
+                    return next(err);
+                }
+
+                if (!model) {
+                    return res.status(400).send({error: RESPONSE.AUTH.EMAIL_NOT_REGISTERED});
+                }
+
+                var passToken = generateConfirmToken();
+
+                var user = model.toJSON();
+
+                User
+                    .update({'_id': user._id}, {$set: {token: passToken}}, function (err, data) {
+                        if (err) {
+                            return res.status(400).send({error: err});
+                        }
+
+                        prepareChangePassEmail(user, passToken, function (err, result) {
+                            if (err) {
+                                return next(err);
+                            }
+                            res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+                        });
+                    });
+            });
+    };
+
+    function prepareChangePassEmail(model, confirmToken, callback) {
+
+        var emailOptions = {
+            email: model.email,
+            confirmToken: confirmToken
+        };
+
+        mailer.sendConfirmChangePass(emailOptions, callback);
+    }
+
+    function generateConfirmToken() {
+        var randomPass = require('../helpers/randomPass');
+        return randomPass.generate();
+    }
+
+    this.changePassForm = function(req, res, next) {
+        return res.status(500).send({error: 'Not Implemented'});
+
+        res.render('changePass', {title: 'Change Password'});
+    };
+
+    this.changePass = function(req, res, next) {
+        return res.status(500).send({error: 'Not Implemented'});
+    };
+
+    //</editor-fold>
 
     this.complainSmsSpam = function (req, res, next) {
 

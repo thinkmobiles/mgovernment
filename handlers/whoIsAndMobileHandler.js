@@ -36,7 +36,21 @@ var TestTRAHandler = function (db) {
     };
 
     function parseDataToJson(urlData) {
-        return urlData;
+        var reg = new RegExp("(.*?):(.*)");
+        var elements = urlData.match(/(.*?):(.*?\r\n?)/g);
+        var result = {};
+        for (var i = 0; i < elements.length; i++) {
+            var m = reg.exec(elements[i]);
+
+            if (m) {
+                result[m[1]] = m[2].trim();
+            } else {
+                console.log('Not parsed: ' + elements[i]);
+            }
+        }
+
+        console.dir(result);
+        return result;
     }
 
     this.testWhoisCheck = function (req, res, next) {
