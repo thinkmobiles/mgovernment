@@ -36,9 +36,10 @@ var TestTRAHandler = function (db) {
                     return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         };
+        var attachmentImg;
 
         if (attachment) {
-            var attachmentImg = new Attachment({
+            attachmentImg = new Attachment({
                 attachment: attachment
             });
 
@@ -70,7 +71,6 @@ var TestTRAHandler = function (db) {
         var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainSmsBlock.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-
         var mailOptions = {
             templateData: {
                 serviceType: serviceType,
@@ -83,6 +83,18 @@ var TestTRAHandler = function (db) {
             mailTo: mailTo,
             title: title
         };
+        var caseType = TRA.NO_CRM_ENUM.CASE_TYPE.SMS_BLOCK;
+        var validatesErrors;
+
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
 
         mailer.sendReport(mailOptions, function (errMail, data) {
 
@@ -105,16 +117,8 @@ var TestTRAHandler = function (db) {
 
         var serviceType = 'Poor Coverage';
         var signalLevel = req.body.signalLevel;
-        var errors = [];
         var location = req.body.location;
         var address = req.body.address;
-
-        validation.checkRate15(errors, true, signalLevel, 'Signal level');
-
-        if (errors.length || !((location && location.latitude && location.longitude) || address ) ) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
         var title = (location && location.latitude && location.longitude)
             ? ('Location.latitude: ' + location.latitude + ', location.longitude: ' + location.longitude + ' Signal level: ' + signalLevel)
             :  "Address: " +address + ' Signal level: ' + signalLevel;
@@ -122,7 +126,6 @@ var TestTRAHandler = function (db) {
         var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-
         var mailOptions = {
             templateName: templateName,
             from: from,
@@ -136,6 +139,22 @@ var TestTRAHandler = function (db) {
                 userId: userId
             }
         };
+        var caseType = TRA.NO_CRM_ENUM.CASE_TYPE.POOR_COVERAGE;
+        var validatesErrors;
+
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
+
+        if (!((location && location.latitude && location.longitude) || address)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS +': must be latitude and longitude or address'});
+        }
 
         mailer.sendReport(mailOptions, function (errMail, data) {
 
@@ -165,8 +184,21 @@ var TestTRAHandler = function (db) {
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/helpSalim.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var mailOptions;
+        var caseType = TRA.NO_CRM_ENUM.CASE_TYPE.HELP_SALIM;
+        var validatesErrors;
 
-        var mailOptions = {
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
+
+        mailOptions = {
             templateName: templateName,
             templateData: {
                 serviceType: serviceType,

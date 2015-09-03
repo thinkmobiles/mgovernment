@@ -42,6 +42,7 @@ var Layout = function(db) {
     this.createLayout = function (req, res, next) {
 
         var body = req.body;
+        var layout;
 
         body.updatedAt = new Date();
 
@@ -49,7 +50,7 @@ var Layout = function(db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        var layout = new Layout(body);
+        layout = new Layout(body);
 
         layout
             .save(function (err, layoutModel) {

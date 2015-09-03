@@ -24,21 +24,24 @@ var TRACRMHandler = function (db) {
     var mongoose = require('mongoose');
     var crypto = require('crypto');
     var User = db.model(CONST.MODELS.USER);
+    var validation = require('../helpers/validation');
 
     //<editor-fold desc="Crm Login, Logout, Register, Forgot">
 
     this.signInClient = function (req, res, next) {
 
-        if (!req.body || !req.body.login || !req.body.pass) {
-            var err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
-            err.status = 400;
-            return next(err);
-        }
-
+        var err;
         var loginOpt = {
             login: req.body.login,
             pass: req.body.pass
         };
+
+        if (!req.body || !req.body.login || !req.body.pass) {
+            err = new Error(RESPONSE.ON_ACTION.BAD_REQUEST);
+            err.status = 400;
+
+            return next(err);
+        }
 
         traCrmNetWrapper.signInCrm(loginOpt, function (err, result) {
 
@@ -89,17 +92,20 @@ var TRACRMHandler = function (db) {
 
         var pass = loginOpt.pass;
         var shaSum = crypto.createHash('sha256');
+        var userData;
+        var user;
+
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
-        var userData = {
+        userData = {
             login: loginOpt.login,
             pass: pass,
             userType: CONST.USER_TYPE.CLIENT,
             profile: {}
         };
 
-        var user = new User(userData);
+        user = new User(userData);
         user
             .save(function (err, userModel) {
                 if (err) {
@@ -117,52 +123,51 @@ var TRACRMHandler = function (db) {
     this.registerClient = function (req, res, next) {
 
         var body = req.body;
+        var caseType = TRA.NO_CRM_ENUM.REGISTER;
+        var validatesErrors;
 
-        validateRegisterData(body, function (errMsg) {
-            if (errMsg) {
-                return res.status(400).send({error: errMsg});
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
+
+        if ((typeof body.state) !== "number") {
+            body.state = parseInt(body.state);
+        }
+
+        body.country = TRA.CRM_ENUM.COUNTRY.UAE;
+
+        traCrmNetWrapper.registerCrm(body, function (err, result) {
+            if (err) {
+                return next(err);
             }
 
-            body.country = TRA.CRM_ENUM.COUNTRY.UAE;
+            if (result == "Login is used") {
+                return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
+            }
 
-            traCrmNetWrapper.registerCrm(body, function (err, result) {
-                if (err) {
-                    return next(err);
-                }
-
-                if (result == "Login is used") {
-                    return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
-                }
-
-                registerMiddlewareUser(body, function (err, userModel) {
-                    //WARNING: no error handling - cause login has logic to create middleware user
-                    res.status(200).send({success: result});
-                });
+            registerMiddlewareUser(body, function (err, userModel) {
+                //WARNING: no error handling - cause login has logic to create middleware user
+                res.status(200).send({success: result});
             });
         });
     };
-
-    function validateRegisterData(data, callback) {
-        for (var i = 0; i < REGISTER_FIELDS.length; i++) {
-            if (!(REGISTER_FIELDS[i] in data)) {
-                return callback(RESPONSE.NOT_ENOUGH_PARAMS + ': ' + REGISTER_FIELDS[i]);
-            }
-        }
-        if ((typeof data.state) !== "number") {
-            data.state = parseInt(data.state);
-        }
-        callback();
-        //'784-YYYY-NNNNNNN-C'
-    }
 
     function registerMiddlewareUser(registerData, callback) {
 
         var pass = registerData.pass;
         var shaSum = crypto.createHash('sha256');
+        var userData;
+        var user
+
         shaSum.update(pass);
         pass = shaSum.digest('hex');
 
-        var userData = {
+        userData = {
             login: registerData.login,
             pass: pass,
             userType: CONST.USER_TYPE.CLIENT,
@@ -174,7 +179,7 @@ var TRACRMHandler = function (db) {
             }
         };
 
-        var user = new User(userData);
+        user = new User(userData);
         user
             .save(function (err, userModel) {
                 if (err) {
@@ -255,12 +260,19 @@ var TRACRMHandler = function (db) {
         var description = req.body.description;
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.SMS_SPAM;
+        var caseOptions;
+        var validatesErrors;
 
-        if (!phoneSpam || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
         }
 
-        var caseOptions = {
+        caseOptions = {
             contactId: crmUserId,
             caseType: caseType,
             title: 'SMS Spam from ' + phoneSpam,
@@ -285,34 +297,30 @@ var TRACRMHandler = function (db) {
         var title = req.body.title;
         var serviceProvider = req.body.serviceProvider;
         var referenceNumber = req.body.referenceNumber;
+        var crmUserId = req.session.crmId;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
+        var attachmentData = null;
+        var caseOptions;
+        var validatesErrors;
 
-        if (!title || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
         }
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
 
-        if (!serviceProvider) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': service provider'});
-        }
-
-        if (!(serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.DU
-            || serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.ETISALAT
-            || serviceProvider == TRA.CRM_ENUM.SERVICE_PROVIDER.YAHSAT)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': service provider is not from allowed list'});
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
         }
 
         if (!referenceNumber) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': input reference number or "none"'});
         }
 
-        var crmUserId = req.session.crmId;
-        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_SERVICE_PROVIDER;
-        var attachmentData = null;
-
         if (req.body.attachment) {
             attachmentData = prepareAttachment(req.body.attachment);
         }
 
-        var caseOptions = {
+        caseOptions = {
             contactId: crmUserId,
             caseType: caseType,
             title: title,
@@ -337,20 +345,26 @@ var TRACRMHandler = function (db) {
 
         var description = req.body.description;
         var title = req.body.title;
-
-        if (!title || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
         var attachmentData = null;
+        var caseOptions;
+        var validatesErrors;
+
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
 
         if (req.body.attachment) {
             attachmentData = prepareAttachment(req.body.attachment);
         }
 
-        var caseOptions = {
+        caseOptions = {
             contactId: crmUserId,
             caseType: caseType,
             title: title,
@@ -374,9 +388,10 @@ var TRACRMHandler = function (db) {
 
         var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
         var imageData = {};
+        var imageTypeRegularExpression = /\/(.*?)$/;
+        var imageTypeDetected;
 
         if (!matches || matches.length !== 3) {
-
             imageData.type = 'image/png';
             imageData.data = dataString;
             imageData.extention = 'png';
@@ -385,8 +400,7 @@ var TRACRMHandler = function (db) {
             imageData.type = matches[1];
             imageData.data = matches[2];
 
-            var imageTypeRegularExpression = /\/(.*?)$/;
-            var imageTypeDetected = imageData
+            imageTypeDetected = imageData
                 .type
                 .match(imageTypeRegularExpression);
             imageData.extention = imageTypeDetected[1];
@@ -398,14 +412,19 @@ var TRACRMHandler = function (db) {
 
         var description = req.body.description;
         var title = req.body.title;
-
-        if (!title || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
         var crmUserId = req.session.crmId;
         var caseType = TRA.CRM_ENUM.CASE_TYPE.INQUIRY;
         var attachmentData = null;
+        var validatesErrors;
+
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
 
         if (req.body.attachment) {
             attachmentData = prepareAttachment(req.body.attachment);
@@ -435,20 +454,26 @@ var TRACRMHandler = function (db) {
 
         var description = req.body.description;
         var title = req.body.title;
-
-        if (!title || !description) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
         var crmUserId = req.session.crmId;
-        var caseType = TRA.CRM_ENUM.CASE_TYPE.COMPLAINT_TRA;
+        var caseType = TRA.CRM_ENUM.CASE_TYPE.SUGGESTION;
         var attachmentData = null;
+        var caseOptions;
+        var validatesErrors;
+
+        if (!validation.hasCaseTypeModel(caseType)) {
+            return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        }
+        validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+
+        if (validatesErrors.length) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        }
 
         if (req.body.attachment) {
             attachmentData = prepareAttachment(req.body.attachment);
         }
 
-        var caseOptions = {
+        caseOptions = {
             contactId: crmUserId,
             caseType: caseType,
             title: title,
@@ -467,7 +492,6 @@ var TRACRMHandler = function (db) {
             res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
         });
     };
-
 };
 
 module.exports = TRACRMHandler;

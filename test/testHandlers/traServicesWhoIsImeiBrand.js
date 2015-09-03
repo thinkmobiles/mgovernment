@@ -43,10 +43,11 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             .get('/checkWhois?checkUrl=' + existUrl)
             .expect(200)
             .end(function (err, res) {
+                console.dir(res.body);
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
+
                 expect(res.body).to.have.property('urlData');
                 done();
             });
@@ -60,10 +61,10 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             .get('/checkWhois?checkUrl=' + notExistUrl)
             .expect(200)
             .end(function (err, res) {
+                console.dir(res.body);
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
                 expect(res.body).to.have.property('urlData');
                 done();
             });
@@ -77,10 +78,10 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             .get('/checkWhoisAvailable?checkUrl=' + availableUrl)
             .expect(200)
             .end(function (err, res) {
+                console.dir(res.body);
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
                 expect(res.body).to.have.property('availableStatus');
                 expect(res.body.availableStatus).equal('Available');
                 done();
@@ -95,16 +96,16 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             .get('/checkWhoisAvailable?checkUrl=' + notAvailableUrl)
             .expect(200)
             .end(function (err, res) {
+                console.dir(res.body);
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
                 expect(res.body).to.have.property('availableStatus');
                 expect(res.body.availableStatus).equal('Not Available');
                 done();
             });
     });
-/*
+
     it('SEARCH IMEI real', function (done) {
 
         var imeiCode = '01385100'; //013851002659853
@@ -113,10 +114,10 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             .get('/searchMobile?imei=' + imeiCode)
             .expect(200)
             .end(function (err, res) {
+                console.dir(res.body);
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
                 expect(res.body).to.be.instanceof(Array);
                 done();
             });
@@ -130,10 +131,10 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             .get('/searchMobile?imei=' + imeiCode)
             .expect(200)
             .end(function (err, res) {
+                console.dir(res.body);
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
                 expect(res.body).to.be.instanceof(Array);
                 expect(res.body).to.be.empty;
                 done();
@@ -148,12 +149,12 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             .get('/searchMobileBrand?brand=' + brandName)
             .expect(200)
             .end(function (err, res) {
+                console.dir(res.body);
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
                 expect(res.body).to.be.instanceof(Array);
                 done();
             });
-    });*/
+    });
 });

@@ -50,10 +50,6 @@ module.exports = function(app, db) {
         res.sendfile('./index.html');
     });
 
-    //app.get('/attachment/:attachmentId', session.isAdminBySession, function (req, res) {
-    //    res.send('test <img style="width:10px; height:10px; border: 1px solid black"> Hello');
-    //});
-
     function notFound(req, res, next) {
         next();
     }

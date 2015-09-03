@@ -103,6 +103,7 @@ describe('User CRM register/ logIn / logOut', function () {
                     .send(registerData)
                     .expect(200)
                     .end(function (err, res) {
+                       console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
@@ -111,6 +112,7 @@ describe('User CRM register/ logIn / logOut', function () {
                             .User
                             .findOne({login: registerData.login})
                             .exec(function (err, model) {
+                                console.dir(res.body);
                                 if (err) {
                                     return done(err);
                                 }
@@ -186,6 +188,42 @@ describe('User CRM register/ logIn / logOut', function () {
                     .send(registerData)
                     .expect(400)
                     .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        done();
+                    });
+            });
+    });
+
+    it('Register user with BAD values', function (done) {
+        this.timeout(60000);
+
+        var registerData = {
+            login: 555,
+            pass: 'password777',
+            last: 'Digi',
+            emiratesId: '784-1990-NNNNNNN-C',
+            state: 3,
+            mobile: '+987654321',
+            email: 'ss.sdsd.gmail.com'
+        };
+
+        agent
+            .post('/crm/signOut')
+            .send({})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/crm/register')
+                    .send(registerData)
+                    .expect(400)
+                    .end(function (err, res) {
+                        console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
