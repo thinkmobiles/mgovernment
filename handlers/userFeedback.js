@@ -16,7 +16,7 @@ var Feedback = function(db) {
         var serviceRef = new ObjectId(body.serviceId);
         var rate = body.rate;
         var errors = [];
-        var feedbackData
+        var feedbackData;
 
         if (!body || !body.rate || !body.feedback || (!body.serviceId && !body.serviceName)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
@@ -34,10 +34,6 @@ var Feedback = function(db) {
 
         if (errors.length) {
             return res.status(400).send({error: errors});
-        }
-
-        if (! /^[12345]$/.test(rate)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         feedback = new Feedback(feedbackData);

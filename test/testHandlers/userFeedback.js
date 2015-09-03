@@ -64,72 +64,72 @@ describe('Feedback tests - Create, Get ,', function () {
             });
     });
 
-    it('SEND Good feedback', function (done) {
-
-        var service = serviceCollection[0];
-        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
-        var feedback = {
-            serviceName: service.serviceName,
-            serviceId: service._id,
-            rate: 3,
-            feedback: 'awesome, max rate'
-        };
-
-        agent
-            .post('/crm/signIn')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                agent
-                    .post('/feedback')
-                    .send(feedback)
-                    .expect(201)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-                        console.dir(res.body);
-                        done();
-                    });
-            });
-    });
-
-    it('SEND Bad feedback', function (done) {
-
-        var service = serviceCollection[0];
-        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
-        var feedback = {
-            serviceName: service.serviceName,
-            rate: 1,
-            feedback: 'the worst one'
-        };
-
-        agent
-            .post('/crm/signIn')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                agent
-                    .post('/feedback')
-                    .send(feedback)
-                    .expect(201)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-                        console.dir(res.body);
-                        done();
-                    });
-            });
-    });
+    //it('SEND Good feedback', function (done) {
+    //
+    //    var service = serviceCollection[0];
+    //    var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+    //    var feedback = {
+    //        serviceName: service.serviceName,
+    //        serviceId: service._id,
+    //        rate: 3,
+    //        feedback: 'awesome, max rate'
+    //    };
+    //
+    //    agent
+    //        .post('/crm/signIn')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //
+    //            agent
+    //                .post('/feedback')
+    //                .send(feedback)
+    //                .expect(201)
+    //                .end(function (err, res) {
+    //                    console.dir(res.body);
+    //                    if (err) {
+    //                        return done(err)
+    //                    }
+    //                    done();
+    //                });
+    //        });
+    //});
+    //
+    //it('SEND  feedback with BAD values', function (done) {
+    //
+    //    var service = serviceCollection[0];
+    //    var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+    //    var feedback = {
+    //        serviceName: service.serviceName,
+    //        rate: 5,
+    //        feedback: 'the worst one'
+    //    };
+    //
+    //    agent
+    //        .post('/crm/signIn')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //
+    //            agent
+    //                .post('/feedback')
+    //                .send(feedback)
+    //                .expect(201)
+    //                .end(function (err, res) {
+    //                    console.dir(res.body);
+    //                    if (err) {
+    //                        return done(err)
+    //                    }
+    //                    done();
+    //                });
+    //        });
+    //});
 
     it('SEND GOOD feedback UnAuthorized', function (done) {
 
@@ -138,7 +138,7 @@ describe('Feedback tests - Create, Get ,', function () {
         var feedback = {
             serviceName: service.serviceName,
             serviceId: service._id,
-            rate: 3,
+            rate: 4,
             feedback: 'pretty nice'
         };
 
@@ -156,10 +156,10 @@ describe('Feedback tests - Create, Get ,', function () {
                     .send(feedback)
                     .expect(201)
                     .end(function (err, res) {
+                        console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
                         done();
                     });
             });

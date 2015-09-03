@@ -24,41 +24,50 @@ var TestTRAHandler = function (db) {
     this.testWhois = function (req, res, next) {
 
         var checkUrl = req.query.checkUrl;
+        var parse = req.query.parse;
 
         handleWhoisSocket(checkUrl, TRA.WHOIS_URL, function (err, data) {
-            var parsedData;
-            var responseObj = {};
-            var tempStr;
+            var responseData;
 
             if (err) {
                 return next(err);
             }
+            data = 'Domain Name:                     bs.ae\r\nRegistrar ID:                    AESERVER\r\nRegistrar Name:                  AESERVER\r\nStatus:                          ok\r\n\r\nRegistrant Contact ID:           AE1FB4F82F\r\nRegistrant Contact Name:         HE QINGHUA\r\nRegistrant Contact Email:        Visit whois.aeda.ae for Web based WhoIs\r\n\r\nTech Contact ID:                 AESERVER\r\nTech Contact Name:               AEserver.com | Accredited .AE Registrar |\r\nTech Contact Email:              Visit whois.aeda.ae for Web based WhoIs\r\n\r\nName Server:                     ns30.aeserver.com\r\nName Server:                     ns31.aeserver.com\r\n';
 
-            parsedData = parseDataToJson(data);
-            parsedData = parsedData.split('\r\n');
+            //data = 'No Data Found\r\n';
 
-            for (var i = parsedData.length - 1; i >= 0 ; i --) {
-                tempStr = parsedData[i].replace(/:\s*.*/, '');
-                if (tempStr) {
-                    responseObj[tempStr] = parsedData[i].replace(/.*:\s*/, '');
-                }
+            responseData = {
+                'urlData': data
+            };
+
+            if (parse) {
+                responseData = parseDataToJson(data);
             }
 
-            return res.status(200).send(responseObj);
+            return res.status(200).send(responseData);
         });
     };
 
     function parseDataToJson(urlData) {
+        var reqNoData = /^No Data Found/;
         var reg = new RegExp("(.*?):(.*)");
         var elements = urlData.match(/(.*?):(.*?\r\n?)/g);
         var result = {};
-        for (var i = 0; i < elements.length; i++) {
-            var m = reg.exec(elements[i]);
+        var tempStr;
 
-            if (m) {
-                result[m[1]] = m[2].trim();
-            } else {
-                console.log('Not parsed: ' + elements[i]);
+        if (!reqNoData.test(urlData)) {
+            for (var i = elements.length -1; i >= 0; i--) {
+                tempStr = reg.exec(elements[i]);
+
+                if (tempStr) {
+                    result[tempStr[1]] = tempStr[2].trim();
+                } else {
+                    console.log('Not parsed: ' + elements[i]);
+                }
+            }
+        } else {
+            result = {
+                'urlData': 'No Data Found'
             }
         }
 

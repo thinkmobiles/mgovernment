@@ -43,12 +43,30 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             .get('/checkWhois?checkUrl=' + existUrl)
             .expect(200)
             .end(function (err, res) {
-                console.dir(res.body);
+                console.log(res.body);
                 if (err) {
                     return done(err)
                 }
 
-                expect(res.body).to.have.property('urlData');
+                expect(res.body).to.have.property('Domain Name');
+                done();
+            });
+    });
+
+    it('WHOIS GET Data for Exist url with parse key', function (done) {
+
+        var existUrl = 'google.ae';
+
+        agent
+            .get('/checkWhois?checkUrl=' + existUrl+'&parse=true')
+            .expect(200)
+            .end(function (err, res) {
+                console.log(res.body);
+                if (err) {
+                    return done(err)
+                }
+
+                expect(res.body).to.have.property('Domain Name');
                 done();
             });
     });
@@ -70,91 +88,91 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
             });
     });
 
-    it('WHOIS CHECK AVAILABILITY for Available url', function (done) {
-
-        var availableUrl = 'aedanew.ae';
-
-        agent
-            .get('/checkWhoisAvailable?checkUrl=' + availableUrl)
-            .expect(200)
-            .end(function (err, res) {
-                console.dir(res.body);
-                if (err) {
-                    return done(err)
-                }
-                expect(res.body).to.have.property('availableStatus');
-                expect(res.body.availableStatus).equal('Available');
-                done();
-            });
-    });
-
-    it('WHOIS CHECK AVAILABILITY for NOT Available url', function (done) {
-
-        var notAvailableUrl = 'mybank.ae';
-
-        agent
-            .get('/checkWhoisAvailable?checkUrl=' + notAvailableUrl)
-            .expect(200)
-            .end(function (err, res) {
-                console.dir(res.body);
-                if (err) {
-                    return done(err)
-                }
-                expect(res.body).to.have.property('availableStatus');
-                expect(res.body.availableStatus).equal('Not Available');
-                done();
-            });
-    });
-
-    it('SEARCH IMEI real', function (done) {
-
-        var imeiCode = '01385100'; //013851002659853
-
-        agent
-            .get('/searchMobile?imei=' + imeiCode)
-            .expect(200)
-            .end(function (err, res) {
-                console.dir(res.body);
-                if (err) {
-                    return done(err)
-                }
-                expect(res.body).to.be.instanceof(Array);
-                done();
-            });
-    });
-
-    it('SEARCH IMEI fake', function (done) {
-
-        var imeiCode = '98998'; //013851002659853
-
-        agent
-            .get('/searchMobile?imei=' + imeiCode)
-            .expect(200)
-            .end(function (err, res) {
-                console.dir(res.body);
-                if (err) {
-                    return done(err)
-                }
-                expect(res.body).to.be.instanceof(Array);
-                expect(res.body).to.be.empty;
-                done();
-            });
-    });
-
-    it('SEARCH BRAND', function (done) {
-
-        var brandName = 'Appl%';
-
-        agent
-            .get('/searchMobileBrand?brand=' + brandName)
-            .expect(200)
-            .end(function (err, res) {
-                console.dir(res.body);
-                if (err) {
-                    return done(err)
-                }
-                expect(res.body).to.be.instanceof(Array);
-                done();
-            });
-    });
+    //it('WHOIS CHECK AVAILABILITY for Available url', function (done) {
+    //
+    //    var availableUrl = 'aedanew.ae';
+    //
+    //    agent
+    //        .get('/checkWhoisAvailable?checkUrl=' + availableUrl)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            console.dir(res.body);
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            expect(res.body).to.have.property('availableStatus');
+    //            expect(res.body.availableStatus).equal('Available');
+    //            done();
+    //        });
+    //});
+    //
+    //it('WHOIS CHECK AVAILABILITY for NOT Available url', function (done) {
+    //
+    //    var notAvailableUrl = 'mybank.ae';
+    //
+    //    agent
+    //        .get('/checkWhoisAvailable?checkUrl=' + notAvailableUrl)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            console.dir(res.body);
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            expect(res.body).to.have.property('availableStatus');
+    //            expect(res.body.availableStatus).equal('Not Available');
+    //            done();
+    //        });
+    //});
+    //
+    //it('SEARCH IMEI real', function (done) {
+    //
+    //    var imeiCode = '01385100'; //013851002659853
+    //
+    //    agent
+    //        .get('/searchMobile?imei=' + imeiCode)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            console.dir(res.body);
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            expect(res.body).to.be.instanceof(Array);
+    //            done();
+    //        });
+    //});
+    //
+    //it('SEARCH IMEI fake', function (done) {
+    //
+    //    var imeiCode = '98998'; //013851002659853
+    //
+    //    agent
+    //        .get('/searchMobile?imei=' + imeiCode)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            console.dir(res.body);
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            expect(res.body).to.be.instanceof(Array);
+    //            expect(res.body).to.be.empty;
+    //            done();
+    //        });
+    //});
+    //
+    //it('SEARCH BRAND', function (done) {
+    //
+    //    var brandName = 'Appl%';
+    //
+    //    agent
+    //        .get('/searchMobileBrand?brand=' + brandName)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            console.dir(res.body);
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //            expect(res.body).to.be.instanceof(Array);
+    //            done();
+    //        });
+    //});
 });

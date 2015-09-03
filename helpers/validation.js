@@ -5,7 +5,7 @@ module.exports = new function () {
     //Removed cyrillic chars
     var phoneRegExp = /^[0-9\+]?([0-9-\s()])+[0-9()]$/,
         intNumberRegExp = /[0-9]+/,
-        rate15RegExp =  /^[12345]$/,
+        rate13RegExp =  /^[123]$/,
         floatNumberRegExp = /(^[0-9]+(\.[0-9]{1,2})?)$/,
         nameRegExp = /^[a-zA-Z]+[a-zA-Z-_\s]+$/,
         companyNameRegExp = /[\w\.@]{3,20}$/,
@@ -42,8 +42,8 @@ module.exports = new function () {
         return loginRegExp.test(validatedString);
     };
 
-    var validateRate15 = function (validatedString) {
-        return rate15RegExp.test(validatedString);
+    var validateRate13 = function (validatedString) {
+        return rate13RegExp.test(validatedString);
     };
 
     var validateSkype = function (validatedString) {
@@ -224,13 +224,13 @@ module.exports = new function () {
         }
     };
 
-    var checkRate15 = function (errorArray, required, fieldValue, fieldName) {
+    var checkRate13 = function (errorArray, required, fieldValue, fieldName) {
         if (required && !fieldValue) {
             errorArray.push([fieldName, errorMessages.requiredMsg].join(' '));
             return;
         }
 
-        if (fieldValue && !validateRate15(fieldValue)) {
+        if (fieldValue && !validateRate13(fieldValue)) {
             errorArray.push([fieldName, errorMessages.invalidRate15Msg].join(' '));
         }
     };
@@ -481,8 +481,8 @@ module.exports = new function () {
         required: {
             signalLevel: 'number'
         },
-        regExpFunction: {
-            signalLevel: validateRate15
+        inRange: {
+            signalLevel: [1,2,3,4,5]
         }
     };
 
@@ -562,7 +562,7 @@ module.exports = new function () {
         //comparePasswords:comparePasswords,
         checkPasswordField: checkPasswordField,
         checkLoginField: checkLoginField,
-        checkRate15: checkRate15,
+        checkRate15: checkRate13,
         //checkMoneyField:checkMoneyField,
         //checkFirstDateIsGreater:checkFirstDateIsGreater,
         //checkNotesField:checkNotesField,

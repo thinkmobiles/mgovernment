@@ -275,13 +275,13 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
                 latitude: '24.9821547'
 
             },
-            signalLevel: 7
+            signalLevel: 8
         };
 
         agent
             .post('/sendPoorCoverage')
             .send(data)
-            .expect(200)
+            .expect(400)
             .end(function (err, res) {
                 console.dir(res.body);
                 if (err) {
@@ -313,10 +313,11 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
+                        console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
+
                         done();
                     });
             });
