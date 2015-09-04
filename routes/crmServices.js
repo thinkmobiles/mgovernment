@@ -17,7 +17,6 @@ module.exports = function(db) {
     var session = new SessionHandler(db);
     var traCrmHandler = new TraCrmHandler(db);
 
-
     /**
      * This __method__ for user  register in CRM
      *
@@ -139,6 +138,7 @@ module.exports = function(db) {
      * __GET__
      *
      *  ## Request:
+     *      /crm/changePass/mE1x6ruTUh5m2i244CLawG94j1n8i8I5642KN2948uaZrotRwKd1441284969955
      *
      *  ## Responses:
      *      status (200) JSON object: {object}
@@ -158,6 +158,7 @@ module.exports = function(db) {
      * __POST__
      *
      *  ## Request:
+     *      /crm/changePass/mE1x6ruTUh5m2i244CLawG94j1n8i8I5642KN2948uaZrotRwKd1441284969955
      *      Body:
      *       pass,
      *       confirmPass

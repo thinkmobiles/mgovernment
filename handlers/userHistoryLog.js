@@ -3,18 +3,25 @@ var RESPONSE = require('../constants/response');
 
 var HistoryHandler = function(db) {
     'use strict';
+    require('../config/development');
 
     var mongoose = require('mongoose');
     var UserHistory = db.model(CONST.MODELS.USER_HISTORY);
 
     this.pushlog = function(log) {
         var userHistory = new UserHistory(log);
-        userHistory
-            .save(function (err, user) {
-                if (err) {
-                    return next(err);
-                }
-            });
+
+        //TODO if not need write userHistory - change config
+        // console.log('process.env.WRITE_USER_HISTORY_LOG: ', process.env.WRITE_USER_HISTORY_LOG, ' typeof()', typeof(process.env.WRITE_USER_HISTORY_LOG));
+
+        if (! (!process.env.WRITE_USER_HISTORY_LOG || process.env.WRITE_USER_HISTORY_LOG === "false")) {
+            userHistory
+                .save(function (err, user) {
+                    if (err) {
+                        return next(err);
+                    }
+                });
+        }
     };
 
     this.getAllRecords = function (req, res, next) {
