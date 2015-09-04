@@ -257,7 +257,18 @@ var TRACRMHandler = function (db) {
             return res.status(404).send();
         }
 
-        res.sendfile(path.resolve(__dirname + '/../public/templates/customElements/changePass.html'));
+        User
+            .findOne({'token': token})
+            .exec(function (err, model) {
+
+                if (err) {
+                    return next(err);
+                }
+                if (!model) {
+                    return res.status(404).send('Not found');
+                }
+                res.sendfile(path.resolve(__dirname + '/../public/templates/customElements/changePass.html'));
+            });
     };
 
     this.changePass = function(req, res, next) {
@@ -299,7 +310,7 @@ var TRACRMHandler = function (db) {
                 if (!model){
                     return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': bad token'});
                 }
-                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+                return res.send('The password was successfully changed');
             });
     };
 
