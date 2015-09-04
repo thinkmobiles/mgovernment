@@ -188,39 +188,34 @@ var TRACRMHandler = function (db) {
     }
 
     this.forgotPass = function(req, res, next) {
+        var passToken = generateConfirmToken();
+        var searchQuery = {
+            'profile.email': req.body.email
+        };
+        var data = {
+            token: passToken
+        };
 
         if (!req.body || !req.body.email) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         User
-            .findOne({'profile.email': req.body.email})
+            .findOneAndUpdate(searchQuery,data)
             .exec(function (err, model) {
-                var passToken = generateConfirmToken();
-                var user;
-
                 if (err) {
-                    return next(err);
+                    return res.status(400).send({error: err});
                 }
                 if (!model) {
                     return res.status(400).send({error: RESPONSE.AUTH.EMAIL_NOT_REGISTERED});
                 }
+                prepareChangePassEmail(model, passToken, function (err, result) {
+                    if (err) {
+                        return next(err);
+                    }
+                    res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+                });
 
-                user = model.toJSON();
-
-                User
-                    .update({'_id': user._id}, {$set: {token: passToken}}, function (err, data) {
-                        if (err) {
-                            return res.status(400).send({error: err});
-                        }
-
-                        prepareChangePassEmail(user, passToken, function (err, result) {
-                            if (err) {
-                                return next(err);
-                            }
-                            res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
-                        });
-                    });
             });
     };
 
@@ -267,7 +262,7 @@ var TRACRMHandler = function (db) {
                 if (!model) {
                     return res.status(404).send('Not found');
                 }
-                res.sendfile(path.resolve(__dirname + '/../public/templates/customElements/changePass.html'));
+                res.sendFile(path.resolve(__dirname + '/../public/templates/customElements/changePass.html'));
             });
     };
 
