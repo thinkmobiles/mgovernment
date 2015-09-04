@@ -41,6 +41,8 @@ module.exports = {
         CAPALABA: 'Capalaba',
         TMA_TRA_SERVICES: 'TmaTraServices',
         TMA_TRA_SERVICES_VIA_SOCKET: 'tmaTraServicesViaSocket'
-}
+    },
+
+    ALPHABETICAL_FOR_TOKEN: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
 
 };

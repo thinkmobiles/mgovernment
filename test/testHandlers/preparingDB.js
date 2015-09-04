@@ -50,11 +50,10 @@ PreparingDb = function (){
                     callback(err);
                 }
 
-
                 for (var i = count - 1; i >= 0; i--) {
-
                     var pass = 'pass1234' + i;
                     var shaSum = crypto.createHash('sha256');
+
                     shaSum.update(pass);
                     pass = shaSum.digest('hex');
 
@@ -147,7 +146,10 @@ PreparingDb = function (){
         var admin = new User({
             login: USERS.ADMIN_DEFAULT.login,
             pass: pass,
-            userType: CONST.USER_TYPE.ADMIN
+            userType: CONST.USER_TYPE.ADMIN,
+            profile: {
+                email: 'allotheremails@ukr.net'
+            }
         });
 
         admin

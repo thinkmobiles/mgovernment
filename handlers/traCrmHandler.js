@@ -25,8 +25,8 @@ var TRACRMHandler = function (db) {
     var crypto = require('crypto');
     var User = db.model(CONST.MODELS.USER);
     var validation = require('../helpers/validation');
-
-    //<editor-fold desc="Crm Login, Logout, Register, Forgot">
+    var mailer = require('../helpers/mailer');
+    var path = require('path');
 
     this.signInClient = function (req, res, next) {
 
@@ -79,11 +79,9 @@ var TRACRMHandler = function (db) {
                 if (err) {
                     return callback(err);
                 }
-
                 if (model) {
                     return callback(null, model);
                 }
-
                 createMiddlewareUser(loginOpt, callback);
             });
     }
@@ -162,7 +160,7 @@ var TRACRMHandler = function (db) {
         var pass = registerData.pass;
         var shaSum = crypto.createHash('sha256');
         var userData;
-        var user
+        var user;
 
         shaSum.update(pass);
         pass = shaSum.digest('hex');
@@ -185,7 +183,6 @@ var TRACRMHandler = function (db) {
                 if (err) {
                     return callback(err);
                 }
-
                 return callback(null, userModel);
             });
     }
@@ -199,17 +196,17 @@ var TRACRMHandler = function (db) {
         User
             .findOne({'profile.email': req.body.email})
             .exec(function (err, model) {
+                var passToken = generateConfirmToken();
+                var user;
+
                 if (err) {
                     return next(err);
                 }
-
                 if (!model) {
                     return res.status(400).send({error: RESPONSE.AUTH.EMAIL_NOT_REGISTERED});
                 }
 
-                var passToken = generateConfirmToken();
-
-                var user = model.toJSON();
+                user = model.toJSON();
 
                 User
                     .update({'_id': user._id}, {$set: {token: passToken}}, function (err, data) {
@@ -229,12 +226,22 @@ var TRACRMHandler = function (db) {
 
     function prepareChangePassEmail(model, confirmToken, callback) {
 
-        var emailOptions = {
-            email: model.email,
-            confirmToken: confirmToken
+        var templateName = 'public/templates/mail/changePassword.html';
+        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var resetUrl = process.env.HOST + 'crm/changePass/' + confirmToken;
+
+        var mailOptions = {
+            from: from,
+            mailTo: model.profile.email,
+            title: 'Reset password',
+            templateName:templateName,
+            templateData: {
+                login: model.login,
+                resetUrl: resetUrl
+            }
         };
 
-        mailer.sendConfirmChangePass(emailOptions, callback);
+        mailer.sendReport(mailOptions, callback);
     }
 
     function generateConfirmToken() {
@@ -243,16 +250,58 @@ var TRACRMHandler = function (db) {
     }
 
     this.changePassForm = function(req, res, next) {
-        return res.status(500).send({error: 'Not Implemented'});
+        var token = req.params.token;
+        var tokenRegExpstr = new RegExp( '^[' + CONST.ALPHABETICAL_FOR_TOKEN + ']+$');
 
-        res.render('changePass', {title: 'Change Password'});
+        if (token.length < 30 || !tokenRegExpstr.test(token)) {
+            return res.status(404).send();
+        }
+
+        res.sendfile(path.resolve(__dirname + '/../public/templates/customElements/changePass.html'));
     };
 
     this.changePass = function(req, res, next) {
-        return res.status(500).send({error: 'Not Implemented'});
-    };
+        var newPass = req.body.newPass;
+        var confirmPass = req.body.confirmPass;
+        var token = req.params.token;
+        var searchQuery = {
+            token: token
+        };
+        var shaSum = crypto.createHash('sha256');
+        var pass;
+        var data;
+        var tokenRegExpstr = new RegExp( '^[' + CONST.ALPHABETICAL_FOR_TOKEN + ']+$');
 
-    //</editor-fold>
+        shaSum.update(newPass);
+        pass = shaSum.digest('hex');
+
+        data = {
+            pass: pass,
+            token: null
+        };
+
+        //TODO password validation when customer will describe the requirements for a password
+        if (newPass !== confirmPass) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': password and confirmation are not equal'});
+        }
+
+        //TODO check this condition in future
+        if (token.length < 30 || !tokenRegExpstr.test(token)) {
+            return res.status(404).send();
+        }
+
+        User
+            .findOneAndUpdate(searchQuery, data)
+            .exec(function (err, model){
+                if (err){
+                    return res.status(500).send({error: err });
+                }
+                if (!model){
+                    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': bad token'});
+                }
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+            });
+    };
 
     this.complainSmsSpam = function (req, res, next) {
 

@@ -17,6 +17,7 @@ module.exports = function(db) {
     var session = new SessionHandler(db);
     var traCrmHandler = new TraCrmHandler(db);
 
+
     /**
      * This __method__ for user  register in CRM
      *
@@ -168,6 +169,7 @@ module.exports = function(db) {
      * @for crmServices
      * @memberOf crmServices
      */
+
     router.post('/crm/changePass/:token', traCrmHandler.changePass);
 
     /**

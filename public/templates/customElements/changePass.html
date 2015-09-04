@@ -1,0 +1,69 @@
+<script>
+    function sendPassword() {
+
+        var xmlHttp;
+
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlHttp = new XMLHttpRequest();
+        }else {
+            // code for IE6, IE5
+            xmlHttp = new ActiveXObject("Microsoft.xmlHttp");
+        }
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState == 4 && (xmlHttp.status == 200 || xmlHttp.status == 500 || xmlHttp.status == 400 )) {
+                alert(xmlHttp.responseText);
+            }
+        };
+
+        xmlHttp.open("POST","",true);
+        xmlHttp.setRequestHeader('Content-Type', 'application/json');
+        xmlHttp.send(JSON.stringify({
+            "newPass": document.getElementById('newPass').value,
+            "confirmPass": document.getElementById('confirmPass').value
+        }));
+
+        //        $.ajax({
+        //            url: "",
+        //            type: "Post",
+        //            data: {
+        //                newPass: $.find('#newPass').value(),
+        //                confirmPass: $.find('#confirmPass').value()
+        //            },
+        //            success: function (data) {
+        //                return alert(data);
+        //            },
+        //            error: function (data) {
+        //                return alert(data);
+        //            }
+        //        });
+    }
+</script>
+
+<div id="change">
+    <div class="startLogo"></div>
+
+    <h3>Change Your Password</h3>
+
+    <div class="alert alert-danger display-hide" ng-show="changePassForm.$submitted && changePassForm.$invalid">
+        <span>Enter your new password <br/></span>
+        <span>Password should be at least 6 characters long<br/></span>
+        <span>Confirm your new password<br/></span>
+
+    </div>
+
+    <div class="form-group">
+        <input class="form-control placeholder-no-fix" id="newPass" type="password"
+               placeholder="New Password" required name="newPass" minlength=6>
+    </div>
+
+    <div class="form-group">
+        <input class="form-control placeholder-no-fix" id="confirmPass" type="password"
+               placeholder="Confirm New Password"
+               required name="confirmPass">
+    </div>
+
+    <button onclick="sendPassword()">Change
+    </button>
+
+</div>

@@ -33,6 +33,7 @@ module.exports = function (db) {
             accountUpdatedAt: Date
         }],
         favorites:[],
+        token: String,
         avatar: {type: ObjectId, ref: CONST.MODELS.IMAGE + 's', default: null}
     }, {
         collection: CONST.MODELS.USER + 's'
