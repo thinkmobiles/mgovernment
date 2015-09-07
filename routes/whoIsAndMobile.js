@@ -1,6 +1,5 @@
 /**
- * Provides the operation with services for __admin__ account
- *
+ * Provides the services to get information by imei(tac), brand name, domain name
  * @class whoIsAndMobile
  *
  */
@@ -37,7 +36,8 @@ module.exports = function(db) {
      *      Domain Name: 'tra.gov.ae',
      *      Registrar ID: 'Etisalat',
      *      Registrar Name:  'Etisalat',
-     *      Status: 'ok'
+     *      Status: 'ok'....
+     *      ................
      *      }
      *
      * @method testWhois
@@ -75,7 +75,7 @@ module.exports = function(db) {
     router.get('/checkWhoisAvailable', whoIsAndMobileHandler.testWhoisCheck);
 
     /**
-     * This __method__ search Device by Imei or TAC code
+     * This __method__ search devices by imei (tac code)
      *
      * __URI:__ ___`/searchMobile`___
      *
@@ -121,7 +121,7 @@ module.exports = function(db) {
     router.get('/searchMobile', whoIsAndMobileHandler.searchMobileImei);
 
     /**
-     * This __method__ search device By BrandName
+     * This __method__ search device by brand name
      *
      * __URI:__ ___`/searchMobileBrand`___
      *

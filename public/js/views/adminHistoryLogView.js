@@ -39,41 +39,37 @@ define([
             var target$ = $(e.target);
             var previousOrderBy = this.paginationView.stateModel.toJSON().data.orderBy;
             var previousOrder = this.paginationView.stateModel.toJSON().data.order;
-
-            var sortClass;
-
-            var sortBy = target$.data('sort');
             var sortOrder = 1;
+            var sortBy;
+
+            if (target$[0].className !=='oe_sortable') {
+                target$ = target$.parent();
+            }
+
+            sortBy = target$.data('sort');
 
             if (previousOrderBy === sortBy) {
                 sortOrder = previousOrder * -1;
             }
 
-            sortClass = (sortOrder == -1) ? 'sortUp' : 'sortDn';
-
-            switch (sortClass) {
-                case "sortDn":
-                {
-                    target$.parent().find("th").removeClass('sortDn').removeClass('sortUp');
-                    target$.removeClass('sortDn').addClass('sortUp');
-                }
-                    break;
-                case "sortUp":
-                {
-                    target$.parent().find("th").removeClass('sortDn').removeClass('sortUp');
-                    target$.removeClass('sortUp').addClass('sortDn');
-                }
-                    break;
+            if (sortOrder == -1) {
+                target$.find(".sortDN").show()
+            } else {
+                target$.find(".sortUP").show()
             }
+
             this.paginationView.setData({orderBy: sortBy, order: sortOrder});
             return this;
         },
 
         render: function () {
+            var el = this.$el;
 
             console.log('adminHistoryLogs render');
-            this.$el.html(this.template({collection: this.adminHistoryLogsCollection.toJSON()}));
-            this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+            el.html(this.template({collection: this.adminHistoryLogsCollection.toJSON()}));
+            el.find("#paginationDiv").html(this.paginationView.render().$el);
+
+            this.paginationView.showOrderBy(el);
 
             return this;
         }

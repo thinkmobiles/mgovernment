@@ -360,14 +360,14 @@ th.oe_sortable_sub .arrow {
     line-height: 23px;
     background: none;
 }
-.oe_sortable.sortUp .up,
-.oe_sortable_sub.sortUp .up {
-    display: inline-block;
+.sortUP, .sortDN {
+    display: none;
 }
-th.oe_sortable.sortDn .down,
-th.oe_sortable_sub.sortDn .down {
-    display: inline-block;
-}
+
+/*th.oe_sortable.sortDn .down,*/
+/*th.oe_sortable_sub.sortDn .down {*/
+    /*display: none;*/
+/*}*/
 
 .pagination {
     width: 100%;

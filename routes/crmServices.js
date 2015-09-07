@@ -18,7 +18,7 @@ module.exports = function(db) {
     var traCrmHandler = new TraCrmHandler(db);
 
     /**
-     * This __method__ for user  register in CRM
+     * This __method__ for user  registratoin in CRM
      *
      * __URI:__ ___`/crm/register`___
      *
@@ -62,7 +62,7 @@ module.exports = function(db) {
     router.post('/crm/register', traCrmHandler.registerClient);
 
     /**
-     * This __method__  for user signIn in CRM
+     * This __method__  for user sign in CRM
      *
      * __URI:__ ___`/crm/signIn`___
      *
@@ -90,7 +90,7 @@ module.exports = function(db) {
     router.post('/crm/signIn', traCrmHandler.signInClient);
 
     /**
-     * This __method__ for user signOut from CRM
+     * This __method__ for user sign out from CRM
      *
      * __URI:__ ___`/crm/signOut`___
      *
@@ -107,70 +107,8 @@ module.exports = function(db) {
      * @memberOf crmServices
      */
     router.post('/crm/signOut', traCrmHandler.signOutClient);
-
-    /**
-     * This __method__ for user forgot password for CRM
-     *
-     * __URI:__ ___`/crm/forgotPass`___
-     *
-     *  ## METHOD:
-     * __POST__
-     *
-     *  ## Request:
-     *      Body:
-     *       email
-     *
-     *  ## Responses:
-     *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     * @method forgotPass
-     * @for crmServices
-     * @memberOf crmServices
-     */
     router.post('/crm/forgotPass', traCrmHandler.forgotPass);
-
-    /**
-     * This __method__ get form to change pass for CRM
-     *
-     * __URI:__ ___`/crm/changePass`___
-     *
-     *  ## METHOD:
-     * __GET__
-     *
-     *  ## Request:
-     *      /crm/changePass/mE1x6ruTUh5m2i244CLawG94j1n8i8I5642KN2948uaZrotRwKd1441284969955
-     *
-     *  ## Responses:
-     *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     * @method changePassForm
-     * @for crmServices
-     * @memberOf crmServices
-     */
     router.get('/crm/changePass/:token', traCrmHandler.changePassForm);
-
-    /**
-     * This __method__ change pass for CRM
-     *
-     * __URI:__ ___`/crm/changePass`___
-     *
-     *  ## METHOD:
-     * __POST__
-     *
-     *  ## Request:
-     *      /crm/changePass/mE1x6ruTUh5m2i244CLawG94j1n8i8I5642KN2948uaZrotRwKd1441284969955
-     *      Body:
-     *       pass,
-     *       confirmPass
-     *
-     *  ## Responses:
-     *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     * @method changePass
-     * @for crmServices
-     * @memberOf crmServices
-     */
-
     router.post('/crm/changePass/:token', traCrmHandler.changePass);
 
     /**

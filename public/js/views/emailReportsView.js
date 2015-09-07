@@ -74,58 +74,48 @@ define([
 
         goSort: function (e) {
             var target$ = $(e.target);
-            //var currentParrentSortClass = target$.attr('class');
-            //var sortClass = currentParrentSortClass.split(' ')[1];
-
             var previousOrderBy = this.paginationView.stateModel.toJSON().data.orderBy;
             var previousOrder = this.paginationView.stateModel.toJSON().data.order;
             var filter = this.paginationView.stateModel.toJSON().data.filter;
             var searchTerm = this.paginationView.stateModel.toJSON().data.searchTerm;
-            var sortClass;
-
-            var sortBy = target$.data('sort');
             var sortOrder = 1;
+            var sortBy;
+
+            if (target$[0].className !=='oe_sortable') {
+                target$ = target$.parent();
+            }
+
+            sortBy = target$.data('sort');
 
             if (previousOrderBy === sortBy) {
                 sortOrder = previousOrder * -1;
             }
 
-            sortClass = (sortOrder == -1) ? 'sortUp' : 'sortDn';
-
-            //TODO add feature ^ up and down show order or delete this code
-
-            switch (sortClass) {
-                case "sortDn":
-                {
-                    target$.parent().find("th").removeClass('sortDn').removeClass('sortUp');
-                    target$.removeClass('sortDn').addClass('sortUp');
-                    //order = 1;
-                }
-                    break;
-                case "sortUp":
-                {
-                    target$.parent().find("th").removeClass('sortDn').removeClass('sortUp');
-                    target$.removeClass('sortUp').addClass('sortDn');
-                    //order = -1;
-                }
-                    break;
+            if (sortOrder == -1) {
+                target$.find(".sortDN").show()
+            } else {
+                target$.find(".sortUP").show()
             }
 
             this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter,  searchTerm: searchTerm});
         },
 
         render: function () {
+            var el = this.$el;
+
             console.log('emailReportsView render');
             console.log('filter: ', this.paginationView.stateModel.toJSON().data);
 
-            this.$el.html(this.template({
+            el.html(this.template({
                 collection: this.emailReportsCollecion.toJSON(),
                 filter: this.paginationView.stateModel.toJSON().data.filter
             }));
 
             filterCheckbox = $('.filterServiceType');
-            this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+            el.find("#paginationDiv").html(this.paginationView.render().$el);
             $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
+            this.paginationView.showOrderBy(el);
+
             return this;
         }
     });
