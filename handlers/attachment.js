@@ -54,11 +54,63 @@ var Attachment = function(db) {
                 if (!model) {
                     return res.status(404).send({error: 'Not Found Attachment'})
                 }
+
                 srcBase64 = model.toJSON().attachment;
-                res.status(200).send(srcBase64);
+
+                encodeFromBase64(srcBase64, function (err,imageData){
+                    if (err){
+                        console.log('Error when encode image', err);
+                    }
+
+                    res.writeHead(200, {
+                        'Content-Type': imageData.type,
+                        'Content-Length': imageData.data.length
+                    });
+                    //console.log('imageData.type: ',imageData.type);
+                    res.end(imageData.data);
+                })
             });
     };
 
+    function encodeFromBase64(dataString, callback) {
+        var imageData = {};
+        var imageTypeRegularExpression;
+        var imageTypeDetected;
+        var matches;
+
+
+        if (!dataString) {
+            callback({error: 'Invalid input string'});
+            return;
+        }
+        matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+
+        if (!matches || matches.length !== 3) {
+            try {
+                imageData.type = 'image/png';
+                imageData.data = new Buffer(dataString, 'base64');
+                imageData.extention = 'png';
+            } catch (err) {
+                callback({error: 'Invalid input string'});
+                return;
+            }
+        } else {
+            imageData.type = matches[1];
+            imageData.data = new Buffer(matches[2], 'base64');
+
+            imageTypeRegularExpression = /\/(.*?)$/;
+            imageTypeDetected = imageData
+                .type
+                .match(imageTypeRegularExpression);
+
+            if (imageTypeDetected[1] === "svg+xml") {
+                imageData.extention = "svg";
+            } else {
+                imageData.extention = imageTypeDetected[1];
+            }
+        }
+        callback(null, imageData);
+    }
 };
 
 module.exports = Attachment;
