@@ -511,6 +511,16 @@ module.exports = new function () {
         }
     };
 
+    validateServiceModel[TRA.NO_CRM_ENUM.UPDATE_PROFILE] = {
+        //required: {
+        //    first: 'string',
+        //    last: 'string',
+        //    streetAddress: 'string',
+        //    state: 'string',
+        //    mobile: 'string'
+        //}
+    };
+
     function hasCaseTypeModel(caseType) {
         var model = validateServiceModel[caseType];
 

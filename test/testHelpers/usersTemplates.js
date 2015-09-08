@@ -14,7 +14,14 @@ module.exports = {
             userCookie: '',
             cookieUpdatedAt: '',
             accountUpdatedAt: ''
-        }]
+        }],
+        profile:{
+            firstName: 'Almut',
+            lastName: 'Al Muchacho',
+            phone: "+971111111111",
+            streetAddress: "Akalut, Deira",
+            avatar: null
+        }
     },
 
     COMPANY: {
@@ -121,7 +128,7 @@ module.exports = {
     ADMIN_DEFAULT: {
         login: 'defaultAdmin',
         pass: 'defaultAdmin'
-          },
+    },
 
     CLIENT_PLUS_ACCOUNT: {
         login: 'client123',

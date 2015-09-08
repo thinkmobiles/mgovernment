@@ -41,6 +41,7 @@ module.exports = function(app, db) {
     app.use('/emailReport', adminEmailReports);
     app.use('/tra_api/service', userTraServicesRouter);
     app.get('/attachment/:attachmentId', session.isAdminBySession, attachmentHandler.getAttachmentById);
+    app.get('/image/:imageId', session.isAuthenticatedUser, attachmentHandler.getAvatarById);
 
     app.use('/', crmRouter);
     app.use('/', testTRAServicesRouter);

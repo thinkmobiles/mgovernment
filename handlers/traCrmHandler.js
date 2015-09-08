@@ -4,6 +4,7 @@ var TRA = require('../constants/traServices');
 
 var SessionHandler = require('./sessions');
 var TraCrmNetWrapper = require('./crmNetWrapper/traCrmNetWrapper');
+var async = require('async');
 
 var REGISTER_FIELDS = [
     'login',
@@ -27,6 +28,7 @@ var TRACRMHandler = function (db) {
     var validation = require('../helpers/validation');
     var mailer = require('../helpers/mailer');
     var path = require('path');
+    var Attachment = db.model(CONST.MODELS.ATTACHMENT);
 
     this.signInClient = function (req, res, next) {
 
@@ -155,6 +157,105 @@ var TRACRMHandler = function (db) {
         });
     };
 
+    this.updateProfile = function (req, res, next) {
+
+        var body = req.body;
+        var userId = req.session.uId;
+
+
+        //var caseType = TRA.NO_CRM_ENUM.UPDATE_PROFILE;
+        //var validatesErrors;
+        //
+        //if (!validation.hasCaseTypeModel(caseType)) {
+        //    return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        //}
+        //validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+        //
+        //if (validatesErrors.length) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        //}
+
+        if ((typeof body.state) !== "number") {
+            body.state = parseInt(body.state);
+        }
+
+        body.country = TRA.CRM_ENUM.COUNTRY.UAE;
+
+        //traCrmNetWrapper.registerCrm(body, function (err, result) {
+        //    if (err) {
+        //        return next(err);
+        //    }
+        //
+        //    if (result == "Login is used") {
+        //        return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
+        //    }
+
+        updateMiddlewareUser(userId, body, function (err, userModel) {
+            //WARNING: no error handling - cause login has logic to create middleware user
+            res.status(200).send({success: "success"});
+        });
+        //});
+        //res.status(200).send({success: "success"});
+    };
+
+    this.getProfile = function (req, res, next) {
+        var userId = req.session.uId;
+        var profile = {};
+
+        //var caseType = TRA.NO_CRM_ENUM.UPDATE_PROFILE;
+        //var validatesErrors;
+        //
+        //if (!validation.hasCaseTypeModel(caseType)) {
+        //    return res.status(500).send({error: 'Error: There is no validate model for this caseType'});
+        //}
+        //validatesErrors =  validation.validateByCaseTypeModel(caseType,req.body);
+        //
+        //if (validatesErrors.length) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': ' + validatesErrors.join(', ')});
+        //}
+
+        //traCrmNetWrapper.registerCrm(body, function (err, result) {
+        //    if (err) {
+        //        return next(err);
+        //    }
+        //
+        //    if (result == "Login is used") {
+        //        return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
+        //    }
+
+        User
+            .findOne({_id: userId})
+            .exec(function (err, model) {
+                if (err) {
+                    console.log('Getting user profile error: ', err);
+                    //return callback(err);
+                    res.status(500).send({error: err});
+
+                }
+
+                if (model) {
+
+                    profile.first = model.profile.firstName;
+                    profile.last = model.profile.lastName;
+                    profile.state = model.profile.state;
+                    profile.streetAddress = model.profile.streetAddress;
+                    profile.phone = model.profile.phone;
+                    profile.avatar = null;
+
+                    if (model.profile.avatar) {
+                        profile.avatar = process.env.HOST + 'image/' + model.profile.avatar.toString();
+                    }
+                    res.status(200).send(profile);
+                } else {
+                    res.status(400).send({error: RESPONSE.ON_ACTION.NOT_FOUND});
+                }
+            });
+
+        //});
+        //res.status(200).send({success: "success"});
+    };
+
+
     function registerMiddlewareUser(registerData, callback) {
 
         var pass = registerData.pass;
@@ -186,6 +287,106 @@ var TRACRMHandler = function (db) {
                 return callback(null, userModel);
             });
     }
+
+    function updateMiddlewareUser(userId, updateData, callbackMain) {
+        var tasks =[];
+        var user;
+        var avatarId;
+
+        function  getUserById() {
+            return function (callback) {
+                User
+                    .findOne({_id: userId})
+                    .exec(function (err, model) {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        if (model) {
+                            user = model.toJSON();
+                            return callback(null);
+                        } else {
+                            return callback(new Error(RESPONSE.ON_ACTION.NOT_FOUND + ' with such _id '));
+                        }
+                    });
+            }
+        }
+
+        function  saveAvatar() {
+            return function (callback) {
+                var avatarImg;
+                var attachment = updateData.avatar;
+
+                if (attachment) {
+                    avatarImg = new Attachment({
+                        attachment: attachment
+                    });
+
+                    avatarImg
+                        .save(function (err, model) {
+                            if (model) {
+                                console.log('Avatar img saved:');
+                                avatarId = model._id;
+                            } else {
+                                console.log('Avatar img saved: ', err);
+                            }
+                            return callback(null);
+                        });
+                } else {
+                    console.log('No avatar loaded');
+                    return callback(null);
+                }
+            }
+        }
+
+        function  updateUserById() {
+            return function (callback) {
+
+                user.profile.firstName = updateData.first;
+                user.profile.lastName = updateData.last;
+                user.profile.state = updateData.state;
+                user.profile.streetAddress = updateData.streetAddress;
+                user.profile.phone = updateData.phone;
+                user.profile.updatedAt = new Date();
+
+                if (avatarId){
+                    user.profile.avatar = avatarId;
+                }
+
+                User
+                    .findOneAndUpdate({_id: userId},{$set: {profile : user.profile}})
+                    .exec(function (err, model) {
+                        if (err) {
+                            return callback(err);
+                        }
+
+                        if (model) {
+                            return callback(null);
+                        } else {
+                            return callback(new Error(RESPONSE.ON_ACTION.NOT_FOUND + ' with such _id '));
+                        }
+                    });
+            }
+        }
+
+        /// GET User profile
+        tasks.push(getUserById());
+
+        /// Save Avatar
+        tasks.push(saveAvatar());
+
+        /// Update User profile
+        tasks.push(updateUserById());
+
+        /// Async main process
+        async.waterfall(tasks, function (err,results){
+            if (err) {
+                console.log('Update middleware profile with error: ',err);
+            }
+            console.log('Update middleware profile successfull');
+            callbackMain(null);
+        });
+    };
 
     this.forgotPass = function(req, res, next) {
         var passToken = generateConfirmToken();
@@ -223,7 +424,7 @@ var TRACRMHandler = function (db) {
 
         var templateName = 'public/templates/mail/changePassword.html';
         var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
-        var resetUrl = process.env.HOST + 'crm/changePass/' + confirmToken;
+        var resetUrl = process.env.HOST + 'crm/changeForgotPass/' + confirmToken;
 
         var mailOptions = {
             from: from,
@@ -244,7 +445,7 @@ var TRACRMHandler = function (db) {
         return randomPass.generate();
     }
 
-    this.changePassForm = function(req, res, next) {
+    this.changeForgotPassForm = function(req, res, next) {
         var token = req.params.token;
         var tokenRegExpstr = new RegExp( '^[' + CONST.ALPHABETICAL_FOR_TOKEN + ']+$');
 
@@ -266,7 +467,7 @@ var TRACRMHandler = function (db) {
             });
     };
 
-    this.changePass = function(req, res, next) {
+    this.changeForgotPass = function(req, res, next) {
         var newPass = req.body.newPass;
         var confirmPass = req.body.confirmPass;
         var token = req.params.token;
@@ -306,6 +507,52 @@ var TRACRMHandler = function (db) {
                     return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': bad token'});
                 }
                 return res.send('The password was successfully changed');
+            });
+    };
+
+    this.changePassBySession = function(req, res, next) {
+        var oldPass = req.body.oldPass;
+        var newPass = req.body.newPass;
+        var confirmPass = req.body.confirmPass;
+        var shaSum = crypto.createHash('sha256');
+        var userId = req.session.uId;
+        //var userCrmId = req.session.crmId;
+        var searchQuery;
+        var pass;
+        var data;
+
+        shaSum.update(oldPass);
+        pass = shaSum.digest('hex');
+
+
+        //TODO password validation when customer will describe the requirements for a password
+        if (newPass !== confirmPass) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': password and confirmation are not equal'});
+        }
+
+        searchQuery = {
+            "_id": userId,
+            pass: pass
+        };
+
+        shaSum = crypto.createHash('sha256');
+        shaSum.update(newPass);
+        newPass = shaSum.digest('hex');
+
+        data = {
+            pass: newPass
+        };
+
+        User
+            .findOneAndUpdate(searchQuery, data)
+            .exec(function (err, model){
+                if (err){
+                    return res.status(500).send({error: err });
+                }
+                if (!model){
+                    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': bad old password'});
+                }
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
 

@@ -35,6 +35,30 @@ var Attachment = function(db) {
                 res.status(200).send(' <img src ="' + srcBase64 +'">');
             });
     };
+
+    this.getAvatarById = function (req, res, next) {
+        var attachmentId = req.params.imageId;
+
+        if (!ObjectId.isValid(attachmentId)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        Attachments
+            .findById(attachmentId)
+            .exec(function (err, model) {
+                var srcBase64;
+
+                if (err) {
+                    return next(err);
+                }
+                if (!model) {
+                    return res.status(404).send({error: 'Not Found Attachment'})
+                }
+                srcBase64 = model.toJSON().attachment;
+                res.status(200).send(srcBase64);
+            });
+    };
+
 };
 
 module.exports = Attachment;

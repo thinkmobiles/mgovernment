@@ -62,6 +62,76 @@ module.exports = function(db) {
     router.post('/crm/register', traCrmHandler.registerClient);
 
     /**
+     * This __method__  for user change profile CRM
+     *
+     * __URI:__ ___`/crm/profile`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *     Body:
+     *      first,
+     *      last,
+     *      state,
+     *      phone,
+     *      streetAddress,
+     *      avatar
+     *
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @example
+     *      {
+     *       "first": "Maher",
+     *       "last": "Al Mulla",
+     *       "state": 3,
+     *       "phone": "+971557841298",
+     *       "streetAddress": "Garhoud, Deira",
+     *       "avatar":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPMAAAF.... // or null
+     *      }
+     *
+     * @method updateProfile
+     * @for crmServices
+     * @memberOf crmServices
+     *
+     */
+
+    router.route('/crm/profile')
+        .put(session.isAuthenticatedUser, traCrmHandler.updateProfile)
+
+    /**
+     * This __method__  for user to get profile from CRM by session
+     *
+     * __URI:__ ___`/crm/profile`___
+     *
+     *  ## METHOD:
+     * __GET__
+     *
+     *  ## Request:
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @example
+     *      {
+     *       "first": "Maher",
+     *       "last": "Al Mulla",
+     *       "state": 3,
+     *       "phone": "+971557841298",
+     *       "streetAddress": "Garhoud, Deira",
+     *       "avatar": "http://localhost:7791/image/55ee896f8eacfe48026542f8" // or null
+     *      }
+     *
+     * @method getProfile
+     * @for crmServices
+     * @memberOf crmServices
+     *
+     */
+        .get(session.isAuthenticatedUser, traCrmHandler.getProfile);
+
+    /**
      * This __method__  for user sign in CRM
      *
      * __URI:__ ___`/crm/signIn`___
@@ -87,6 +157,7 @@ module.exports = function(db) {
      * @memberOf crmServices
      *
      */
+
     router.post('/crm/signIn', traCrmHandler.signInClient);
 
     /**
@@ -108,8 +179,9 @@ module.exports = function(db) {
      */
     router.post('/crm/signOut', traCrmHandler.signOutClient);
     router.post('/crm/forgotPass', traCrmHandler.forgotPass);
-    router.get('/crm/changePass/:token', traCrmHandler.changePassForm);
-    router.post('/crm/changePass/:token', traCrmHandler.changePass);
+    router.get('/crm/changeForgotPass/:token', traCrmHandler.changeForgotPassForm);
+    router.post('/crm/changeForgotPass/:token', traCrmHandler.changeForgotPass);
+    router.post('/crm/changePass/', traCrmHandler.changePassBySession);
 
     /**
      * This __method__ create SMS Spam Report

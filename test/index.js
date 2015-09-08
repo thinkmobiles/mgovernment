@@ -11,7 +11,8 @@ var app = require('../app');
 
 //require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/usersAuthCrm');
-require('./testHandlers/forgotPassword');
+require('./testHandlers/forgotAndCahngePassword');
+require('./testHandlers/getAndUpdateCrmProfile');
 //require('./testHandlers/traServicesCrm');
 //require('./testHandlers/traServicesWhoIsImeiBrand');
 //require('./testHandlers/traServicesComplainsServiceProviderTRAServices');
