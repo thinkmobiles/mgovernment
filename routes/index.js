@@ -40,7 +40,8 @@ module.exports = function(app, db) {
     app.use('/feedback', userFeedbackRouter);
     app.use('/emailReport', adminEmailReports);
     app.use('/tra_api/service', userTraServicesRouter);
-    app.get('/image/:imageId', session.isAuthenticatedUser, attachmentHandler.getAttachmentById);
+    app.get('/image/avatar', session.isAuthenticatedUser, attachmentHandler.getAttachmentBySession);
+    app.get('/image/:imageId', session.isAdminBySession, attachmentHandler.getAttachmentById);
 
     app.use('/', crmRouter);
     app.use('/', testTRAServicesRouter);

@@ -12,6 +12,7 @@ var Attachment = function(db) {
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
     var Attachments = db.model(CONST.MODELS.ATTACHMENT);
+    var User = db.model(CONST.MODELS.USER);
 
     this.getAttachmentById = function (req, res, next) {
         var attachmentId = req.params.imageId;
@@ -33,6 +34,38 @@ var Attachment = function(db) {
                 }
                 srcBase64 = model.toJSON().attachment;
                 //res.status(200).send(' <img src ="' + srcBase64 +'">');
+
+                encodeFromBase64(srcBase64, function (err,imageData){
+                    if (err){
+                        console.log('Error when encode image', err);
+                    }
+
+                    res.writeHead(200, {
+                        'Content-Type': imageData.type,
+                        'Content-Length': imageData.data.length
+                    });
+                    res.end(imageData.data);
+                })
+            });
+    };
+
+    this.getAttachmentBySession = function (req, res, next) {
+        var userId = req.session.uId;
+
+        User
+            .findById(userId)
+            .select('profile.avatar')
+            .populate('profile.avatar')
+            .exec(function (err, model) {
+                var srcBase64;
+
+                if (err) {
+                    return next(err);
+                }
+                if (!model) {
+                    return res.status(404).send({error: 'Not Found Attachment'})
+                }
+                srcBase64 = model.toJSON().profile.avatar.attachment;
 
                 encodeFromBase64(srcBase64, function (err,imageData){
                     if (err){

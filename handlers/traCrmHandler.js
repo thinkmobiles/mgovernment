@@ -243,7 +243,8 @@ var TRACRMHandler = function (db) {
                     profile.avatar = null;
 
                     if (model.profile.avatar) {
-                        profile.avatar = process.env.HOST + 'image/' + model.profile.avatar.toString();
+                        profile.avatar = process.env.HOST + 'image/avatar';
+                        // + model.profile.avatar.toString();
                     }
                     res.status(200).send(profile);
                 } else {

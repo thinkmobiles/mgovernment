@@ -25,7 +25,7 @@ module.exports = function (db) {
             streetAddress: String,
             createdAt: {type: Date, default: Date.now},
             updatedAt: {type: Date, default: Date.now},
-            avatar: {type: ObjectId, ref: CONST.MODELS.ATTACHMENT + 's', default: null}
+            avatar: {type: ObjectId, ref: CONST.MODELS.ATTACHMENT, default: null}
         },
         accounts:[{
             serviceProvider: String,
