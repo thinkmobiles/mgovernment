@@ -43,7 +43,6 @@ var Attachment = function(db) {
                         'Content-Type': imageData.type,
                         'Content-Length': imageData.data.length
                     });
-                    //console.log('imageData.type: ',imageData.type);
                     res.end(imageData.data);
                 })
             });
@@ -54,7 +53,6 @@ var Attachment = function(db) {
         var imageTypeRegularExpression;
         var imageTypeDetected;
         var matches;
-
 
         if (!dataString) {
             callback({error: 'Invalid input string'});

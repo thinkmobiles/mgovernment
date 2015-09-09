@@ -133,28 +133,28 @@ define([
 
             var usersCollection = this.usersCollection.toJSON();
             var textContent;
-            var serviceDiv;
-            var serviceId;
-            var service;
+            var userDiv;
+            var userId;
+            var user;
 
             $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
 
             for (var i = usersCollection.length-1; i>=0; i--){
-                service = usersCollection[i];
-                serviceId = service._id;
-                serviceDiv = $("#DbList" + serviceId);
-                textContent = service.login;
+                user = usersCollection[i];
+                userId = user._id;
+                userDiv = $("#DbList" + userId);
+                textContent = user.login + ' ' + (user.profile.firstName ?  user.profile.firstName : '') + ' ' + (user.profile.lastName ?  user.profile.lastName : '');
 
-                if (!serviceDiv.length) {
+                if (!userDiv.length) {
                     $("<div> </div>").
-                        attr("id", "DbList" + serviceId).
+                        attr("id", "DbList" + userId).
                         attr("class", "DbList").
                         attr("data-hash", "" + i).
                         text(textContent).
                         appendTo("#databaseList");
                 } else {
                     console.log('update list used');
-                    $("#DbList" + serviceId).
+                    $("#DbList" + userId).
                         attr("class", "DbList").
                         attr("data-hash", "" + i).
                         text(textContent);
