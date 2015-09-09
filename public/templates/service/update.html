@@ -88,14 +88,14 @@
                 <td class="hiddenByDefault"> Input order of item[<%= i %>]:</td>
             </tr>
 
-            <tr id="itemBlockName<%= i %>">
+            <tr id="itemBlockName<%= i %>" style="border-top: none">
                 <td class="hiddenByDefault"><b>item[<%= i %>].name:</b></td>
                 <td class="hiddenByDefault"><input type="text" id="name<%= i %>" size="20" maxlength="20"
                                                    value="<%= inputItems[i].name %>"></td>
                 <td class="hiddenByDefault"> Input name of item[<%= i %>]:</td>
             </tr>
 
-            <tr id="itemBlockInputType<%= i %>">
+            <tr id="itemBlockInputType<%= i %>"style="border-top: none">
                 <td class="hiddenByDefault"><b>item[<%= i %>].type:</b></td>
                 <td class="hiddenByDefault">
                     <select id="inputType<%= i %>" value="<%= inputItems[i].inputType %>">
@@ -110,6 +110,29 @@
                     </select></td>
                 <td class="hiddenByDefault"> Input type of item[<%= i %>]:</td>
             </tr>
+
+            <tr id="itemBlockRequired<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].required:</b></td>
+                <td class="hiddenByDefault">
+                    <input type="checkbox" id="requiredCheck<%= i %>"
+                           value="itemBlockRequiredCheck"<%= inputItems[i].required ? 'checked':''%>></td>
+                <td class="hiddenByDefault"> Check if field item[<%= i %>] is reqiured</td>
+            </tr>
+
+            <tr id="itemBlockDisplayNameEN<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].displayNameEN:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="displayNameEN<%= i %>" size="20" maxlength="20"
+                                                   value="<%= inputItems[i].displayName ? inputItems[i].displayName.EN : '' %>"></td>
+                <td class="hiddenByDefault"> Input display name of item[<%= i %>] on English</td>
+            </tr>
+
+            <tr id="itemBlockDisplayNameAR<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].displayNameAR:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="displayNameAR<%= i %>" size="20" maxlength="20"
+                                                   value="<%= inputItems[i].displayName ? inputItems[i].displayName.AR : '' %>"></td>
+                <td class="hiddenByDefault"> Input display name of item[<%= i %>] on Arabic</td>
+            </tr>
+
             <% } %>
             <% } %>
 
@@ -153,7 +176,7 @@
                     'checked' : '' %> >Socket is used </b></td>
                 <td class="hiddenByDefault"><b> PORT: </b><span id="portShow" <%= !port ? 'style="display: none"' : '' %>>
                     <input type="text" name="name" id="portInput" size="6" maxlength="4" value="<%=port ? port :'' %>">
-                </span></td>
+                    </span></td>
                 <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
                 </td>
             </tr>
@@ -232,7 +255,7 @@
                         &nbsp<a href="#" id="uriSpecQueryAddInputButton" data-hash="uriSpecQuery"
                                 class="actionButtonAdd"> add </a>&nbsp
                         <a href="#" id="uriSpecQueryDellInputButton" data-hash="uriSpecQuery"
-                                class="actionButtonDell">&nbspdell&nbsp</a>
+                           class="actionButtonDell">&nbspdell&nbsp</a>
                 </td>
                 <td class="hiddenByDefault"> uriSpecQuery is array, that have names of fields that will be added to url
                     of Request, input the names of fields separated by commas without spaces

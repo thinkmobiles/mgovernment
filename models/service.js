@@ -25,6 +25,11 @@ module.exports = function (db) {
                 name: String,
                 inputType: String,
                 placeHolder: String,
+                displayName: {
+                    EN: String,
+                    AR: String,
+                },
+                required: Boolean,
                 options:[]
             }]
         },

@@ -105,7 +105,6 @@ var Attachment = function(db) {
         } else {
             imageData.type = matches[1];
             imageData.data = new Buffer(matches[2], 'base64');
-
             imageTypeRegularExpression = /\/(.*?)$/;
             imageTypeDetected = imageData
                 .type

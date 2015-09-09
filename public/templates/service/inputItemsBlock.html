@@ -1,18 +1,18 @@
-<tr id="itemBlockOrder<%= i %>">
+<tr id="itemBlockOrder<%= i %>" >
     <td class="hiddenByDefault"><b>item[<%= i %>].order:</b></td>
     <td class="hiddenByDefault"><input type="number" id="order<%= i %>" size="4" style="width: 50px"
                                        value="<%= i %>"></td>
     <td class="hiddenByDefault"> Input order of item[<%= i %>]:</td>
 </tr>
 
-<tr id="itemBlockName<%= i %>">
-    <td class="hiddenByDefault"><b>item[<%= i %>].name:</b></td>
+<tr id="itemBlockName<%= i %>"style="border-top: none">
+    <td class="hiddenByDefault" ><b>item[<%= i %>].name:</b></td>
     <td class="hiddenByDefault"><input type="text" id="name<%= i %>" size="20" maxlength="20"
                                        value="" class="itemBlockName" list="standartFieldsName"></td>
     <td class="hiddenByDefault"> Input name of item[<%= i %>]:</td>
 </tr>
 
-<tr id="itemBlockInputType<%= i %>">
+<tr id="itemBlockInputType<%= i %>"style="border-top: none">
     <td class="hiddenByDefault"><b>item[<%= i %>].type:</b></td>
     <td class="hiddenByDefault">
         <select id="inputType<%= i %>">
@@ -22,4 +22,23 @@
             <option value="file">file</option>
         </select></td>
     <td class="hiddenByDefault"> Input type of item[<%= i %>]:</td>
+</tr>
+
+<tr id="itemBlockRequired<%= i %>" style="border-top: none">
+    <td class="hiddenByDefault"><b>item[<%= i %>].required:</b></td>
+    <td class="hiddenByDefault">
+        <input type="checkbox" id="requiredCheck<%= i %>" checked></td>
+    <td class="hiddenByDefault"> Check if field item[<%= i %>] is reqiured</td>
+</tr>
+
+<tr id="itemBlockDisplayNameEN<%= i %>" style="border-top: none">
+    <td class="hiddenByDefault"><b>item[<%= i %>].displayNameEN:</b></td>
+    <td class="hiddenByDefault"><input type="text" id="displayNameEN<%= i %>" size="20" maxlength="20"></td>
+    <td class="hiddenByDefault"> Input display name of item[<%= i %>] on English</td>
+</tr>
+
+<tr id="itemBlockDisplayNameAR<%= i %>" style="border-top: none">
+    <td class="hiddenByDefault"><b>item[<%= i %>].displayNameAR:</b></td>
+    <td class="hiddenByDefault"><input type="text" id="displayNameAR<%= i %>" size="20" maxlength="20"></td>
+    <td class="hiddenByDefault"> Input display name of item[<%= i %>] on Arabic</td>
 </tr>

@@ -204,7 +204,12 @@ define([
                 data.inputItems[i]= {
                     inputType: el.find('#inputType' + i).val().trim(),
                     name: el.find('#name' + i).val().trim(),
-                    order: el.find('#order' + i).val().trim()
+                    order: el.find('#order' + i).val().trim(),
+                    displayName:{
+                        EN: el.find('#displayNameEN' + i).val().trim(),
+                        AR: el.find('#displayNameAR' + i).val().trim()
+                    },
+                    required: el.find('#requiredCheck' + i)[0].checked
                 }
             }
 
