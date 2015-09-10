@@ -98,7 +98,12 @@
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port"
                                                        value="">Socket is used </b></td>
-                <td class="hiddenByDefault"><b> PORT:</b><span id="portShow" style="display: none"><input type="text" name="name" id="portInput" size="6"maxlength="4"></span></td>
+                <td class="hiddenByDefault"><b> PORT:</b><span id="portShow" style="display: none"><input type="text"
+                                                                                                          name="name"
+                                                                                                          id="portInput"
+                                                                                                          size="6"
+                                                                                                          maxlength="4"></span>
+                </td>
                 <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
                 </td>
             </tr>
@@ -130,7 +135,8 @@
                         [ </b><span id="bodyValue"></span><b> ]</b></p>
                         <select style="width: 170px; height: 25px;" id="bodyInput"></select>
                         &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"> add </a>&nbsp
-                        <a href="#" id="bodyDellInputButton" data-hash="body" class="actionButtonDell">&nbspdell&nbsp</a></div>
+                        <a href="#" id="bodyDellInputButton" data-hash="body"
+                           class="actionButtonDell">&nbspdell&nbsp</a></div>
                 </td>
                 <td class="hiddenByDefault"> Body is array, that have names of fields that will be nested to
                     Request.body, input the names of fields separated by commas without spaces
@@ -144,7 +150,8 @@
                             id="queryValue"></span><b> ]</b></p>
                         <select style="width: 170px; height: 25px;" id="queryInput"></select>
                         &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"> add </a>&nbsp
-                        <a href="#" id="queryDellInputButton" data-hash="query" class="actionButtonDell">&nbspdell&nbsp</a></div>
+                        <a href="#" id="queryDellInputButton" data-hash="query"
+                           class="actionButtonDell">&nbspdell&nbsp</a></div>
                 </td>
                 <td class="hiddenByDefault"> Query is array, that have names of fields that will form standard query
                     Request, input the names of fields separated by commas without spaces
@@ -160,7 +167,7 @@
                         &nbsp<a href="#" id="uriSpecQueryAddInputButton" data-hash="uriSpecQuery"
                                 class="actionButtonAdd"> add </a>&nbsp
                         <a href="#" id="uriSpecQueryDellInputButton" data-hash="uriSpecQuery"
-                                class="actionButtonDell">&nbspdell&nbsp</a></div>
+                           class="actionButtonDell">&nbspdell&nbsp</a></div>
                 </td>
                 <td class="hiddenByDefault"> uriSpecQuery is array, that have names of fields that will be added to url
                     of Request, input the names of fields separated by commas without spaces
@@ -168,7 +175,8 @@
             </tr>
 
         </table>
-        <div style=" text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8">
+        <div style="clear: both"></div>
+        <div style=" float:left; text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8">
             <div id="saveBtn" onmouseover="this.style.cursor='pointer'">
         <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
         Save created Service
@@ -176,5 +184,26 @@
             </div>
         </div>
 
+        <div style="float:left;  text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:lightyellow; opacity: 0.8">
+            <div id="seeBtn" onmouseover="this.style.cursor='pointer'">
+        <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
+        See service on device
+        </span>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+
     </form>
 </div>
+
+<div class="showOnDisplay" id="showBlockScreen"
+     style="position: fixed; top: 0px;left: 0px; background-color: grey; opacity: 0.7; width: 100%; height: 100%;z-index: 99; display: none">
+    <div id="closeBtn"
+         style="float:right; margin-right: 2%; font-size: 40px; color: black; font-weight: bold; cursor: pointer">X
+    </div>
+</div>
+
+<div class="showOnDisplayImg" id="showMobileDisplay"
+     style="border: 1px solid black; width: 500px; height: 900px; margin: auto;  position: fixed; z-index: 100; top:10px; left:40%;  display: none; text-align: center ">
+</div>
+

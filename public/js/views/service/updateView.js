@@ -19,6 +19,8 @@ define([
 
         events: {
             'click #updateBtn' : 'updateService',
+            'click #closeBtn' : 'hideMobileDisplay',
+            'click #seeBtn' : 'showMobileDisplay',
             'click #addProfileFieldBlock' : 'addProfileFieldBlock',
             'click #delProfileFieldBlock' : 'delProfileFieldBlock',
             'click #addInputItemsBlock' : 'addInputItemsBlock',
@@ -37,6 +39,63 @@ define([
             itemsInputNameArray = [];
 
             this.render();
+        },
+
+        hideMobileDisplay: function(){
+            var el = this.$el;
+            el.find('#showMobileDisplay').hide();
+            el.find('#showBlockScreen').hide();
+        },
+
+        showMobileDisplay: function(){
+            var el = this.$el;
+            var data = this.readInputsAndValidate();
+            var display = el.find('#showMobileDisplay');
+            var displayContent = "";
+            var tempObj;
+
+            displayContent += '<div style="margin-top:170px; color: white; font-weight: bold; font-size: 1.2em">' +  data.serviceName.toUpperCase() + '</div>';
+            displayContent += '<br><br><br><br><br>';
+            displayContent += '<div style="color: white;font-size: 1.2em">' +  data.serviceName +  ' Service </div>';
+            displayContent += '<br>';
+            displayContent += '<div style = "margin-left: 50px; margin-right: 47px; height:360px; overflow-y: auto">';
+            console.log('data before sorting',data);
+
+            //sort
+            for (var j = data.inputItems.length - 1; j >= 0; j-- ) {
+                for (var i = j - 1; i >= 0; i--) {
+                    if (+data.inputItems[j].order > +data.inputItems[i].order) {
+                        tempObj = data.inputItems[i];
+                        data.inputItems[i] = data.inputItems[j];
+                        data.inputItems[j] = tempObj;
+                    }
+                }
+            }
+            console.log('data after sorting',data);
+
+            for (var i = data.inputItems.length - 1; i >= 0; i-- ){
+
+                if (data.inputItems[i].inputType === 'file') {
+                    displayContent += '<div style="color: lightslategray; text-align: left; margin-left: 50px;">' + data.inputItems[i].displayName.EN + ' <img src="../img/attachSmall.png"></div>';
+                } else {
+
+                    displayContent += '<div style="color: lightslategray; text-align: left; margin-left: 50px;">' + data.inputItems[i].displayName.EN + '</div>';
+
+                    if (data.inputItems[i].inputType === 'string' || data.inputItems[i].inputType === 'number'|| data.inputItems[i].inputType === 'boolean') {
+                        displayContent += '<hr style="width: 75%; color: gray">';
+                    }
+
+                    if (data.inputItems[i].inputType === 'text') {
+                        displayContent += '<div style="margin-left: 50px; width: 75%; height: 55px; border: 1px solid grey;background-color: grey; opacity: 0.2"></div>';
+                    }
+                }
+            }
+            displayContent += '</div>';
+
+            el.find('#showBlockScreen').show();
+            display.html(displayContent);
+
+            display.css({"background": "url('../img/mobile.jpg')", "background-size":"100% 100%"}).show();
         },
 
         addProfileFieldBlock: function(e) {
@@ -129,8 +188,7 @@ define([
 
         },
 
-        updateService: function(e){
-            var model = new ServiceModel();
+        readInputsAndValidate: function(){
             var el = this.$el;
             var errors =[];
             var data ={};
@@ -148,7 +206,7 @@ define([
             el.find('#government')[0].checked ?  data.forUserType.push('government') : undefined;
 
             data.method = el.find('#POST')[0].checked ? 'POST' : 'GET';
-            data.url = el.find('#url').val().trim();
+            data.url = el.find('#url').val();
             data.params = {
                 needUserAuth: el.find('#needUserAuth')[0].checked
             };
@@ -191,7 +249,6 @@ define([
                     data.profile[el.find('#profileFieldName' + i).val().trim()] =  el.find('#profileFieldValue' + i).val().trim();
                 }
             }
-
             console.dir(data);
 
             Validation.checkUrlField(errors, true, data.baseUrl, 'Base Url');
@@ -199,31 +256,108 @@ define([
 
             if (errors.length){
                 alert(errors);
-                return;
+                return 'error';
             }
 
-            if (cloneService) {
-                model.save(data, {
-                    success: function(model, response){
-                        Backbone.history.history.back();
-                    },
-                    error: function(err, xhr, model, response){
-                        console.log('Error updated',xhr);
-                        alert(xhr.responseText);
-                    }
-                });
-            } else {
-                App.selectedService.save(data, {
-                    success: function (model, response) {
-                        Backbone.history.history.back();
-                    },
-                    error: function (err, xhr, model, response) {
-                        console.log('Error updated', xhr);
-                        alert(xhr.responseText);
-                    }
-                });
-            }
+            return data;
+        },
 
+        updateService: function(e) {
+            var model = new ServiceModel();
+            var data = this.readInputsAndValidate();
+            //var el = this.$el;
+            //var errors =[];
+            //var data ={};
+            //
+            //data.serviceProvider = el.find('#serviceProvider').val().trim();
+            //data.serviceName = el.find('#serviceName').val().trim();
+            //data.serviceType = el.find('#serviceType').val().trim();
+            //data.baseUrl = el.find('#baseUrl').val().trim();
+            //
+            //data.forUserType = [];
+            //el.find('#guest')[0].checked ? data.forUserType.push('guest') : undefined;
+            //el.find('#client')[0].checked ? data.forUserType.push('client') : undefined;
+            //el.find('#admin')[0].checked ? data.forUserType.push('admin') : undefined;
+            //el.find('#company')[0].checked ? data.forUserType.push('company') : undefined;
+            //el.find('#government')[0].checked ?  data.forUserType.push('government') : undefined;
+            //
+            //data.method = el.find('#POST')[0].checked ? 'POST' : 'GET';
+            //data.url = el.find('#url').val().trim();
+            //data.params = {
+            //    needUserAuth: el.find('#needUserAuth')[0].checked
+            //};
+            //
+            //if (el.find('#uriSpecQuery')[0].checked) {
+            //    data.params.uriSpecQuery = sendParams.uriSpecQuery;
+            //}
+            //
+            //if (el.find('#body')[0].checked) {
+            //    data.params.body = sendParams.body;
+            //}
+            //
+            //if (el.find('#query')[0].checked) {
+            //    data.params.query = sendParams.query;
+            //}
+            //
+            //if (el.find('#port')[0].checked) {
+            //    data.port = el.find('#portInput').val().trim();
+            //}
+            //
+            //data.inputItems =[];
+            //
+            //for (var i = itemBlockCount - 1; i >= 0; i-- ){
+            //    data.inputItems[i]= {
+            //        inputType: el.find('#inputType' + i).val().trim(),
+            //        name: el.find('#name' + i).val().trim(),
+            //        order: el.find('#order' + i).val().trim(),
+            //        displayName:{
+            //            EN: el.find('#displayNameEN' + i).val().trim(),
+            //            AR: el.find('#displayNameAR' + i).val().trim()
+            //        },
+            //        required: el.find('#requiredCheck' + i)[0].checked
+            //    }
+            //}
+            //
+            //if (profileBlockCount > 0) {
+            //    data.profile = {};
+            //
+            //    for (var i = profileBlockCount - 1; i >= 0; i-- ){
+            //        data.profile[el.find('#profileFieldName' + i).val().trim()] =  el.find('#profileFieldValue' + i).val().trim();
+            //    }
+            //}
+            //
+            //console.dir(data);
+            //
+            //Validation.checkUrlField(errors, true, data.baseUrl, 'Base Url');
+            //Validation.checkCompanyNameField(errors, true, data.serviceProvider, 'serviceProvider');
+            //
+            //if (errors.length){
+            //    alert(errors);
+            //    return;
+            //}
+            if (data !== 'error') {
+                if (cloneService) {
+                    model.save(data, {
+                        success: function (model, response) {
+                            Backbone.history.history.back();
+                        },
+                        error: function (err, xhr, model, response) {
+                            console.log('Error updated', xhr);
+                            alert(xhr.responseText);
+                        }
+                    });
+                } else {
+                    App.selectedService.save(data, {
+                        success: function (model, response) {
+                            Backbone.history.history.back();
+                        },
+                        error: function (err, xhr, model, response) {
+                            console.log('Error updated', xhr);
+                            alert(xhr.responseText);
+                        }
+                    });
+                }
+            }
         },
 
         addItemToArray: function(e) {

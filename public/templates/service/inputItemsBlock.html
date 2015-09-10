@@ -17,6 +17,7 @@
     <td class="hiddenByDefault">
         <select id="inputType<%= i %>">
             <option value="string">string</option>
+            <option value="text">text</option>
             <option value="number">number</option>
             <option value="boolean">boolean</option>
             <option value="file">file</option>
@@ -33,12 +34,12 @@
 
 <tr id="itemBlockDisplayNameEN<%= i %>" style="border-top: none">
     <td class="hiddenByDefault"><b>item[<%= i %>].displayNameEN:</b></td>
-    <td class="hiddenByDefault"><input type="text" id="displayNameEN<%= i %>" size="20" maxlength="20"></td>
+    <td class="hiddenByDefault"><input type="text" id="displayNameEN<%= i %>" size="20" maxlength="40"></td>
     <td class="hiddenByDefault"> Input display name of item[<%= i %>] on English</td>
 </tr>
 
 <tr id="itemBlockDisplayNameAR<%= i %>" style="border-top: none">
     <td class="hiddenByDefault"><b>item[<%= i %>].displayNameAR:</b></td>
-    <td class="hiddenByDefault"><input type="text" id="displayNameAR<%= i %>" size="20" maxlength="20"></td>
+    <td class="hiddenByDefault"><input type="text" id="displayNameAR<%= i %>" size="20" maxlength="40"></td>
     <td class="hiddenByDefault"> Input display name of item[<%= i %>] on Arabic</td>
 </tr>
