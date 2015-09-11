@@ -1,11 +1,29 @@
 var CONST = require('../../constants/index');
 var TRA = require('../../constants/traServices');
 
+var os = require('os');
+
 var TestCRMNetHandler = function () {
     'use strict';
 
     var edge = require('edge');
-    var path = __dirname + "\\";
+    var path = __dirname + getOsSlash();
+
+    function getOsSlash() {
+        var osType = (os.type().split('_')[0]);
+        var slash;
+        switch (osType) {
+            case "Windows":
+                slash = "\\";
+                break;
+            case "Linux":
+                slash = "\/";
+                break;
+            default:
+                slash = "\/";
+        }
+        return slash;
+    }
 
     this.signInCrm = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
