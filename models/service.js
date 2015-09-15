@@ -8,10 +8,10 @@ module.exports = function (db) {
 
     var serviceSchema = new Schema({
             serviceProvider: {type: String, required: true},
-            serviceName: {type: String, required: true},
+            serviceName: {},
             serviceType: {type: String, required: true},
-            baseUrl:{type: String, required: true},
-            profile:{},
+            baseUrl: {type: String, required: true},
+            profile: {},
             updatedAt: {type: Date},
             createdAt: {type: Date, default: Date.now},
             forUserType: {type:[], required: true},
@@ -24,12 +24,17 @@ module.exports = function (db) {
                 order: Number,
                 name: String,
                 inputType: String,
-                placeHolder: String,
+                placeHolder: {
+                    EN: String,
+                    AR: String
+                },
                 displayName: {
                     EN: String,
-                    AR: String,
+                    AR: String
                 },
                 required: Boolean,
+                validateAs: String,
+                dataSource: [],
                 options:[]
             }]
         },

@@ -27,6 +27,124 @@ module.exports = {
         }
     },
 
+    SERVICE_HOTEL: {
+        "serviceProvider" : "HOTEL",
+        "serviceName" : {
+            "AR" : "???? ??? ??????",
+            "EN" : "complain Hotel"
+        },
+        "serviceType" : "XZ WTF ?",
+        "baseUrl" : "http://134.249.164.53:7788/",
+        "method" : "GET",
+        "url" : "retailer?count=10&page=1&orderBy=name&order=ASC",
+        "params" : {
+            "needUserAuth" : true
+        },
+        "profile" : {
+            "description" : "bla bla bla"
+        },
+              "inputItems" : [
+            {
+                "validateAs" : "email",
+                "required" : true,
+                "order" : 4,
+                "name" : "hotelName",
+                "inputType" : "string",
+                "options" : [],
+                "dataSource" : [],
+                "displayName" : {
+                    "AR" : "??? ??????",
+                    "EN" : "Name of hotel"
+                },
+                "placeHolder" : {
+                    "AR" : "???? ???",
+                    "EN" : "Enter here"
+                }
+            },
+            {
+                "validateAs" : "string",
+                "required" : false,
+                "order" : 2,
+                "name" : "attachment",
+                "inputType" : "file",
+                "options" : [],
+                "dataSource" : [],
+                "displayName" : {
+                    "AR" : "????? ???",
+                    "EN" : "Add photo"
+                },
+                "placeHolder" : {
+                    "AR" : "???? ???",
+                    "EN" : "Enter here"
+                }
+            },
+            {
+                "validateAs" : "url",
+                "required" : false,
+                "order" : 12,
+                "name" : "description",
+                "inputType" : "text",
+                "options" : [],
+                "dataSource" : [],
+                "displayName" : {
+                    "AR" : "???",
+                    "EN" : "Description"
+                },
+                "placeHolder" : {
+                    "AR" : "??? ?????",
+                    "EN" : "Some words"
+                }
+            },
+            {
+                "validateAs" : "number",
+                "required" : true,
+                "order" : 5,
+                "name" : "rate",
+                "inputType" : "picker",
+                "options" : [],
+                "dataSource" : [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                ],
+                "displayName" : {
+                    "AR" : "???? ????? ??????",
+                    "EN" : "Select rate of service"
+                },
+                "placeHolder" : {
+                    "AR" : "",
+                    "EN" : ""
+                }
+            },
+            {
+                "validateAs" : "string",
+                "required" : true,
+                "order" : 6,
+                "name" : "feedback",
+                "inputType" : "text",
+                "options" : [],
+                "dataSource" : [],
+                "displayName" : {
+                    "AR" : "??????",
+                    "EN" : "Recomendation"
+                },
+                "placeHolder" : {
+                    "AR" : "?? ????? ?????? ???",
+                    "EN" : "What must to do?"
+                }
+            }
+        ],
+        "forUserType" : [
+            "guest",
+            "client",
+            "admin",
+            "company",
+            "government"
+        ]
+    },
+
     SERVICE_RATING_TMA_TRA_SERVICES: {
         serviceProvider: 'TmaTraServices',
         serviceName: 'Rating service',

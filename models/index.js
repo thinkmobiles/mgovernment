@@ -9,6 +9,7 @@ module.exports = function(db) {
     require('./service')(db);
     require('./adminHistoryLog')(db);
     require('./userHistoryLog')(db);
+    require('./servicesIcon')(db);
     require('./image')(db);
     require('./feedback')(db);
     require('./emailReport')(db);
