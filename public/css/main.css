@@ -1,4 +1,5 @@
 
+
 .pagination {
     width: 100%;
     float: right;
@@ -192,6 +193,57 @@
     cursor: pointer;
 }
 
+.mobileBtn {
+    border: 1px solid grey;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 30px;
+    border-radius: 6px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.showAreaAR {
+    text-align: right;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.showAreaEN {
+    text-align: left;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.showAreaEN:hover {
+    border: 1px dashed grey;
+    cursor: pointer;
+    border-radius: 6px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0.01, 0);
+}
+
+.showAreaAR:hover {
+    border: 1px dashed grey;
+    cursor: pointer;
+    border-radius: 6px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0.01, 0);
+}
+
+.mobileBtn:hover {
+    border: 1px solid goldenrod;
+    color: goldenrod;
+    background-color: rgba(0, 0, 0, 0.01);
+}
+.itemBlockBG{
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
 .topBarButton:hover {
     background-color: rgba(0, 0, 0, 0.01);
 }
@@ -316,6 +368,16 @@ th {
     font-size: 18px;
     font-weight: bold;
 }
+.tableDisplayMobile table
+{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/*.tableDisplayMobile table, td*/
+/*{*/
+/*/!*border: 1px solid black;*!/*/
+/*}*/
 
 .tableView th{
     color: black;
@@ -366,7 +428,7 @@ th.oe_sortable_sub .arrow {
 
 /*th.oe_sortable.sortDn .down,*/
 /*th.oe_sortable_sub.sortDn .down {*/
-    /*display: none;*/
+/*display: none;*/
 /*}*/
 
 .pagination {

@@ -36,10 +36,16 @@
             </tr>
 
             <tr>
-                <td class="hiddenByDefault"><b>serviceName:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="serviceName" size="20" maxlength="40">
-                </td>
+                <td class="hiddenByDefault"><b>serviceName.EN:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceNameEN" size="20" maxlength="40"
+                                                   ></td>
                 <td class="hiddenByDefault"> Input service name (like speed test or mobile verification check</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>serviceName.AR:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceNameAR" size="20" maxlength="40"></td>
+                <td class="hiddenByDefault"> Input service name on arabic</td>
             </tr>
 
             <tr>
@@ -176,14 +182,14 @@
 
         </table>
         <div style="clear: both"></div>
-        <div style=" float:left; text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8">
-            <div id="saveBtn" onmouseover="this.style.cursor='pointer'">
+        <div style="float:left; text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px;
+    border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8; margin-left: 5px;">
+            <div id="updateBtn" onmouseover="this.style.cursor='pointer'">
         <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
-        Save created Service
+        Save Service
         </span>
             </div>
         </div>
-
         <div style="float:left;  text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:lightyellow; opacity: 0.8">
             <div id="seeBtn" onmouseover="this.style.cursor='pointer'">
         <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
@@ -196,14 +202,39 @@
     </form>
 </div>
 
-<div class="showOnDisplay" id="showBlockScreen"
-     style="position: fixed; top: 0px;left: 0px; background-color: grey; opacity: 0.7; width: 100%; height: 100%;z-index: 99; display: none">
-    <div id="closeBtn"
-         style="float:right; margin-right: 2%; font-size: 40px; color: black; font-weight: bold; cursor: pointer">X
-    </div>
-</div>
+<!--<div class="showOnDisplay" id="showBlockScreen"-->
+<!--style="position: fixed; top: 0px;left: 0px; background-color: grey; opacity: 0.7; width: 100%; height: 100%;z-index: 99; display: none">-->
+<!-- -->
+<!--</div>-->
 
-<div class="showOnDisplayImg" id="showMobileDisplay"
-     style="border: 1px solid black; width: 500px; height: 900px; margin: auto;  position: fixed; z-index: 100; top:10px; left:40%;  display: none; text-align: center ">
+<div class="showOnDisplayImg" id="mobilePhone"
+     style="border: 1px solid black; width: 500px; height: 900px; margin;  position: fixed; z-index: 100; top:10px; left:60%;  display: none; text-align: center ">
+    <table class="tableDisplayMobile" style="width: 100%">
+        <tr>
+            <td style="height: 150px;
+    vertical-align: top;">
+                <div style="width:100%; height:1px;clear: both"></div>
+                <div style="float:left; margin-left: 15px; font-size: 30px; color: grey; font-weight: bold;">Language:
+                </div>
+                <div id="chooseARBtn" class="mobileBtn" data-hash="EN" style="float:left; margin-left: 15px;">
+                    EN
+                </div>
+                <div id="chooseENBtn" class="mobileBtn" data-hash="AR" style="float:left;margin-left: 15px;">
+                    AR
+                </div>
+                <div id="closeBtn" style="float:left; margin-left: 170px; font-size: 40px; color: black; font-weight: bold; cursor: pointer;">
+                    X
+                </div>
+                <div style="width:100%; height:1px;clear: both"></div>
+            </td>
+        </tr>
+        <tr><td style="height: 550px;
+    vertical-align: top;">
+            <div id="mobileDisplay"></div>
+        </td></tr>
+        <tr><td style="height: 150px;
+    vertical-align: bottom;">  <div id="refreshBtn" class="mobileBtn" style="width:50%; margin: auto;">
+            Refresh Data
+        </div></td></tr>
+    </table>
 </div>
-

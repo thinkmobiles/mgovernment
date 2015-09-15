@@ -56,7 +56,8 @@ define([
             displayContent += '<br><br><br><br><br>';
             displayContent += '<div style="color: white;font-size: 1.2em">' +  data.serviceName +  ' Service </div>';
             displayContent += '<br>';
-            displayContent += '<div style = "margin-left: 50px; margin-right: 47px; height:360px; overflow-y: auto">';
+            displayContent += '<br>';
+
             console.log('data before sorting',data);
 
             //sort
@@ -74,13 +75,13 @@ define([
             for (var i = data.inputItems.length - 1; i >= 0; i-- ){
 
                 if (data.inputItems[i].inputType === 'file') {
-                    displayContent += '<div style="color: lightslategray; text-align: left; margin-left: 50px;">' + data.inputItems[i].displayName.EN + ' <img src="../img/attachSmall.png"></div>';
+                    displayContent += '<div style="color: lightslategray; text-align: left; margin-left: 100px;">' + data.inputItems[i].displayName.EN + ' <img src="../img/attachSmall.png"></div>';
                 } else {
 
-                    displayContent += '<div style="color: lightslategray; text-align: left; margin-left: 50px;">' + data.inputItems[i].displayName.EN + '</div>';
+                    displayContent += '<div style="color: lightslategray; text-align: left; margin-left: 100px;">' + data.inputItems[i].displayName.EN + '</div>';
 
                     if (data.inputItems[i].inputType === 'string' || data.inputItems[i].inputType === 'number'|| data.inputItems[i].inputType === 'boolean') {
-                        displayContent += '<hr style="width: 75%; color: gray">';
+                        displayContent += '<hr style="width: 60%; color: gray">';
                     }
 
                     if (data.inputItems[i].inputType === 'text') {
@@ -88,7 +89,6 @@ define([
                     }
                 }
             }
-            displayContent += '</div>';
 
             el.find('#showBlockScreen').show();
             display.html(displayContent);

@@ -36,10 +36,17 @@
             </tr>
 
             <tr>
-                <td class="hiddenByDefault"><b>serviceName:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="serviceName" size="20" maxlength="40"
-                                                   value="<%= serviceName %>"></td>
+                <td class="hiddenByDefault"><b>serviceName.EN:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceNameEN" size="20" maxlength="40"
+                                                   value="<%= serviceName.EN %>"></td>
                 <td class="hiddenByDefault"> Input service name (like speed test or mobile verification check</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>serviceName.AR:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceNameAR" size="20" maxlength="40"
+                                                   value="<%= serviceName.AR %>"></td>
+                <td class="hiddenByDefault"> Input service name on arabic</td>
             </tr>
 
             <tr>
@@ -78,68 +85,7 @@
                 <td class="hiddenByDefault">Start Provider url, like google.com</td>
             </tr>
 
-            <% if (inputItems.length){ %>
-            <% for (var i= 0, len = inputItems.length - 1; i <= len; i ++){ %>
-
-            <tr id="itemBlockOrder<%= i %>">
-                <td class="hiddenByDefault"><b>item[<%= i %>].order:</b></td>
-                <td class="hiddenByDefault"><input type="number" id="order<%= i %>" size="4" style="width: 50px"
-                                                   value="<%= inputItems[i].order %>"></td>
-                <td class="hiddenByDefault"> Input order of item[<%= i %>]:</td>
-            </tr>
-
-            <tr id="itemBlockName<%= i %>" style="border-top: none">
-                <td class="hiddenByDefault"><b>item[<%= i %>].name:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="name<%= i %>" size="20" maxlength="20"
-                                                   value="<%= inputItems[i].name %>" list="standartFieldsName"></td>
-                <td class="hiddenByDefault"> Input name of item[<%= i %>]:</td>
-            </tr>
-
-            <tr id="itemBlockInputType<%= i %>"style="border-top: none">
-                <td class="hiddenByDefault"><b>item[<%= i %>].type:</b></td>
-                <td class="hiddenByDefault">
-                    <select id="inputType<%= i %>" value="<%= inputItems[i].inputType %>">
-                        <option value="string"
-                        <% if (inputItems[i].inputType == 'string') { %> selected <% } %> >string</option>
-                        <option value="text"
-                        <% if (inputItems[i].inputType == 'text') { %> selected <% } %> >text</option>
-                        <option value="number"
-                        <% if (inputItems[i].inputType == 'number') { %> selected <% } %> >number</option>
-                        <option value="boolean"
-                        <% if (inputItems[i].inputType == 'boolean') { %> selected <% } %> >boolean</option>
-                        <option value="file"
-                        <% if (inputItems[i].inputType == 'file') { %> selected <% } %> >file</option>
-
-                    </select></td>
-                <td class="hiddenByDefault"> Input type of item[<%= i %>]:</td>
-            </tr>
-
-            <tr id="itemBlockRequired<%= i %>" style="border-top: none">
-                <td class="hiddenByDefault"><b>item[<%= i %>].required:</b></td>
-                <td class="hiddenByDefault">
-                    <input type="checkbox" id="requiredCheck<%= i %>"
-                           value="itemBlockRequiredCheck"<%= inputItems[i].required ? 'checked':''%>></td>
-                <td class="hiddenByDefault"> Check if field item[<%= i %>] is reqiured</td>
-            </tr>
-
-            <tr id="itemBlockDisplayNameEN<%= i %>" style="border-top: none">
-                <td class="hiddenByDefault"><b>item[<%= i %>].displayNameEN:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="displayNameEN<%= i %>" size="20" maxlength="40"
-                                                   value="<%= inputItems[i].displayName ? inputItems[i].displayName.EN : '' %>"></td>
-                <td class="hiddenByDefault"> Input display name of item[<%= i %>] on English</td>
-            </tr>
-
-            <tr id="itemBlockDisplayNameAR<%= i %>" style="border-top: none">
-                <td class="hiddenByDefault"><b>item[<%= i %>].displayNameAR:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="displayNameAR<%= i %>" size="20" maxlength="40"
-                                                   value="<%= inputItems[i].displayName ? inputItems[i].displayName.AR : '' %>"></td>
-                <td class="hiddenByDefault"> Input display name of item[<%= i %>] on Arabic</td>
-            </tr>
-
-            <% } %>
-            <% } %>
-
-            <tr id="itemBlock">
+             <tr id="itemBlock">
                 <td class="hiddenByDefault"><b>inputItems [ ]</b></td>
                 <td class="hiddenByDefault"><a href="#" id="addInputItemsBlock" data-hash="signOut" class="actionButton"
                                                style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
@@ -177,7 +123,8 @@
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= port ?
                     'checked' : '' %> >Socket is used </b></td>
-                <td class="hiddenByDefault"><b> PORT: </b><span id="portShow" <%= !port ? 'style="display: none"' : '' %>>
+                <td class="hiddenByDefault"><b> PORT: </b><span id="portShow" <%= !port ? 'style="display: none"' : ''
+                    %>>
                     <input type="text" name="name" id="portInput" size="6" maxlength="4" value="<%=port ? port :'' %>">
                     </span></td>
                 <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
@@ -217,7 +164,8 @@
                         [ </b><span id="bodyValue"><%=  params.body ? params.body.join(','):'' %></span><b> ]</b></p>
                         <select style="width: 170px; height: 25px;" id="bodyInput"></select>
                         &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"> add </a>&nbsp
-                        <a href="#" id="bodyDellInputButton" data-hash="body" class="actionButtonDell">&nbspdell&nbsp</a>
+                        <a href="#" id="bodyDellInputButton" data-hash="body"
+                           class="actionButtonDell">&nbspdell&nbsp</a>
                     </div>
 
                 </td>
@@ -235,7 +183,8 @@
                             id="queryValue"><%= params.query ? params.query.join(','):''%></span><b> ]</b></p>
                         <select style="width: 170px; height: 25px;" id="queryInput"></select>
                         &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"> add </a>&nbsp
-                        <a href="#" id="queryDellInputButton" data-hash="query" class="actionButtonDell">&nbspdell&nbsp</a>
+                        <a href="#" id="queryDellInputButton" data-hash="query"
+                           class="actionButtonDell">&nbspdell&nbsp</a>
                     </div>
                 </td>
 
@@ -287,13 +236,39 @@
     </form>
 </div>
 
-<div class="showOnDisplay" id="showBlockScreen"
-     style="position: fixed; top: 0px;left: 0px; background-color: grey; opacity: 0.7; width: 100%; height: 100%;z-index: 99; display: none">
-    <div id="closeBtn"
-         style="float:right; margin-right: 2%; font-size: 40px; color: black; font-weight: bold; cursor: pointer">X
-    </div>
-</div>
+<!--<div class="showOnDisplay" id="showBlockScreen"-->
+<!--style="position: fixed; top: 0px;left: 0px; background-color: grey; opacity: 0.7; width: 100%; height: 100%;z-index: 99; display: none">-->
+<!-- -->
+<!--</div>-->
 
-<div class="showOnDisplayImg" id="showMobileDisplay"
-     style="border: 1px solid black; width: 500px; height: 900px; margin: auto;  position: fixed; z-index: 100; top:10px; left:40%;  display: none; text-align: center ">
+<div class="showOnDisplayImg" id="mobilePhone"
+     style="border: 1px solid black; width: 500px; height: 900px; margin;  position: fixed; z-index: 100; top:10px; left:60%;  display: none; text-align: center ">
+    <table class="tableDisplayMobile" style="width: 100%">
+        <tr>
+            <td style="height: 150px;
+    vertical-align: top;">
+                <div style="width:100%; height:1px;clear: both"></div>
+                <div style="float:left; margin-left: 15px; font-size: 30px; color: grey; font-weight: bold;">Language:
+                </div>
+                <div id="chooseARBtn" class="mobileBtn" data-hash="EN" style="float:left; margin-left: 15px;">
+                    EN
+                </div>
+                <div id="chooseENBtn" class="mobileBtn" data-hash="AR" style="float:left;margin-left: 15px;">
+                    AR
+                </div>
+                <div id="closeBtn" style="float:left; margin-left: 170px; font-size: 40px; color: black; font-weight: bold; cursor: pointer;">
+                    X
+                </div>
+                <div style="width:100%; height:1px;clear: both"></div>
+            </td>
+        </tr>
+        <tr><td style="height: 550px;
+    vertical-align: top;">
+            <div id="mobileDisplay"></div>
+        </td></tr>
+        <tr><td style="height: 150px;
+    vertical-align: bottom;">  <div id="refreshBtn" class="mobileBtn" style="width:50%; margin: auto;">
+            Refresh Data
+        </div></td></tr>
+    </table>
 </div>

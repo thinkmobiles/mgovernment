@@ -44,7 +44,7 @@ define([
             if (this.mainView) {
                 this.mainView.undelegateEvents();
             }
-             this.mainView = new MainView();
+            this.mainView = new MainView();
         },
 
         toLoginView: function () {
@@ -59,7 +59,8 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-            this.contentView = new ServiceCreateView();
+            //this.contentView = new ServiceCreateView();
+            this.contentView = new ServiceUpdateView({newService: true});
         },
 
         toUpdateServiceView: function () {
@@ -75,7 +76,7 @@ define([
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
-              this.contentView = new ServiceUpdateView({cloneService: true});
+            this.contentView = new ServiceUpdateView({cloneService: true});
         },
 
         toServicesView: function (page, countPerPage) {
