@@ -18,13 +18,17 @@ module.exports = function(db){
         .post(servicesIcon.createServicesIcon)
         .get(servicesIcon.getServicesIcons);
 
-    //router.route('/getCount/')
-    //    .get(servicesIcon.getCount);
+    router.route('/getCount/')
+        .get(servicesIcon.getCount);
+
     router.route('/:id/:type')
         .get(servicesIcon.getServicesIconByIdAndType);
 
+    router.route('/base64/:id/:type')
+        .get(servicesIcon.getServicesIconBase64ByIdAndType);
+
     router.route('/:id')
-        .put(servicesIcon.updateServicesIconServicesID)
+        .put(servicesIcon.updateServicesIconById)
         .get(servicesIcon.getServicesIconById)
         .delete(servicesIcon.deleteServicesIcon);
 

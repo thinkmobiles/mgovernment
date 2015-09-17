@@ -5,6 +5,7 @@
 
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
+var HistoryHandler = require('./adminHistoryLog');
 
 var ServiceIcon = function(db) {
     'use strict';
@@ -13,13 +14,14 @@ var ServiceIcon = function(db) {
     var ObjectId = mongoose.Types.ObjectId;
     var ServiceIcons = db.model(CONST.MODELS.SERVICES_ICON);
     var User = db.model(CONST.MODELS.USER);
+    var adminHistoryHandler = new HistoryHandler(db);
 
     this.getServicesIconByIdAndType = function (req, res, next) {
         var id = req.params.id;
         var name = req.params.type;
         console.log('name: ', name,' id: ',id);
 
-        if (!(/(^)(@2x|@3x|xxhdpi|xhdpi|hdpi|mdpi)($)/).test(name)) {
+        if (!(/(^)(@2x|@3x|xxxhdpi|xxhdpi|xhdpi|hdpi|mdpi)($)/).test(name)) {
             return res.status(404).send({error: 'Bad icon name'})
         }
         ServiceIcons
@@ -50,10 +52,34 @@ var ServiceIcon = function(db) {
             });
     };
 
+    this.getServicesIconBase64ByIdAndType = function (req, res, next) {
+        var id = req.params.id;
+        var name = req.params.type;
+
+        if (!(/(^)(@2x|@3x|xxxhdpi|xxhdpi|xhdpi|hdpi|mdpi)($)/).test(name)) {
+            return res.status(404).send({error: 'Bad icon name'})
+        }
+
+        ServiceIcons
+            .findById(id, name )
+            .exec(function (err, model) {
+                var srcBase64;
+
+                if (err) {
+                    return next(err);
+                }
+                if (!model) {
+                    return res.status(404).send({error: 'Not Found Icons'})
+                }
+
+                srcBase64 = model.toJSON()[name];
+                res.status(200).send(srcBase64);
+            });
+    };
+
     this.getServicesIconByServiceIdAndType = function (req, res, next) {
         var serviceId = req.params.id;
         var name = req.params.type;
-        console.log('name: ', name,' serviceId: ',serviceId);
 
         if (!(/(^)(@2x|@3x|xxhdpi|xhdpi|hdpi|mdpi)($)/).test(name)) {
             return res.status(404).send({error: 'Bad icon name'})
@@ -65,7 +91,6 @@ var ServiceIcon = function(db) {
 
         ServiceIcons
             .findOne(searchQuery, name )
-            //.select [name]
             .exec(function (err, model) {
                 var srcBase64;
 
@@ -76,8 +101,6 @@ var ServiceIcon = function(db) {
                     return res.status(404).send({error: 'Not Found Icons'})
                 }
                 srcBase64 = model.toJSON().attachment;
-                //res.status(200).send(' <img src ="' + srcBase64 +'">');
-
                 encodeFromBase64(srcBase64, function (err,imageData){
                     if (err){
                         console.log('Error when encode image', err);
@@ -108,13 +131,40 @@ var ServiceIcon = function(db) {
             })
     };
 
-    this.getServicesIcons = function (req, res, next) {
-        var name = req.query.type;
-        console.log('type : ', name);
+    this.getCount = function (req, res, next) {
 
         ServiceIcons
-            .find({}, name )
-            //.select [name]
+            .count({}, function (err, count) {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).send({count: count});
+            });
+    };
+
+    this.getServicesIcons = function (req, res, next) {
+        var sortField = req.query.orderBy || 'createdAt';
+        var sortDirection = +req.query.order || -1;
+        var skipCount = ((req.query.page - 1) * req.query.count) || 0;
+        var limitCount = req.query.count || 20;
+        var name = req.query.type;
+        var searchTerm = req.query.searchTerm;
+        var sortOrder = {};
+        var searchQuery = {};
+
+        sortOrder[sortField] = sortDirection;
+
+        if (searchTerm) {
+            searchQuery = {
+                $and: [{'title': {$regex: searchTerm, $options: 'i'}}]
+            };
+        }
+
+        ServiceIcons
+            .find(searchQuery, name + ' title' )
+            .sort(sortOrder)
+            .skip(skipCount)
+            .limit(limitCount)
             .exec(function (err, models) {
                 if (err) {
                     return res.status(500).send({error: err})
@@ -140,6 +190,27 @@ var ServiceIcon = function(db) {
             });
     };
 
+    this.updateServicesIconById = function (req, res, next) {
+
+        var icon = req.body;
+
+        if (!icon) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        icon.updateAt = new Date();
+        console.dir(icon);
+
+        ServiceIcons
+            .findOneAndUpdate({'_id': icon._id},icon)
+            .exec(function (err, model) {
+                if (err) {
+                    return res.status(500).send({error: err})
+                }
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+            });
+    };
+
     this.updateServicesIconServicesID = function (req, res, next) {
         return res.status(500).send({error: 'Not Implemented'});
 
@@ -156,7 +227,34 @@ var ServiceIcon = function(db) {
     };
 
     this.deleteServicesIcon = function (req, res, next) {
-        return res.status(500).send({error: 'Not Implemented'})
+
+        var searchQuery = {
+            '_id': req.params.id
+        };
+
+        if (!searchQuery._id) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        ServiceIcons
+            .findOne(searchQuery)
+            .remove()
+            .exec(function (err, model) {
+                if (err) {
+                    return next(err);
+                }
+
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.SERVICES_ICON,
+                    modelId: req.params.id,
+                    description: 'Delete Service'
+                };
+                adminHistoryHandler.pushlog(log);
+
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+            });
     };
 
     this.getAttachmentBySession = function (req, res, next) {

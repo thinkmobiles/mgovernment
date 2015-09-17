@@ -5,6 +5,7 @@ define([
     'views/service/createView',
     'views/service/updateView',
     'views/servicesView',
+    'views/iconsView',
     'views/usersView',
     'views/user/createView',
     'views/user/updateView',
@@ -13,7 +14,7 @@ define([
     'views/adminHistoryLogView',
     'views/userHistoryLogView'
 
-], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView, UsersView, UserCreateView, UserUpdateView, FeedbacksView, EmailReportsView, AdminHistoryLogView, UserHistoryLogView ) {
+], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView,IconsView, UsersView, UserCreateView, UserUpdateView, FeedbacksView, EmailReportsView, AdminHistoryLogView, UserHistoryLogView ) {
 
     var Router = Backbone.Router.extend({
 
@@ -23,6 +24,7 @@ define([
         routes: {
             "index": "toMainView",
             "services(/p=:page)(/c=:countPerPage)": "toServicesView",
+            "icon(/p=:page)(/c=:countPerPage)": "toIconsView",
             "feedbacks(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toFeedbacksView",
             "adminHistoryLog(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toAdminHistoryLogView",
             "userHistoryLog(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)": "toUserHistoryLogView",
@@ -88,6 +90,20 @@ define([
             }
 
             this.contentView = new ServicesView({
+                page: page,
+                countPerPage: countPerPage
+            });
+        },
+
+        toIconsView: function (page, countPerPage) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+
+            this.contentView = new IconsView({
                 page: page,
                 countPerPage: countPerPage
             });

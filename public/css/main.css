@@ -165,6 +165,17 @@
     background-color: white;
     cursor: pointer;
     color: #0A0EF2;
+    clear: both;
+    vertical-align:middle;
+}
+
+.iconList{
+    background-color: white;
+    cursor: pointer;
+    color: #0A0EF2;
+    clear: both;
+    vertical-align:middle;
+    height: 70px;
 }
 
 .DbList:hover{
@@ -172,11 +183,37 @@
     font-weight: bold;
 }
 
+.iconList:hover{
+    background-color: #d3d3d3;
+    font-weight: bold;
+}
+.iconDiv{
+    /*height: 90px;*/
+    width: 95%;
+    margin-left: 5px;
+    /*border: 1px solid black*/
+}
+.iconDiv span {
+    color: black;
+    font-weight: bold;
+    font-size: 17px;
+}
+.iconDiv input {
+    width: 95px
+}
+
+.iconDiv img {
+    border: 1px solid grey;
+    background-color: white;
+    opacity: 0.9;
+}
+
+
 .topBarButton {
     margin-left: 5px;
     text-align: center;
     border: 1px solid gray;
-    width: 100px;
+    width: 80px;
     height: 45px;
     line-height: 45px;
     float: left;

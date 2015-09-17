@@ -68,7 +68,7 @@ define([
             App.searchTerm = searchTerm;
 
             console.log('serchTerm:',searchTerm);
-            this.paginationView.setData({searchTerm: searchTerm});
+            //this.paginationView.setData({searchTerm: searchTerm});
             this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter, searchTerm: searchTerm});
         },
 
@@ -113,7 +113,7 @@ define([
 
             filterCheckbox = $('.filterServiceType');
             el.find("#paginationDiv").html(this.paginationView.render().$el);
-            $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
+            el.find("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
             this.paginationView.showOrderBy(el);
 
             return this;
