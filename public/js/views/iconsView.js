@@ -102,8 +102,6 @@ define([
             iconPropertyDiv$.find('#imdpi').attr ('src','');
             iconPropertyDiv$.find('#save span').text('Save icons in DB');
             iconPropertyDiv$.show();
-            //Backbone.history.fragment = '';
-            //Backbone.history.navigate('createIcon', {trigger: true});
         },
 
         deleteIcon: function() {
@@ -197,10 +195,6 @@ define([
                     }
                 });
             }
-
-            //App.selectedIcon = this.iconsCollection.models[this.selectedIconId];
-            //Backbone.history.fragment = '';
-            //Backbone.history.navigate('updateIcon', {trigger: true});
         },
 
         showIconsInfo: function(e){
@@ -209,18 +203,15 @@ define([
             var selectedIcon = this.iconsCollection.toJSON()[id];
             updatedImages = [];
 
-
             iconPropertyDiv$.hide();
             iconPropertyDiv$.find('#iconTitle').val(selectedIcon.title);
             iconPropertyDiv$.find('#i3x').attr ('src',selectedIcon['@3x']);
-
             iconPropertyDiv$.find('#ixxxhdpi').attr ('src','icon/' + selectedIcon._id + '/xxxhdpi');
             iconPropertyDiv$.find('#ixxhdpi').attr ('src','icon/' + selectedIcon._id + '/xxhdpi');
             iconPropertyDiv$.find('#ixhdpi').attr ('src','icon//' + selectedIcon._id + '/xhdpi');
             iconPropertyDiv$.find('#ihdpi').attr ('src','icon/' + selectedIcon._id + '/hdpi');
             iconPropertyDiv$.find('#imdpi').attr ('src','icon/' + selectedIcon._id + '/mdpi');
             iconPropertyDiv$.find('#i2x').attr ('src','icon/' + selectedIcon._id + '/@2x');
-
             iconPropertyDiv$.find('#save span').text('Update icons in DB');
 
             this.selectedIconId = id;

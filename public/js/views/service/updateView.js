@@ -3,16 +3,23 @@ define([
     'text!templates/service/create.html',
     'text!templates/service/inputItemsBlock.html',
     'models/service',
+    'collections/icons',
     'validation'
 
-], function (content,createTemplate,inputBlockTemplate, ServiceModel, Validation) {
+], function (content,createTemplate,inputBlockTemplate, ServiceModel, IconsCollection, Validation) {
     'use strict';
 
     var itemBlockCount = 0;
     var profileBlockCount = 0;
     var cloneService = false;
     var newService = false;
+    var iconsCollection;
+    var selectedIcon;
+    var searchIcon;
+    var searchIconTerm;
 
+
+    var selectIconDiv;
     var itemsInputNameArray = [];
     var sendParams ={};
     var language = 'EN';
@@ -35,7 +42,13 @@ define([
             'change .itemBlockName' : 'updateItemsInputNameArray',
             'click .actionButtonAdd' : 'addItemToArray',
             'click .actionButtonDell' : 'dellLastItemFromArray',
-            'change .inputType': 'checkSelected'
+            'change .inputType': 'checkSelected',
+            'click #selectIconShow': 'showSelectIcon',
+            'click #selectIcon': 'selectIcon',
+            'click #closeIcon': 'closeSelectIcon',
+            'click .iconSelectList': 'preSelectIcon',
+            'keyup #searchTerm': 'searchSelectIcon'
+
         },
 
         initialize: function (options) {
@@ -45,9 +58,117 @@ define([
             profileBlockCount = 0;
             sendParams = {};
             itemsInputNameArray = [];
+            iconsCollection = [];
+            selectedIcon = null;
+            selectIconDiv = null;
+            searchIconTerm ='';
 
             this.render();
         },
+
+        searchSelectIcon: function(e){
+            searchIconTerm = $(e.target).val();
+            console.log('searchSelectIcon: ',searchIconTerm);
+            this.showSelectIcon();
+        },
+
+        preSelectIcon: function(e){
+            var iconId =  $(e.currentTarget).attr('data-hash');
+            selectedIcon = iconsCollection.toJSON()[iconId];
+            console.log('preSelectIcon clicked',iconId);
+            selectIconDiv.find('#selectedIcon').text(selectedIcon.title);
+        },
+
+        closeSelectIcon: function (e){
+            console.log('Close clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            selectIconDiv.hide();
+        },
+
+        selectIcon: function (e){
+            console.log('selectIcon clicked');
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (selectedIcon) {
+                $('#icon').attr('src', selectedIcon['@2x']);
+                $('#icon').attr('data-hash', selectedIcon._id);
+                selectIconDiv.hide();
+            }
+        },
+
+        showSelectIcon: function(e) {
+            var el = this.$el;
+            iconsCollection = new IconsCollection();
+            var data = {
+                type: '@2x'
+            };
+            var iconId;
+            var iconDiv;
+            var textContent;
+            var iconList;
+            var icon;
+
+            console.log('Show selectIcon clicked');
+
+            if (searchIconTerm) {
+                data.searchTerm = searchIconTerm;
+            }
+
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            iconsCollection.fetch({data: data,
+                success: function(){
+
+                    console.dir('Loaded iconsCollection: ',iconsCollection.toJSON());
+
+                    //iconList.find('.iconSelectList:odd').css("background-color", "whitesmoke");
+                    if (!selectIconDiv) {
+                        require(['text!templates/customElements/selectIconTemplate.html'], function (SelectTemplate) {
+                            selectIconDiv = $(SelectTemplate);
+                            selectIconDiv.hide();
+                            el.append(selectIconDiv);
+                            updateIconList();
+                        });
+                    } else {
+                        selectIconDiv.hide();
+                        updateIconList();
+                    }
+
+                },
+                error: function(err, xhr, model){
+                    alert(xhr);
+                }
+            });
+
+            function updateIconList (){
+                iconList = selectIconDiv.find('#iconList');
+                iconList.html('');
+
+                for (var i = 0,l = iconsCollection.length-1; i <= l; i++){
+                    icon = iconsCollection.toJSON()[i];
+                    iconId = icon._id;
+                    iconDiv = $("#DbList" + iconId);
+                    textContent = '<img src ="' + icon['@2x'] + '" style="float:left; height: 48px; width: 48px">' + icon.title;
+
+                    if (!iconDiv.length) {
+                        $("<div> </div>").
+                            attr("id", "DbList" + iconId).
+                            attr("class", "iconSelectList").
+                            attr("data-hash", "" + i).
+                            html(textContent).
+                            appendTo(iconList);
+                    }
+                }
+                console.log('Update IconList lunched');
+                selectIconDiv.show();
+            }
+        },
+
 
         changeMobileLanguage: function(e){
             var lang = this.$el.find(e.target).attr('data-hash');
@@ -70,7 +191,6 @@ define([
             } else {
                 $('html').animate({scrollTop: $('#' + id).offset().top}, 1100);
             };
-            //$(document).scrollTo('#' + id);
         },
 
         checkSelected: function(e) {
@@ -83,8 +203,6 @@ define([
             } else {
                 el.find('#itemBlockInputDataSource' + i).hide();
             }
-
-            //console.dir(e.target);
             console.log(e.target.value);
         },
 
@@ -107,9 +225,8 @@ define([
             if (data === 'error') {
                 return this;
             }
-
             displayContent += '<div style="margin-top:15px; color: white; font-weight: bold; font-size: 1.2em">' +  data.serviceName[language].toUpperCase() + '</div>';
-            displayContent += '<br><br><br><br><br>';
+            displayContent += '<div style="margin-top:15px; margin-bottom:18px; margin-left: 2px"><img src = "' + (data.icon ? '/icon/' + data.icon + '/@2x"': '"') + ' style="width: 64px; height: 64px;"></div>';
             displayContent += '<div style="color: white;font-size: 1.2em">' +  data.serviceName[language] +  (language == 'AR' ? ' \u0623\u062f\u0648\u0627\u062a' : ' Service') + ' </div>';
             displayContent += '<br>';
             displayContent += '<div style = "margin-left: 50px; margin-right: 47px; height:360px; overflow-y: auto">';
@@ -192,7 +309,6 @@ define([
 
             e.preventDefault();
             e.stopPropagation();
-            e.stopImmediatePropagation();
 
             el.find("#itemBlock").before(_.template(inputBlockTemplate)({i: itemBlockCount}));
 
@@ -243,6 +359,7 @@ define([
             };
             data.serviceType = el.find('#serviceType').val().trim();
             data.baseUrl = el.find('#baseUrl').val().trim();
+            data.icon = el.find('#icon').attr('data-hash');
 
             data.forUserType = [];
             el.find('#guest')[0].checked ? data.forUserType.push('guest') : undefined;
@@ -478,6 +595,7 @@ define([
                 tempTemplate.find('#inputType' + i).val(inpuItems[i].inputType);
                 tempTemplate.find('#name' + i).val(inpuItems[i].name);
                 tempTemplate.find('#order' + i).val(inpuItems[i].order);
+
                 tempTemplate.find('#displayNameEN' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.EN : '');
                 tempTemplate.find('#displayNameAR' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.AR : '');
                 tempTemplate.find('#placeHolderEN' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.EN : '');

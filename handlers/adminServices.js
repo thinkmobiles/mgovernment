@@ -132,22 +132,34 @@ var Service = function(db) {
     };
 
     this.getServiceById = function (req, res, next) {
-        var searchQuery = {
-            '_id': req.params.id
-        };
+        var id = req.params.id
 
-        if (!searchQuery._id) {
+        if (!id) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        findServiceByQuery(searchQuery, function (err, model) {
+        Service
+            .findById(id)
+            .exec(function (err, model) {
+                if (err) {
+                    return res.status(500).send({error: err});
+                }
 
-            if (err) {
-                return next(err);
-            }
+                if (!model) {
+                    return res.status(404).send({error: RESPONSE.ON_ACTION.NOT_FOUND});
+                }
+                return res.status(200).send(model.toJSON());
+            });
 
-            return res.status(200).send(model.toJSON());
-        })
+
+        //findServiceByQuery(searchQuery, function (err, model) {
+        //
+        //    if (err) {
+        //        return next(err);
+        //    }
+        //
+        //    return res.status(200).send(model.toJSON());
+        //})
     };
 
     this.deleteServiceById = function (req, res, next) {

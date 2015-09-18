@@ -56,6 +56,17 @@
                 <td class="hiddenByDefault">Like this: internet \ mobile \ money \ biznes \ government</td>
             </tr>
 
+            <tr>
+                <td class="hiddenByDefault"><b>icon:</b></td>
+                <td class="hiddenByDefault"><img id="icon" src= "<%= icon ? '/icon/' + icon + '/@2x' : '' %>" data-hash="<%= icon %>" style="width: 50px; height: 50px;"> <a href="#"
+                                                                                                  id="selectIconShow"
+                                                                                                  data-hash="update"
+                                                                                                  class="actionButtonWhite"
+                                                                                                  style="text-decoration: none">&nbsp
+                    Select icon &nbsp</a></td>
+                <td class="hiddenByDefault">Select icon for service, this icon will show on mobiles</td>
+            </tr>
+
             <% if (profile){ var i = 0; %>
             <% for (var k in profile){ %>
             <tr id="profileFieldBlock<%= i %>">
@@ -85,7 +96,7 @@
                 <td class="hiddenByDefault">Start Provider url, like google.com</td>
             </tr>
 
-             <tr id="itemBlock">
+            <tr id="itemBlock">
                 <td class="hiddenByDefault"><b>inputItems [ ]</b></td>
                 <td class="hiddenByDefault"><a href="#" id="addInputItemsBlock" data-hash="signOut" class="actionButton"
                                                style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
@@ -256,19 +267,26 @@
                 <div id="chooseENBtn" class="mobileBtn" data-hash="AR" style="float:left;margin-left: 15px;">
                     AR
                 </div>
-                <div id="closeBtn" style="float:left; margin-left: 170px; font-size: 40px; color: black; font-weight: bold; cursor: pointer;">
+                <div id="closeBtn"
+                     style="float:left; margin-left: 170px; font-size: 40px; color: black; font-weight: bold; cursor: pointer;">
                     X
                 </div>
                 <div style="width:100%; height:1px;clear: both"></div>
             </td>
         </tr>
-        <tr><td style="height: 550px;
+        <tr>
+            <td style="height: 550px;
     vertical-align: top;">
-            <div id="mobileDisplay"></div>
-        </td></tr>
-        <tr><td style="height: 150px;
-    vertical-align: bottom;">  <div id="refreshBtn" class="mobileBtn" style="width:50%; margin: auto;">
-            Refresh Data
-        </div></td></tr>
+                <div id="mobileDisplay"></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 150px;
+    vertical-align: bottom;">
+                <div id="refreshBtn" class="mobileBtn" style="width:50%; margin: auto;">
+                    Refresh Data
+                </div>
+            </td>
+        </tr>
     </table>
 </div>

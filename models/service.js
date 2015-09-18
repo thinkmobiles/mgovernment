@@ -5,13 +5,19 @@ module.exports = function (db) {
 
     var mongoose = require('mongoose');
     var Schema = mongoose.Schema;
+    var ObjectId = mongoose.Schema.Types.ObjectId;
 
     var serviceSchema = new Schema({
             serviceProvider: {type: String, required: true},
             serviceName: {},
             serviceType: {type: String, required: true},
+            icon: {type: ObjectId, ref: CONST.MODELS.SERVICES_ICON, default: null},
             baseUrl: {type: String, required: true},
             profile: {},
+            buttonTitle: {
+                EN: String,
+                AR: String
+            },
             updatedAt: {type: Date},
             createdAt: {type: Date, default: Date.now},
             forUserType: {type:[], required: true},

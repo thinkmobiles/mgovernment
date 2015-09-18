@@ -178,15 +178,27 @@
     height: 70px;
 }
 
+.iconSelectList{
+    background-color: white;
+    cursor: pointer;
+    color: #0A0EF2;
+    clear: both;
+    vertical-align:middle;
+    height: 50px;
+    border-bottom: 1px solid grey;
+}
+
+
 .DbList:hover{
     background-color: #d3d3d3;
     font-weight: bold;
 }
 
-.iconList:hover{
+.iconSelectList:hover, .iconList:hover{
     background-color: #d3d3d3;
     font-weight: bold;
 }
+
 .iconDiv{
     /*height: 90px;*/
     width: 95%;
