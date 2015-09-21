@@ -67,6 +67,21 @@
                 <td class="hiddenByDefault">Select icon for service, this icon will show on mobiles</td>
             </tr>
 
+            <tr>
+                <td class="hiddenByDefault"><b>buttonTitle.EN:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="buttonTitleEN" size="20" maxlength="40"
+                                                   value="<%= buttonTitle.EN %>"></td>
+                <td class="hiddenByDefault">Input title of send Button on english (like: Send complain, Send Data, ....  </td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>buttonTitle.AR:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="buttonTitleAR" size="20" maxlength="40"
+                                                   value="<%= buttonTitle.AR %>"></td>
+                <td class="hiddenByDefault"> Input title of send Button on arabic</td>
+            </tr>
+
+
             <% if (profile){ var i = 0; %>
             <% for (var k in profile){ %>
             <tr id="profileFieldBlock<%= i %>">

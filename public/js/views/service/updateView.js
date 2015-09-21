@@ -226,7 +226,7 @@ define([
                 return this;
             }
             displayContent += '<div style="margin-top:15px; color: white; font-weight: bold; font-size: 1.2em">' +  data.serviceName[language].toUpperCase() + '</div>';
-            displayContent += '<div style="margin-top:15px; margin-bottom:18px; margin-left: 2px"><img src = "' + (data.icon ? '/icon/' + data.icon + '/@2x"': '"') + ' style="width: 64px; height: 64px;"></div>';
+            displayContent += '<div style="margin-top:15px; margin-bottom:18px; margin-left: 2px"><img src = "' + (data.icon ? '/icon/' + data.icon + '/@2x"': '"') + ' style="width: 64px; height: 64px; -webkit-filter: brightness() invert();"></div>';
             displayContent += '<div style="color: white;font-size: 1.2em">' +  data.serviceName[language] +  (language == 'AR' ? ' \u0623\u062f\u0648\u0627\u062a' : ' Service') + ' </div>';
             displayContent += '<br>';
             displayContent += '<div style = "margin-left: 50px; margin-right: 47px; height:360px; overflow-y: auto">';
@@ -273,6 +273,9 @@ define([
                 }
                 displayContent += '</div>';
             }
+            displayContent += '<div  class="showArea' + language + '" data-hash="buttonTitleEN" style=" margin-top: 3px; text-align: center">';
+            displayContent += '<span style="min-height: 20px; border: 1px solid grey;min-width: 50px; background-color: ghostwhite; opacity: 0.7;  border-radius: 6px; display: inline-block;"> ' + data.buttonTitle[language] + ' </span>';
+            displayContent += '</div>';
             displayContent += '</div>';
 
             el.find('#mobilePhone').css({"background": "url('../img/mobile.jpg')", "background-size":"100% 100%"}).show();
@@ -356,6 +359,10 @@ define([
             data.serviceName = {
                 EN: el.find('#serviceNameEN').val().trim(),
                 AR: el.find('#serviceNameAR').val().trim()
+            };
+            data.buttonTitle = {
+                EN: el.find('#buttonTitleEN').val().trim(),
+                AR: el.find('#buttonTitleAR').val().trim()
             };
             data.serviceType = el.find('#serviceType').val().trim();
             data.baseUrl = el.find('#baseUrl').val().trim();
