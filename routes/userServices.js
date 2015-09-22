@@ -28,7 +28,24 @@ module.exports = function(db){
      *  ## Responses:
      *      status (200) JSON Array of object: {[object]}
      *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-
+     *
+     * @example
+     *      [
+     *      {"_id": "55f121f2ef19aa340ca030e2",
+     *      "serviceName": "TestField",
+     *      "icon": "/icon/undefined"
+     *      },
+     *      {
+     *      "_id": "55e80bc12ab6f29409add962",
+     *      "serviceName": "Network Monitor",
+     *      "icon": "/icon/undefined"
+     *      },
+     *      {
+     *      "_id": "55f6c775b03ca17011e2b989",
+     *      "serviceName": "complain Hotel",
+     *      "icon": "/icon/55fa5ca83bd717ac1ae2ce74"
+     *      }, .....
+     *      ]
      *
      * @method getServices
      * @for userServices
@@ -71,7 +88,7 @@ module.exports = function(db){
     /**
      * This __method__ get All information about Service, like object with options
      *
-     * __URI:__ ___`/service/:serviceId`___
+     * __URI:__ ___`/service/short/:serviceId`___
      *
      *  ## METHOD:
      * __GET__
@@ -127,6 +144,9 @@ module.exports = function(db){
      * @for userServices
      * @memberOf userServices
      */
+
+    router.route('/info/:serviceId')
+        .get(servicesHandler.getServiceInfo);
 
     router.route('/:serviceId')
         .get(servicesHandler.getServiceOptions)

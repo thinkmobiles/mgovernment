@@ -360,6 +360,12 @@ define([
                 EN: el.find('#serviceNameEN').val().trim(),
                 AR: el.find('#serviceNameAR').val().trim()
             };
+
+            data.serviceDescription = {
+                EN: el.find('#serviceDescriptionEN').val().trim(),
+                AR: el.find('#serviceDescriptionAR').val().trim()
+            };
+
             data.buttonTitle = {
                 EN: el.find('#buttonTitleEN').val().trim(),
                 AR: el.find('#buttonTitleAR').val().trim()
@@ -367,6 +373,7 @@ define([
             data.serviceType = el.find('#serviceType').val().trim();
             data.baseUrl = el.find('#baseUrl').val().trim();
             data.icon = el.find('#icon').attr('data-hash');
+            data.icon =  data.icon ?  data.icon : null;
 
             data.forUserType = [];
             el.find('#guest')[0].checked ? data.forUserType.push('guest') : undefined;

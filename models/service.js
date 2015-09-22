@@ -9,14 +9,21 @@ module.exports = function (db) {
 
     var serviceSchema = new Schema({
             serviceProvider: {type: String, required: true},
-            serviceName: {},
+            serviceName: {
+                EN: {type: String, default: ''},
+                AR: {type: String, default: ''}
+            },
+            serviceDescription: {
+                EN: {type: String, default: ''},
+                AR: {type: String, default: ''}
+            },
             serviceType: {type: String, required: true},
             icon: {type: ObjectId, ref: CONST.MODELS.SERVICES_ICON, default: null},
             baseUrl: {type: String, required: true},
             profile: {},
             buttonTitle: {
-                EN: String,
-                AR: String
+                EN: {type: String, default: ''},
+                AR: {type: String, default: ''}
             },
             updatedAt: {type: Date},
             createdAt: {type: Date, default: Date.now},
@@ -40,8 +47,8 @@ module.exports = function (db) {
                 },
                 required: Boolean,
                 validateAs: String,
-                dataSource: [],
-                options:[]
+                dataSource: []
+                //options:[]
             }]
         },
         {
