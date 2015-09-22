@@ -51,8 +51,15 @@ var UserService = function(db) {
 
     this.getServiceInfo = function (req, res, next) {
         // TODO check this when session.language will be implemented
-        var language = req.session.language ? req.session.language : 'EN';
+        var language = req.query.lang ? req.query.lang : (req.session.language ? req.session.language : 'EN');
         var id =  req.params.serviceId;
+        //console.log('lang: ',req.query.lang);
+        //
+        //console.dir(req.session);
+
+        if (req.query.lang) {
+                      req.session.language = req.query.lang;
+        }
 
         Service
             .findOne({_id: id})
@@ -76,7 +83,11 @@ var UserService = function(db) {
                 if (err) {
                     return res.status(500).send({error: err});
                 }
-                console.dir(responseModel);
+
+                if (!responseModel) {
+                    return res.status(404).send({error: RESPONSE.ON_ACTION.NOT_FOUND});
+                }
+
                 responseModel.icon = responseModel.icon ? '/icon/' + responseModel.icon : null;
                 responseModel.serviceName = responseModel.serviceName[language];
                 responseModel.serviceDescription = responseModel.serviceDescription[language];
@@ -93,8 +104,8 @@ var UserService = function(db) {
                 }
 
                 for (var i = responseModel.inputItems.length - 1; i >= 0; i --){
-                   delete(responseModel.inputItems[i].order);
-                   delete(responseModel.inputItems[i]._id);
+                    delete(responseModel.inputItems[i].order);
+                    delete(responseModel.inputItems[i]._id);
                     responseModel.inputItems[i].displayName = responseModel.inputItems[i].displayName[language];
                     responseModel.inputItems[i].placeHolder = responseModel.inputItems[i].placeHolder[language];
                 }
@@ -105,7 +116,12 @@ var UserService = function(db) {
 
     this.getServices = function (req, res, next) {
         // TODO check this when session.language will be implemented
-        var language = req.session.language ? req.session.language : 'EN';
+
+        var language = req.query.lang ? req.query.lang : (req.session.language ? req.session.language : 'EN');
+
+        if (req.query.lang) {
+            req.session.language = req.query.lang;
+        }
 
         Service
             .find()

@@ -12,6 +12,7 @@ var app = require('../app');
 //require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/usersAuthCrm');
 require('./testHandlers/servicesIcon');
+//require('./testHandlers/language');
 //require('./testHandlers/forgotAndCahngePassword');
 //require('./testHandlers/getAndUpdateCrmProfile');
 //require('./testHandlers/traServicesCrm');

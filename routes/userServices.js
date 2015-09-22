@@ -85,6 +85,92 @@ module.exports = function(db){
     router.route('/serviceNames')
         .get(servicesHandler.getServiceNames);
 
+
+
+    /**
+     * This __method__ create and send request to Service using services Wrappers.
+     *
+     * __URI:__ ___`/service/:serviceId`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *
+     *  ## Responses:
+     *      status (200) JSON Array of string: {[string]}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     * @method sendServiceRequest
+     * @for userServices
+     * @memberOf userServices
+     */
+    /**
+     * This __method__ get All information about Service, like object with options
+     *
+     * __URI:__ ___`/service/info/:serviceId`___
+     *
+     *  ## METHOD:
+     * __GET__
+     *
+     *
+     *  ## Responses:
+     *      status (200) JSON Array of string: {[string]}
+     *      status (403, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     * @example
+     *
+     *      {
+     *      "_id": "55f7be6a825be2380f278e09",
+     *      "serviceName": "Creating WEB application",
+     *      "buttonTitle": "Send data",
+     *      "profile": {
+     *      "description": "This is service for check URL and create"
+     *      },
+     *      "inputItems": [
+     *      {
+     *      "validateAs": "url",
+     *      "required": true,
+     *      "name": "url",
+     *      "inputType": "string",
+     *      "options": [],
+     *      "dataSource": [],
+     *      "displayName": "Input url",
+     *      "placeHolder": "http://example.xxx/"
+     *      },
+     *      {
+     *      "validateAs": "none",
+     *      "required": true,
+     *      "name": "description",
+     *      "inputType": "text",
+     *      "options": [],
+     *      "dataSource": [],
+     *      "displayName": "Description:",
+     *      "placeHolder": "Enter here"
+     *      },
+     *      {
+     *      "validateAs": "none",
+     *      "required": true,
+     *      "name": "title",
+     *      "inputType": "String",
+     *      "options": [],
+     *      "dataSource": [],
+     *      "displayName": "Title:",
+     *      "placeHolder": "Enter here"
+     *      }
+     *      ],
+     *      "icon": "/icon/55fab29dc019ebe01b211320",
+     *      "serviceDescription": "You can creating WEB application"
+     *      }
+     *
+     * @method getServiceInfo
+     * @for userServices
+     * @memberOf userServices
+     */
+
+
+    router.route('/info/:serviceId')
+        .get(servicesHandler.getServiceInfo);
+
     /**
      * This __method__ get All information about Service, like object with options
      *
@@ -99,7 +185,7 @@ module.exports = function(db){
      *      status (403, 500) JSON object: {error: 'Text about error'} or  {error: object}
      *
      * @example
-     *      SERVICE_CAPALABA_RITEILS: {
+     *          {
      *          serviceProvider: 'Capalaba',
      *          serviceName: 'Riteils',
      *          serviceType: 'XZ WTF ?',
@@ -126,27 +212,6 @@ module.exports = function(db){
      * @for userServices
      * @memberOf userServices
      */
-
-    /**
-     * This __method__ create and send request to Service using services Wrappers.
-     *
-     * __URI:__ ___`/service/:serviceId`___
-     *
-     *  ## METHOD:
-     * __POST__
-     *
-     *
-     *  ## Responses:
-     *      status (200) JSON Array of string: {[string]}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     *
-     * @method sendServiceRequest
-     * @for userServices
-     * @memberOf userServices
-     */
-
-    router.route('/info/:serviceId')
-        .get(servicesHandler.getServiceInfo);
 
     router.route('/:serviceId')
         .get(servicesHandler.getServiceOptions)

@@ -33,6 +33,10 @@ module.exports = {
             "AR" : "???? ??? ??????",
             "EN" : "complain Hotel"
         },
+        "buttonTitle" : {
+            "AR" : "AR Send data AR",
+            "EN" : "Send data"
+        },
         "serviceType" : "XZ WTF ?",
         "baseUrl" : "http://134.249.164.53:7788/",
         "method" : "GET",
@@ -142,7 +146,12 @@ module.exports = {
             "admin",
             "company",
             "government"
-        ]
+        ],
+        "icon" : "55fa5ca83bd717ac1ae2ce74",
+        "serviceDescription" : {
+            "AR" : "AR Descriptoin of service AR",
+            "EN" : "Descriptoin of service"
+        }
     },
 
     SERVICE_RATING_TMA_TRA_SERVICES: {

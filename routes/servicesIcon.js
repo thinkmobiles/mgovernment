@@ -7,15 +7,18 @@
 
 var express = require( 'express' );
 var ServicesIcon = require('../handlers/servicesIcon');
+var SessionHandler = require('../handlers/sessions');
+
 
 module.exports = function(db){
     'use strict';
 
     var router = express.Router();
     var servicesIcon = new ServicesIcon(db);
+    var session = new SessionHandler(db);
 
     router.route('/')
-        .post(servicesIcon.createServicesIcon)
+        .post(session.isAdminBySession, servicesIcon.createServicesIcon)
         .get(servicesIcon.getServicesIcons);
 
     router.route('/getCount/')

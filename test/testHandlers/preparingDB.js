@@ -114,6 +114,20 @@ PreparingDb = function (){
         }
     };
 
+    this.getServicesByQueryAndSort = function(SerchQuery, SortQuery, callback) {
+        Service
+            .find(SerchQuery)
+            .sort(SortQuery)
+            .lean()
+            .exec( function (err, models) {
+                if(err){
+                    return  callback(err);
+                }
+                //console.dir(models);
+                return  callback(null,models);
+            });
+    };
+
     function saveUser (userTemplate) {
         var user = new User(userTemplate);
 
