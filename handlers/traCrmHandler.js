@@ -201,7 +201,8 @@ var TRACRMHandler = function (db) {
             title: 'SMS Spam from ' + phoneSpam,
             description: description,
             attachment: null,
-            attachmentName: null
+            attachmentName: null,
+            licensee: null
         };
 
         traCrmNetWrapper.createCase(caseOptions, function (err, result) {

@@ -2,7 +2,6 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var TRA = require('../constants/traServices');
 
-var request = require('request');
 var SessionHandler = require('./sessions');
 
 var TestTRAHandler = function (db) {
@@ -15,6 +14,82 @@ var TestTRAHandler = function (db) {
     var session = new SessionHandler(db);
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
     var Attachment = db.model(CONST.MODELS.ATTACHMENT);
+
+    //TODO remove
+    /* little script to get data about services from TRA site
+    findData();
+    findData('ar');
+
+    function findData(lang) {
+        var request = require('request');
+        var j = request.jar();
+        var request = request.defaults({jar:j});
+
+        if(!lang) {
+            lang = 'en';
+        }
+
+        request('http://www.tra.gov.ae/' + lang + '/?r=1', function (error, response, body) {
+            request('http://www.tra.gov.ae/services/individuals.html', function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+
+                    var reg = /<a href="(.+)" class="list-group-item">(.+)?<\/a>/g;
+
+                    var results = {};
+                    var count = 0;
+
+                    body.replace(reg, function (allreg, hrefGroup, nameGroup) {
+
+                        var servName = nameGroup.trim();
+                        results[servName] = {
+                            url: hrefGroup,
+                            name: servName
+                        };
+                        count++;
+                        return '';
+                    });
+
+                    for (var elemName in results) {
+                        (function () {
+                            var elem = results[elemName];
+                            var url = elem.url;
+                            var name = elem.name;
+
+                            request(url, function (error, response, bodyService) {
+                                if (!error && response.statusCode == 200) {
+
+                                    var regPanel = /<div class="panel-body"(.|\n)+?<h2 style=".+?">(.+)?<\/h2>((.|\n)*?)<\/div>/gm;
+
+                                    bodyService.replace(regPanel, function (allreg, some, nameGroup, infoGroup) {
+                                        results[name][nameGroup.trim()] = infoGroup.trim();
+                                        return '';
+                                    });
+                                }
+
+                                count--;
+                                if (count <= 0) {
+                                    console.dir(results);
+
+                                    var fs = require('fs');
+
+                                    var str = JSON.stringify(results, null, '\t\r\n');
+
+                                    fs.writeFile('servicesInfo_' + lang + '.txt', str, function (err) {
+                                        if (err) {
+                                            console.log('err on save: ' + err);
+                                        }
+                                        console.log('It\'s saved!');
+                                    });
+                                }
+                            });
+                        })();
+                    }
+
+                }
+            })
+        })
+    }
+*/
 
     function emailReportAndAttachmentSave (res, emailReport, errMail) {
 
@@ -115,9 +190,9 @@ var TestTRAHandler = function (db) {
 
         var location = req.body.location;
         var address = req.body.address;
-        var title = (location && location.latitude)
+        var title = (location && location.latitude && location.longitude)
             ? ('Location.latitude: ' + location.latitude + ', location.longitude: ' + location.longitude + ' Signal level: ' + signalLevel)
-            : address + ' Signal level: ' + signalLevel;
+            :  "Address: " + address + ' Signal level: ' + signalLevel;
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
         var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
