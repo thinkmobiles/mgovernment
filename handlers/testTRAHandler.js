@@ -91,6 +91,80 @@ var TestTRAHandler = function (db) {
     }
 */
 
+    /*
+    //findNews();
+
+    function findNews(lang) {
+        var request = require('request');
+        var j = request.jar();
+        var request = request.defaults({jar: j});
+
+        if (!lang) {
+            lang = 'en';
+        }
+
+        request('http://www.tra.gov.ae/' + lang + '/?r=1', function (error, response, body) {
+            request('http://www.tra.gov.ae/press-releases.html', function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    // ajax - http://www.tra.gov.ae/ajax/ajax_news_categories.php
+
+                    var reg = /<a href="(.+)" class="list-group-item serviceicon">(.+)?<\/a>/g;
+
+                    var results = {};
+                    var count = 0;
+
+                    body.replace(reg, function (allreg, hrefGroup, monthNameGroup) {
+
+                        var servName = monthNameGroup.trim();
+                        results[servName] = {
+                            url: hrefGroup,
+                            name: servName
+                        };
+                        count++;
+                        return '';
+                    });
+
+                    for (var elemName in results) {
+                        (function () {
+                            var elem = results[elemName];
+                            var url = elem.url;
+                            var name = elem.name;
+
+                            request(url, function (error, response, bodyService) {
+                                if (!error && response.statusCode == 200) {
+
+                                    var regPanel = /<div class="media"(.|\n)+?<h2 style=".+?">(.+)?<\/h2>((.|\n)*?)<\/div>/gm;
+
+                                    bodyService.replace(regPanel, function (allreg, some, nameGroup, infoGroup) {
+                                        results[name][nameGroup.trim()] = infoGroup.trim();
+                                        return '';
+                                    });
+                                }
+
+                                count--;
+                                if (count <= 0) {
+                                    console.dir(results);
+
+                                    var fs = require('fs');
+
+                                    var str = JSON.stringify(results, null, '\t\r\n');
+
+                                    fs.writeFile('servicesInfo_' + lang + '.txt', str, function (err) {
+                                        if (err) {
+                                            console.log('err on save: ' + err);
+                                        }
+                                        console.log('It\'s saved!');
+                                    });
+                                }
+                            });
+                        })();
+                    }
+                }
+            })
+        })
+    }
+*/
+
     function emailReportAndAttachmentSave (res, emailReport, errMail) {
 
         var attachment = emailReport.attachment;

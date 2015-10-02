@@ -110,6 +110,8 @@ var TestTRAHandler = function (db) {
 
         var imei = req.query.imei;
 
+        imei = filterImei(imei);
+
         if (!imei) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
@@ -130,6 +132,12 @@ var TestTRAHandler = function (db) {
             return res.status(200).send(result);
         });
     };
+
+    function filterImei(imei) {
+        var resultImei = imei.replace(' ', '');
+
+        return resultImei.substring(0, 8);
+    }
 
     this.searchMobileBrand = function (req, res, next) {
 

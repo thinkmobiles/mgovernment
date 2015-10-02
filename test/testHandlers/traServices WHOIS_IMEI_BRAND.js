@@ -7,7 +7,7 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:7791';
+var url = 'http://localhost:80';
 
 describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
     this.timeout(35000);
@@ -106,7 +106,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
 
     it('SEARCH IMEI real', function (done) {
 
-        var imeiCode = '01385100'; //013851002659853
+        var imeiCode = '0138 5100 265985 3'; //013851002659853
 
         agent
             .get('/searchMobile?imei=' + imeiCode)
@@ -123,7 +123,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
 
     it('SEARCH IMEI fake', function (done) {
 
-        var imeiCode = '98998'; //013851002659853
+        var imeiCode = ' 989981 23123 1231'; //013851002659853
 
         agent
             .get('/searchMobile?imei=' + imeiCode)

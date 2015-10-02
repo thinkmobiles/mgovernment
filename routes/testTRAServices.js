@@ -37,7 +37,6 @@ module.exports = function(db) {
      * @method complainSmsBlock
      * @for testTraServices
      */
-
     router.post('/complainSmsBlock', testTRAHandler.complainSmsBlock);
 
     /**
@@ -85,7 +84,6 @@ module.exports = function(db) {
      * @method sendHelpSalim
      * @for testTraServices
      */
-
     router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
 
     return router;
