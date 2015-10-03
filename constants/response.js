@@ -2,6 +2,7 @@ module.exports = {
 
     INTERNAL_ERROR: 'Server internal error',
     NOT_ENOUGH_PARAMS: 'Not enough incoming parameters',
+    NOT_FOUND: 'Not found',
 
     AUTH: {
         UN_AUTHORIZED: 'Un Authorized',

@@ -4,6 +4,7 @@ var UserHistoryHandler = require('./userHistoryLog');
 var Capalaba = require('./apiWrappers/capalaba');
 var TmaTraServices = require('./apiWrappers/tmaTraServices');
 var tmaTraServicesViaSocket = require('./apiWrappers/tmaTraServicesViaSocket');
+var SERVICES_INFO = require('../constants/traServicesInfo');
 
 var SessionHandler = require('./sessions');
 var async = require('async');
@@ -105,6 +106,29 @@ var UserService = function(db) {
                 //return res.status(200).send(result);
                 return res.status(200).send(["complain Poor Coverage", "complain about TRA Service", "complain about Service Provider", "complain Enquiries", "complain Suggestion", "Rating service", "Help Salim", "SMS Spam Block", "SMS Spam Report", "Search Device By BrandName", "Search Device By Imei", "Check Domain Availability", "Get Domain Data"]);
             });
+    };
+
+    this.getServiceAbout = function(req, res, next) {
+        var serviceName = req.query.name;
+        var lang = req.query.lang ? req.query.lang.toUpperCase() : 'EN';
+
+        if (!serviceName) {
+            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        if (!(lang === 'EN' || lang === 'AR')) {
+            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
+        }
+
+        serviceName = serviceName.toLowerCase();
+
+        var serviceInfo = SERVICES_INFO[lang][serviceName];
+
+        if (!serviceInfo) {
+            return res.status(404).send({error: RESPONSE.NOT_FOUND});
+        }
+
+        return res.status(200).send(serviceInfo);
     };
 
     this.sendServiceRequest = function (req, res, next) {

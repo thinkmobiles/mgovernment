@@ -33,7 +33,6 @@ module.exports = function(db){
      * @method getServices
      * @for userServices
      */
-
     router.route('/')
         .get(servicesHandler.getServices);
 
@@ -61,10 +60,11 @@ module.exports = function(db){
      * @method getServiceNames
      * @for userServices
      */
-
     router.route('/serviceNames')
         .get(servicesHandler.getServiceNames);
 
+    router.route('/about')
+        .get(servicesHandler.getServiceAbout);
 
     router.route('/:serviceId')
         .get(servicesHandler.getServiceOptions)
