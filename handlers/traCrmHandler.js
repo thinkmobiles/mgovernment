@@ -217,7 +217,7 @@ var TRACRMHandler = function (db) {
             first: req.body.first,
             last: req.body.last,
             email: req.body.email ? req.body.email : null,
-            mobile: req.body.mobile ? req.body.mobile : null            
+            mobile: req.body.mobile ? req.body.mobile : null
         };
 
         traCrmNetWrapper.setProfile(profileOptions, function (err, result) {
@@ -247,7 +247,11 @@ var TRACRMHandler = function (db) {
                 return next(err);
             }
 
-            return res.status(200).send(result);
+            if (result != 'Success') {
+                return res.status(400).send({error: result});
+            }
+
+            return res.status(200).send({success: result});
         });
     };
 
