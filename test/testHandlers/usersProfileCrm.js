@@ -163,7 +163,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
         agent
             .post('/crm/signIn')
             .send(loginData)
-            .expect(401)
+            .expect(400)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
