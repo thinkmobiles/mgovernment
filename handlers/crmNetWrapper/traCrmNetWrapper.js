@@ -538,14 +538,14 @@ var TestCRMNetHandler = function () {
 
     this.setProfile = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
-        setProfile(options, callback);
+        //setProfile(options, callback);
     };
-
+/*
     var setProfile = edge.func({
         source: function () {
             /*
 
-            */
+
         },
         references: [
             'System.Data.dll',
@@ -562,17 +562,17 @@ var TestCRMNetHandler = function () {
             path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
         ]
     });
-
+*/
     this.changePass = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
-        changePass(options, callback);
+        //changePass(options, callback);
     };
 
-    var changePass = edge.func({
+    /*var changePass = edge.func({
         source: function () {
-            /*
 
-             */
+
+
         },
         references: [
             'System.Data.dll',
@@ -588,7 +588,7 @@ var TestCRMNetHandler = function () {
             path + 'Microsoft.Xrm.Client.dll',
             path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
         ]
-    });
+    });*/
 
     this.createCase = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;

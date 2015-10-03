@@ -10,10 +10,12 @@ var async = require ('async');
 var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:80';
 
+var app = require('../../app');
+
 describe('User CRM change Profile, change Pass, forgot Pass', function () {
     this.timeout(10000);
 
-    var agent = request.agent(url);
+    var agent = request.agent(app);
     var preparingDb = new PreparingBd();
 
     before(function (done) {
