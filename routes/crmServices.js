@@ -109,7 +109,7 @@ module.exports = function(db) {
 
     router.get('/crm/profile', session.authenticatedUser, traCrmHandler.getProfile);
 
-    //router.put('/crm/profile', session.authenticatedUser, traCrmHandler.setProfile);
+    router.put('/crm/profile', session.authenticatedUser, traCrmHandler.setProfile);
 
     //router.put('/crm/changePass', session.authenticatedUser, traCrmHandler.changePass);
 

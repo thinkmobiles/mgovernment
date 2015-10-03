@@ -98,7 +98,22 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
                             return done(err)
                         }
 
-                        done();
+                        agent
+                            .get('/crm/profile')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err)
+                                }
+
+                                console.dir(res.body);
+                                expect(res.body).to.have.property('first');
+                                expect(res.body).to.have.property('last');
+                                expect(res.body.first).to.equal(USERS.CLIENT_REGISTER_DATA.first + 'SomeTest');
+                                expect(res.body.last).to.equal(USERS.CLIENT_REGISTER_DATA.last + 'SomeTest');
+
+                                done();
+                            });
                     });
             });
     });

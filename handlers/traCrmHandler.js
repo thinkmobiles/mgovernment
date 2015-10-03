@@ -215,7 +215,9 @@ var TRACRMHandler = function (db) {
         var profileOptions = {
             contactId: crmUserId,
             first: req.body.first,
-            last: req.body.last
+            last: req.body.last,
+            email: req.body.email ? req.body.email : null,
+            mobile: req.body.mobile ? req.body.mobile : null            
         };
 
         traCrmNetWrapper.setProfile(profileOptions, function (err, result) {

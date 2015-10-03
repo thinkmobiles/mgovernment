@@ -538,14 +538,118 @@ var TestCRMNetHandler = function () {
 
     this.setProfile = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
-        //setProfile(options, callback);
+        setProfile(options, callback);
     };
-/*
+
     var setProfile = edge.func({
         source: function () {
             /*
+             using System;
+             using System.Threading.Tasks;
+             using Microsoft.Xrm.Sdk;
+             using Microsoft.Xrm.Client;
+             using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Query;
 
+             public class Startup
+             {
+             public class ProfileResult
+             {
+             public string error = null;
 
+             public string first = null;
+             public string last = null;
+             public string email = null;
+             public string mobile = null;
+             }
+
+             public async Task<object> Invoke(dynamic input)
+             {
+             OrganizationService orgService;
+             string connectionString = (string)input.connectionString;
+
+             string userContactId = (string)input.contactId;
+
+             string first = (string)input.first;
+             string last = (string)input.last;
+             string email = (string)input.email;
+             string mobile = (string)input.mobile;
+
+             CrmConnection connection = CrmConnection.Parse(connectionString);
+
+             using (orgService = new OrganizationService(connection))
+             {
+             Entity contactProfileEntity = FindContactProfile(orgService, userContactId);
+             ProfileResult contactProfile = null;
+
+             if (contactProfileEntity == null)
+             {
+             contactProfile = new ProfileResult();
+             contactProfile.error = "Not Found";
+             }
+             else
+             {
+             contactProfileEntity["firstname"] = first;
+             contactProfileEntity["lastname"] = last;
+             if (email != null)
+             contactProfileEntity["emailaddress1"] = email;
+             if (mobile != null)
+             contactProfileEntity["mobilephone"] = mobile;
+
+             orgService.Update(contactProfileEntity);
+
+             contactProfile = new ProfileResult();
+
+             contactProfile.first = contactProfileEntity["firstname"].ToString();
+             contactProfile.last = contactProfileEntity["lastname"].ToString();
+             contactProfile.email = contactProfileEntity["emailaddress1"].ToString();
+             contactProfile.mobile = contactProfileEntity["mobilephone"].ToString();
+             }
+
+             return contactProfile;
+             }
+             }
+
+             public static Entity FindContactProfile(OrganizationService service, string contactId)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "contact";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("contactid");
+             qe.ColumnSet.Columns.Add("firstname");
+             qe.ColumnSet.Columns.Add("lastname");
+             qe.ColumnSet.Columns.Add("emailaddress1");
+             qe.ColumnSet.Columns.Add("mobilephone");
+             qe.ColumnSet.Columns.Add("tra_portalusername");
+
+             FilterExpression filter = new FilterExpression();
+
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("contactid", ConditionOperator.Equal, new object[] { contactId }));
+
+             qe.Criteria = filter;
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Entity contact = null;
+
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
+             if (ec.Entities.Count == 1)
+             {
+             contact = ec.Entities[0];
+             }
+
+             if (contact == null)
+             {
+             return null;
+             }
+             else
+             {
+             return contact;
+             }
+             }
+             }
+            */
         },
         references: [
             'System.Data.dll',
@@ -562,7 +666,7 @@ var TestCRMNetHandler = function () {
             path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
         ]
     });
-*/
+
     this.changePass = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
         //changePass(options, callback);
