@@ -9,10 +9,12 @@ var async =  require('async');
 var PreparingDB = require('./preparingDB');
 var url = 'http://localhost:80';
 
+var app = require('../../app');
+
 describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
     this.timeout(35000);
 
-    var agent = request.agent(url);
+    var agent = request.agent(app);
     var serviceCollection;
 
     before(function (done) {

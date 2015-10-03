@@ -106,6 +106,13 @@ module.exports = function(db) {
      */
     router.post('/crm/signOut', traCrmHandler.signOutClient);
 
+
+    router.get('/crm/profile', session.authenticatedUser, traCrmHandler.getProfile);
+
+    router.put('/crm/profile', session.authenticatedUser, traCrmHandler.setProfile);
+
+    router.put('/crm/changePass', session.authenticatedUser, traCrmHandler.changePass);
+
     /**
      * This __method__ create SMS Spam Report
      *

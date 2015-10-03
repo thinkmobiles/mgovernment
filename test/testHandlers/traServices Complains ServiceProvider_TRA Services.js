@@ -9,11 +9,12 @@ var async =  require('async');
 var PreparingDB = require('./preparingDB');
 var url = 'http://localhost:80';
 
+var app = require('../../app');
 
 describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function () {
     this.timeout(35000);
 
-    var agent = request.agent(url);
+    var agent = request.agent(app);
     var serviceCollection;
 
     before(function (done) {
@@ -35,14 +36,14 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 if (err) {
                     return done(err)
                 }
-                //console.log('BD preparing completed')
+                console.log('BD preparing completed');
                 done();
             });
     });
 
     it('SEND complainServiceProvider', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_DATA;
         var data = {
             title: 'It works slowly',
             serviceProvider: 'amazon',
@@ -52,7 +53,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
         };
 
         agent
-            .post('/user/signIn')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -76,7 +77,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
 
     it('SEND complainServiceProvider UnAuthorized', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_DATA;
         var data = {
             title: 'It works good, but i dont like img in header.',
             serviceProvider: 'Facebook',
@@ -85,7 +86,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
         };
 
         agent
-            .post('/user/signOut')
+            .post('/crm/signOut')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -96,7 +97,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 agent
                     .post('/complainServiceProvider')
                     .send(data)
-                    .expect(200)
+                    .expect(401)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
@@ -109,14 +110,14 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
 
     it('SEND complainTRAService', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_DATA;
         var data = {
             title: 'I like TRA services',
             description: 'TRA has very cool services. I think TRA is Best of the bests of the bests... :) e.t.c.'
         };
 
         agent
-            .post('/user/signIn')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -140,7 +141,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
 
     it('SEND complainTRAService UnAuthorized', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_DATA;
         var data = {
             title: 'TRA services has pretty developers teem',
             description: 'TRA services has pretty developers teem. Its design, its fast work are greate result of developers work',
@@ -148,7 +149,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
         };
 
         agent
-            .post('/user/signOut')
+            .post('/crm/signOut')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -159,7 +160,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 agent
                     .post('/complainTRAService')
                     .send(data)
-                    .expect(200)
+                    .expect(401)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)

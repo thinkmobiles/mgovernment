@@ -422,6 +422,174 @@ var TestCRMNetHandler = function () {
         ]
     });
 
+    this.getProfile = function (options, callback) {
+        options.connectionString = TRA.CRM_CONNECTION;
+        getProfile(options, callback);
+    };
+
+    var getProfile = edge.func({
+        source: function () {
+            /*
+             using System;
+             using System.Threading.Tasks;
+             using Microsoft.Xrm.Sdk;
+             using Microsoft.Xrm.Client;
+             using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Query;
+
+             public class Startup
+             {
+             public class ProfileResult
+             {
+             public string error = null;
+
+             public string first = null;
+             public string last = null;
+             public string email = null;
+             public string mobile = null;
+             }
+
+             public async Task<object> Invoke(dynamic input)
+             {
+             OrganizationService orgService;
+             string connectionString = (string)input.connectionString;
+
+             string userContactId = (string)input.contactId;
+
+             CrmConnection connection = CrmConnection.Parse(connectionString);
+
+             using (orgService = new OrganizationService(connection))
+             {
+             ProfileResult contactProfile = FindContactProfile(orgService, userContactId);
+
+             if (contactProfile == null)
+             {
+             contactProfile = new ProfileResult();
+             contactProfile.error = "Not Found";
+             }
+
+             return contactProfile;
+             }
+             }
+
+             public static ProfileResult FindContactProfile(OrganizationService service, string contactId)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "contact";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("contactid");
+             qe.ColumnSet.Columns.Add("firstname");
+             qe.ColumnSet.Columns.Add("lastname");
+             qe.ColumnSet.Columns.Add("emailaddress1");
+             qe.ColumnSet.Columns.Add("mobilephone");
+             qe.ColumnSet.Columns.Add("tra_portalusername");
+
+             FilterExpression filter = new FilterExpression();
+
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("contactid", ConditionOperator.Equal, new object[] { contactId }));
+
+             qe.Criteria = filter;
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Entity contact = null;
+
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
+             if (ec.Entities.Count == 1)
+             {
+             contact = ec.Entities[0];
+             }
+
+             if (contact == null)
+             {
+             return null;
+             }
+             else
+             {
+             var profile = new ProfileResult();
+
+             profile.first = contact["firstname"].ToString();
+             profile.last = contact["lastname"].ToString();
+             profile.email = contact["emailaddress1"].ToString();
+             profile.mobile = contact["mobilephone"].ToString();
+
+             return profile;
+             }
+             }
+             }
+            */
+        },
+        references: [
+            'System.Data.dll',
+            'System.ServiceModel.dll',
+            'System.Configuration.dll',
+            'System.Runtime.Serialization.dll',
+            path + 'Microsoft.Xrm.Sdk.dll',
+            path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+            path + 'Microsoft.IdentityModel.dll',
+            path + 'Microsoft.Crm.Sdk.Proxy.dll',
+            path + 'Microsoft.Xrm.Portal.Files.dll',
+            path + 'Microsoft.Xrm.Portal.dll',
+            path + 'Microsoft.Xrm.Client.dll',
+            path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+        ]
+    });
+
+    this.setProfile = function (options, callback) {
+        options.connectionString = TRA.CRM_CONNECTION;
+        setProfile(options, callback);
+    };
+
+    var setProfile = edge.func({
+        source: function () {
+            /*
+
+            */
+        },
+        references: [
+            'System.Data.dll',
+            'System.ServiceModel.dll',
+            'System.Configuration.dll',
+            'System.Runtime.Serialization.dll',
+            path + 'Microsoft.Xrm.Sdk.dll',
+            path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+            path + 'Microsoft.IdentityModel.dll',
+            path + 'Microsoft.Crm.Sdk.Proxy.dll',
+            path + 'Microsoft.Xrm.Portal.Files.dll',
+            path + 'Microsoft.Xrm.Portal.dll',
+            path + 'Microsoft.Xrm.Client.dll',
+            path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+        ]
+    });
+
+    this.changePass = function (options, callback) {
+        options.connectionString = TRA.CRM_CONNECTION;
+        changePass(options, callback);
+    };
+
+    var changePass = edge.func({
+        source: function () {
+            /*
+
+             */
+        },
+        references: [
+            'System.Data.dll',
+            'System.ServiceModel.dll',
+            'System.Configuration.dll',
+            'System.Runtime.Serialization.dll',
+            path + 'Microsoft.Xrm.Sdk.dll',
+            path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+            path + 'Microsoft.IdentityModel.dll',
+            path + 'Microsoft.Crm.Sdk.Proxy.dll',
+            path + 'Microsoft.Xrm.Portal.Files.dll',
+            path + 'Microsoft.Xrm.Portal.dll',
+            path + 'Microsoft.Xrm.Client.dll',
+            path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+        ]
+    });
+
     this.createCase = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
         createCaseNet(options, callback);

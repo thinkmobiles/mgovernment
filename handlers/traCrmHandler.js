@@ -184,6 +184,71 @@ var TRACRMHandler = function (db) {
             });
     }
 
+    this.getProfile = function (req, res, next) {
+        var crmUserId = req.session.crmId;
+
+        traCrmNetWrapper.getProfile({contactId: crmUserId}, function(err, result){
+            if (err) {
+                return next(err);
+            }
+
+            if (result.error) {
+                if (result.error === 'Not Found') {
+                    return res.status(400).send({error: RESPONSE.AUTH.INVALID_CREDENTIALS});
+                }
+                return next(new Error(result.error));
+            }
+
+            delete result.error;
+
+            return res.status(200).send(result);
+        });
+    };
+
+    this.setProfile = function (req, res, next) {
+        var crmUserId = req.session.crmId;
+
+        if (!req.body.first || !req.body.last) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var profileOptions = {
+            contactId: crmUserId,
+            first: req.body.first,
+            last: req.body.last
+        };
+
+        traCrmNetWrapper.setProfile(profileOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+
+            return res.status(200).send(result);
+        });
+    };
+
+    this.changePass = function (req, res, next) {
+        var crmUserId = req.session.crmId;
+
+        if (!req.body.oldPass || !req.body.newPass) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var changePassOptions = {
+            contactId: crmUserId,
+            oldPass: req.body.oldPass,
+            newPass: req.body.newPass
+        };
+
+        traCrmNetWrapper.changePass(changePassOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+
+            return res.status(200).send(result);
+        });
+    };
+
     this.complainSmsSpam = function (req, res, next) {
 
         var phoneSpam = req.body.phone;

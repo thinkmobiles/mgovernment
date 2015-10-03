@@ -17,10 +17,10 @@ var methodOverride = require('method-override');
 
 app.use(logger('dev'));
 app.use(methodOverride('X-HTTP-Method-Override'));
-app.use( express.static( path.join(__dirname, 'public') ) );
-app.use( bodyParser.json({strict: false, limit: 1024 * 1024 * 200}) );
-app.use( bodyParser.urlencoded( { extended: false } ) );
-app.use( cookieParser());
+app.use(express.static( path.join(__dirname, 'public') ) );
+app.use(bodyParser.json({strict: false, limit: 1024 * 1024 * 200}) );
+app.use(bodyParser.urlencoded( { extended: false } ) );
+app.use(cookieParser());
 
 
 // TODO change NODE_ENV for production server
@@ -43,15 +43,15 @@ connectOptions = {
 };
 
 
-mainDb = mongoose.createConnection( process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions );
+mainDb = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
 
-mainDb.on( 'error', console.error.bind( console, 'connection error:' ) );
-mainDb.once( 'open', function callback() {
+mainDb.on('error', console.error.bind( console, 'connection error:' ) );
+mainDb.once('open', function() {
 
     var Schedule = require('./helpers/schedule');
     var schedule = new Schedule(mainDb);
 
-    console.log( "Connection to " + process.env.DB_NAME + " is success" );
+    console.log("Connection to " + process.env.DB_NAME + " is success");
 
     app.use(session({
         secret: '111',
@@ -68,7 +68,7 @@ mainDb.once( 'open', function callback() {
 
     require('./routes')(app, mainDb);
 
-    server.listen(process.env.PORT, function(){
+    server.listen(process.env.PORT, function () {
         console.log('Express server listening on port ' + process.env.PORT);
         console.log('HOST: ' + process.env.HOST);
         console.log('DB_HOST: ' + process.env.DB_HOST);
@@ -76,8 +76,6 @@ mainDb.once( 'open', function callback() {
 });
 
 /*var logWriter = require('./helpers/logWriter')();
-
-
 
 process.on('uncaughtException', function(err) {
     console.log(err);
