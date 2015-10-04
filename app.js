@@ -22,8 +22,8 @@ app.use(bodyParser.json({strict: false, limit: 1024 * 1024 * 200}) );
 app.use(bodyParser.urlencoded( { extended: false } ) );
 app.use(cookieParser());
 
+process.env.NODE_ENV = 'production';
 
-// TODO change NODE_ENV for production server
 if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'development';
 }
