@@ -52,7 +52,7 @@ if (process.env.NODE_ENV == 'production') {
     }
 }
 
-mainDb = mongoose.createConnection(process.env.DB_HOST, connectOptions);
+mainDb = mongoose.createConnection(process.env.DB_HOST);
 
 mainDb.on('error', console.error.bind( console, 'connection error:' ) );
 mainDb.once('open', function() {
