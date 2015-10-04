@@ -863,6 +863,10 @@ var TestCRMNetHandler = function () {
         ]
     });
 
+    this.processForgotPass = function (options, callback) {
+
+    };
+
     this.createCase = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
         createCaseNet(options, callback);

@@ -2,6 +2,7 @@ var CONST = require('../constants/index');
 var RESPONSE = require('../constants/response');
 var TRA = require('../constants/traServices');
 
+var RandomPass = require('../helpers/randomPass');
 var SessionHandler = require('./sessions');
 var TraCrmNetWrapper = require('./crmNetWrapper/traCrmNetWrapper');
 
@@ -254,6 +255,36 @@ var TRACRMHandler = function (db) {
             return res.status(200).send({success: result});
         });
     };
+
+    this.forgotPass = function (req, res, next) {
+
+        if (!req.body.email) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var tempPass = generateTempPass();
+
+        var forgotPassOptions = {
+            email: req.body.email,
+            tempPass: tempPass
+        };
+
+        traCrmNetWrapper.processForgotPass(forgotPassOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+
+            if (!result.error) {
+                return res.status(400).send({error: result.error});
+            }
+
+            return res.status(200).send({success: result});
+        });
+    };
+
+    function generateTempPass() {
+        return RandomPass.generate('alphabetical', 8);
+    }
 
     this.complainSmsSpam = function (req, res, next) {
 
