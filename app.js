@@ -41,7 +41,6 @@ connectOptions = {
 
 if (process.env.NODE_ENV == 'production') {
 
-
     connectOptions.replset = {
         rs_name: process.env.DB_REPLICASET,
         poolSize : 5,
@@ -66,7 +65,7 @@ mainDb.once('open', function() {
         secret: '111123123',
         resave: true,
         saveUninitialized: true,
-        store: require('mongoose-session')(mongoose)
+        store: new MongoStore({ mongooseConnection: mongoose.connection })
     }));
 
     require('./routes')(app, mainDb);
