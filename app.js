@@ -31,17 +31,17 @@ if (!process.env.NODE_ENV) {
 require('./config/' + process.env.NODE_ENV);
 
 connectOptions = {
-    //db: { native_parser: true },
     db: { native_parser: false },
     server: { poolSize: 5 },
-    //replset: { rs_name: 'myReplicaSetName' },
     user: process.env.DB_USER,
     pass: process.env.DB_PASS,
     w: 1,
-    j: true,
-    mongos: true
+    j: true
 };
 
+if (process.env.NODE_ENV === 'production') {
+    connectOptions.replset = { rs_name: process.env.DB_REPLICASET }
+}
 
 mainDb = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
 
