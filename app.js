@@ -63,16 +63,10 @@ mainDb.once('open', function() {
     console.log("Connection to " + process.env.DB_NAME + " is success");
 
     app.use(session({
-        secret: '111',
+        secret: '111123123',
         resave: true,
         saveUninitialized: true,
-        store: new MongoStore({
-            host: process.env.DB_HOST,
-            port: process.env.DB_PORT,
-            db: process.env.DB_NAME,
-            autoReconnect: true,
-            ssl: false
-        })
+        store: new MongoStore({ db: mongoose.connections[0].db })
     }));
 
     require('./routes')(app, mainDb);
