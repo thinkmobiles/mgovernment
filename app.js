@@ -39,7 +39,9 @@ connectOptions = {
     j: true
 };
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV == 'production') {
+
+
     connectOptions.replset = {
         rs_name: process.env.DB_REPLICASET,
         poolSize : 5,
@@ -50,7 +52,7 @@ if (process.env.NODE_ENV === 'production') {
     }
 }
 
-mainDb = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
+mainDb = mongoose.createConnection(process.env.DB_HOST, connectOptions);
 
 mainDb.on('error', console.error.bind( console, 'connection error:' ) );
 mainDb.once('open', function() {
