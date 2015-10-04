@@ -40,7 +40,14 @@ connectOptions = {
 };
 
 if (process.env.NODE_ENV === 'production') {
-    connectOptions.replset = { rs_name: process.env.DB_REPLICASET }
+    connectOptions.replset = {
+        rs_name: process.env.DB_REPLICASET,
+        poolSize : 5,
+        socketOptions : {
+            keepAlive : 1,
+            connectTimeoutMS : 1000
+        }
+    }
 }
 
 mainDb = mongoose.createConnection(process.env.DB_HOST, process.env.DB_NAME, process.env.DB_PORT, connectOptions);
