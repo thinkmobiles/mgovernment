@@ -12,7 +12,7 @@ var connectOptions;
 var mainDb;
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-var MongoStore = require('connect-mongo')( session );
+var MongoStore = require('connect-mongostore')(session);
 var methodOverride = require('method-override');
 
 app.use(logger('dev'));
@@ -65,7 +65,7 @@ mainDb.once('open', function() {
         secret: '111123123',
         resave: true,
         saveUninitialized: true,
-        store: new MongoStore({ mongooseConnection: mongoose.connection })
+        store: new MongoStore({mongooseConnection: mongoose.connections[0], db:'sessions'})
     }));
 
     require('./routes')(app, mainDb);
