@@ -66,7 +66,7 @@ mainDb.once('open', function() {
         secret: '111123123',
         resave: true,
         saveUninitialized: true,
-        store: new MongoStore({ db: mongoose.connections[0].db })
+        store: require('mongoose-session')(mongoose)
     }));
 
     require('./routes')(app, mainDb);
