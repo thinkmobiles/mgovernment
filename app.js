@@ -65,7 +65,26 @@ mainDb.once('open', function() {
         secret: '111123123',
         resave: true,
         saveUninitialized: true,
-        store: new MongoStore({mongooseConnection: mongoose.connections[0], db:'sessions'})
+        store: new MongoStore({db: {
+            name: 'sessions',
+            servers:[
+                {
+                    host: "192.168.90.51",
+                    port: "27017"
+                },
+                {
+                    host: "192.168.90.52",
+                    port: "27017"
+                },
+                {
+                    host: "192.168.91.74",
+                    port: "27017"
+                }
+            ],
+            replicaSetOptions: {
+                rs_name: process.env.DB_REPLICASET
+            }
+        }})
     }));
 
     require('./routes')(app, mainDb);
