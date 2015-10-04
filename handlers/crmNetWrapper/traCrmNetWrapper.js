@@ -909,6 +909,7 @@ var TestCRMNetHandler = function () {
 
              if (licensee != null && !string.IsNullOrWhiteSpace(licensee))
              {
+
              string licenseeReferenceNo = (string)input.licenseeReferenceNo;
              string foundLicenseeId = FindLicenseId(orgService, licensee);
 
@@ -938,8 +939,9 @@ var TestCRMNetHandler = function () {
              }
              }
 
-             public static string FindLicenseId(OrganizationService service, string licensee)
+             public string FindLicenseId(OrganizationService service, string licensee)
              {
+             Console.WriteLine("In start find licensee: {0}", licensee);
              QueryExpression qe = new QueryExpression();
              qe.EntityName = "tra_licensee";
              qe.ColumnSet = new ColumnSet();

@@ -291,7 +291,7 @@ var TRACRMHandler = function (db) {
         var description = req.body.description;
         var title = req.body.title;
         var serviceProvider = req.body.serviceProvider;
-        var referenceNumber = req.body.referenceNumber;
+        var referenceNumber = req.body.referenceNumber.toString();
 
         if (!title || !description) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
