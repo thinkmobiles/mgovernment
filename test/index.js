@@ -13,6 +13,7 @@ var app = require('../app');
 //require('./testHandlers/usersAuthCrm');
 //require('./testHandlers/usersProfileCrm');
 require('./testHandlers/traServicesAboutInfo');
+require('./testHandlers/traServicesCrmTransactions');
 //require('./testHandlers/traServicesCrm');
 //require('./testHandlers/traServices WHOIS_IMEI_BRAND');
 //require('./testHandlers/traServices Complains ServiceProvider_TRA Services');

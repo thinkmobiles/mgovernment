@@ -207,4 +207,33 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
             });
     });
 
+    it('CRM Forgot Password', function (done) {
+        this.timeout(20000);
+
+        agent
+            .post('/crm/signOut')
+            .send({})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/crm/forgotPass')
+                    .send({
+                        email: USERS.CLIENT_REGISTER_DATA.email
+                    })
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.log(res.body);
+
+                        done();
+                    });
+            });
+    });
+
 });
