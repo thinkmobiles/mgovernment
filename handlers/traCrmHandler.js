@@ -289,7 +289,11 @@ var TRACRMHandler = function (db) {
     this.getTransactions = function (req, res, next) {
 
         var userOptions = {
-            contactId: req.session.crmId
+            contactId: req.session.crmId,
+            page: req.query.page ? (req.query.page < 1 ? 1 : req.query.page) : 1,
+            count: req.query.count ? (req.query.count < 1 ? 1 : req.query.count) : 10,
+            orderBy: 'modifiedon',
+            orderAsc: !!req.query.orderAsc
         };
 
         traCrmNetWrapper.getTransactions(userOptions, function (err, result) {
@@ -301,7 +305,7 @@ var TRACRMHandler = function (db) {
                 return res.status(400).send({error: result.error});
             }
 
-            return res.status(200).send({success: result.transactions});
+            return res.status(200).send(result.transactions);
         });
     };
 

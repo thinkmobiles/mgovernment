@@ -894,9 +894,15 @@ var TestCRMNetHandler = function () {
              public class Transaction
              {
              public string title = null;
-             public string description = null;
-             public string datetime = null;
-             public string state = null;
+             public string type = null;
+
+             public string traSubmitDatetime = null;
+             public string modifiedDatetime = null;
+
+             public string stateCode = null;
+             public string statusCode = null;
+             public string traStatus = null;
+             public string serviceStage = null;
              }
 
              public async Task<object> Invoke(dynamic input)
@@ -905,12 +911,16 @@ var TestCRMNetHandler = function () {
              string connectionString = (string)input.connectionString;
 
              string userContactId = (string)input.contactId;
+             int page = (int)input.page;
+             int count = (int)input.count;
+             string orderBy = (string)input.orderBy;
+             bool orderAsc = (bool)input.orderAsc;
 
              CrmConnection connection = CrmConnection.Parse(connectionString);
 
              using (orgService = new OrganizationService(connection))
              {
-             EntityCollection userCases = FindCasesForUser(orgService, userContactId);
+             EntityCollection userCases = FindCasesForUser(orgService, userContactId, page, count, orderBy, orderAsc);
              CasesResult caseResult = new CasesResult();
 
              if (userCases != null)
@@ -922,21 +932,13 @@ var TestCRMNetHandler = function () {
              Transaction tr = new Transaction();
 
              tr.title = userCases.Entities[i]["title"].ToString();
-             tr.description = userCases.Entities[i]["description"].ToString();
-
-             Console.WriteLine(userCases.Entities[i]["title"]);
-             Console.WriteLine(userCases.Entities[i]["description"]);
-
-             Console.WriteLine("statecode: {0}", userCases.Entities[i].FormattedValues["statecode"]);
-             Console.WriteLine("statuscode: {0}", userCases.Entities[i].FormattedValues["statuscode"]);
-             Console.WriteLine("tra_casestatus: {0}", userCases.Entities[i].FormattedValues["tra_casestatus"]);
-             Console.WriteLine("servicestage: {0}", userCases.Entities[i].FormattedValues["servicestage"]);
-             Console.WriteLine("modifiedon: {0}", userCases.Entities[i]["modifiedon"]);
-             Console.WriteLine("createdon: {0}", userCases.Entities[i]["createdon"]);
-             Console.WriteLine("tra_trasubmitdate: {0}", userCases.Entities[i]["tra_trasubmitdate"]);
-             Console.WriteLine("casetypecode: {0}", userCases.Entities[i].FormattedValues["casetypecode"]);
-
-             //Console.WriteLine(userCases.Entities[i]);
+             tr.type = userCases.Entities[i].FormattedValues["casetypecode"].ToString();
+             tr.stateCode = userCases.Entities[i].FormattedValues["statecode"].ToString();
+             tr.statusCode = userCases.Entities[i].FormattedValues["statuscode"].ToString();
+             tr.serviceStage = userCases.Entities[i].FormattedValues["servicestage"].ToString();
+             tr.traStatus = userCases.Entities[i].FormattedValues["tra_casestatus"].ToString();
+             tr.traSubmitDatetime = userCases.Entities[i]["tra_trasubmitdate"].ToString();
+             tr.modifiedDatetime = userCases.Entities[i]["modifiedon"].ToString();
 
              caseResult.transactions[i] = tr;
              }
@@ -946,11 +948,15 @@ var TestCRMNetHandler = function () {
              }
              }
 
-             public static EntityCollection FindCasesForUser(OrganizationService service, string userContactId)
+             public static EntityCollection FindCasesForUser(OrganizationService service, string userContactId, int page, int count, string orderBy, bool orderAsc)
              {
              QueryExpression qe = new QueryExpression();
              qe.EntityName = "incident";
              qe.ColumnSet = new ColumnSet(true);
+
+             qe.PageInfo = new PagingInfo();
+             qe.PageInfo.Count = count;
+             qe.PageInfo.PageNumber = page;
 
              FilterExpression filter = new FilterExpression();
 
@@ -958,6 +964,7 @@ var TestCRMNetHandler = function () {
              filter.AddCondition(new ConditionExpression("customerid", ConditionOperator.Equal, new object[] { userContactId }));
 
              qe.Criteria = filter;
+             qe.Orders.Add(new OrderExpression(orderBy, orderAsc ? OrderType.Ascending : OrderType.Descending));
 
              EntityCollection ec = service.RetrieveMultiple(qe);
              Console.WriteLine("found count: {0}", ec.Entities.Count);

@@ -56,6 +56,66 @@ describe('TRA CRM Services tests SMSSpam', function () {
                         }
                         console.dir(res.body);
 
+                        expect(res.body).to.be.instanceof(Array);
+
+                        done();
+                    });
+            });
+    });
+
+    it('Get Transactions Page 2 Count 5 ASC', function (done) {
+
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+
+        agent
+            .post('/crm/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/crm/transactions?page=2&count=5&orderAsc=1')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+
+                        expect(res.body).to.be.instanceof(Array);
+
+                        done();
+                    });
+            });
+    });
+
+    it('Get Transactions Page 1 Count 5', function (done) {
+
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+
+        agent
+            .post('/crm/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/crm/transactions?page=2&count=5')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+
+                        expect(res.body).to.be.instanceof(Array);
+
                         done();
                     });
             });
