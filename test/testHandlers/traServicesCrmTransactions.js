@@ -6,12 +6,11 @@ var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:80';
 
 var app = require('../../app');
 
 describe('TRA CRM Services tests SMSSpam', function () {
-    this.timeout(20000);
+    this.timeout(30000);
 
     var agent = request.agent(app);
     var serviceCollection;
@@ -62,7 +61,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
 
-    it('SEND Suggestion AND Get Transactions', function (done) {
+    /*it('SEND Suggestion AND Get Transactions', function (done) {
 
         var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
@@ -102,6 +101,6 @@ describe('TRA CRM Services tests SMSSpam', function () {
                             });
                     });
             });
-    });
+    });*/
 
 });

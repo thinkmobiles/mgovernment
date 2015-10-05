@@ -927,11 +927,16 @@ var TestCRMNetHandler = function () {
              Console.WriteLine(userCases.Entities[i]["title"]);
              Console.WriteLine(userCases.Entities[i]["description"]);
 
-             Console.WriteLine("statecode: {0}", userCases.Entities[i]["statecode"]);
-             Console.WriteLine("statuscode: {0}", userCases.Entities[i]["statuscode"]);
-             Console.WriteLine("tra_casestatus: {0}", userCases.Entities[i]["tra_casestatus"]);
+             Console.WriteLine("statecode: {0}", userCases.Entities[i].FormattedValues["statecode"]);
+             Console.WriteLine("statuscode: {0}", userCases.Entities[i].FormattedValues["statuscode"]);
+             Console.WriteLine("tra_casestatus: {0}", userCases.Entities[i].FormattedValues["tra_casestatus"]);
+             Console.WriteLine("servicestage: {0}", userCases.Entities[i].FormattedValues["servicestage"]);
+             Console.WriteLine("modifiedon: {0}", userCases.Entities[i]["modifiedon"]);
+             Console.WriteLine("createdon: {0}", userCases.Entities[i]["createdon"]);
+             Console.WriteLine("tra_trasubmitdate: {0}", userCases.Entities[i]["tra_trasubmitdate"]);
+             Console.WriteLine("casetypecode: {0}", userCases.Entities[i].FormattedValues["casetypecode"]);
 
-             Console.WriteLine(userCases.Entities[i]);
+             //Console.WriteLine(userCases.Entities[i]);
 
              caseResult.transactions[i] = tr;
              }
