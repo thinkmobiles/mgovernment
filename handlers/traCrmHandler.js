@@ -286,6 +286,25 @@ var TRACRMHandler = function (db) {
         return RandomPass.generate('alphabetical', 8);
     }
 
+    this.getTransactions = function (req, res, next) {
+
+        var userOptions = {
+            contactId: req.session.crmId
+        };
+
+        traCrmNetWrapper.getTransactions(userOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+
+            if (!result.error) {
+                return res.status(400).send({error: result.error});
+            }
+
+            return res.status(200).send({success: result.transactions});
+        });
+    };
+
     this.complainSmsSpam = function (req, res, next) {
 
         var phoneSpam = req.body.phone;

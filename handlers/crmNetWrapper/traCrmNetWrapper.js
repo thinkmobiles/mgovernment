@@ -867,6 +867,122 @@ var TestCRMNetHandler = function () {
 
     };
 
+    this.getTransactions = function (options, callback) {
+        options.connectionString = TRA.CRM_CONNECTION;
+        getUserTransactions(options, callback);
+    };
+
+    var getUserTransactions = edge.func({
+        source: function () {
+            /*
+             using System;
+             using System.Threading.Tasks;
+             using Microsoft.Xrm.Sdk;
+             using Microsoft.Xrm.Client;
+             using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Query;
+
+             public class Startup
+             {
+             public class CasesResult
+             {
+             public string error = null;
+
+             public object[] transactions = new object[0];
+             }
+
+             public class Transaction
+             {
+             public string title = null;
+             public string description = null;
+             public string datetime = null;
+             public string state = null;
+             }
+
+             public async Task<object> Invoke(dynamic input)
+             {
+             OrganizationService orgService;
+             string connectionString = (string)input.connectionString;
+
+             string userContactId = (string)input.contactId;
+
+             CrmConnection connection = CrmConnection.Parse(connectionString);
+
+             using (orgService = new OrganizationService(connection))
+             {
+             EntityCollection userCases = FindCasesForUser(orgService, userContactId);
+             CasesResult caseResult = new CasesResult();
+
+             if (userCases != null)
+             {
+             caseResult.transactions = new object[userCases.Entities.Count];
+
+             for (int i = 0; i < userCases.Entities.Count; i++)
+             {
+             Transaction tr = new Transaction();
+
+             tr.title = userCases.Entities[i]["title"].ToString();
+             tr.description = userCases.Entities[i]["description"].ToString();
+
+             Console.WriteLine(userCases.Entities[i]["title"]);
+             Console.WriteLine(userCases.Entities[i]["description"]);
+
+             Console.WriteLine("statecode: {0}", userCases.Entities[i]["statecode"]);
+             Console.WriteLine("statuscode: {0}", userCases.Entities[i]["statuscode"]);
+             Console.WriteLine("tra_casestatus: {0}", userCases.Entities[i]["tra_casestatus"]);
+
+             Console.WriteLine(userCases.Entities[i]);
+
+             caseResult.transactions[i] = tr;
+             }
+             }
+
+             return caseResult;
+             }
+             }
+
+             public static EntityCollection FindCasesForUser(OrganizationService service, string userContactId)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "incident";
+             qe.ColumnSet = new ColumnSet(true);
+
+             FilterExpression filter = new FilterExpression();
+
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("customerid", ConditionOperator.Equal, new object[] { userContactId }));
+
+             qe.Criteria = filter;
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
+             if (ec.Entities.Count > 0)
+             {
+             return ec;
+             }
+
+             return null;
+             }
+             }
+            */
+        },
+        references: [
+            'System.Data.dll',
+            'System.ServiceModel.dll',
+            'System.Configuration.dll',
+            'System.Runtime.Serialization.dll',
+            path + 'Microsoft.Xrm.Sdk.dll',
+            path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+            path + 'Microsoft.IdentityModel.dll',
+            path + 'Microsoft.Crm.Sdk.Proxy.dll',
+            path + 'Microsoft.Xrm.Portal.Files.dll',
+            path + 'Microsoft.Xrm.Portal.dll',
+            path + 'Microsoft.Xrm.Client.dll',
+            path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+        ]
+    });
+
     this.createCase = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
         createCaseNet(options, callback);
