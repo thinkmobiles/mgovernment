@@ -24,6 +24,7 @@ module.exports = {
         SERVICE: 'Service',
         IMAGE: 'Image',
         FEEDBACK: 'Feedback',
+        INNOVATION: 'Innovation',
         EMAIL_REPORT: 'emailReport'
     },
 

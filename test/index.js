@@ -12,8 +12,9 @@ var app = require('../app');
 //require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/usersAuthCrm');
 //require('./testHandlers/usersProfileCrm');
-//require('./testHandlers/traServicesAboutInfo');
-require('./testHandlers/traServicesCrmTransactions');
+require('./testHandlers/traServicesAboutInfo');
+//require('./testHandlers/traInnovations');
+//require('./testHandlers/traServicesCrmTransactions');
 //require('./testHandlers/traServicesCrm');
 //require('./testHandlers/traServices WHOIS_IMEI_BRAND');
 //require('./testHandlers/traServices Complains ServiceProvider_TRA Services');

@@ -78,37 +78,24 @@ var UserService = function(db) {
 
     this.getServiceNames = function (req, res, next) {
 
-        Service
-            .find()
-            .select('-_id serviceName')
-            .exec(function (err, collection) {
-                if (err) {
-                    return next(err);
-                }
+        var lang = req.query.lang ? req.query.lang.toUpperCase() : 'EN';
 
-                var log = {
-                    user: req.session.uId || null,
-                    action: CONST.ACTION.GET,
-                    model: CONST.MODELS.SERVICE,
-                    modelId: '',
-                    req: {params: req.params, body: req.params},
-                    res: collection,
-                    description: 'Get Services Names'
-                };
-                var result = [];
+        if (!(lang === 'EN' || lang === 'AR')) {
+            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
+        }
 
-                userHistoryHandler.pushlog(log);
+        var serviceNames = [];
+        var serviceInfos = SERVICES_INFO[lang];
 
-                for (var i = collection.length-1; i >= 0; i--){
-                    result.push(collection[i].serviceName);
-                }
+        for(var serviceInfo in serviceInfos) {
+            serviceNames.push(serviceInfos[serviceInfo].Name);
+        }
 
-                //return res.status(200).send(result);
-                return res.status(200).send(["complain Poor Coverage", "complain about TRA Service", "complain about Service Provider", "complain Enquiries", "complain Suggestion", "Rating service", "Help Salim", "SMS Spam Block", "SMS Spam Report", "Search Device By BrandName", "Search Device By Imei", "Check Domain Availability", "Get Domain Data"]);
-            });
+        return res.status(200).send(serviceNames);
     };
 
     this.getServiceAbout = function(req, res, next) {
+
         var serviceName = req.query.name;
         var lang = req.query.lang ? req.query.lang.toUpperCase() : 'EN';
 

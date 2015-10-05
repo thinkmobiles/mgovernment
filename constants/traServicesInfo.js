@@ -1,8 +1,8 @@
 module.exports = {
 
     EN: {
-        'complain poor coverage': {
-            'Name': 'Complain Poor Coverage',
+        'coverage': {
+            'Name': 'Coverage',
             'Service Package': '.',
             'Expected time': 'Immediate',
             'Officer in charge of this service': 'ICT Analyst',
@@ -10,8 +10,8 @@ module.exports = {
             'Service fee': 'Free',
             'Terms and conditions': 'The application was designed to give as much accurate results as possible. However, PC configuration, usage of home wireless router, other connected devices in use while testing the broadband connection, as well as some external factors can affect the results obtained.'
         },
-        'complain about tra service': {
-            'Name': 'Complain about TRA Service',
+        'complain about tra': {
+            'Name': 'Complain About TRA',
             'About the service': 'You can file a complaint or put remarks about your telecom service provider',
             'Service Package': '.',
             'Expected time': 'Within 3 working days; could take more time based on the subject of the complaint',
@@ -21,7 +21,7 @@ module.exports = {
             'Terms and conditions': 'Applicant information'
         },
         'complain about service provider': {
-            'Name': 'Complain about service provider',
+            'Name': 'Complain About Service Provider',
             'About the service': 'You can file a complaint or put remarks about your telecom service provider',
             'Service Package': '.',
             'Expected time': 'Within 3 working days; could take more time based on the subject of the complaint',
@@ -31,7 +31,7 @@ module.exports = {
             'Terms and conditions': 'Applicant information'
         },
         'suggestion': {
-            'Name': 'Submit a suggestion',
+            'Name': 'Suggestion',
             'About the service': 'This service involves submitting a suggestion to TRA',
             'Service Package': '.',
             'Expected time': 'Within 3 working days or more according to the subject of the suggestion',
@@ -40,8 +40,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Information of the applicant'
         },
-        'complain enquiries': {
-            'Name': 'Complain Enquiries',
+        'enquiries': {
+            'Name': 'Enquiries',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -50,8 +50,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
         },
-        'help salim': {
-            'Name': 'Help Salim',
+        'spam report': {
+            'Name': 'Spam Report',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -60,8 +60,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
         },
-        'sms spam block': {
-            'Name': 'SMS Spam Block',
+        'mobile brand': {
+            'Name': 'Mobile Brand',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -70,8 +70,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
         },
-        'sms spam report': {
-            'Name': 'SMS Spam Report',
+        'verification': {
+            'Name': 'Verification',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -80,38 +80,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
         },
-        'search brand': {
-            'Name': 'Search Brand',
-            'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
-            'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Officer in charge of this service': 'Call center administrator',
-            'Required documents': 'None',
-            'Service fee': 'None',
-            'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
-        },
-        'search imei': {
-            'Name': 'Search IMEI',
-            'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
-            'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Officer in charge of this service': 'Call center administrator',
-            'Required documents': 'None',
-            'Service fee': 'None',
-            'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
-        },
-        'check domain availability': {
-            'Name': 'Check Domain Availability',
-            'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
-            'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Officer in charge of this service': 'Call center administrator',
-            'Required documents': 'None',
-            'Service fee': 'None',
-            'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
-        },
-        'get domain data': {
-            'Name': 'Get Domain Data',
+        'domain check': {
+            'Name': 'Domain Check',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -123,8 +93,8 @@ module.exports = {
     },
 
     AR:{
-        'complain poor coverage': {
-            'Name': '?????? ???? ??????????',
+        'coverage': {
+            'Name': 'التغطية',
             'Service Package': '.',
             'Expected time': '????',
             'Officer in charge of this service': '??? ??? ?????????',
@@ -132,8 +102,8 @@ module.exports = {
             'Service fee': '?? ???? ?? ????',
             'Terms and conditions': '??? ?? ????? ??????? ?????? ????? ????? ??? ???????. ??? ???? ??? ????? ????? ?????? ???????? ???? ??????? ????????? ????????? ??????? ?????? ??????? ???? ?? ?????? ????? ????????? ???????? ??? ???? ??????? ???????? ???? ???? ??? ??????? ???? ?? ?????? ?????.'
         },
-        'complain about tra service': {
-            'Name': '????? ???? ??? ???? ??????',
+        'complain about tra': {
+            'Name': 'شكوى على الهيئة',
             'About the service': '??????? ????? ???? ?? ?????? ???  ???? ?????? ????? ??',
             'Service Package': '.',
             'Expected time': '???? 3 ???? ??? ? ?? ?????? ????? ???? ?? ??? ???? ??? ????? ??????',
@@ -143,7 +113,7 @@ module.exports = {
             'Terms and conditions': '??????? ?? ???? ?????'
         },
         'complain about service provider': {
-            'Name': '????? ???? ??? ???? ??????',
+            'Name': 'شكوى على مزود خدمة',
             'About the service': '??????? ????? ???? ?? ?????? ???  ???? ?????? ????? ??',
             'Service Package': '.',
             'Expected time': '???? 3 ???? ??? ? ?? ?????? ????? ???? ?? ??? ???? ??? ????? ??????',
@@ -153,7 +123,7 @@ module.exports = {
             'Terms and conditions': '??????? ?? ???? ?????'
         },
         'suggestion': {
-            'Name': 'Submit a suggestion',
+            'Name': 'اقتراح',
             'About the service': 'This service involves submitting a suggestion to TRA',
             'Service Package': '.',
             'Expected time': 'Within 3 working days or more according to the subject of the suggestion',
@@ -162,8 +132,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Information of the applicant'
         },
-        'complain enquiries': {
-            'Name': 'Complain Enquiries',
+        'enquiries': {
+            'Name': 'استفسارات',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -172,8 +142,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
         },
-        'help salim': {
-            'Name': 'Help Salim',
+        'spam report': {
+            'Name': 'رسائل غير مرغوبة',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -182,8 +152,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
         },
-        'sms spam block': {
-            'Name': 'SMS Spam Block',
+        'mobile brand': {
+            'Name': 'الأجهزة المعتمدة',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -192,8 +162,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
         },
-        'sms spam report': {
-            'Name': 'SMS Spam Report',
+        'verification': {
+            'Name': 'تحقق من جهاز',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -202,38 +172,8 @@ module.exports = {
             'Service fee': 'None',
             'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
         },
-        'search brand': {
-            'Name': 'Search Brand',
-            'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
-            'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Officer in charge of this service': 'Call center administrator',
-            'Required documents': 'None',
-            'Service fee': 'None',
-            'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
-        },
-        'search imei': {
-            'Name': 'Search IMEI',
-            'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
-            'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Officer in charge of this service': 'Call center administrator',
-            'Required documents': 'None',
-            'Service fee': 'None',
-            'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
-        },
-        'check domain availability': {
-            'Name': 'Check Domain Availability',
-            'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
-            'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Officer in charge of this service': 'Call center administrator',
-            'Required documents': 'None',
-            'Service fee': 'None',
-            'Terms and conditions': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel'
-        },
-        'get domain data': {
-            'Name': 'Get Domain Data',
+        'domain check': {
+            'Name': 'تحقق من نطاق',
             'About the service': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus molestie aliquam mi, vitae lobortis nulla viverra non. Etiam massa dui, consequat vitae erat porttitor, aliquet lobortis metus. Phasellus non velit leo. In eleifend congue dui, in suscipit diam placerat vel',
             'Service Package': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Expected time': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

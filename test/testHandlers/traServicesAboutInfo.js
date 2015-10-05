@@ -83,4 +83,38 @@ describe('Get About Services Info', function () {
             });
     });
 
+    it('GET Service Names EN', function (done) {
+        this.timeout(2000);
+
+        agent
+            .get('/service/serviceNames')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                console.dir(res.body);
+
+                done();
+            });
+    });
+
+    it('GET Service Names AR', function (done) {
+        this.timeout(2000);
+
+        agent
+            .get('/service/serviceNames?lang=AR')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                console.dir(res.body);
+
+                done();
+            });
+    });
+
 });
