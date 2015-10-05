@@ -288,10 +288,13 @@ var TRACRMHandler = function (db) {
 
     this.getTransactions = function (req, res, next) {
 
+        var page = req.query.page ? parseInt(req.query.page) : 1;
+        var count = req.query.count ? parseInt(req.query.count) : 10;
+
         var userOptions = {
             contactId: req.session.crmId,
-            page: req.query.page ? (req.query.page < 1 ? 1 : req.query.page) : 1,
-            count: req.query.count ? (req.query.count < 1 ? 1 : req.query.count) : 10,
+            page: page < 1 ? 1 : page,
+            count: count < 1 ? 1 : count,
             orderBy: 'modifiedon',
             orderAsc: !!req.query.orderAsc
         };

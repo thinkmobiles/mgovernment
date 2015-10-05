@@ -106,7 +106,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .get('/crm/transactions?page=2&count=5')
+                    .get('/crm/transactions?page=1&count=5')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
