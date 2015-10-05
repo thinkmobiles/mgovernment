@@ -274,7 +274,7 @@ var TRACRMHandler = function (db) {
                 return next(err);
             }
 
-            if (!result.error) {
+            if (result.error) {
                 return res.status(400).send({error: result.error});
             }
 
@@ -297,7 +297,7 @@ var TRACRMHandler = function (db) {
                 return next(err);
             }
 
-            if (!result.error) {
+            if (result.error) {
                 return res.status(400).send({error: result.error});
             }
 
