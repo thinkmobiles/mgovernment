@@ -11,8 +11,8 @@ module.exports = function(db) {
     var session = new SessionHandler(db);
 
     router.route('/')
-        .post(session.isAuthenticatedUser, userInnovation.createInnovation)
-        .get(session.isAuthenticatedUser, userInnovation.getAllInnovations);
+        .post(session.authenticatedUser, userInnovation.createInnovation)
+        .get(session.authenticatedUser, userInnovation.getAllInnovations);
 
     return router;
 };
