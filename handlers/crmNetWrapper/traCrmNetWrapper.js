@@ -894,6 +894,7 @@ var TestCRMNetHandler = function () {
              public class Transaction
              {
              public string title = null;
+             public string description = null;
              public string type = null;
 
              public string traSubmitDatetime = null;
@@ -932,6 +933,7 @@ var TestCRMNetHandler = function () {
              Transaction tr = new Transaction();
 
              tr.title = userCases.Entities[i]["title"].ToString();
+             tr.description = userCases.Entities[i]["description"].ToString();
              tr.type = userCases.Entities[i].FormattedValues["casetypecode"].ToString();
              tr.stateCode = userCases.Entities[i].FormattedValues["statecode"].ToString();
              tr.statusCode = userCases.Entities[i].FormattedValues["statuscode"].ToString();
