@@ -247,12 +247,13 @@ var TestCRMNetHandler = function () {
              string connectionString = (string)input.connectionString;
 
              string login = (string)input.login;
+             string email = (string)input.email;
 
              CrmConnection connection = CrmConnection.Parse(connectionString);
 
              using (orgService = new OrganizationService(connection))
              {
-             string contactId = FindContactByLogin(orgService, login);
+             string contactId = FindContactByLoginOrEmail(orgService, login, email);
 
              if (contactId != null)
              {
@@ -265,7 +266,7 @@ var TestCRMNetHandler = function () {
              }
              }
 
-             public static string FindContactByLogin(OrganizationService service, string login)
+             public static string FindContactByLoginOrEmail(OrganizationService service, string login, string email)
              {
              QueryExpression qe = new QueryExpression();
              qe.EntityName = "contact";
@@ -276,8 +277,9 @@ var TestCRMNetHandler = function () {
 
              FilterExpression filter = new FilterExpression();
 
-             filter.FilterOperator = LogicalOperator.And;
+             filter.FilterOperator = LogicalOperator.Or;
              filter.AddCondition(new ConditionExpression("tra_portalusername", ConditionOperator.Equal, new object[] { login }));
+             filter.AddCondition(new ConditionExpression("emailaddress1", ConditionOperator.Equal, new object[] { login }));
 
              qe.Criteria = filter;
 
