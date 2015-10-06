@@ -81,7 +81,7 @@ var UserService = function(db) {
         var lang = req.query.lang ? req.query.lang.toUpperCase() : 'EN';
 
         if (!(lang === 'EN' || lang === 'AR')) {
-            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
         }
 
         var serviceNames = [];
@@ -100,11 +100,11 @@ var UserService = function(db) {
         var lang = req.query.lang ? req.query.lang.toUpperCase() : 'EN';
 
         if (!serviceName) {
-            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         if (!(lang === 'EN' || lang === 'AR')) {
-            res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
         }
 
         serviceName = serviceName.toLowerCase();
