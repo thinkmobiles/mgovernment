@@ -907,7 +907,7 @@ var TestCRMNetHandler = function () {
 
              if (contactProfileEntity == null)
              {
-             return "Not Found";
+             return "Email is not found";
              }
              else
              {
