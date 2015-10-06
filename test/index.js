@@ -11,8 +11,8 @@ var app = require('../app');
 
 //require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/usersAuthCrm');
-//require('./testHandlers/usersProfileCrm');
-require('./testHandlers/traServicesAboutInfo');
+require('./testHandlers/usersProfileCrm');
+//require('./testHandlers/traServicesAboutInfo');
 //require('./testHandlers/traInnovations');
 //require('./testHandlers/traServicesCrmTransactions');
 //require('./testHandlers/traServicesCrm');

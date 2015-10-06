@@ -253,11 +253,11 @@ var TestCRMNetHandler = function () {
 
              using (orgService = new OrganizationService(connection))
              {
-             string contactId = FindContactByLoginOrEmail(orgService, login, email);
+             string findResult = FindContactByLoginOrEmail(orgService, login, email);
 
-             if (contactId != null)
+             if (findResult != null)
              {
-             return "Login is used";
+             return findResult + " is used";
              }
 
              CreateContact(input, orgService);
@@ -274,12 +274,13 @@ var TestCRMNetHandler = function () {
              qe.ColumnSet.Columns.Add("contactid");
              qe.ColumnSet.Columns.Add("fullname");
              qe.ColumnSet.Columns.Add("tra_portalusername");
+             qe.ColumnSet.Columns.Add("emailaddress1");
 
              FilterExpression filter = new FilterExpression();
 
              filter.FilterOperator = LogicalOperator.Or;
              filter.AddCondition(new ConditionExpression("tra_portalusername", ConditionOperator.Equal, new object[] { login }));
-             filter.AddCondition(new ConditionExpression("emailaddress1", ConditionOperator.Equal, new object[] { login }));
+             filter.AddCondition(new ConditionExpression("emailaddress1", ConditionOperator.Equal, new object[] { email }));
 
              qe.Criteria = filter;
 
@@ -291,7 +292,15 @@ var TestCRMNetHandler = function () {
              if (ec.Entities.Count > 0)
              {
              contact = ec.Entities[0];
-             return contact["contactid"].ToString();
+
+             if (contact["tra_portalusername"].ToString() == login)
+             {
+             return "Login";
+             }
+             else
+             {
+             return "Email";
+             }
              }
              return null;
              }

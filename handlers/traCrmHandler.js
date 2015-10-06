@@ -266,10 +266,11 @@ var TRACRMHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
+        var email = req.body.email;
         var tempPass = generateTempPass();
 
         var forgotPassOptions = {
-            email: req.body.email,
+            email: email,
             tempPass: tempPass
         };
 

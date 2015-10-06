@@ -113,7 +113,7 @@ module.exports = function(db) {
 
     router.put('/crm/changePass', session.authenticatedUser, traCrmHandler.changePass);
 
-    router.post('/crm/forgotPass', session.authenticatedUser, traCrmHandler.forgotPass);
+    router.post('/crm/forgotPass', traCrmHandler.forgotPass);
 
     router.get('/crm/transactions', session.authenticatedUser, traCrmHandler.getTransactions);
 
