@@ -39,6 +39,8 @@ module.exports = {
 
     EMAIL_COMPLAIN_FROM: 'testTRA@testTRA.ae',
 
+    EMAIL_FORGOT_FROM: 'testTRA@testTRA.ae',
+
     EMAIL_COMPLAINSMSSPAM: 'allcomplaintra@mail.com',// password: smsspam
     EMAIL_HELP_SALIM: 'allcomplaintra@mail.com',// password: helpsalim
 

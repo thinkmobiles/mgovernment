@@ -864,8 +864,190 @@ var TestCRMNetHandler = function () {
     });
 
     this.processForgotPass = function (options, callback) {
-
+        options.connectionString = TRA.CRM_CONNECTION;
+        processForgotPassByEmail(options, callback);
     };
+
+    var processForgotPassByEmail = edge.func({
+        source: function() {
+            /*
+             using System;
+             using System.Threading.Tasks;
+             using Microsoft.Xrm.Sdk;
+             using Microsoft.Xrm.Client;
+             using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Query;
+
+             public class Startup
+             {
+             public async Task<object> Invoke(dynamic input)
+             {
+             OrganizationService orgService;
+             string connectionString = (string)input.connectionString;
+
+             string email = (string)input.email;
+             string temporaryPass = (string)input.tempPass;
+
+             CrmConnection connection = CrmConnection.Parse(connectionString);
+
+             using (orgService = new OrganizationService(connection))
+             {
+             Entity contactProfileEntity = FindContactProfileByEmail(orgService, email);
+
+             if (contactProfileEntity == null)
+             {
+             return "Not Found";
+             }
+             else
+             {
+             contactProfileEntity["tra_password"] = new CRMDataManagement.PasswordHash().createHash(temporaryPass);
+             orgService.Update(contactProfileEntity);
+
+             return "Success";
+             }
+             }
+             }
+
+             public static Entity FindContactProfileByEmail(OrganizationService service, string email)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "contact";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("contactid");
+             qe.ColumnSet.Columns.Add("firstname");
+             qe.ColumnSet.Columns.Add("lastname");
+             qe.ColumnSet.Columns.Add("emailaddress1");
+             qe.ColumnSet.Columns.Add("mobilephone");
+             qe.ColumnSet.Columns.Add("tra_portalusername");
+             qe.ColumnSet.Columns.Add("tra_password");
+
+             FilterExpression filter = new FilterExpression();
+
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("emailaddress1", ConditionOperator.Equal, new object[] { email }));
+
+             qe.Criteria = filter;
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Entity contact = null;
+
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
+             if (ec.Entities.Count == 1)
+             {
+             contact = ec.Entities[0];
+             }
+
+             if (contact == null)
+             {
+             return null;
+             }
+             else
+             {
+             return contact;
+             }
+             }
+             }
+
+             namespace CRMDataManagement
+             {
+             using System;
+             using System.Text;
+             using System.Security.Cryptography;
+
+             public class TRAUtility
+             {
+             public const string STATUS_IMPLEMENTED_CODE = "4";
+             public const string STATUS_WITHDRAWN_CODE = "3";
+             public const string STATUS_STAGE_CLOSED = "4";
+             public const string STATUS_PCR_AT_TRA = "1";
+             public const string STATUS_CASE_INPROGRESS = "1";
+
+             public const string STATUS_LICENSE_AT_TRA = "1";
+             public const string STAGE_APPROVAL_REQUIRED_PROCESSING_TEAM = "2";
+
+             public const string STATUS_APPROVED_LICENSE_REQUEST = "5";
+             public const string STAGE_PAYMENT_RECIEVED = "7";
+
+             // The following constants may be changed without breaking existing hashes.
+             public const int SALT_BYTE_SIZE = 32;
+             public const int HASH_BYTE_SIZE = 32;
+             public const int PBKDF2_ITERATIONS = 1000;
+
+             public const int ITERATION_INDEX = 0;
+             public const int SALT_INDEX = 1;
+             public const int PBKDF2_INDEX = 2;
+             }
+
+             public class PasswordHash
+             {
+             /// Creates a salted PBKDF2 hash of the password.
+             public string createHash(string password)
+             {
+             // Generate a random salt
+             RNGCryptoServiceProvider csprng = new RNGCryptoServiceProvider();
+             byte[] salt = new byte[TRAUtility.SALT_BYTE_SIZE];
+             csprng.GetBytes(salt);
+
+             // Hash the password and encode the parameters
+             byte[] hash = passwordBasedKeyDerivationFunction2(password, salt, TRAUtility.PBKDF2_ITERATIONS, TRAUtility.HASH_BYTE_SIZE);
+             return TRAUtility.PBKDF2_ITERATIONS + ":" +
+             Convert.ToBase64String(salt) + ":" +
+             Convert.ToBase64String(hash);
+             }
+
+             /// Validates a password given a hash of the correct one.
+             public bool authenticatePassword(string password, string correctHash)
+             {
+             // Extract the parameters from the hash
+             char[] delimiter = { ':' };
+             string[] split = correctHash.Split(delimiter);
+             int iterations = Int32.Parse(split[TRAUtility.ITERATION_INDEX]);
+             byte[] salt = Convert.FromBase64String(split[TRAUtility.SALT_INDEX]);
+             byte[] hash = Convert.FromBase64String(split[TRAUtility.PBKDF2_INDEX]);
+
+             byte[] testHash = passwordBasedKeyDerivationFunction2(password, salt, iterations, hash.Length);
+
+             return slowEquals(hash, testHash);
+             }
+
+             /// Compares two byte arrays in length-constant time. This comparison
+             /// method is used so that password hashes cannot be extracted from
+             /// on-line systems using a timing attack and then attacked off-line.
+             public bool slowEquals(byte[] a, byte[] b)
+             {
+             uint diff = (uint)a.Length ^ (uint)b.Length;
+             for (int i = 0; i < a.Length && i < b.Length; i++)
+             diff |= (uint)(a[i] ^ b[i]);
+             return diff == 0;
+             }
+
+             /// Computes the PBKDF2-SHA1 hash of a password.
+             public byte[] passwordBasedKeyDerivationFunction2(string password, byte[] salt, int iterations, int outputBytes)
+             {
+             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt);
+             pbkdf2.IterationCount = iterations;
+             return pbkdf2.GetBytes(outputBytes);
+             }
+             }
+             }
+             */
+        },
+        references: [
+            'System.Data.dll',
+            'System.ServiceModel.dll',
+            'System.Configuration.dll',
+            'System.Runtime.Serialization.dll',
+            path + 'Microsoft.Xrm.Sdk.dll',
+            path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+            path + 'Microsoft.IdentityModel.dll',
+            path + 'Microsoft.Crm.Sdk.Proxy.dll',
+            path + 'Microsoft.Xrm.Portal.Files.dll',
+            path + 'Microsoft.Xrm.Portal.dll',
+            path + 'Microsoft.Xrm.Client.dll',
+            path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+        ]
+    });
 
     this.getTransactions = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;

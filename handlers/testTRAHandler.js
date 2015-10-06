@@ -219,7 +219,7 @@ var TestTRAHandler = function (db) {
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
         var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/complainSmsBlock.html';
-        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var from = 'TRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
         var mailOptions = {
             templateData: {
@@ -270,7 +270,7 @@ var TestTRAHandler = function (db) {
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
         var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
-        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var from = 'TRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
         var mailOptions = {
             templateName: templateName,
@@ -313,7 +313,7 @@ var TestTRAHandler = function (db) {
         var mailTo = TRA.EMAIL_HELP_SALIM;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/helpSalim.html';
-        var from = 'testTRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
+        var from = 'TRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
         var mailOptions = {
             templateName: templateName,

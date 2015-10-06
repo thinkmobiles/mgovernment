@@ -125,6 +125,44 @@ describe('User CRM register/ logIn / logOut', function () {
             });
     });
 
+    it('Register crm user with Same Email', function (done) {
+        this.timeout(60000);
+
+        var registerData = {
+            login: USERS.CLIENT_REGISTER_DATA.login + 'newLogin',
+            pass: USERS.CLIENT_REGISTER_DATA.pass,
+            first: USERS.CLIENT_REGISTER_DATA.first,
+            last: USERS.CLIENT_REGISTER_DATA.last,
+            emiratesId: USERS.CLIENT_REGISTER_DATA.emiratesId,
+            state: 3,
+            mobile: USERS.CLIENT_REGISTER_DATA.mobile,
+            email: USERS.CLIENT_REGISTER_DATA.email
+        };
+
+        agent
+            .post('/crm/signOut')
+            .send({})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/crm/register')
+                    .send(registerData)
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.log(res.body);
+
+                        done();
+                    });
+            });
+    });
+
     it('Login with registered GOOD credentials', function (done) {
 
         var loginData = {

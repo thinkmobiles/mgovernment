@@ -24,6 +24,7 @@ var TRACRMHandler = function (db) {
     var traCrmNetWrapper = new TraCrmNetWrapper();
     var mongoose = require('mongoose');
     var crypto = require('crypto');
+    var mailer = require('../helpers/mailer');
     var User = db.model(CONST.MODELS.USER);
 
     this.signInClient = function (req, res, next) {
@@ -132,6 +133,9 @@ var TRACRMHandler = function (db) {
 
                 if (result == "Login is used") {
                     return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
+                }
+                if (result == "Email is used") {
+                    return res.status(400).send({error: RESPONSE.AUTH.REGISTER_EMAIL_USED});
                 }
 
                 registerMiddlewareUser(body, function (err, userModel) {
@@ -274,11 +278,30 @@ var TRACRMHandler = function (db) {
                 return next(err);
             }
 
-            if (result.error) {
-                return res.status(400).send({error: result.error});
+            if (result != 'Success') {
+                return res.status(400).send({error: result});
             }
 
-            return res.status(200).send({success: result});
+            var mailTo = email;
+            var templateName = 'public/templates/mail/forgotPass.html';
+            var from = 'TRA  <' + TRA.EMAIL_FORGOT_FROM + '>';
+
+            var mailOptions = {
+                templateName: templateName,
+                templateData: {
+                    tempPass: tempPass
+                },
+                from: from,
+                mailTo: mailTo
+            };
+
+            mailer.sendForgotPass(mailOptions, function (errMail, data) {
+                if (errMail) {
+                    console.log('Email sent error: ' + errMail);
+                }
+
+                return res.status(200).send({success: result});
+            });
         });
     };
 

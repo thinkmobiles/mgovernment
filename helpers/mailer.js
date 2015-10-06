@@ -8,6 +8,17 @@ module.exports = new function () {
 
     require('../config/development');
 
+    this.sendForgotPass = function (options, callback) {
+
+        var mailOptions = {
+            from: options.from,
+            to: options.mailTo,
+            subject: 'TRA mobile app forgot password',
+            html: _.template(fs.readFileSync(options.templateName, encoding = "utf8"))(options.templateData)
+        };
+
+        deliver(mailOptions, callback);
+    };
 
     this.sendReport = function (options, callback) {
 
