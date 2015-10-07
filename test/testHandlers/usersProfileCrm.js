@@ -66,7 +66,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
                     });
             });
     });
-
+/*
     it('CRM User Set Profile', function (done) {
         this.timeout(20000);
 
@@ -117,7 +117,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
                     });
             });
     });
-
+/*
     it('CRM User Change Pass', function (done) {
         this.timeout(20000);
 
@@ -235,5 +235,5 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
                     });
             });
     });
-
+*/
 });

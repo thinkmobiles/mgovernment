@@ -458,6 +458,8 @@ var TestCRMNetHandler = function () {
              public string last = null;
              public string email = null;
              public string mobile = null;
+
+             public string image = null;
              }
 
              public async Task<object> Invoke(dynamic input)
@@ -494,6 +496,7 @@ var TestCRMNetHandler = function () {
              qe.ColumnSet.Columns.Add("emailaddress1");
              qe.ColumnSet.Columns.Add("mobilephone");
              qe.ColumnSet.Columns.Add("tra_portalusername");
+             qe.ColumnSet.Columns.Add("entityimage");
 
              FilterExpression filter = new FilterExpression();
 
@@ -520,10 +523,13 @@ var TestCRMNetHandler = function () {
              {
              var profile = new ProfileResult();
 
+             Console.WriteLine("image: ", contact["entityimage"]);
+
              profile.first = contact["firstname"].ToString();
              profile.last = contact["lastname"].ToString();
              profile.email = contact["emailaddress1"].ToString();
              profile.mobile = contact["mobilephone"].ToString();
+             profile.image = contact["entityimage"].ToString();
 
              return profile;
              }
