@@ -59,7 +59,7 @@ module.exports = {
     },
 
     CLIENT_CRM_LOGIN_DIGI: {
-        login: 'digiTest',
+        login: 'digiTest3',
         pass: 'password777'
     },
 

@@ -107,6 +107,7 @@ describe('User CRM register/ logIn / logOut', function () {
                         if (err) {
                             return done(err)
                         }
+                        console.log(res.body);
 
                         preparingDb
                             .User

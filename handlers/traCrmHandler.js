@@ -315,7 +315,7 @@ var TRACRMHandler = function (db) {
         var page = req.query.page ? parseInt(req.query.page) : 1;
         var count = req.query.count ? parseInt(req.query.count) : 10;
         var orderAsc = req.query.orderAsc ? parseInt(req.query.orderAsc) : 0;
-        var search = req.query.search ? req.query.search : null;
+        var search = req.query.search ? '%' + req.query.search + '%' : null;
 
         var userOptions = {
             contactId: req.session.crmId,

@@ -1174,10 +1174,12 @@ var TestCRMNetHandler = function () {
              FilterExpression searchFilter = new FilterExpression();
 
              searchFilter.FilterOperator = LogicalOperator.Or;
-             filter.AddCondition(new ConditionExpression("title", ConditionOperator.Like, new object[] { search }));
-             filter.AddCondition(new ConditionExpression("description", ConditionOperator.Like, new object[] { search }));
+             searchFilter.AddCondition(new ConditionExpression("title", ConditionOperator.Like, new object[] { search }));
+             searchFilter.AddCondition(new ConditionExpression("description", ConditionOperator.Like, new object[] { search }));
+             qe.Criteria.Filters.Add(searchFilter);
              }
 
+             qe.Criteria.FilterOperator = LogicalOperator.And;
              qe.Criteria.Filters.Add(filter);
              qe.Orders.Add(new OrderExpression(orderBy, orderAsc ? OrderType.Ascending : OrderType.Descending));
 
