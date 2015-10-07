@@ -1109,12 +1109,13 @@ var TestCRMNetHandler = function () {
              int count = (int)input.count;
              string orderBy = (string)input.orderBy;
              bool orderAsc = (bool)input.orderAsc;
+             string search = (string)input.search;
 
              CrmConnection connection = CrmConnection.Parse(connectionString);
 
              using (orgService = new OrganizationService(connection))
              {
-             EntityCollection userCases = FindCasesForUser(orgService, userContactId, page, count, orderBy, orderAsc);
+             EntityCollection userCases = FindCasesForUser(orgService, userContactId, page, count, orderBy, orderAsc, search);
              CasesResult caseResult = new CasesResult();
 
              if (userCases != null)
@@ -1143,11 +1144,21 @@ var TestCRMNetHandler = function () {
              }
              }
 
-             public static EntityCollection FindCasesForUser(OrganizationService service, string userContactId, int page, int count, string orderBy, bool orderAsc)
+             public static EntityCollection FindCasesForUser(OrganizationService service, string userContactId, int page, int count, string orderBy, bool orderAsc, string search)
              {
              QueryExpression qe = new QueryExpression();
              qe.EntityName = "incident";
-             qe.ColumnSet = new ColumnSet(true);
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("customerid");
+             qe.ColumnSet.Columns.Add("title");
+             qe.ColumnSet.Columns.Add("description");
+             qe.ColumnSet.Columns.Add("casetypecode");
+             qe.ColumnSet.Columns.Add("statecode");
+             qe.ColumnSet.Columns.Add("statuscode");
+             qe.ColumnSet.Columns.Add("servicestage");
+             qe.ColumnSet.Columns.Add("tra_casestatus");
+             qe.ColumnSet.Columns.Add("tra_trasubmitdate");
+             qe.ColumnSet.Columns.Add("modifiedon");
 
              qe.PageInfo = new PagingInfo();
              qe.PageInfo.Count = count;
@@ -1158,7 +1169,16 @@ var TestCRMNetHandler = function () {
              filter.FilterOperator = LogicalOperator.And;
              filter.AddCondition(new ConditionExpression("customerid", ConditionOperator.Equal, new object[] { userContactId }));
 
-             qe.Criteria = filter;
+             if (search != null)
+             {
+             FilterExpression searchFilter = new FilterExpression();
+
+             searchFilter.FilterOperator = LogicalOperator.Or;
+             filter.AddCondition(new ConditionExpression("title", ConditionOperator.Like, new object[] { search }));
+             filter.AddCondition(new ConditionExpression("description", ConditionOperator.Like, new object[] { search }));
+             }
+
+             qe.Criteria.Filters.Add(filter);
              qe.Orders.Add(new OrderExpression(orderBy, orderAsc ? OrderType.Ascending : OrderType.Descending));
 
              EntityCollection ec = service.RetrieveMultiple(qe);

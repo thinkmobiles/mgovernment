@@ -121,6 +121,35 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
 
+    it('Get Transactions SEARCH=test Page 1 Count 5', function (done) {
+
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+
+        agent
+            .post('/crm/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/crm/transactions?page=1&count=5&search=test')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+
+                        expect(res.body).to.be.instanceof(Array);
+
+                        done();
+                    });
+            });
+    });
+
     /*it('SEND Suggestion AND Get Transactions', function (done) {
 
         var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
