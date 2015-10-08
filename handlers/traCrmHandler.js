@@ -245,7 +245,7 @@ var TRACRMHandler = function (db) {
         var imageData = null;
         if (req.body.image) {
             var imageInfo = prepareAttachment(req.body.image);
-            imageData = imageInfo.data;
+            imageData = new Buffer(imageInfo.data, 'base64');
             console.log('Set profile image type: ' + imageInfo.type);
         }
 

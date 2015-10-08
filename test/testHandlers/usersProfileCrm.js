@@ -154,8 +154,8 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
         this.timeout(20000);
 
         var loginData = {
-            login: USERS.CLIENT_REGISTER_DATA.login,
-            pass: USERS.CLIENT_REGISTER_DATA.pass
+            login: 'testtra',//USERS.CLIENT_REGISTER_DATA.login,
+            pass: 'asdqwe'//USERS.CLIENT_REGISTER_DATA.pass
         };
 
         var changeProfileData = {
