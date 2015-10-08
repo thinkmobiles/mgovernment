@@ -1,5 +1,4 @@
 
-
 var express = require('express');
 var app = express();
 var path = require('path');
@@ -62,7 +61,7 @@ mainDb.once('open', function() {
     console.log("Connection to " + process.env.DB_NAME + " is success");
 
     app.use(session({
-        secret: '111123123',
+        secret: '123sesstrasecret90892378somecatcode',
         resave: true,
         saveUninitialized: true,
         store: new MongoStore({db: {
@@ -89,19 +88,12 @@ mainDb.once('open', function() {
 
     require('./routes')(app, mainDb);
 
-    server.listen(process.env.PORT, function () {
-        console.log('Express server listening on port ' + process.env.PORT);
+    server.listen(8080, function () {
+        console.log('Express server listening on port: ' + 8080);
         console.log('HOST: ' + process.env.HOST);
         console.log('DB_HOST: ' + process.env.DB_HOST);
     });
 });
-
-/*var logWriter = require('./helpers/logWriter')();
-
-process.on('uncaughtException', function(err) {
-    console.log(err);
-    logWriter.log(err);
-});*/
 
 module.exports = app;
 
