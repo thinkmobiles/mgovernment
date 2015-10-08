@@ -8,12 +8,13 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
-var url = 'http://localhost:80';
+
+var app = require('../../app');
 
 describe('User CRM register/ logIn / logOut', function () {
     this.timeout(10000);
 
-    var agent = request.agent(url);
+    var agent = request.agent(app);
     var preparingDb = new PreparingBd();
 
     before(function (done) {
@@ -106,6 +107,7 @@ describe('User CRM register/ logIn / logOut', function () {
                         if (err) {
                             return done(err)
                         }
+                        console.log(res.body);
 
                         preparingDb
                             .User
@@ -121,6 +123,44 @@ describe('User CRM register/ logIn / logOut', function () {
 
                                 done();
                             });
+                    });
+            });
+    });
+
+    it('Register crm user with Same Email', function (done) {
+        this.timeout(60000);
+
+        var registerData = {
+            login: USERS.CLIENT_REGISTER_DATA.login + 'newLogin',
+            pass: USERS.CLIENT_REGISTER_DATA.pass,
+            first: USERS.CLIENT_REGISTER_DATA.first,
+            last: USERS.CLIENT_REGISTER_DATA.last,
+            emiratesId: USERS.CLIENT_REGISTER_DATA.emiratesId,
+            state: 3,
+            mobile: USERS.CLIENT_REGISTER_DATA.mobile,
+            email: USERS.CLIENT_REGISTER_DATA.email
+        };
+
+        agent
+            .post('/crm/signOut')
+            .send({})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/crm/register')
+                    .send(registerData)
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.log(res.body);
+
+                        done();
                     });
             });
     });

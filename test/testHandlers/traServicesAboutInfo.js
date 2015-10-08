@@ -8,7 +8,6 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
-var url = 'http://localhost:80';
 
 var app = require('../../app');
 
@@ -72,6 +71,40 @@ describe('Get About Services Info', function () {
 
         agent
             .get('/service/about?name=Complain about Service Provider&lang=AR')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                console.dir(res.body);
+
+                done();
+            });
+    });
+
+    it('GET Service Names EN', function (done) {
+        this.timeout(2000);
+
+        agent
+            .get('/service/serviceNames')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                console.dir(res.body);
+
+                done();
+            });
+    });
+
+    it('GET Service Names AR', function (done) {
+        this.timeout(2000);
+
+        agent
+            .get('/service/serviceNames?lang=AR')
             .expect(200)
             .end(function (err, res) {
                 if (err) {

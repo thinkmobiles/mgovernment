@@ -247,16 +247,17 @@ var TestCRMNetHandler = function () {
              string connectionString = (string)input.connectionString;
 
              string login = (string)input.login;
+             string email = (string)input.email;
 
              CrmConnection connection = CrmConnection.Parse(connectionString);
 
              using (orgService = new OrganizationService(connection))
              {
-             string contactId = FindContactByLogin(orgService, login);
+             string findResult = FindContactByLoginOrEmail(orgService, login, email);
 
-             if (contactId != null)
+             if (findResult != null)
              {
-             return "Login is used";
+             return findResult + " is used";
              }
 
              CreateContact(input, orgService);
@@ -265,7 +266,7 @@ var TestCRMNetHandler = function () {
              }
              }
 
-             public static string FindContactByLogin(OrganizationService service, string login)
+             public static string FindContactByLoginOrEmail(OrganizationService service, string login, string email)
              {
              QueryExpression qe = new QueryExpression();
              qe.EntityName = "contact";
@@ -273,11 +274,13 @@ var TestCRMNetHandler = function () {
              qe.ColumnSet.Columns.Add("contactid");
              qe.ColumnSet.Columns.Add("fullname");
              qe.ColumnSet.Columns.Add("tra_portalusername");
+             qe.ColumnSet.Columns.Add("emailaddress1");
 
              FilterExpression filter = new FilterExpression();
 
-             filter.FilterOperator = LogicalOperator.And;
+             filter.FilterOperator = LogicalOperator.Or;
              filter.AddCondition(new ConditionExpression("tra_portalusername", ConditionOperator.Equal, new object[] { login }));
+             filter.AddCondition(new ConditionExpression("emailaddress1", ConditionOperator.Equal, new object[] { email }));
 
              qe.Criteria = filter;
 
@@ -289,7 +292,15 @@ var TestCRMNetHandler = function () {
              if (ec.Entities.Count > 0)
              {
              contact = ec.Entities[0];
-             return contact["contactid"].ToString();
+
+             if (contact["tra_portalusername"].ToString() == login)
+             {
+             return "Login";
+             }
+             else
+             {
+             return "Email";
+             }
              }
              return null;
              }
@@ -536,6 +547,110 @@ var TestCRMNetHandler = function () {
         ]
     });
 
+    this.getProfileImage = function (options, callback) {
+        options.connectionString = TRA.CRM_CONNECTION;
+        getProfileImage(options, callback);
+    };
+
+    var getProfileImage = edge.func({
+        source: function () {
+            /*
+             using System;
+             using System.Threading.Tasks;
+             using Microsoft.Xrm.Sdk;
+             using Microsoft.Xrm.Client;
+             using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Query;
+
+             public class Startup
+             {
+             public class ImageResult
+             {
+             public string error = null;
+
+             public byte[] imageData = null;
+             }
+
+             public async Task<object> Invoke(dynamic input)
+             {
+             OrganizationService orgService;
+             string connectionString = (string)input.connectionString;
+
+             string userContactId = (string)input.contactId;
+
+             CrmConnection connection = CrmConnection.Parse(connectionString);
+
+             using (orgService = new OrganizationService(connection))
+             {
+             byte[] imageData = FindContactProfileImage(orgService, userContactId);
+             ImageResult imageResult = new ImageResult();
+
+             if (imageData == null)
+             {
+             imageResult.error = "Not Found";
+             }
+             else
+             {
+             imageResult.imageData = imageData;
+             }
+
+             return imageResult;
+             }
+             }
+
+             public static byte[] FindContactProfileImage(OrganizationService service, string contactId)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "contact";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("contactid");
+             qe.ColumnSet.Columns.Add("entityimage");
+
+             FilterExpression filter = new FilterExpression();
+
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("contactid", ConditionOperator.Equal, new object[] { contactId }));
+
+             qe.Criteria = filter;
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Entity contact = null;
+
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
+             if (ec.Entities.Count == 1)
+             {
+             contact = ec.Entities[0];
+             }
+
+             if (contact == null)
+             {
+             return null;
+             }
+             else
+             {
+             return (byte[])contact.GetAttributeValue("entityimage");
+             }
+             }
+             }
+             */
+        },
+        references: [
+            'System.Data.dll',
+            'System.ServiceModel.dll',
+            'System.Configuration.dll',
+            'System.Runtime.Serialization.dll',
+            path + 'Microsoft.Xrm.Sdk.dll',
+            path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+            path + 'Microsoft.IdentityModel.dll',
+            path + 'Microsoft.Crm.Sdk.Proxy.dll',
+            path + 'Microsoft.Xrm.Portal.Files.dll',
+            path + 'Microsoft.Xrm.Portal.dll',
+            path + 'Microsoft.Xrm.Client.dll',
+            path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+        ]
+    });
+
     this.setProfile = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
         setProfile(options, callback);
@@ -574,6 +689,7 @@ var TestCRMNetHandler = function () {
              string last = (string)input.last;
              string email = (string)input.email;
              string mobile = (string)input.mobile;
+             byte[] imageData = (byte[])input.imageData;
 
              CrmConnection connection = CrmConnection.Parse(connectionString);
 
@@ -595,6 +711,8 @@ var TestCRMNetHandler = function () {
              contactProfileEntity["emailaddress1"] = email;
              if (mobile != null)
              contactProfileEntity["mobilephone"] = mobile;
+             if (imageData != null)
+             contactProfileEntity.SetAttributeValue("entityimage", imageData);
 
              orgService.Update(contactProfileEntity);
 
@@ -620,6 +738,7 @@ var TestCRMNetHandler = function () {
              qe.ColumnSet.Columns.Add("lastname");
              qe.ColumnSet.Columns.Add("emailaddress1");
              qe.ColumnSet.Columns.Add("mobilephone");
+             qe.ColumnSet.Columns.Add("entityimage");
              qe.ColumnSet.Columns.Add("tra_portalusername");
 
              FilterExpression filter = new FilterExpression();
@@ -864,8 +983,342 @@ var TestCRMNetHandler = function () {
     });
 
     this.processForgotPass = function (options, callback) {
-
+        options.connectionString = TRA.CRM_CONNECTION;
+        processForgotPassByEmail(options, callback);
     };
+
+    var processForgotPassByEmail = edge.func({
+        source: function() {
+            /*
+             using System;
+             using System.Threading.Tasks;
+             using Microsoft.Xrm.Sdk;
+             using Microsoft.Xrm.Client;
+             using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Query;
+
+             public class Startup
+             {
+             public async Task<object> Invoke(dynamic input)
+             {
+             OrganizationService orgService;
+             string connectionString = (string)input.connectionString;
+
+             string email = (string)input.email;
+             string temporaryPass = (string)input.tempPass;
+
+             CrmConnection connection = CrmConnection.Parse(connectionString);
+
+             using (orgService = new OrganizationService(connection))
+             {
+             Entity contactProfileEntity = FindContactProfileByEmail(orgService, email);
+
+             if (contactProfileEntity == null)
+             {
+             return "Email is not found";
+             }
+             else
+             {
+             contactProfileEntity["tra_password"] = new CRMDataManagement.PasswordHash().createHash(temporaryPass);
+             orgService.Update(contactProfileEntity);
+
+             return "Success";
+             }
+             }
+             }
+
+             public static Entity FindContactProfileByEmail(OrganizationService service, string email)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "contact";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("contactid");
+             qe.ColumnSet.Columns.Add("firstname");
+             qe.ColumnSet.Columns.Add("lastname");
+             qe.ColumnSet.Columns.Add("emailaddress1");
+             qe.ColumnSet.Columns.Add("mobilephone");
+             qe.ColumnSet.Columns.Add("tra_portalusername");
+             qe.ColumnSet.Columns.Add("tra_password");
+
+             FilterExpression filter = new FilterExpression();
+
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("emailaddress1", ConditionOperator.Equal, new object[] { email }));
+
+             qe.Criteria = filter;
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Entity contact = null;
+
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
+             if (ec.Entities.Count == 1)
+             {
+             contact = ec.Entities[0];
+             }
+
+             if (contact == null)
+             {
+             return null;
+             }
+             else
+             {
+             return contact;
+             }
+             }
+             }
+
+             namespace CRMDataManagement
+             {
+             using System;
+             using System.Text;
+             using System.Security.Cryptography;
+
+             public class TRAUtility
+             {
+             public const string STATUS_IMPLEMENTED_CODE = "4";
+             public const string STATUS_WITHDRAWN_CODE = "3";
+             public const string STATUS_STAGE_CLOSED = "4";
+             public const string STATUS_PCR_AT_TRA = "1";
+             public const string STATUS_CASE_INPROGRESS = "1";
+
+             public const string STATUS_LICENSE_AT_TRA = "1";
+             public const string STAGE_APPROVAL_REQUIRED_PROCESSING_TEAM = "2";
+
+             public const string STATUS_APPROVED_LICENSE_REQUEST = "5";
+             public const string STAGE_PAYMENT_RECIEVED = "7";
+
+             // The following constants may be changed without breaking existing hashes.
+             public const int SALT_BYTE_SIZE = 32;
+             public const int HASH_BYTE_SIZE = 32;
+             public const int PBKDF2_ITERATIONS = 1000;
+
+             public const int ITERATION_INDEX = 0;
+             public const int SALT_INDEX = 1;
+             public const int PBKDF2_INDEX = 2;
+             }
+
+             public class PasswordHash
+             {
+             /// Creates a salted PBKDF2 hash of the password.
+             public string createHash(string password)
+             {
+             // Generate a random salt
+             RNGCryptoServiceProvider csprng = new RNGCryptoServiceProvider();
+             byte[] salt = new byte[TRAUtility.SALT_BYTE_SIZE];
+             csprng.GetBytes(salt);
+
+             // Hash the password and encode the parameters
+             byte[] hash = passwordBasedKeyDerivationFunction2(password, salt, TRAUtility.PBKDF2_ITERATIONS, TRAUtility.HASH_BYTE_SIZE);
+             return TRAUtility.PBKDF2_ITERATIONS + ":" +
+             Convert.ToBase64String(salt) + ":" +
+             Convert.ToBase64String(hash);
+             }
+
+             /// Validates a password given a hash of the correct one.
+             public bool authenticatePassword(string password, string correctHash)
+             {
+             // Extract the parameters from the hash
+             char[] delimiter = { ':' };
+             string[] split = correctHash.Split(delimiter);
+             int iterations = Int32.Parse(split[TRAUtility.ITERATION_INDEX]);
+             byte[] salt = Convert.FromBase64String(split[TRAUtility.SALT_INDEX]);
+             byte[] hash = Convert.FromBase64String(split[TRAUtility.PBKDF2_INDEX]);
+
+             byte[] testHash = passwordBasedKeyDerivationFunction2(password, salt, iterations, hash.Length);
+
+             return slowEquals(hash, testHash);
+             }
+
+             /// Compares two byte arrays in length-constant time. This comparison
+             /// method is used so that password hashes cannot be extracted from
+             /// on-line systems using a timing attack and then attacked off-line.
+             public bool slowEquals(byte[] a, byte[] b)
+             {
+             uint diff = (uint)a.Length ^ (uint)b.Length;
+             for (int i = 0; i < a.Length && i < b.Length; i++)
+             diff |= (uint)(a[i] ^ b[i]);
+             return diff == 0;
+             }
+
+             /// Computes the PBKDF2-SHA1 hash of a password.
+             public byte[] passwordBasedKeyDerivationFunction2(string password, byte[] salt, int iterations, int outputBytes)
+             {
+             Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(password, salt);
+             pbkdf2.IterationCount = iterations;
+             return pbkdf2.GetBytes(outputBytes);
+             }
+             }
+             }
+             */
+        },
+        references: [
+            'System.Data.dll',
+            'System.ServiceModel.dll',
+            'System.Configuration.dll',
+            'System.Runtime.Serialization.dll',
+            path + 'Microsoft.Xrm.Sdk.dll',
+            path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+            path + 'Microsoft.IdentityModel.dll',
+            path + 'Microsoft.Crm.Sdk.Proxy.dll',
+            path + 'Microsoft.Xrm.Portal.Files.dll',
+            path + 'Microsoft.Xrm.Portal.dll',
+            path + 'Microsoft.Xrm.Client.dll',
+            path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+        ]
+    });
+
+    this.getTransactions = function (options, callback) {
+        options.connectionString = TRA.CRM_CONNECTION;
+        getUserTransactions(options, callback);
+    };
+
+    var getUserTransactions = edge.func({
+        source: function () {
+            /*
+             using System;
+             using System.Threading.Tasks;
+             using Microsoft.Xrm.Sdk;
+             using Microsoft.Xrm.Client;
+             using Microsoft.Xrm.Client.Services;
+             using Microsoft.Xrm.Sdk.Query;
+
+             public class Startup
+             {
+             public class CasesResult
+             {
+             public string error = null;
+
+             public object[] transactions = new object[0];
+             }
+
+             public class Transaction
+             {
+             public string title = null;
+             public string description = null;
+             public string type = null;
+
+             public string traSubmitDatetime = null;
+             public string modifiedDatetime = null;
+
+             public string stateCode = null;
+             public string statusCode = null;
+             public string traStatus = null;
+             public string serviceStage = null;
+             }
+
+             public async Task<object> Invoke(dynamic input)
+             {
+             OrganizationService orgService;
+             string connectionString = (string)input.connectionString;
+
+             string userContactId = (string)input.contactId;
+             int page = (int)input.page;
+             int count = (int)input.count;
+             string orderBy = (string)input.orderBy;
+             bool orderAsc = (bool)input.orderAsc;
+             string search = (string)input.search;
+
+             CrmConnection connection = CrmConnection.Parse(connectionString);
+
+             using (orgService = new OrganizationService(connection))
+             {
+             EntityCollection userCases = FindCasesForUser(orgService, userContactId, page, count, orderBy, orderAsc, search);
+             CasesResult caseResult = new CasesResult();
+
+             if (userCases != null)
+             {
+             caseResult.transactions = new object[userCases.Entities.Count];
+
+             for (int i = 0; i < userCases.Entities.Count; i++)
+             {
+             Transaction tr = new Transaction();
+
+             tr.title = userCases.Entities[i]["title"].ToString();
+             tr.description = userCases.Entities[i]["description"].ToString();
+             tr.type = userCases.Entities[i].FormattedValues["casetypecode"].ToString();
+             tr.stateCode = userCases.Entities[i].FormattedValues["statecode"].ToString();
+             tr.statusCode = userCases.Entities[i].FormattedValues["statuscode"].ToString();
+             tr.serviceStage = userCases.Entities[i].FormattedValues["servicestage"].ToString();
+             tr.traStatus = userCases.Entities[i].FormattedValues["tra_casestatus"].ToString();
+             tr.traSubmitDatetime = userCases.Entities[i]["tra_trasubmitdate"].ToString();
+             tr.modifiedDatetime = userCases.Entities[i]["modifiedon"].ToString();
+
+             caseResult.transactions[i] = tr;
+             }
+             }
+
+             return caseResult;
+             }
+             }
+
+             public static EntityCollection FindCasesForUser(OrganizationService service, string userContactId, int page, int count, string orderBy, bool orderAsc, string search)
+             {
+             QueryExpression qe = new QueryExpression();
+             qe.EntityName = "incident";
+             qe.ColumnSet = new ColumnSet();
+             qe.ColumnSet.Columns.Add("customerid");
+             qe.ColumnSet.Columns.Add("title");
+             qe.ColumnSet.Columns.Add("description");
+             qe.ColumnSet.Columns.Add("casetypecode");
+             qe.ColumnSet.Columns.Add("statecode");
+             qe.ColumnSet.Columns.Add("statuscode");
+             qe.ColumnSet.Columns.Add("servicestage");
+             qe.ColumnSet.Columns.Add("tra_casestatus");
+             qe.ColumnSet.Columns.Add("tra_trasubmitdate");
+             qe.ColumnSet.Columns.Add("modifiedon");
+
+             qe.PageInfo = new PagingInfo();
+             qe.PageInfo.Count = count;
+             qe.PageInfo.PageNumber = page;
+
+             FilterExpression filter = new FilterExpression();
+
+             filter.FilterOperator = LogicalOperator.And;
+             filter.AddCondition(new ConditionExpression("customerid", ConditionOperator.Equal, new object[] { userContactId }));
+
+             if (search != null)
+             {
+             FilterExpression searchFilter = new FilterExpression();
+
+             searchFilter.FilterOperator = LogicalOperator.Or;
+             searchFilter.AddCondition(new ConditionExpression("title", ConditionOperator.Like, new object[] { search }));
+             searchFilter.AddCondition(new ConditionExpression("description", ConditionOperator.Like, new object[] { search }));
+             qe.Criteria.Filters.Add(searchFilter);
+             }
+
+             qe.Criteria.FilterOperator = LogicalOperator.And;
+             qe.Criteria.Filters.Add(filter);
+             qe.Orders.Add(new OrderExpression(orderBy, orderAsc ? OrderType.Ascending : OrderType.Descending));
+
+             EntityCollection ec = service.RetrieveMultiple(qe);
+             Console.WriteLine("found count: {0}", ec.Entities.Count);
+
+             if (ec.Entities.Count > 0)
+             {
+             return ec;
+             }
+
+             return null;
+             }
+             }
+            */
+        },
+        references: [
+            'System.Data.dll',
+            'System.ServiceModel.dll',
+            'System.Configuration.dll',
+            'System.Runtime.Serialization.dll',
+            path + 'Microsoft.Xrm.Sdk.dll',
+            path + 'Microsoft.Xrm.Sdk.Deployment.dll',
+            path + 'Microsoft.IdentityModel.dll',
+            path + 'Microsoft.Crm.Sdk.Proxy.dll',
+            path + 'Microsoft.Xrm.Portal.Files.dll',
+            path + 'Microsoft.Xrm.Portal.dll',
+            path + 'Microsoft.Xrm.Client.dll',
+            path + 'Microsoft.Xrm.Client.CodeGeneration.dll'
+        ]
+    });
 
     this.createCase = function (options, callback) {
         options.connectionString = TRA.CRM_CONNECTION;
@@ -913,6 +1366,7 @@ var TestCRMNetHandler = function () {
 
              if (licensee != null && !string.IsNullOrWhiteSpace(licensee))
              {
+
              string licenseeReferenceNo = (string)input.licenseeReferenceNo;
              string foundLicenseeId = FindLicenseId(orgService, licensee);
 
@@ -942,8 +1396,9 @@ var TestCRMNetHandler = function () {
              }
              }
 
-             public static string FindLicenseId(OrganizationService service, string licensee)
+             public string FindLicenseId(OrganizationService service, string licensee)
              {
+             Console.WriteLine("In start find licensee: {0}", licensee);
              QueryExpression qe = new QueryExpression();
              qe.EntityName = "tra_licensee";
              qe.ColumnSet = new ColumnSet();

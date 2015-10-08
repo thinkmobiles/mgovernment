@@ -10,6 +10,7 @@ module.exports = {
         LOG_OUT: 'Logout successful',
         REGISTER: 'Register successful',
         REGISTER_LOGIN_USED: 'Login is used',
+        REGISTER_EMAIL_USED: 'Email is used',
         INVALID_CREDENTIALS: 'Invalid login or password',
         NO_PERMISSIONS: 'Access denied'
     },

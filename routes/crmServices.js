@@ -109,11 +109,15 @@ module.exports = function(db) {
 
     router.get('/crm/profile', session.authenticatedUser, traCrmHandler.getProfile);
 
+    router.get('/crm/profileImage', session.authenticatedUser, traCrmHandler.getProfileImage);
+
     router.put('/crm/profile', session.authenticatedUser, traCrmHandler.setProfile);
 
     router.put('/crm/changePass', session.authenticatedUser, traCrmHandler.changePass);
 
-    router.put('/crm/forgotPass', session.authenticatedUser, traCrmHandler.forgotPass);
+    router.post('/crm/forgotPass', traCrmHandler.forgotPass);
+
+    router.get('/crm/transactions', session.authenticatedUser, traCrmHandler.getTransactions);
 
     /**
      * This __method__ create SMS Spam Report

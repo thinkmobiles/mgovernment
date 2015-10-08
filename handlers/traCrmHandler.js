@@ -17,6 +17,8 @@ var REGISTER_FIELDS = [
     'email'
 ];
 
+var PROFILE_IMAGE_URI = '/crm/profileImage';
+
 var TRACRMHandler = function (db) {
     'use strict';
 
@@ -24,6 +26,7 @@ var TRACRMHandler = function (db) {
     var traCrmNetWrapper = new TraCrmNetWrapper();
     var mongoose = require('mongoose');
     var crypto = require('crypto');
+    var mailer = require('../helpers/mailer');
     var User = db.model(CONST.MODELS.USER);
 
     this.signInClient = function (req, res, next) {
@@ -133,6 +136,9 @@ var TRACRMHandler = function (db) {
                 if (result == "Login is used") {
                     return res.status(400).send({error: RESPONSE.AUTH.REGISTER_LOGIN_USED});
                 }
+                if (result == "Email is used") {
+                    return res.status(400).send({error: RESPONSE.AUTH.REGISTER_EMAIL_USED});
+                }
 
                 registerMiddlewareUser(body, function (err, userModel) {
                     //WARNING: no error handling - cause login has logic to create middleware user
@@ -202,7 +208,30 @@ var TRACRMHandler = function (db) {
 
             delete result.error;
 
+            result.image = PROFILE_IMAGE_URI;
             return res.status(200).send(result);
+        });
+    };
+
+    this.getProfileImage = function (req, res, next) {
+        var crmUserId = req.session.crmId;
+
+        traCrmNetWrapper.getProfileImage({contactId: crmUserId}, function(err, result){
+            if (err) {
+                return next(err);
+            }
+
+            if (result.error) {
+                if (result.error === 'Not Found') {
+                    return res.status(404).send({error: RESPONSE.NOT_FOUND});
+                }
+                return next(new Error(result.error));
+            }
+
+            delete result.error;
+
+            res.contentType('image/png');
+            return res.status(200).send(result.imageData);
         });
     };
 
@@ -213,12 +242,20 @@ var TRACRMHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
+        var imageData = null;
+        if (req.body.image) {
+            var imageInfo = prepareAttachment(req.body.image);
+            imageData = new Buffer(imageInfo.data, 'base64');
+            console.log('Set profile image type: ' + imageInfo.type);
+        }
+
         var profileOptions = {
             contactId: crmUserId,
             first: req.body.first,
             last: req.body.last,
             email: req.body.email ? req.body.email : null,
-            mobile: req.body.mobile ? req.body.mobile : null
+            mobile: req.body.mobile ? req.body.mobile : null,
+            imageData: imageData
         };
 
         traCrmNetWrapper.setProfile(profileOptions, function (err, result) {
@@ -226,6 +263,16 @@ var TRACRMHandler = function (db) {
                 return next(err);
             }
 
+            if (result.error) {
+                if (result.error === 'Not Found') {
+                    return res.status(404).send({error: RESPONSE.NOT_FOUND});
+                }
+                return next(new Error(result.error));
+            }
+
+            delete result.error;
+
+            result.image = PROFILE_IMAGE_URI;
             return res.status(200).send(result);
         });
     };
@@ -262,10 +309,11 @@ var TRACRMHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
+        var email = req.body.email;
         var tempPass = generateTempPass();
 
         var forgotPassOptions = {
-            email: req.body.email,
+            email: email,
             tempPass: tempPass
         };
 
@@ -274,17 +322,65 @@ var TRACRMHandler = function (db) {
                 return next(err);
             }
 
-            if (!result.error) {
-                return res.status(400).send({error: result.error});
+            if (result != 'Success') {
+                return res.status(400).send({error: result});
             }
 
-            return res.status(200).send({success: result});
+            var mailTo = email;
+            var templateName = 'public/templates/mail/forgotPass.html';
+            var from = 'TRA  <' + TRA.EMAIL_FORGOT_FROM + '>';
+
+            var mailOptions = {
+                templateName: templateName,
+                templateData: {
+                    tempPass: tempPass
+                },
+                from: from,
+                mailTo: mailTo
+            };
+
+            mailer.sendForgotPass(mailOptions, function (errMail, data) {
+                if (errMail) {
+                    console.log('Email sent error: ' + errMail);
+                }
+
+                return res.status(200).send({success: result});
+            });
         });
     };
 
     function generateTempPass() {
         return RandomPass.generate('alphabetical', 8);
     }
+
+    this.getTransactions = function (req, res, next) {
+
+        var page = req.query.page ? parseInt(req.query.page) : 1;
+        var count = req.query.count ? parseInt(req.query.count) : 10;
+        var orderAsc = req.query.orderAsc ? parseInt(req.query.orderAsc) : 0;
+        var search = req.query.search ? '%' + req.query.search + '%' : null;
+
+        var userOptions = {
+            contactId: req.session.crmId,
+            page: page < 1 ? 1 : page,
+            count: count < 1 ? 1 : count,
+            orderBy: 'modifiedon',
+            orderAsc: !!orderAsc,
+            search: search
+        };
+
+        traCrmNetWrapper.getTransactions(userOptions, function (err, result) {
+            if (err) {
+                return next(err);
+            }
+
+            if (result.error) {
+                return res.status(400).send({error: result.error});
+            }
+
+            return res.status(200).send(result.transactions);
+        });
+    };
 
     this.complainSmsSpam = function (req, res, next) {
 
@@ -322,7 +418,7 @@ var TRACRMHandler = function (db) {
         var description = req.body.description;
         var title = req.body.title;
         var serviceProvider = req.body.serviceProvider;
-        var referenceNumber = req.body.referenceNumber;
+        var referenceNumber = req.body.referenceNumber.toString();
 
         if (!title || !description) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});

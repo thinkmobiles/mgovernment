@@ -303,6 +303,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 if (err) {
                     return done(err)
                 }
+                console.dir(res.body);
 
                 agent
                     .post('/sendSuggestion')

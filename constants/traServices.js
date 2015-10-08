@@ -39,6 +39,8 @@ module.exports = {
 
     EMAIL_COMPLAIN_FROM: 'testTRA@testTRA.ae',
 
+    EMAIL_FORGOT_FROM: 'testTRA@testTRA.ae',
+
     EMAIL_COMPLAINSMSSPAM: 'allcomplaintra@mail.com',// password: smsspam
     EMAIL_HELP_SALIM: 'allcomplaintra@mail.com',// password: helpsalim
 
@@ -70,5 +72,22 @@ module.exports = {
             ETISALAT: 'Etisalat',
             YAHSAT: 'Yahsat'
         }
+    },
+
+    INNOVATION_TYPE: {
+        CustomerHappiness: 1,
+        EmployeeSatisfaction: 2,
+        TRAServiceImprovement: 3,
+        ReducingCostIncreasingRevenue: 4,
+        RaisingTRAInstitutionalReputation: 5,
+        FuturologyStudies: 6
     }
+    /*
+     1 - Customer Happiness
+     2 - Employee Satisfaction
+     3 - TRA Service Improvement
+     4 – Reducing cost & increasing Revenue
+     5 - Raising TRA Institutional Reputation
+     6 – Futurology Studies
+     */
 };

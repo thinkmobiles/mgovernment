@@ -17,6 +17,7 @@ module.exports = function(app, db) {
     var userServicesRouter = require('./userServices')(db);
     var userTraServicesRouter = require('./userTraServices')(db);
     var userFeedbackRouter = require('./userFeedback')(db);
+    var userInnovationRouter = require('./userInnovation')(db);
     var adminEmailReports = require('./adminEmailReport')(db);
     var testTRAServicesRouter = require('./testTRAServices')(db);
     var whoIsAndMobileRouter = require('./whoIsAndMobile')(db);
@@ -38,6 +39,7 @@ module.exports = function(app, db) {
     app.use('/userHistory', session.isAdminBySession, userHistoryLogRouter);
     app.use('/service', userServicesRouter);
     app.use('/feedback', userFeedbackRouter);
+    app.use('/innovation', userInnovationRouter);
     app.use('/emailReport', adminEmailReports);
     app.use('/tra_api/service', userTraServicesRouter);
     app.get('/attachment/:attachmentId', session.isAdminBySession, attachmentHandler.getAttachmentById);
@@ -70,7 +72,11 @@ module.exports = function(app, db) {
             if (status !== 401) {
                 logWriter.log('', err.message + '\n' + err.stack);
             }
-            res.status(status).send({error: err.message + '\n' + err.stack});
+            if (status === 401) {
+                res.status(status).send({error: err.message});
+            } else {
+                res.status(status).send({error: err.message + '\n' + err.stack});
+            }
         }
 
         if (status === 401) {
