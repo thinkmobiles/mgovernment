@@ -17,6 +17,8 @@ var REGISTER_FIELDS = [
     'email'
 ];
 
+var PROFILE_IMAGE_URI = '/crm/profileImage';
+
 var TRACRMHandler = function (db) {
     'use strict';
 
@@ -206,7 +208,30 @@ var TRACRMHandler = function (db) {
 
             delete result.error;
 
+            result.image = PROFILE_IMAGE_URI;
             return res.status(200).send(result);
+        });
+    };
+
+    this.getProfileImage = function (req, res, next) {
+        var crmUserId = req.session.crmId;
+
+        traCrmNetWrapper.getProfileImage({contactId: crmUserId}, function(err, result){
+            if (err) {
+                return next(err);
+            }
+
+            if (result.error) {
+                if (result.error === 'Not Found') {
+                    return res.status(404).send({error: RESPONSE.NOT_FOUND});
+                }
+                return next(new Error(result.error));
+            }
+
+            delete result.error;
+
+            res.contentType('image/png');
+            return res.status(200).send(result.imageData);
         });
     };
 
@@ -217,12 +242,20 @@ var TRACRMHandler = function (db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
+        var imageData = null;
+        if (req.body.image) {
+            var imageInfo = prepareAttachment(req.body.image);
+            imageData = imageInfo.data;
+            console.log('Set profile image type: ' + imageInfo.type);
+        }
+
         var profileOptions = {
             contactId: crmUserId,
             first: req.body.first,
             last: req.body.last,
             email: req.body.email ? req.body.email : null,
-            mobile: req.body.mobile ? req.body.mobile : null
+            mobile: req.body.mobile ? req.body.mobile : null,
+            imageData: imageData
         };
 
         traCrmNetWrapper.setProfile(profileOptions, function (err, result) {
@@ -230,6 +263,16 @@ var TRACRMHandler = function (db) {
                 return next(err);
             }
 
+            if (result.error) {
+                if (result.error === 'Not Found') {
+                    return res.status(404).send({error: RESPONSE.NOT_FOUND});
+                }
+                return next(new Error(result.error));
+            }
+
+            delete result.error;
+
+            result.image = PROFILE_IMAGE_URI;
             return res.status(200).send(result);
         });
     };
