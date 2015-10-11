@@ -56,6 +56,8 @@ var TestCRMNetHandler = function () {
              string login = (string)input.login;
              string pass = (string)input.pass;
 
+             try
+             {
              CrmConnection connection = CrmConnection.Parse(connectionString);
 
              using (orgService = new OrganizationService(connection))
@@ -74,6 +76,12 @@ var TestCRMNetHandler = function () {
              }
 
              return result;
+             }
+             }
+             catch(Exception ex)
+             {
+             Console.WriteLine("message: " + ex.Message + " stack: " + ex.StackTrace);
+             throw ex;
              }
              }
 
@@ -209,9 +217,7 @@ var TestCRMNetHandler = function () {
              */
         },
         references: [
-            path + 'mscorlib.dll',
-            path + 'Microsoft.CSharp.dll',
-            path + 'System.dll',
+            path + 'System.Core.dll',
             path + 'System.ServiceModel.dll',
             path + 'System.ServiceModel.Extensions.dll',
             path + 'System.Configuration.dll',
