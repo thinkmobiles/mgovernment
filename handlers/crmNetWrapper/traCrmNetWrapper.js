@@ -210,11 +210,10 @@ var TestCRMNetHandler = function () {
         },
         references: [
             'System.Data.dll',
-            path + 'System.dll',
             path + 'System.ServiceModel.dll',
             path + 'System.Configuration.dll',
             path + 'System.Runtime.Serialization.dll',
-            path + 'System.Xrm.Sdk.Workflow.dll',
+            path + 'Microsoft.Xrm.Sdk.Workflow.dll',
             path + 'Microsoft.Xrm.Sdk.dll',
             path + 'Microsoft.Xrm.Sdk.Deployment.dll',
             path + 'Microsoft.IdentityModel.dll',
