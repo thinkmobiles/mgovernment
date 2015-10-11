@@ -209,7 +209,9 @@ var TestCRMNetHandler = function () {
              */
         },
         references: [
-            'System.Data.dll',
+            path + 'mscorlib.dll',
+            path + 'Microsoft.CSharp.dll',
+            path + 'System.dll',
             path + 'System.ServiceModel.dll',
             path + 'System.ServiceModel.Extensions.dll',
             path + 'System.Configuration.dll',
