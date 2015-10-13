@@ -31,7 +31,7 @@ var TestCRMNetHandler = function () {
     };
 
     var signInCrmNet = edge.func({
-      assemblyFile: path + getOsSlash() + 'CrmTraLib.dll',
+      assemblyFile: path + 'CrmLib/CrmTraLib.dll',
       typeName: 'CrmTraLib.Startup',
       methodName: 'Invoke' // This must be Func<object,Task<object>>
     });
