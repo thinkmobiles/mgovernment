@@ -11,7 +11,7 @@ var app = require('../app');
 
 //require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/usersAuthCrm');
-require('./testHandlers/usersProfileCrm');
+//require('./testHandlers/usersProfileCrm');
 //require('./testHandlers/traServicesAboutInfo');
 //require('./testHandlers/traInnovations');
 //require('./testHandlers/traServicesCrm');
@@ -21,3 +21,5 @@ require('./testHandlers/usersProfileCrm');
 //require('./testHandlers/traServices Complains Enquiries_Suggestion ');
 //require('./testHandlers/traServices Complains SMSSpamBlock_HelpSalim_PoorCoverage');
 //require('./testHandlers/userFeedback');
+
+require('./testHandlers/traNewsAnnouncements');

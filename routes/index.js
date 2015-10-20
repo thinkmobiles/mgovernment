@@ -17,6 +17,7 @@ module.exports = function(app, db) {
     var userServicesRouter = require('./userServices')(db);
     var userTraServicesRouter = require('./userTraServices')(db);
     var userFeedbackRouter = require('./userFeedback')(db);
+    var userAnnouncementRouter = require('./userAnnouncement')(db);
     var userInnovationRouter = require('./userInnovation')(db);
     var adminEmailReports = require('./adminEmailReport')(db);
     var testTRAServicesRouter = require('./testTRAServices')(db);
@@ -39,6 +40,7 @@ module.exports = function(app, db) {
     app.use('/userHistory', session.isAdminBySession, userHistoryLogRouter);
     app.use('/service', userServicesRouter);
     app.use('/feedback', userFeedbackRouter);
+    app.use('/announcement', userAnnouncementRouter);
     app.use('/innovation', userInnovationRouter);
     app.use('/emailReport', adminEmailReports);
     app.use('/tra_api/service', userTraServicesRouter);

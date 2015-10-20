@@ -25,7 +25,8 @@ module.exports = {
         IMAGE: 'Image',
         FEEDBACK: 'Feedback',
         INNOVATION: 'Innovation',
-        EMAIL_REPORT: 'emailReport'
+        EMAIL_REPORT: 'emailReport',
+        ANNOUNCEMENT: 'Announcement'
     },
 
     ACTION: {

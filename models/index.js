@@ -13,4 +13,5 @@ module.exports = function(db) {
     require('./feedback')(db);
     require('./innovation')(db);
     require('./emailReport')(db);
+    require('./announcement')(db);
 };
