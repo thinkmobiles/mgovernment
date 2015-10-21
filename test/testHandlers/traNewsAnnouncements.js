@@ -69,4 +69,44 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
             });
     });
 
+    it('User Get News search=security offset=0 limit=10', function (done) {
+        this.timeout(20000);
+
+        agent
+            .get('/announcement?offset=0&limit=10&search=security')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                console.dir(res.body);
+                expect(res.body).to.have.property('announcements');
+                expect(res.body.announcements).to.be.instanceof(Array);
+                expect(res.body.announcements).to.have.length.above(0);
+
+                done();
+            });
+    });
+
+    it('User Get News search=qwertylkjfh offset=0 limit=10', function (done) {
+        this.timeout(20000);
+
+        agent
+            .get('/announcement?offset=0&limit=10&search=qwertylkjfh')
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                console.dir(res.body);
+                expect(res.body).to.have.property('announcements');
+                expect(res.body.announcements).to.be.instanceof(Array);
+                expect(res.body.announcements).to.be.empty;
+
+                done();
+            });
+    });
+
 });

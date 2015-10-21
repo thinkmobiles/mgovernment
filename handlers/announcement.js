@@ -34,66 +34,70 @@ var AnnouncementHandler = function(db) {
     }
 
     function UpdateNews() {
-        request(RSS_FEED_URL, {
-            json: true
-        }, function (err, res, body) {
+        request(RSS_FEED_URL, {json: true}, function (err, res, body) {
+
             if (err) {
                 console.log('Get News error: ' + err);
-            } else {
+                return;
+            }
 
-                var jsonData = xmlParser.toJson(body, {
-                    sanitize: true,
-                    object: true
+            var jsonData = xmlParser.toJson(body, {
+                sanitize: true,
+                object: true
+            });
+
+            try {
+                var newsItems = jsonData.rss.channel.item;
+            }
+            catch (err) {
+                console.log('Error on parse news (' + new Date() + '): ' + err);
+                return;
+            }
+
+            for (var i = 0; i < newsItems.length; i++) {
+                findOrCreateAnnouncement(newsItems[i], function (err) {
+                    if (err) {
+                        console.log('Error on create announcement: ' + err);
+                    }
                 });
-
-                try {
-                    var newsItems = jsonData.rss.channel.item;
-                }
-                catch (err) {
-                    console.log('Error on parse news (' + new Date() + '): ' + err);
-                }
-
-                for (var i = 0; i < newsItems.length; i++) {
-                    findOrCreateAnnouncement(newsItems[i]);
-                }
-
-                console.dir(jsonData);
             }
         });
     }
 
-    function findOrCreateAnnouncement(newsItem) {
+    function findOrCreateAnnouncement(newsItem, callback) {
         Announcement
             .findOne({pubDate: newsItem.pubDate, title: newsItem.title})
             .exec(function (err, announ) {
 
                 if (err || !announ) {
-
-                    var pubDate = new Date(Date.parse(newsItem.pubDate));
-                    var imageLink = null;
-                    if (newsItem['media:content']) {
-                        imageLink = newsItem['media:content'].url;
-                    }
-
-                    var announcement = new Announcement({
-                        title: newsItem.title,
-                        description: newsItem.description,
-                        pubDate: pubDate,
-                        link: newsItem.link,
-                        image: imageLink
-                    });
-
-                    announcement
-                        .save(function (err, ann) {
-
-                        });
-
+                    return createAnnouncement(newsItem, callback);
                 } else {
-                    if (announ) {
-                        console.log('news in db');
-                    }
+                    return callback();
                 }
             })
+    }
+
+    function createAnnouncement(newsItem, callback) {
+
+        var pubDate = new Date(Date.parse(newsItem.pubDate));
+
+        var imageLink = null;
+        if (newsItem['media:content']) {
+            imageLink = newsItem['media:content'].url;
+        }
+
+        var announcement = new Announcement({
+            title: newsItem.title,
+            description: newsItem.description,
+            pubDate: pubDate,
+            link: newsItem.link,
+            image: imageLink
+        });
+
+        announcement
+            .save(function (err, ann) {
+                callback(err, ann);
+            });
     }
 
     this.getAllAnnouncements = function (req, res, next) {
@@ -106,8 +110,20 @@ var AnnouncementHandler = function(db) {
         var skipCount = req.query.offset || 0;
         var limitCount = req.query.limit || 20;
 
+        var findParams = {};
+
+        var search = req.query.search ? req.query.search : null;
+        if (search) {
+            findParams = {
+                $or: [
+                    {title: new RegExp(search, 'i')},
+                    {description: new RegExp(search, 'i')}
+                ]
+            };
+        }
+
         Announcement
-            .find({}, {__v: false})
+            .find(findParams, {__v: false})
             .sort(sortOrder)
             .skip(skipCount)
             .limit(limitCount)
