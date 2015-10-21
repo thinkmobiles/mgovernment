@@ -85,6 +85,10 @@ var AnnouncementHandler = function(db) {
         if (newsItem['media:content']) {
             imageLink = newsItem['media:content'].url;
         }
+        if (typeof newsItem.description !== 'string') {
+            console.dir(newsItem.description);
+            newsItem.description = newsItem.title;
+        }
 
         var announcement = new Announcement({
             title: newsItem.title,
