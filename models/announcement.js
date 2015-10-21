@@ -10,7 +10,8 @@ module.exports = function (db) {
     var announcement = new Schema({
         title: String,
         description: String,
-        pubDate: String,
+        image: {type: String, default: null},
+        pubDate: {type: Date, default: Date.now},
         link: String,
         createdAt: {type: Date, default: Date.now}
     }, {

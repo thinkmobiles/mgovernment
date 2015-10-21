@@ -1,6 +1,7 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var SCHEDULE_JOB;
+var RSS_FEED_URL = 'http://www.forbes.com/technology/index.xml';
 
 var AnnouncementHandler = function(db) {
     'use strict';
@@ -33,7 +34,7 @@ var AnnouncementHandler = function(db) {
     }
 
     function UpdateNews() {
-        request('http://feeds.reuters.com/Reuters/worldNews', {
+        request(RSS_FEED_URL, {
             json: true
         }, function (err, res, body) {
             if (err) {
@@ -68,11 +69,18 @@ var AnnouncementHandler = function(db) {
 
                 if (err || !announ) {
 
+                    var pubDate = new Date(Date.parse(newsItem.pubDate));
+                    var imageLink = null;
+                    if (newsItem['media:content']) {
+                        imageLink = newsItem['media:content'].url;
+                    }
+
                     var announcement = new Announcement({
                         title: newsItem.title,
                         description: newsItem.description,
-                        pubDate: newsItem.pubDate,
-                        link: newsItem.link
+                        pubDate: pubDate,
+                        link: newsItem.link,
+                        image: imageLink
                     });
 
                     announcement
@@ -108,7 +116,7 @@ var AnnouncementHandler = function(db) {
                     return next(err);
                 }
 
-                return res.status(200).send(collection);
+                return res.status(200).send({announcements: collection});
             });
     };
 

@@ -11,7 +11,7 @@ module.exports = function(db) {
     var session = new SessionHandler(db);
 
     router.route('/')
-        .get(session.authenticatedUser, userAnnouncement.getAllAnnouncements);
+        .get(userAnnouncement.getAllAnnouncements);
 
     router.route('/count')
         .get(session.authenticatedUser, userAnnouncement.getCount);
