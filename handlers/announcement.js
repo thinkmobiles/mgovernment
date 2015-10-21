@@ -99,7 +99,7 @@ var AnnouncementHandler = function(db) {
     this.getAllAnnouncements = function (req, res, next) {
 
         var sortField = 'pubDate';
-        var sortDirection = +req.query.order || 1;
+        var sortDirection = -1;
         var sortOrder = {};
         sortOrder[sortField] = sortDirection;
 
@@ -107,7 +107,7 @@ var AnnouncementHandler = function(db) {
         var limitCount = req.query.limit || 20;
 
         Announcement
-            .find({})
+            .find({}, {__v: false})
             .sort(sortOrder)
             .skip(skipCount)
             .limit(limitCount)
