@@ -18,5 +18,7 @@ module.exports = function (db) {
         collection: CONST.MODELS.ANNOUNCEMENT + 's'
     });
 
+    announcement.index({ title: 1, pubDate: 1}, { unique: true });
+
     db.model(CONST.MODELS.ANNOUNCEMENT, announcement);
 };

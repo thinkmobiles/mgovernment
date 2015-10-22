@@ -2,6 +2,7 @@ var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var SCHEDULE_JOB;
 var RSS_FEED_URL = 'http://www.forbes.com/technology/index.xml';
+var MAX_NEWS_COUNT = 200;
 
 var AnnouncementHandler = function(db) {
     'use strict';
@@ -57,11 +58,19 @@ var AnnouncementHandler = function(db) {
             for (var i = 0; i < newsItems.length; i++) {
                 findOrCreateAnnouncement(newsItems[i], function (err) {
                     if (err) {
-                        console.log('Error on create announcement: ' + err);
+                        if (!isDuplicateIndexError(err)) {
+                            console.log('Error on create announcement: ' + err);
+                        }
                     }
                 });
             }
+
+            removeOldNews();
         });
+    }
+
+    function isDuplicateIndexError(err) {
+        return (err instanceof Error && err.code == 11000);
     }
 
     function findOrCreateAnnouncement(newsItem, callback) {
@@ -102,6 +111,38 @@ var AnnouncementHandler = function(db) {
             .save(function (err, ann) {
                 callback(err, ann);
             });
+    }
+
+    function removeOldNews() {
+        Announcement.count({}, function (err, count) {
+
+            if (count && count > MAX_NEWS_COUNT) {
+
+                var sortOrder = {pubDate: -1};
+                var skipCount = MAX_NEWS_COUNT;
+                var limitCount = count - MAX_NEWS_COUNT;
+
+                Announcement
+                    .find({})
+                    .sort(sortOrder)
+                    .skip(skipCount)
+                    .limit(limitCount)
+                    .exec(function (err, collection) {
+                        if (err) {
+                            return console.log('find old news error: ' + err);
+                        }
+                        if(collection.length > 0) {
+                            console.log('Remove News elder then: ' + collection[0].get('pubDate'));
+                            Announcement
+                                .remove({ pubDate: { $lte: collection[0].get('pubDate')}}, function(err, result) {
+                                    if (err) {
+                                        console.log('Error on model remove: ' + err);
+                                    }
+                                })
+                        }
+                    })
+            }
+        })
     }
 
     this.getAllAnnouncements = function (req, res, next) {
