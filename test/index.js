@@ -24,8 +24,8 @@ require('./testHandlers/servicesIcon');
 //require('./testHandlers/traServices WHOIS_IMEI_BRAND');
 //require('./testHandlers/traServices Complains ServiceProvider_TRA Services');
 //require('./testHandlers/traServices Complains Enquiries_Suggestion ');
-//require('./testHandlers/traServices Complains SMSSpamBlock_HelpSalim_PoorCoverage');
-//require('./testHandlers/userFeedback');
+require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
+require('./testHandlers/userFeedback');
 
 require('./testHandlers/traNewsAnnouncements');
 //require('./testHandlers/tdaServices');

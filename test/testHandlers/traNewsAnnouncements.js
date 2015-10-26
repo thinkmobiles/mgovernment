@@ -10,7 +10,7 @@ var PreparingBd = require('./preparingDb');
 
 var app = require('../../app');
 
-describe('User CRM change Profile, change Pass, forgot Pass', function () {
+describe('User Announcements', function () {
     this.timeout(10000);
 
     var agent = request.agent(app);

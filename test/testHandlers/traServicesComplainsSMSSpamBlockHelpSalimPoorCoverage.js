@@ -7,12 +7,13 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:80';
+
+var app = require('../../app');
 
 describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function () {
     this.timeout(35000);
 
-    var agent = request.agent(url);
+    var agent = request.agent(app);
     var serviceCollection;
 
     before(function (done) {
@@ -246,25 +247,15 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
         };
 
         agent
-            .post('/user/signIn')
-            .send(loginData)
+            .post('/sendPoorCoverage')
+            .send(data)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-
-                agent
-                    .post('/sendPoorCoverage')
-                    .send(data)
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-                        console.dir(res.body);
-                        done();
-                    });
+                console.dir(res.body);
+                done();
             });
     });
 
@@ -296,7 +287,8 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         var loginData = USERS.CLIENT;
         var data = {
-            address: 'New York main street'
+            address: 'New York main street',
+            signalLevel: 4
         };
 
         agent

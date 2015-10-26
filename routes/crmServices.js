@@ -62,6 +62,53 @@ module.exports = function(db) {
     router.post('/crm/register', traCrmHandler.registerClient);
 
     /**
+     * This __method__  for user sign in CRM
+     *
+     * __URI:__ ___`/crm/signIn`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *     Body:
+     *      login
+     *      pass
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @example
+     *      {
+     *      login: 'testUser',
+     *      pass: 'password777'
+     *      }
+     * @method signIn
+     * @for crmServices
+     * @memberOf crmServices
+     *
+     */
+    router.post('/crm/signIn', traCrmHandler.signInClient);
+
+    /**
+     * This __method__ for user sign out from CRM
+     *
+     * __URI:__ ___`/crm/signOut`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @method signOut
+     * @for crmServices
+     * @memberOf crmServices
+     */
+    router.post('/crm/signOut', traCrmHandler.signOutClient);
+
+    /**
      * This __method__  for user change profile CRM
      *
      * __URI:__ ___`/crm/profile`___
@@ -97,104 +144,17 @@ module.exports = function(db) {
      * @memberOf crmServices
      *
      */
+    router.put('/crm/profile', session.isAuthenticatedUser, traCrmHandler.setProfile);
 
-    router.route('/crm/profile')
-        .put(session.isAuthenticatedUser, traCrmHandler.updateProfile)
+    router.get('/crm/profile', session.isAuthenticatedUser, traCrmHandler.getProfile);
 
-    /**
-     * This __method__  for user to get profile from CRM by session
-     *
-     * __URI:__ ___`/crm/profile`___
-     *
-     *  ## METHOD:
-     * __GET__
-     *
-     *  ## Request:
-     *
-     *  ## Responses:
-     *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     * @example
-     *      {
-     *       "first": "Maher",
-     *       "last": "Al Mulla",
-     *       "state": 3,
-     *       "phone": "+971557841298",
-     *       "streetAddress": "Garhoud, Deira",
-     *       "avatar": "http://localhost:7791/image/55ee896f8eacfe48026542f8" // or null
-     *      }
-     *
-     * @method getProfile
-     * @for crmServices
-     * @memberOf crmServices
-     *
-     */
-        .get(session.isAuthenticatedUser, traCrmHandler.getProfile);
+    router.get('/crm/profileImage', session.isAuthenticatedUser, traCrmHandler.getProfileImage);
 
-    /**
-     * This __method__  for user sign in CRM
-     *
-     * __URI:__ ___`/crm/signIn`___
-     *
-     *  ## METHOD:
-     * __POST__
-     *
-     *  ## Request:
-     *     Body:
-     *      login
-     *      pass
-     *
-     *  ## Responses:
-     *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     * @example
-     *      {
-     *      login: 'testUser',
-     *      pass: 'password777'
-     *      }
-     * @method signIn
-     * @for crmServices
-     * @memberOf crmServices
-     *
-     */
-
-    router.post('/crm/signIn', traCrmHandler.signInClient);
-
-    /**
-     * This __method__ for user sign out from CRM
-     *
-     * __URI:__ ___`/crm/signOut`___
-     *
-     *  ## METHOD:
-     * __POST__
-     *
-     *  ## Request:
-     *
-     *  ## Responses:
-     *      status (200) JSON object: {object}
-     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
-     * @method signOut
-     * @for crmServices
-     * @memberOf crmServices
-     */
-    router.post('/crm/signOut', traCrmHandler.signOutClient);
-    router.post('/crm/forgotPass', traCrmHandler.forgotPass);
-    router.get('/crm/changeForgotPass/:token', traCrmHandler.changeForgotPassForm);
-    router.post('/crm/changeForgotPass/:token', traCrmHandler.changeForgotPass);
-    router.post('/crm/changePass/', traCrmHandler.changePassBySession);
-
-
-    router.get('/crm/profile', session.authenticatedUser, traCrmHandler.getProfile);
-
-    router.get('/crm/profileImage', session.authenticatedUser, traCrmHandler.getProfileImage);
-
-    router.put('/crm/profile', session.authenticatedUser, traCrmHandler.setProfile);
-
-    router.put('/crm/changePass', session.authenticatedUser, traCrmHandler.changePass);
+    router.put('/crm/changePass', session.isAuthenticatedUser, traCrmHandler.changePass);
 
     router.post('/crm/forgotPass', traCrmHandler.forgotPass);
 
-    router.get('/crm/transactions', session.authenticatedUser, traCrmHandler.getTransactions);
+    router.get('/crm/transactions', session.isAuthenticatedUser, traCrmHandler.getTransactions);
 
     /**
      * This __method__ create SMS Spam Report

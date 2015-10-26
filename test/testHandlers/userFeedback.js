@@ -8,12 +8,13 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDB');
-var url = 'http://localhost:80';
+
+var app = require('../../app');
 
 describe('Feedback tests - Create, Get ,', function () {
     this.timeout(10000);
 
-    var agent = request.agent(url);
+    var agent = request.agent(app);
     var serviceCollection;
 
     before(function (done) {
@@ -24,7 +25,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
-                //preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
+                preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
                 //preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
@@ -138,7 +139,7 @@ describe('Feedback tests - Create, Get ,', function () {
         var feedback = {
             serviceName: service.serviceName,
             serviceId: service._id,
-            rate: 4,
+            rate: 3,
             feedback: 'pretty nice'
         };
 

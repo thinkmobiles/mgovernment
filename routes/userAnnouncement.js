@@ -14,7 +14,7 @@ module.exports = function(db) {
         .get(userAnnouncement.getAllAnnouncements);
 
     router.route('/count')
-        .get(session.authenticatedUser, userAnnouncement.getCount);
+        .get(session.isAuthenticatedUser, userAnnouncement.getCount);
 
     return router;
 };

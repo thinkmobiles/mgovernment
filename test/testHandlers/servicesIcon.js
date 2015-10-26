@@ -7,13 +7,13 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:7791';
 
+var app = require('../../app');
 
 describe('CRUD  icons for services', function () {
     this.timeout(55000);
 
-    var agent = request.agent(url);
+    var agent = request.agent(app);
     var lastServiceIconId;
 
     before(function (done) {
