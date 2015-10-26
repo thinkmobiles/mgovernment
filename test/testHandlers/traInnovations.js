@@ -55,7 +55,7 @@ describe('User Innovations', function () {
                         message: 'some message',
                         type: 1
                     })
-                    .expect(200)
+                    .expect(201)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
