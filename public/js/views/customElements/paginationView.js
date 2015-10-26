@@ -217,6 +217,19 @@ define([
             this.render();
         },
 
+        showOrderBy: function(el) {
+            var orderBy = this.stateModel.toJSON().data.orderBy;
+            var order = this.stateModel.toJSON().data.order;
+
+            console.dir('Pagination el: ', el);
+
+            if (order === 1) {
+                el.find('*[data-sort="' + orderBy + '"]').find(".sortUP").show();
+            } else {
+                el.find('*[data-sort="' + orderBy + '"]').find(".sortDN").show();
+            }
+        },
+
         setData: function (data) {
             this.stateModel.set({
                 data: data,

@@ -12,7 +12,8 @@ define([
         el: '#dataBlock',
         events: {
             'change .filterServiceType': 'changeCollectionFilter',
-            "click .oe_sortable": "goSort"
+            "click .oe_sortable": "goSort",
+            'keyup #searchTerm': "searchByTerm"
         },
 
         template: _.template(content),
@@ -25,17 +26,8 @@ define([
                 filter += filterCheckbox[i].checked ? '' : filterCheckbox[i].value + ',';
             }
 
-            //filter += el.find('#filterHelpSalim')[0].checked ? '' : 'Help Salim,';
-            //filter += el.find('#filterSMSSpam')[0].checked ? '' : 'SMS Spam,';
-            //filter += el.find('#filterSMSBlock')[0].checked ? '' : 'SMS Block,';
-            //filter += el.find('#filterServiceProvider')[0].checked ? '' : 'Service Provider,';
-            //filter += el.find('#filterTRAService')[0].checked ? '' : 'TRA Service,';
-            //filter += el.find('#filterEnquiries')[0].checked ? '' : 'Enquiries,';
-            //filter += el.find('#filterSuggestion')[0].checked ? '' : 'Suggestion,';
-            //filter += el.find('#filterPoorCoverage')[0].checked ? '' : 'Poor Coverage,';
-
             filter = filter.replace(/\,$/, '');
-            console.log('filter', filter);
+            console.log('filter: ', filter);
             this.paginationView.setData({filter: filter});
         },
 
@@ -54,73 +46,75 @@ define([
                 data: {
                     filter: options.filter,
                     orderBy: options.orderBy,
-                    order: options.order
+                    order: options.order,
+                    searchTerm: options.searchTerm
                 }
             });
 
-            //this.listenTo(this.emailReportsCollecion, 'sync reset remove', this.render);
+            if (!options.searchTerm) {
+                App.searchTerm = '';
+            }
+
             this.listenTo(this.emailReportsCollecion, 'reset remove', this.render);
-            this.render();
+            //this.render();
+        },
+
+        searchByTerm: function(e){
+            var sortOrder = this.paginationView.stateModel.toJSON().data.orderBy;
+            var sortBy = this.paginationView.stateModel.toJSON().data.order;
+            var filter = this.paginationView.stateModel.toJSON().data.filter;
+            var searchTerm =  e.target.value;
+
+            App.searchTerm = searchTerm;
+
+            console.log('serchTerm:',searchTerm);
+            //this.paginationView.setData({searchTerm: searchTerm});
+            this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter, searchTerm: searchTerm});
         },
 
         goSort: function (e) {
             var target$ = $(e.target);
-            //var currentParrentSortClass = target$.attr('class');
-            //var sortClass = currentParrentSortClass.split(' ')[1];
-
             var previousOrderBy = this.paginationView.stateModel.toJSON().data.orderBy;
             var previousOrder = this.paginationView.stateModel.toJSON().data.order;
             var filter = this.paginationView.stateModel.toJSON().data.filter;
-            var sortClass;
-
-            var sortBy = target$.data('sort');
+            var searchTerm = this.paginationView.stateModel.toJSON().data.searchTerm;
             var sortOrder = 1;
+            var sortBy;
+
+            if (target$[0].className !=='oe_sortable') {
+                target$ = target$.parent();
+            }
+
+            sortBy = target$.data('sort');
 
             if (previousOrderBy === sortBy) {
                 sortOrder = previousOrder * -1;
             }
 
-            sortClass = (sortOrder == -1) ? 'sortUp' : 'sortDn';
-
-            // if (!sortClass) {
-            //    target$.addClass('sortDn');
-            //    sortClass = "sortDn";
-            //}
-
-            switch (sortClass) {
-                case "sortDn":
-                {
-                    target$.parent().find("th").removeClass('sortDn').removeClass('sortUp');
-                    target$.removeClass('sortDn').addClass('sortUp');
-                    //order = 1;
-                }
-                    break;
-                case "sortUp":
-                {
-                    target$.parent().find("th").removeClass('sortDn').removeClass('sortUp');
-                    target$.removeClass('sortUp').addClass('sortDn');
-                    //order = -1;
-                }
-                    break;
+            if (sortOrder == -1) {
+                target$.find(".sortDN").show()
+            } else {
+                target$.find(".sortUP").show()
             }
-            //sortObject[sortBy] = sortConst;
-            //this.fetchSortCollection(sortObject);
-            //this.changeLocationHash(1, this.defaultItemsNumber);
-            //this.getTotalLength(null, this.defaultItemsNumber, this.filter);
-            this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter});
+
+            this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter,  searchTerm: searchTerm});
         },
 
         render: function () {
+            var el = this.$el;
+
             console.log('emailReportsView render');
             console.log('filter: ', this.paginationView.stateModel.toJSON().data);
 
-            this.$el.html(this.template({
+            el.html(this.template({
                 collection: this.emailReportsCollecion.toJSON(),
                 filter: this.paginationView.stateModel.toJSON().data.filter
             }));
 
-            filterCheckbox = document.querySelectorAll('input.filterServiceType');
-            this.$el.find("#paginationDiv").html(this.paginationView.render().$el);
+            filterCheckbox = $('.filterServiceType');
+            el.find("#paginationDiv").html(this.paginationView.render().$el);
+            el.find("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
+            this.paginationView.showOrderBy(el);
 
             return this;
         }

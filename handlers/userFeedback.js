@@ -11,18 +11,18 @@ var Feedback = function(db) {
     this.createFeedback = function (req, res, next) {
         var body = req.body;
         var feedback;
-
-        if (!body || !body.rate || !body.feedback || (!body.serviceId && !body.serviceName)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
         var validation = require('../helpers/validation');
         var userRef = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var serviceRef = new ObjectId(body.serviceId);
         var rate = body.rate;
         var errors = [];
+        var feedbackData;
 
-        var feedbackData = {
+        if (!body || !body.rate || !body.feedback || (!body.serviceId && !body.serviceName)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        feedbackData = {
             user: userRef,
             service: serviceRef,
             serviceName: body.serviceName,
@@ -31,12 +31,9 @@ var Feedback = function(db) {
         };
 
         validation.checkRate15(errors, true, rate, 'Rate');
+
         if (errors.length) {
             return res.status(400).send({error: errors});
-        }
-
-        if (! /^[12345]$/.test(rate)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
         feedback = new Feedback(feedbackData);
@@ -54,11 +51,11 @@ var Feedback = function(db) {
 
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
-        var sortOrder = {};
-        sortOrder[sortField] = sortDirection;
-
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
+        var sortOrder = {};
+
+        sortOrder[sortField] = sortDirection;
 
         Feedback
             .find({})
@@ -88,4 +85,4 @@ var Feedback = function(db) {
     };
 };
 
-    module.exports = Feedback;
+module.exports = Feedback;

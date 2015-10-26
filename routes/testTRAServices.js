@@ -1,5 +1,5 @@
 /**
- * Provides the REST API for services that get information about url or IMEI
+ * Provides the REST API for service that are not implemented in CRM
  *
  * @class testTraServices
  *
@@ -36,6 +36,7 @@ module.exports = function(db) {
      *
      * @method complainSmsBlock
      * @for testTraServices
+     * @memberOf testTraServices
      */
     router.post('/complainSmsBlock', testTRAHandler.complainSmsBlock);
 
@@ -61,11 +62,12 @@ module.exports = function(db) {
      *
      * @method sendPoorCoverage
      * @for testTraServices
+     * @memberOf testTraServices
      */
     router.post('/sendPoorCoverage', testTRAHandler.sendPoorCoverage);
 
     /**
-     * This __method__ create complain about TRA Service
+     * This __method__ create complain about web site
      *
      * __URI:__ ___`/sendHelpSalim`___
      *
@@ -83,6 +85,7 @@ module.exports = function(db) {
      *
      * @method sendHelpSalim
      * @for testTraServices
+     * @memberOf testTraServices
      */
     router.post('/sendHelpSalim', testTRAHandler.sendHelpSalim);
 

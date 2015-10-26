@@ -1,4 +1,5 @@
 
+
 .pagination {
     width: 100%;
     float: right;
@@ -37,6 +38,7 @@
     background-repeat: no-repeat;
     float: left;
 }
+
 .pagination #firstShowPage,
 .pagination #lastShowPage {
     width: 30px;
@@ -162,17 +164,68 @@
 .DbList{
     background-color: white;
     cursor: pointer;
+    color: #0A0EF2;
+    clear: both;
+    vertical-align:middle;
 }
+
+.iconList{
+    background-color: white;
+    cursor: pointer;
+    color: #0A0EF2;
+    clear: both;
+    vertical-align:middle;
+    height: 70px;
+}
+
+.iconSelectList{
+    background-color: white;
+    cursor: pointer;
+    color: #0A0EF2;
+    clear: both;
+    vertical-align:middle;
+    height: 50px;
+    border-bottom: 1px solid grey;
+}
+
 
 .DbList:hover{
     background-color: #d3d3d3;
+    font-weight: bold;
 }
+
+.iconSelectList:hover, .iconList:hover{
+    background-color: #d3d3d3;
+    font-weight: bold;
+}
+
+.iconDiv{
+    /*height: 90px;*/
+    width: 95%;
+    margin-left: 5px;
+    /*border: 1px solid black*/
+}
+.iconDiv span {
+    color: black;
+    font-weight: bold;
+    font-size: 17px;
+}
+.iconDiv input {
+    width: 95px
+}
+
+.iconDiv img {
+    border: 1px solid grey;
+    background-color: white;
+    opacity: 0.9;
+}
+
 
 .topBarButton {
     margin-left: 5px;
     text-align: center;
     border: 1px solid gray;
-    width: 100px;
+    width: 80px;
     height: 45px;
     line-height: 45px;
     float: left;
@@ -189,30 +242,81 @@
     cursor: pointer;
 }
 
+.mobileBtn {
+    border: 1px solid grey;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 30px;
+    border-radius: 6px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.showAreaAR {
+    text-align: right;
+    margin-right: 50px;
+    margin-left: 50px;
+}
+
+.showAreaEN {
+    text-align: left;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.showAreaEN:hover {
+    border: 1px dashed grey;
+    cursor: pointer;
+    border-radius: 6px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0.01, 0);
+}
+
+.showAreaAR:hover {
+    border: 1px dashed grey;
+    cursor: pointer;
+    border-radius: 6px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0.01, 0);
+}
+
+.mobileBtn:hover {
+    border: 1px solid goldenrod;
+    color: goldenrod;
+    background-color: rgba(0, 0, 0, 0.01);
+}
+.itemBlockBG{
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
 .topBarButton:hover {
     background-color: rgba(0, 0, 0, 0.01);
 }
 
 .actionButton {
-     text-align: center;
-     vertical-align: middle;
-     border: 1px solid gray;
-     width: 70px;
-     height: 30px;
-     line-height: 30px;
-     clear: both;
-     border-radius: 4px;
-     -moz-border-radius: 5px;
-     -khtml-border-radius: 10px;
-     background-color: rgba(0, 0, 0, 0.1);
-     opacity: 0.8;
-     font-family: Arial;
-     font-size: 18px;
-     font-weight: bold;
-     color: #000000;
-     cursor: pointer;
-     text-shadow: 1px 1px white;
- }
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid gray;
+    width: 70px;
+    height: 30px;
+    line-height: 30px;
+    clear: both;
+    border-radius: 4px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    cursor: pointer;
+    text-shadow: 1px 1px white;
+}
 
 .actionButtonAdd {
 
@@ -313,6 +417,16 @@ th {
     font-size: 18px;
     font-weight: bold;
 }
+.tableDisplayMobile table
+{
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/*.tableDisplayMobile table, td*/
+/*{*/
+/*/!*border: 1px solid black;*!/*/
+/*}*/
 
 .tableView th{
     color: black;
@@ -357,14 +471,14 @@ th.oe_sortable_sub .arrow {
     line-height: 23px;
     background: none;
 }
-.oe_sortable.sortUp .up,
-.oe_sortable_sub.sortUp .up {
-    display: inline-block;
+.sortUP, .sortDN {
+    display: none;
 }
-th.oe_sortable.sortDn .down,
-th.oe_sortable_sub.sortDn .down {
-    display: inline-block;
-}
+
+/*th.oe_sortable.sortDn .down,*/
+/*th.oe_sortable_sub.sortDn .down {*/
+/*display: none;*/
+/*}*/
 
 .pagination {
     width: 100%;

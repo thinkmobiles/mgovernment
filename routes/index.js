@@ -12,6 +12,7 @@ module.exports = function(app, db) {
     var clientLayoutsRouter = require('./clientLayouts')(db);
     var adminLayoutsRouter = require('./adminLayouts')(db);
     var adminServicesRouter = require('./adminServices')(db);
+    var servicesIcon = require('./servicesIcon')(db);
     var adminHistoryLogRouter = require('./adminHistoryLog')(db);
     var userHistoryLogRouter = require('./userHistoryLog')(db);
     var userServicesRouter = require('./userServices')(db);
@@ -36,6 +37,7 @@ module.exports = function(app, db) {
     app.use('/clientLayout', clientLayoutsRouter);
     app.use('/adminLayout', session.isAdminBySession, adminLayoutsRouter);
     app.use('/adminService', session.isAdminBySession, adminServicesRouter);
+    app.use('/icon', servicesIcon);
     app.use('/adminHistory', session.isAdminBySession, adminHistoryLogRouter);
     app.use('/userHistory', session.isAdminBySession, userHistoryLogRouter);
     app.use('/service', userServicesRouter);
@@ -44,7 +46,8 @@ module.exports = function(app, db) {
     app.use('/innovation', userInnovationRouter);
     app.use('/emailReport', adminEmailReports);
     app.use('/tra_api/service', userTraServicesRouter);
-    app.get('/attachment/:attachmentId', session.isAdminBySession, attachmentHandler.getAttachmentById);
+    app.get('/image/avatar', session.isAuthenticatedUser, attachmentHandler.getAttachmentBySession);
+    app.get('/image/:imageId', session.isAdminBySession, attachmentHandler.getAttachmentById);
 
     app.use('/', crmRouter);
     app.use('/', testTRAServicesRouter);
@@ -53,10 +56,6 @@ module.exports = function(app, db) {
     app.get('/', function (req, res) {
         res.sendfile('./index.html');
     });
-
-    //app.get('/attachment/:attachmentId', session.isAdminBySession, function (req, res) {
-    //    res.send('test <img style="width:10px; height:10px; border: 1px solid black"> Hello');
-    //});
 
     function notFound(req, res, next) {
         next();

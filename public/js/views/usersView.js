@@ -16,7 +16,8 @@ define([
             'click .DbList': 'showUsersInfo',
             'click #createUser': 'createUser',
             'click #deleteUser': 'deleteUser',
-            'click #updateUser': 'updateUser'
+            'click #updateUser': 'updateUser',
+            'keyup #searchTerm': 'searchByTerm'
         },
 
         template: _.template(content),
@@ -33,11 +34,26 @@ define([
                 page         : options.page,
                 ends         : true,
                 steps        : true,
-                data         : {}
+                data         : {
+                    searchTerm: options.searchTerm
+                }
             });
 
+            if (!options.searchTerm) {
+                App.searchTerm = '';
+            }
+
             this.listenTo(this.usersCollection, 'reset remove', this.render);
-            this.render();
+           // this.render();
+        },
+
+        searchByTerm: function(e){
+            var searchTerm =  e.target.value;
+
+            App.searchTerm = searchTerm;
+
+            console.log('serchTerm:',searchTerm);
+            this.paginationView.setData({searchTerm: searchTerm});
         },
 
         render: function () {
@@ -66,14 +82,13 @@ define([
                 return;
             }
 
-            var service = this.usersCollection.models[this.selectedUserId];
+            var user = this.usersCollection.models[this.selectedUserId];
             var self = this;
 
-            service.destroy ({
+            user.destroy ({
                 success: function(model, response, options){
                     alert('User deleted');
                     self.usersCollection.reset();
-                    //Backbone.history.navigate('users', {trigger: true});
                 },
 
                 error: function(model, xhr, options){
@@ -110,37 +125,37 @@ define([
             }
 
             this.selectedUserId = id;
-
             propertyList.text("").append(str);
-            properties.text( selectedUser.login );
-            //$("#properties").text( selectedUser.login + " properties ");
+            properties.text(selectedUser.login);
         },
 
         updateUserList: function(){
 
             var usersCollection = this.usersCollection.toJSON();
-            var itemTextColor = '#0A0EF2';
             var textContent;
-            var serviceDiv;
-            var serviceId;
-            var service;
+            var userDiv;
+            var userId;
+            var user;
+
+            $("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
 
             for (var i = usersCollection.length-1; i>=0; i--){
-                service = usersCollection[i];
-                serviceId = service._id;
-                serviceDiv = $("#DbList" + serviceId);
-                textContent = service.login;
+                user = usersCollection[i];
+                userId = user._id;
+                userDiv = $("#DbList" + userId);
+                textContent = user.login + ' ' + (user.profile.firstName ?  user.profile.firstName : '') + ' ' + (user.profile.lastName ?  user.profile.lastName : '');
 
-                if (!serviceDiv.length) {
+                if (!userDiv.length) {
                     $("<div> </div>").
-                        attr("id", "DbList" + serviceId).
-                        attr("class", "DbList").css({"color": itemTextColor}).
+                        attr("id", "DbList" + userId).
+                        attr("class", "DbList").
                         attr("data-hash", "" + i).
                         text(textContent).
                         appendTo("#databaseList");
                 } else {
-                    $("#DbList" + serviceId).
-                        attr("class", "DbList").css({"color": itemTextColor}).
+                    console.log('update list used');
+                    $("#DbList" + userId).
+                        attr("class", "DbList").
                         attr("data-hash", "" + i).
                         text(textContent);
                 }

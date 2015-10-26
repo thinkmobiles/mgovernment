@@ -18,7 +18,7 @@ module.exports = function(db) {
     var traCrmHandler = new TraCrmHandler(db);
 
     /**
-     * This __method__ for user  register in CRM
+     * This __method__ for user  registratoin in CRM
      *
      * __URI:__ ___`/crm/register`___
      *
@@ -57,11 +57,82 @@ module.exports = function(db) {
      *
      * @method register
      * @for crmServices
+     * @memberOf crmServices
      */
     router.post('/crm/register', traCrmHandler.registerClient);
 
     /**
-     * This __method__  for user signIn in CRM
+     * This __method__  for user change profile CRM
+     *
+     * __URI:__ ___`/crm/profile`___
+     *
+     *  ## METHOD:
+     * __POST__
+     *
+     *  ## Request:
+     *     Body:
+     *      first,
+     *      last,
+     *      state,
+     *      phone,
+     *      streetAddress,
+     *      avatar
+     *
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @example
+     *      {
+     *       "first": "Maher",
+     *       "last": "Al Mulla",
+     *       "state": 3,
+     *       "phone": "+971557841298",
+     *       "streetAddress": "Garhoud, Deira",
+     *       "avatar":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPMAAAF.... // or null
+     *      }
+     *
+     * @method updateProfile
+     * @for crmServices
+     * @memberOf crmServices
+     *
+     */
+
+    router.route('/crm/profile')
+        .put(session.isAuthenticatedUser, traCrmHandler.updateProfile)
+
+    /**
+     * This __method__  for user to get profile from CRM by session
+     *
+     * __URI:__ ___`/crm/profile`___
+     *
+     *  ## METHOD:
+     * __GET__
+     *
+     *  ## Request:
+     *
+     *  ## Responses:
+     *      status (200) JSON object: {object}
+     *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     * @example
+     *      {
+     *       "first": "Maher",
+     *       "last": "Al Mulla",
+     *       "state": 3,
+     *       "phone": "+971557841298",
+     *       "streetAddress": "Garhoud, Deira",
+     *       "avatar": "http://localhost:7791/image/55ee896f8eacfe48026542f8" // or null
+     *      }
+     *
+     * @method getProfile
+     * @for crmServices
+     * @memberOf crmServices
+     *
+     */
+        .get(session.isAuthenticatedUser, traCrmHandler.getProfile);
+
+    /**
+     * This __method__  for user sign in CRM
      *
      * __URI:__ ___`/crm/signIn`___
      *
@@ -83,12 +154,14 @@ module.exports = function(db) {
      *      }
      * @method signIn
      * @for crmServices
+     * @memberOf crmServices
      *
      */
+
     router.post('/crm/signIn', traCrmHandler.signInClient);
 
     /**
-     * This __method__ for user signOut from CRM
+     * This __method__ for user sign out from CRM
      *
      * __URI:__ ___`/crm/signOut`___
      *
@@ -102,9 +175,13 @@ module.exports = function(db) {
      *      status (400, 500) JSON object: {error: 'Text about error'} or  {error: object}
      * @method signOut
      * @for crmServices
-     *
+     * @memberOf crmServices
      */
     router.post('/crm/signOut', traCrmHandler.signOutClient);
+    router.post('/crm/forgotPass', traCrmHandler.forgotPass);
+    router.get('/crm/changeForgotPass/:token', traCrmHandler.changeForgotPassForm);
+    router.post('/crm/changeForgotPass/:token', traCrmHandler.changeForgotPass);
+    router.post('/crm/changePass/', traCrmHandler.changePassBySession);
 
 
     router.get('/crm/profile', session.authenticatedUser, traCrmHandler.getProfile);
@@ -138,8 +215,9 @@ module.exports = function(db) {
      *
      * @method complainSmsSpam
      * @for crmServices
+     * @memberOf crmServices
      */
-    router.post('/complainSmsSpam', session.authenticatedUser, traCrmHandler.complainSmsSpam);
+    router.post('/complainSmsSpam', session.isAuthenticatedUser, traCrmHandler.complainSmsSpam);
 
     /**
      * This __method__ create complain about Service Provider
@@ -172,8 +250,9 @@ module.exports = function(db) {
      *
      * @method complainServiceProvider
      * @for crmServices
+     * @memberOf crmServices
      */
-    router.post('/complainServiceProvider', session.authenticatedUser, traCrmHandler.complainServiceProvider);
+    router.post('/complainServiceProvider', session.isAuthenticatedUser, traCrmHandler.complainServiceProvider);
 
     /**
      * This __method__ create complain about TRA Service
@@ -195,8 +274,9 @@ module.exports = function(db) {
      * @method complainTRAService
      *
      * @for crmServices
+     * @memberOf crmServices
      */
-    router.post('/complainTRAService', session.authenticatedUser, traCrmHandler.complainTRAService);
+    router.post('/complainTRAService', session.isAuthenticatedUser, traCrmHandler.complainTRAService);
 
     /**
      * This __method__ create Enquiries <br>
@@ -217,8 +297,9 @@ module.exports = function(db) {
      *
      * @method complainEnquiries
      * @for crmServices
+     * @memberOf crmServices
      */
-    router.post('/complainEnquiries', session.authenticatedUser, traCrmHandler.complainInquiries);
+    router.post('/complainEnquiries', session.isAuthenticatedUser, traCrmHandler.complainInquiries);
 
     /**
      * This __method__ create Suggestion <br>
@@ -239,8 +320,9 @@ module.exports = function(db) {
      *
      * @method sendSuggestion
      * @for crmServices
+     * @memberOf crmServices
      */
-    router.post('/sendSuggestion', session.authenticatedUser, traCrmHandler.sendSuggestion);
+    router.post('/sendSuggestion', session.isAuthenticatedUser, traCrmHandler.sendSuggestion);
 
     return router;
 };

@@ -1,25 +1,99 @@
-<tr id="itemBlockOrder<%= i %>">
-    <td class="hiddenByDefault"><b>item[<%= i %>].order:</b></td>
-    <td class="hiddenByDefault"><input type="number" id="order<%= i %>" size="4" style="width: 50px"
-                                       value="<%= i %>"></td>
-    <td class="hiddenByDefault"> Input order of item[<%= i %>]:</td>
-</tr>
+<tr id="itemBlock<%= i %>">
+    <td colspan="3">
+        <table style="width: 100%" <% if (i%2) { %> class ="itemBlockBG" <% } %>>
+            <tr style="border-top: none">
+                <th style="width:20%"></th>
+                <th style="width:30%; word-break: break-all;"></th>
+                <th></th>
+            </tr>
+            <tr id="itemBlockOrder<%= i %>"style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].order:</b></td>
+                <td class="hiddenByDefault"><input type="number" id="order<%= i %>" size="4" style="width: 50px"
+                                                   value="<%= i %>"></td>
+                <td class="hiddenByDefault"> Input order of item[<%= i %>]:</td>
+            </tr>
 
-<tr id="itemBlockName<%= i %>">
-    <td class="hiddenByDefault"><b>item[<%= i %>].name:</b></td>
-    <td class="hiddenByDefault"><input type="text" id="name<%= i %>" size="20" maxlength="20"
-                                       value="" class="itemBlockName" list="standartFieldsName"></td>
-    <td class="hiddenByDefault"> Input name of item[<%= i %>]:</td>
-</tr>
+            <tr id="itemBlockName<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].name:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="name<%= i %>" size="20" maxlength="20"
+                                                   value="" class="itemBlockName" list="standartFieldsName"></td>
+                <td class="hiddenByDefault"> Input name of item[<%= i %>]:</td>
+            </tr>
 
-<tr id="itemBlockInputType<%= i %>">
-    <td class="hiddenByDefault"><b>item[<%= i %>].type:</b></td>
-    <td class="hiddenByDefault">
-        <select id="inputType<%= i %>">
-            <option value="string">string</option>
-            <option value="number">number</option>
-            <option value="boolean">boolean</option>
-            <option value="file">file</option>
-        </select></td>
-    <td class="hiddenByDefault"> Input type of item[<%= i %>]:</td>
+            <tr id="itemBlockInputType<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].type:</b></td>
+                <td class="hiddenByDefault">
+                    <select id="inputType<%= i %>" class="inputType" data-hash="<%= i %>">
+                        <option value="string">string</option>
+                        <option value="text">text</option>
+                        <option value="number">number</option>
+                        <option value="boolean">boolean</option>
+                        <option value="file">file</option>
+                        <option value="picker">picker</option>
+                    </select></td>
+                <td class="hiddenByDefault"> Input type of item[<%= i %>]:</td>
+            </tr>
+
+            <tr id="itemBlockInputDataSource<%= i %>" style="border-top: none; display: none">
+            <td><b>item[<%= i %>].dataSource:</b></td>
+                <td class="hiddenByDefault">
+                <div><p><b>dataSouce: [ </b><span
+                        id="dataSourceValue<%= i %>"></span><b>
+                    ]</b></p>
+                    <input type="text" id="inputDataSource<%= i %>" size="20" maxlength="20" value="" >
+                    &nbsp<a href="#"  data-source="<%= i %>"
+                            class="actionButtonAdd"> add </a>&nbsp
+                    <a href="#" data-source="<%= i %>"
+                       class="actionButtonDell">&nbspdell&nbsp</a>
+                    </div>
+            </td>
+            <td class="hiddenByDefault"> Data Source is array that consist of values for mobile picker
+            </td>
+            </tr>
+
+            <tr id="itemBlockRequired<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].required:</b></td>
+                <td class="hiddenByDefault">
+                    <input type="checkbox" id="requiredCheck<%= i %>" checked></td>
+                <td class="hiddenByDefault"> Check if field item[<%= i %>] is reqiured</td>
+            </tr>
+
+            <tr id="itemBlockDisplayNameEN<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].displayName.EN:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="displayNameEN<%= i %>" size="20" maxlength="50"></td>
+                <td class="hiddenByDefault"> Input display name of item[<%= i %>] on English</td>
+            </tr>
+
+            <tr id="itemBlockDisplayNameAR<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].displayName.AR:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="displayNameAR<%= i %>" size="20" maxlength="50"></td>
+                <td class="hiddenByDefault"> Input display name of item[<%= i %>] on Arabic</td>
+            </tr>
+            <tr id="itemBlockPlaceHolderEN<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].placeHolder.EN:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="placeHolderEN<%= i %>" size="20" maxlength="50"></td>
+                <td class="hiddenByDefault"> Input place holder if need of item[<%= i %>] on English</td>
+            </tr>
+
+            <tr id="itemBlockPlaceHolderAR<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].placeHolder.AR:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="placeHolderAR<%= i %>" size="20" maxlength="50"></td>
+                <td class="hiddenByDefault"> Input place holder if need  of item[<%= i %>] on Arabic</td>
+            </tr>
+
+            <tr id="itemBlockInputValidation<%= i %>" style="border-top: none">
+                <td class="hiddenByDefault"><b>item[<%= i %>].validate:</b></td>
+                <td class="hiddenByDefault">
+                    <select id="inputValidate<%= i %>">
+                        <option value="none">none</option>
+                        <option value="string">string</option>
+                        <option value="number">number</option>
+                        <option value="email">email</option>
+                        <option value="url">url</option>
+                    </select></td>
+                <td class="hiddenByDefault"> Chose validation type of item[<%= i %>]:</td>
+            </tr>
+
+        </table>
+    </td>
 </tr>

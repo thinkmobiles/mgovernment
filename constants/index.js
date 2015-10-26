@@ -15,6 +15,7 @@ module.exports = {
 
     MODELS: {
         ATTACHMENT: 'Attachment',
+        SERVICES_ICON: 'ServicesIcon',
         USER: 'User',
         PROFILE: 'Profile',
         LAYOUT: 'Layout',
@@ -43,6 +44,8 @@ module.exports = {
         CAPALABA: 'Capalaba',
         TMA_TRA_SERVICES: 'TmaTraServices',
         TMA_TRA_SERVICES_VIA_SOCKET: 'tmaTraServicesViaSocket'
-}
+    },
+
+    ALPHABETICAL_FOR_TOKEN: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
 
 };

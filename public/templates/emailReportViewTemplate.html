@@ -1,8 +1,13 @@
 <div style=" padding-bottom: 5px;margin-left: 5px; margin-right: 5px; vertical-align: top">
 
     <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
-        <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
-            <span style="font-size: 22px; "><b>List of emailReports</b></span></div>
+        <div style="width: 79%;margin-right: 7px; background-color: lightsteelblue;  float: left; text-align: center; opacity: 0.8;">
+            <span style="font-size: 22px; "><b>List of emailReports</b></span>
+        </div>
+        <div style="text-align: right">
+            <input id="searchTerm" style="border-color: #595959; width: 200px; height: 30px;"
+                   class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" type="text" placeholder="Search a Report">
+        </div>
     </div>
     <div class = "tableFilter"><b> Show: </b>
         <b> <input type="checkbox" class="filterServiceType" id="filterHelpSalim"
@@ -27,24 +32,16 @@
 
     <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
         <tr>
-            <th class="oe_sortable" data-sort="serviceType">serviceType
-                <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
-            <th class="oe_sortable" data-sort="serviceProvider">serviceProvider
-            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
-            <th class="oe_sortable" data-sort="user">user
-            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
-            <th class="oe_sortable" data-sort="title">title
-            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
-            <th class="oe_sortable" data-sort="description">description
-            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span>-->
-            <th class="oe_sortable" data-sort="attachment">attachment
-            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
-            <th class="oe_sortable" data-sort="mailTo">mailTo
-            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
-            <th class="oe_sortable" data-sort="createdAt">createdAt
-            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
-            <th class="oe_sortable" data-sort="response">response
-            <!--<span class="arrow down">&#708;</span><span class="arrow up">&#709;</span></th>-->
+            <th class="oe_sortable" data-sort="serviceType">serviceType<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+            <th class="oe_sortable" data-sort="serviceProvider">serviceProvider<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+            <th class="oe_sortable" data-sort="user">user<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+            <th class="oe_sortable" data-sort="title">title<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+            <th class="oe_sortable" data-sort="description">description<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+            <th class="oe_sortable" data-sort="attachment">attachment<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+            <th class="oe_sortable" data-sort="mailTo">mailTo<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+            <th class="oe_sortable" data-sort="createdAt">createdAt<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+            <th class="oe_sortable" data-sort="response">response<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
+
         </tr>
 
         <% if (collection.length) { %>
@@ -59,7 +56,7 @@
             <td style="text-align: center"><% if (collection[i].attachment) {%>
             <!--<a href="<%= collection[i].attachment %>" target="_blank"> <img src="<%= collection[i].attachment %>" style=" height: 40px"></a>-->
 
-                <a href="/attachment/<%= collection[i].attachment %>" target="_blank"> <img src="../../img/attachment.png" style=" height: 40px" alt = "attachment"></a>
+                <a href="/image/<%= collection[i].attachment %>" target="_blank"> <img src="../../img/attachment.png" style=" height: 40px" alt = "attachment"></a>
                 <% } %>
             </td>
             <td style=" word-break: break-all;"><%= collection[i].mailTo %></td>

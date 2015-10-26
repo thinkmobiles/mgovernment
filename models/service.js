@@ -4,13 +4,27 @@ module.exports = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var Schema = mongoose.Schema;
+    var ObjectId = mongoose.Schema.Types.ObjectId;
 
-    var serviceSchema = mongoose.Schema({
+    var serviceSchema = new Schema({
             serviceProvider: {type: String, required: true},
-            serviceName: {type: String, required: true},
+            serviceName: {
+                EN: {type: String, default: ''},
+                AR: {type: String, default: ''}
+            },
+            serviceDescription: {
+                EN: {type: String, default: ''},
+                AR: {type: String, default: ''}
+            },
             serviceType: {type: String, required: true},
-            baseUrl:{type: String, required: true},
-            profile:{},
+            icon: {type: ObjectId, ref: CONST.MODELS.SERVICES_ICON, default: null},
+            baseUrl: {type: String, required: true},
+            profile: {},
+            buttonTitle: {
+                EN: {type: String, default: ''},
+                AR: {type: String, default: ''}
+            },
             updatedAt: {type: Date},
             createdAt: {type: Date, default: Date.now},
             forUserType: {type:[], required: true},
@@ -23,8 +37,18 @@ module.exports = function (db) {
                 order: Number,
                 name: String,
                 inputType: String,
-                placeHolder: String,
-                options:[]
+                placeHolder: {
+                    EN: String,
+                    AR: String
+                },
+                displayName: {
+                    EN: String,
+                    AR: String
+                },
+                required: Boolean,
+                validateAs: String,
+                dataSource: []
+                //options:[]
             }]
         },
         {

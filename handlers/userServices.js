@@ -51,17 +51,93 @@ var UserService = function(db) {
         })
     };
 
+    this.getServiceInfo = function (req, res, next) {
+        // TODO check this when session.language will be implemented
+        var language = req.query.lang ? req.query.lang : (req.session.language ? req.session.language : 'EN');
+        var id =  req.params.serviceId;
+        //console.log('lang: ',req.query.lang);
+        //
+        //console.dir(req.session);
+
+        if (req.query.lang) {
+                      req.session.language = req.query.lang;
+        }
+
+        Service
+            .findOne({_id: id})
+            .select('serviceName.' + language +' icon profile inputItems buttonTitle.' + language + ' serviceDescription')
+            .lean()
+            .exec( function (err, model) {
+                var responseModel = model;
+                var tempObject;
+
+                var log = {
+                    user: req.session.uId || null,
+                    action: CONST.ACTION.GET,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: id,
+                    req: {params: req.params, body: req.params},
+                    res: 'collection',
+                    description: 'getServiceInfo'
+                };
+                userHistoryHandler.pushlog(log);
+
+                if (err) {
+                    return res.status(500).send({error: err});
+                }
+
+                if (!responseModel) {
+                    return res.status(404).send({error: RESPONSE.ON_ACTION.NOT_FOUND});
+                }
+
+                responseModel.icon = responseModel.icon ? '/icon/' + responseModel.icon : null;
+                responseModel.serviceName = responseModel.serviceName[language];
+                responseModel.serviceDescription = responseModel.serviceDescription[language];
+                responseModel.buttonTitle = responseModel.buttonTitle[language];
+
+                for (var i = responseModel.inputItems.length - 1; i >= 0; i --){
+                    for (var j = i - 1; j >= 0; j --){
+                        if (responseModel.inputItems[i].order < responseModel.inputItems[j].order) {
+                            tempObject = responseModel.inputItems[i];
+                            responseModel.inputItems[i] = responseModel.inputItems[j];
+                            responseModel.inputItems[j] = tempObject;
+                        }
+                    }
+                }
+
+                for (var i = responseModel.inputItems.length - 1; i >= 0; i --){
+                    delete(responseModel.inputItems[i].order);
+                    delete(responseModel.inputItems[i]._id);
+                    responseModel.inputItems[i].displayName = responseModel.inputItems[i].displayName[language];
+                    responseModel.inputItems[i].placeHolder = responseModel.inputItems[i].placeHolder[language];
+                }
+
+                return res.status(200).send(responseModel);
+            })
+    };
+
     this.getServices = function (req, res, next) {
+        // TODO check this when session.language will be implemented
+
+        var language = req.query.lang ? req.query.lang : (req.session.language ? req.session.language : 'EN');
+
+        if (req.query.lang) {
+            req.session.language = req.query.lang;
+        }
 
         Service
             .find()
-            .select('_id serviceProvider serviceName serviceType profile forUserType method baseUrl')
+            .select('_id serviceName.' + language +' icon ')
+            .lean()
             .exec(function (err, collection) {
+                var log;
+                var responseCollection = collection;
+
                 if (err) {
-                    return next(err);
+                    return res.status(500).send({error: err});
                 }
 
-                var log = {
+                log = {
                     user: req.session.uId || null,
                     action: CONST.ACTION.GET,
                     model: CONST.MODELS.SERVICE,
@@ -70,9 +146,15 @@ var UserService = function(db) {
                     res: collection,
                     description: 'Get Services'
                 };
+
                 userHistoryHandler.pushlog(log);
 
-                return res.status(200).send(collection);
+                for (var i = responseCollection.length - 1; i >= 0; i --){
+                    responseCollection[i].icon = responseCollection[i].icon ? '/icon/' + responseCollection[i].icon : null;
+                    responseCollection[i].serviceName = responseCollection[i].serviceName[language];
+                }
+
+                return res.status(200).send(responseCollection);
             });
     };
 
@@ -187,7 +269,6 @@ var UserService = function(db) {
                     if (err) {
                         return callback(err);
                     }
-
                     return callback(null, result);
                 });
             };
@@ -213,6 +294,7 @@ var UserService = function(db) {
                     if (!found) {
                         return callback('Service Account not found');
                     }
+
                     serviceAccount = user.accounts[foundNumber];
                     return callback();
                 });

@@ -1,13 +1,11 @@
 define([
-    'text!templates/topBarTemplate.html',
+    'text!templates/topBarTemplate.html'
 ], function (topBarTemplate) {
     'use strict';
 
     var topBarView = Backbone.View.extend({
         el: '#topBar',
-
         template: _.template(topBarTemplate),
-
         events: {
             'click .topBarButton': 'navigateToByDataHash'
         },

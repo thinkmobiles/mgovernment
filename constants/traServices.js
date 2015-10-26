@@ -81,6 +81,17 @@ module.exports = {
         ReducingCostIncreasingRevenue: 4,
         RaisingTRAInstitutionalReputation: 5,
         FuturologyStudies: 6
+    },
+
+    NO_CRM_ENUM:{
+        REGISTER: 'register',
+        UPDATE_PROFILE: 'updateProfile',
+        CASE_TYPE: {
+            SMS_BLOCK: 11,
+            POOR_COVERAGE: 12,
+            HELP_SALIM: 13
+        }
+
     }
     /*
      1 - Customer Happiness

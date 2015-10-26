@@ -12,13 +12,24 @@ var EmailReport = function (db) {
 
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
-        var sortOrder = {};
-        sortOrder[sortField] = sortDirection;
-
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
         var filter = req.query.filter ? req.query.filter.split(',') : [];
-        console.log('sortOrder:', sortOrder);
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
+        var sortOrder = {};
+
+        sortOrder[sortField] = sortDirection;
+
+        if (searchTerm) {
+            searchQuery = {
+                $and:[{ $or: [ { 'title':  { $regex: searchTerm, $options: 'i' }}, { 'description':  { $regex: searchTerm, $options: 'i' }}]},{serviceType: {$nin: filter}}]
+            };
+        } else {
+            searchQuery = {
+                serviceType: {$nin: filter}
+            }
+        }
 
         EmailReport
             //.find({serviceType: {$nin: filter}})//nin - not in array, in - in array
@@ -29,7 +40,7 @@ var EmailReport = function (db) {
             //.populate({path: 'user', select: '_id login'})
             //.allowDiskUse(true)
             //
-            .find({serviceType: {$nin: filter}})//nin - not in array, in - in array
+            .find(searchQuery)//nin - not in array, in - in array
             .sort(sortOrder)
             .skip(skipCount)
             .limit(limitCount)
@@ -47,9 +58,21 @@ var EmailReport = function (db) {
 
     this.getCount = function (req, res, next) {
         var filter = req.query.filter ? req.query.filter.split(',') : [];
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
+
+        if (searchTerm) {
+            searchQuery = {
+                $and:[{ $or: [ { 'title':  { $regex: searchTerm, $options: 'i' }}, { 'description':  { $regex: searchTerm, $options: 'i' }}]},{serviceType: {$nin: filter}}]
+            };
+        } else {
+            searchQuery = {
+                serviceType: {$nin: filter}
+            }
+        }
 
         EmailReport
-            .count({serviceType: {$nin: filter}}, function (err, count) {
+            .count(searchQuery, function (err, count) {
                 if (err) {
                     return next(err);
                 }

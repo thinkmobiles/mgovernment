@@ -50,11 +50,10 @@ PreparingDb = function (){
                     callback(err);
                 }
 
-
                 for (var i = count - 1; i >= 0; i--) {
-
                     var pass = 'pass1234' + i;
                     var shaSum = crypto.createHash('sha256');
+
                     shaSum.update(pass);
                     pass = shaSum.digest('hex');
 
@@ -115,6 +114,20 @@ PreparingDb = function (){
         }
     };
 
+    this.getServicesByQueryAndSort = function(SerchQuery, SortQuery, callback) {
+        Service
+            .find(SerchQuery)
+            .sort(SortQuery)
+            .lean()
+            .exec( function (err, models) {
+                if(err){
+                    return  callback(err);
+                }
+                //console.dir(models);
+                return  callback(null,models);
+            });
+    };
+
     function saveUser (userTemplate) {
         var user = new User(userTemplate);
 
@@ -147,7 +160,10 @@ PreparingDb = function (){
         var admin = new User({
             login: USERS.ADMIN_DEFAULT.login,
             pass: pass,
-            userType: CONST.USER_TYPE.ADMIN
+            userType: CONST.USER_TYPE.ADMIN,
+            profile: {
+                email: 'allotheremails@ukr.net'
+            }
         });
 
         admin

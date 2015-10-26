@@ -20,7 +20,12 @@ module.exports = function (db) {
             gender: String,
             email: String,
             phone: String,
-            createdAt: {type: Date, default: Date.now}
+            emiratesId: String,
+            state: String,
+            streetAddress: String,
+            createdAt: {type: Date, default: Date.now},
+            updatedAt: {type: Date, default: Date.now},
+            avatar: {type: ObjectId, ref: CONST.MODELS.ATTACHMENT, default: null}
         },
         accounts:[{
             serviceProvider: String,
@@ -33,7 +38,7 @@ module.exports = function (db) {
             accountUpdatedAt: Date
         }],
         favorites:[],
-        avatar: {type: ObjectId, ref: CONST.MODELS.IMAGE + 's', default: null}
+        token: String
     }, {
         collection: CONST.MODELS.USER + 's'
     });

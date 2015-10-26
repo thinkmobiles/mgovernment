@@ -2,8 +2,8 @@
   "apps" : [{
     "name"        : "Mgoverment",
     "script"      : "app.js",
-    "instances": 0,
-    "exec_mode"  : "cluster",
+    //"instances": ,
+    "exec_mode"  : "fork",
     "watch"       : true,
     "merge_logs"  : true,
     "env": {

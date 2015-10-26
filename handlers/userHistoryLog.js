@@ -3,30 +3,35 @@ var RESPONSE = require('../constants/response');
 
 var HistoryHandler = function(db) {
     'use strict';
+    require('../config/development');
 
     var mongoose = require('mongoose');
     var UserHistory = db.model(CONST.MODELS.USER_HISTORY);
 
     this.pushlog = function(log) {
         var userHistory = new UserHistory(log);
-        userHistory
-            .save(function (err, user) {
-                if (err) {
-                    //return res.status(500).send(err)
-                 console.log(err)
-                }
-            });
+
+        //TODO if not need write userHistory - change config
+        // console.log('process.env.WRITE_USER_HISTORY_LOG: ', process.env.WRITE_USER_HISTORY_LOG, ' typeof()', typeof(process.env.WRITE_USER_HISTORY_LOG));
+
+        if (! (!process.env.WRITE_USER_HISTORY_LOG || process.env.WRITE_USER_HISTORY_LOG === "false")) {
+            userHistory
+                .save(function (err, user) {
+                    if (err) {
+                        return next(err);
+                    }
+                });
+        }
     };
 
     this.getAllRecords = function (req, res, next) {
 
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
-        var sortOrder = {};
-        sortOrder[sortField] = sortDirection;
-
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
+        var sortOrder = {};
+        sortOrder[sortField] = sortDirection;
 
         UserHistory
             .find({})
@@ -54,7 +59,6 @@ var HistoryHandler = function(db) {
                 return res.status(200).send({count: count});
             });
     };
-
 };
 
 module.exports = HistoryHandler;

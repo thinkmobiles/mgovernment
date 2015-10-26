@@ -11,7 +11,7 @@ var url = 'http://localhost:7791';
 
 
 describe('TRA Services tests Complains Enquiries_Suggestion', function () {
-    this.timeout(35000);
+    this.timeout(55000);
 
     var agent = request.agent(url);
     var serviceCollection;
@@ -24,21 +24,18 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
-                preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
                 preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
                 preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
-                preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_SPEDTEST_INET)
+                preparingDb.createUsersByTemplate(USERS.COMPANY)
+
             ],
             function (err, results) {
                 if (err) {
                     return done(err)
                 }
-                //console.log('BD preparing completed')
+                console.log('BD preparing completed');
                 done();
             });
     });
@@ -74,6 +71,26 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
             });
     });
 
+    it('SEND complainEnquiries with BAD values', function (done) {
+        var data = {
+            title: 'I dont like such enquiries',
+            description: 55
+        };
+
+        agent
+            .post('/complainEnquiries')
+            .send(data)
+            .expect(400)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.dir(res.body);
+                done();
+            });
+
+    });
+
     it('SEND complainEnquiries UnAuthorized', function (done) {
 
         var loginData = USERS.CLIENT;
@@ -95,7 +112,7 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
                 agent
                     .post('/complainEnquiries')
                     .send(data)
-                    .expect(200)
+                    .expect(401)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
@@ -139,6 +156,26 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
             });
     });
 
+    it('SEND Suggestion with BAD values', function (done) {
+
+        var loginData = USERS.CLIENT;
+        var data = {
+            title: 'Hi there. I am Ibrahim. I want to _______'
+        };
+
+        agent
+            .post('/sendSuggestion')
+            .send(data)
+            .expect(400)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+                console.dir(res.body);
+                done();
+            });
+    });
+
     it('SEND Suggestion UnAuthorized', function (done) {
 
         var loginData = USERS.CLIENT;
@@ -160,7 +197,7 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
                 agent
                     .post('/sendSuggestion')
                     .send(data)
-                    .expect(200)
+                    .expect(401)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
@@ -170,5 +207,4 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
                     });
             });
     });
-
 });

@@ -18,6 +18,9 @@ define([
 
         events: {
             'click #saveBtn' : 'saveService',
+            'click #closeBtn' : 'hideMobileDisplay',
+            'click #seeBtn' : 'showMobileDisplay',
+
             'click #addProfileFieldBlock' : 'addProfileFieldBlock',
             'click #delProfileFieldBlock' : 'delProfileFieldBlock',
             'click #addInputItemsBlock' : 'addInputItemsBlock',
@@ -34,6 +37,63 @@ define([
             sendParams = {};
             itemsInputNameArray = [];
             this.render();
+        },
+
+        hideMobileDisplay: function(){
+            var el = this.$el;
+            el.find('#showMobileDisplay').hide();
+            el.find('#showBlockScreen').hide();
+        },
+
+        showMobileDisplay: function(){
+            var el = this.$el;
+            var data = this.readInputsAndValidate();
+            var display = el.find('#showMobileDisplay');
+            var displayContent = "";
+            var tempObj;
+
+            displayContent += '<div style="margin-top:170px; color: white; font-weight: bold; font-size: 1.2em">' +  data.serviceName.toUpperCase() + '</div>';
+            displayContent += '<br><br><br><br><br>';
+            displayContent += '<div style="color: white;font-size: 1.2em">' +  data.serviceName +  ' Service </div>';
+            displayContent += '<br>';
+            displayContent += '<br>';
+
+            console.log('data before sorting',data);
+
+            //sort
+            for (var j = data.inputItems.length - 1; j >= 0; j-- ) {
+                for (var i = j - 1; i >= 0; i--) {
+                    if (+data.inputItems[j].order > +data.inputItems[i].order) {
+                        tempObj = data.inputItems[i];
+                        data.inputItems[i] = data.inputItems[j];
+                        data.inputItems[j] = tempObj;
+                    }
+                }
+            }
+            console.log('data after sorting',data);
+
+            for (var i = data.inputItems.length - 1; i >= 0; i-- ){
+
+                if (data.inputItems[i].inputType === 'file') {
+                    displayContent += '<div style="color: lightslategray; text-align: left; margin-left: 100px;">' + data.inputItems[i].displayName.EN + ' <img src="../img/attachSmall.png"></div>';
+                } else {
+
+                    displayContent += '<div style="color: lightslategray; text-align: left; margin-left: 100px;">' + data.inputItems[i].displayName.EN + '</div>';
+
+                    if (data.inputItems[i].inputType === 'string' || data.inputItems[i].inputType === 'number'|| data.inputItems[i].inputType === 'boolean') {
+                        displayContent += '<hr style="width: 60%; color: gray">';
+                    }
+
+                    if (data.inputItems[i].inputType === 'text') {
+                        displayContent += '<div style="margin-left: 100px; width: 60%; height: 55px; border: 1px solid grey;background-color: grey; opacity: 0.2"></div>';
+                    }
+                }
+            }
+
+            el.find('#showBlockScreen').show();
+            display.html(displayContent);
+
+            display.css({"background": "url('../img/mobile.jpg')", "background-size":"100% 100%"}).show();
         },
 
         addProfileFieldBlock: function(e) {
@@ -77,6 +137,7 @@ define([
         },
 
         delInputItemsBlock: function(e) {
+            var el = this.$el;
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -86,15 +147,27 @@ define([
             }
             itemBlockCount--;
 
-            $("#itemBlockName" + itemBlockCount).
+            el.find("#itemBlockName" + itemBlockCount).
                 empty().
                 remove();
 
-            $("#itemBlockInputType" + itemBlockCount).
+            el.find("#itemBlockInputType" + itemBlockCount).
                 empty().
                 remove();
 
-            $("#itemBlockOrder" + itemBlockCount).
+            el.find("#itemBlockOrder" + itemBlockCount).
+                empty().
+                remove();
+
+            el.find("#itemBlockRequired" + itemBlockCount).
+                empty().
+                remove();
+
+            el.find("#itemBlockDisplayNameAR" + itemBlockCount).
+                empty().
+                remove();
+
+            el.find("#itemBlockDisplayNameEN" + itemBlockCount).
                 empty().
                 remove();
 
@@ -158,9 +231,8 @@ define([
             return this;
         },
 
-        saveService: function(e){
+        readInputsAndValidate: function(){
             var el = this.$el;
-            var model = new ServiceModel();
             var errors =[];
             var data ={};
 
@@ -204,7 +276,12 @@ define([
                 data.inputItems[i]= {
                     inputType: el.find('#inputType' + i).val().trim(),
                     name: el.find('#name' + i).val().trim(),
-                    order: el.find('#order' + i).val().trim()
+                    order: el.find('#order' + i).val().trim(),
+                    displayName:{
+                        EN: el.find('#displayNameEN' + i).val().trim(),
+                        AR: el.find('#displayNameAR' + i).val().trim()
+                    },
+                    required: el.find('#requiredCheck' + i)[0].checked
                 }
             }
 
@@ -215,7 +292,6 @@ define([
                     data.profile[el.find('#profileFieldName' + i).val().trim()] =  el.find('#profileFieldValue' + i).val().trim();
                 }
             }
-
             console.dir(data);
 
             Validation.checkUrlField(errors, true, data.baseUrl, 'Base Url');
@@ -223,18 +299,28 @@ define([
 
             if (errors.length){
                 alert(errors);
-                return this;
+                return 'error';
             }
 
-            model.save(data, {
-                success: function(model, response){
-                    Backbone.history.history.back();
-                },
-                error: function(err, xhr, model, response){
-                    console.log('Error created',xhr);
-                    alert(xhr.responseText);
-                }
-            });
+            return data;
+        },
+
+        saveService: function(e){
+            var model = new ServiceModel();
+            var data = this.readInputsAndValidate();
+
+            if (data !== 'error') {
+
+                model.save(data, {
+                    success: function (model, response) {
+                        Backbone.history.history.back();
+                    },
+                    error: function (err, xhr, model, response) {
+                        console.log('Error created', xhr);
+                        alert(xhr.responseText);
+                    }
+                });
+            }
             return this;
         },
 

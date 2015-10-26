@@ -16,14 +16,13 @@ var Image = function(db) {
     this.uploadImageReq = function (req, res, next) {
 
         var options = req.body;
+        var imageOptions = {
+            imageBase64: options.imageBase64
+        };
 
         if (!options.imageBase64) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-
-        var imageOptions = {
-            imageBase64: options.imageBase64
-        };
 
         self.uploadImageBase64(imageOptions, function (err, imageModel) {
             if (err) {
@@ -45,15 +44,15 @@ var Image = function(db) {
             }
 
             /*var fileId = new ObjectID();
-            var gridStore = new GridStore(db, fileId, 'w');
+             var gridStore = new GridStore(db, fileId, 'w');
 
-           /* gridFs.create(encodedImageData.data, function(err, fileInfo) {
-                if (err) {
-                    return callback(err);
-                }
+             /* gridFs.create(encodedImageData.data, function(err, fileInfo) {
+             if (err) {
+             return callback(err);
+             }
 
-                return callback(null, fileInfo);
-            });*/
+             return callback(null, fileInfo);
+             });*/
 
             var image = new Image();
 
@@ -62,23 +61,27 @@ var Image = function(db) {
 
             image
                 .save(function (err, model) {
-                if (err) {
-                    return callback(err);
-                }
+                    if (err) {
+                        return callback(err);
+                    }
 
-                return callback(null, model);
-            });
+                    return callback(null, model);
+                });
         });
     };
 
     function encodeFromBase64(dataString, callback) {
+        var imageData = {};
+        var imageTypeRegularExpression;
+        var imageTypeDetected;
+        var matches;
+
+
         if (!dataString) {
             callback({error: 'Invalid input string'});
             return;
         }
-
-        var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-        var imageData = {};
+        matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
 
         if (!matches || matches.length !== 3) {
             try {
@@ -93,8 +96,8 @@ var Image = function(db) {
             imageData.type = matches[1];
             imageData.data = new Buffer(matches[2], 'base64');
 
-            var imageTypeRegularExpression = /\/(.*?)$/;
-            var imageTypeDetected = imageData
+            imageTypeRegularExpression = /\/(.*?)$/;
+            imageTypeDetected = imageData
                 .type
                 .match(imageTypeRegularExpression);
 
@@ -133,6 +136,7 @@ var Image = function(db) {
 
     this.getImageUrl = function (imageId, callback) {
         var imageUrl = process.env.HOST + 'image/' + imageId;
+
         return callback(null, imageUrl);
     };
 

@@ -8,7 +8,6 @@ var Service = function(db) {
     var mongoose = require('mongoose');
     var logWriter = require('../helpers/logWriter')();
     var Service = db.model(CONST.MODELS.SERVICE);
-    var Layout = db.model(CONST.MODELS.LAYOUT);
     var adminHistoryHandler = new HistoryHandler(db);
     var validation = require('../helpers/validation');
 
@@ -22,7 +21,7 @@ var Service = function(db) {
                 }
             }
             if (!foundEqualFieldName) {
-                return false
+                return false;
             }
             foundEqualFieldName = false;
         }
@@ -34,7 +33,6 @@ var Service = function(db) {
         var searchQuery = {
             '_id': req.params.id
         };
-
         var body = req.body;
         var errors =[];
 
@@ -81,8 +79,6 @@ var Service = function(db) {
                 res.status(200).send(model);
             });
     };
-
-
 
     this.createService = function (req, res, next) {
 
@@ -136,22 +132,34 @@ var Service = function(db) {
     };
 
     this.getServiceById = function (req, res, next) {
-        var searchQuery = {
-            '_id': req.params.id
-        };
+        var id = req.params.id
 
-        if (!searchQuery._id) {
+        if (!id) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        findServiceByQuery(searchQuery, function (err, model) {
+        Service
+            .findById(id)
+            .exec(function (err, model) {
+                if (err) {
+                    return res.status(500).send({error: err});
+                }
 
-            if (err) {
-                return next(err);
-            }
+                if (!model) {
+                    return res.status(404).send({error: RESPONSE.ON_ACTION.NOT_FOUND});
+                }
+                return res.status(200).send(model.toJSON());
+            });
 
-            return res.status(200).send(model.toJSON());
-        })
+
+        //findServiceByQuery(searchQuery, function (err, model) {
+        //
+        //    if (err) {
+        //        return next(err);
+        //    }
+        //
+        //    return res.status(200).send(model.toJSON());
+        //})
     };
 
     this.deleteServiceById = function (req, res, next) {
@@ -190,10 +198,10 @@ var Service = function(db) {
 
         var sortField = req.query.orderBy || 'createdAt';
         var sortDirection = +req.query.order || 1;
-        var sortOrder = {};
-        sortOrder[sortField] = sortDirection;
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
+        var sortOrder = {};
+        sortOrder[sortField] = sortDirection;
 
         Service
             .find({})

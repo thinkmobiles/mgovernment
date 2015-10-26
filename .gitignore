@@ -33,3 +33,6 @@ api
 
 #jsdoc documentation
 out
+
+#jsdoc documentation
+doc

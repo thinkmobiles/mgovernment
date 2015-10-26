@@ -36,10 +36,32 @@
             </tr>
 
             <tr>
-                <td class="hiddenByDefault"><b>serviceName:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="serviceName" size="20" maxlength="40">
-                </td>
+                <td class="hiddenByDefault"><b>serviceName.EN:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceNameEN" size="20" maxlength="40"
+                        ></td>
                 <td class="hiddenByDefault"> Input service name (like speed test or mobile verification check</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>serviceName.AR:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="serviceNameAR" size="20" maxlength="40"></td>
+                <td class="hiddenByDefault"> Input service name on arabic</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>serviceDescription.EN:</b></td>
+                <td class="hiddenByDefault"><textarea id="serviceDescriptionEN" rows="3" cols="22"   wrap="soft">
+
+</textarea> </td>
+                <td class="hiddenByDefault"> Input service description on english (like:  You can file a complaint or put remarks about your telecom service provider)</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>serviceDescription.AR:</b></td>
+                <td class="hiddenByDefault"><textarea id="serviceDescriptionAR" rows="3" cols="22"   wrap="soft">
+
+</textarea> </td>
+                <td class="hiddenByDefault"> Input service description on arabic</td>
             </tr>
 
             <tr>
@@ -48,6 +70,31 @@
                 </td>
                 <td class="hiddenByDefault">Like this: internet \ mobile \ money \ biznes \ government</td>
             </tr>
+            <tr>
+                <td class="hiddenByDefault"><b>icon:</b></td>
+                <td class="hiddenByDefault"><img id="icon" src="" style="width: 50px; height: 50px;"> <a href="#"
+                                                                                                         id="selectIconShow"
+                                                                                                         data-hash="update"
+                                                                                                         class="actionButtonWhite"
+                                                                                                         style="text-decoration: none">&nbsp
+                    Select icon &nbsp</a></td>
+                <td class="hiddenByDefault">Select icon for service, this icon will show on mobiles</td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>buttonTitle.EN:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="buttonTitleEN" size="20" maxlength="40"
+                                                   value=""></td>
+                <td class="hiddenByDefault">Input title of send Button on english (like: Send complain, Send Data, ....  </td>
+            </tr>
+
+            <tr>
+                <td class="hiddenByDefault"><b>buttonTitle.AR:</b></td>
+                <td class="hiddenByDefault"><input type="text" id="buttonTitleAR" size="20" maxlength="40"
+                                                   value=""></td>
+                <td class="hiddenByDefault"> Input title of send Button on arabic</td>
+            </tr>
+
 
             <tr id="profileBlock">
                 <td class="hiddenByDefault"><b>profile{ }</b></td>
@@ -98,13 +145,15 @@
             <tr>
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port"
                                                        value="">Socket is used </b></td>
-                <td class="hiddenByDefault"><b> PORT: </b><input type="text" name="name" id="portInput" size="6"
-                                                                 maxlength="4" disabled></td>
+                <td class="hiddenByDefault"><b> PORT:</b><span id="portShow" style="display: none"><input type="text"
+                                                                                                          name="name"
+                                                                                                          id="portInput"
+                                                                                                          size="6"
+                                                                                                          maxlength="4"></span>
+                </td>
                 <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
                 </td>
             </tr>
-
-
             <tr>
                 <td class="hiddenByDefault"><b>Uri:</b></td>
                 <td class="hiddenByDefault"><input type="text" name="name" id="url" size="20" maxlength="40" required>
@@ -133,7 +182,8 @@
                         [ </b><span id="bodyValue"></span><b> ]</b></p>
                         <select style="width: 170px; height: 25px;" id="bodyInput"></select>
                         &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"> add </a>&nbsp
-                        <a href="#" id="bodyDellInputButton" data-hash="body" class="actionButtonDell">&nbspdell&nbsp</a></div>
+                        <a href="#" id="bodyDellInputButton" data-hash="body"
+                           class="actionButtonDell">&nbspdell&nbsp</a></div>
                 </td>
                 <td class="hiddenByDefault"> Body is array, that have names of fields that will be nested to
                     Request.body, input the names of fields separated by commas without spaces
@@ -147,7 +197,8 @@
                             id="queryValue"></span><b> ]</b></p>
                         <select style="width: 170px; height: 25px;" id="queryInput"></select>
                         &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"> add </a>&nbsp
-                        <a href="#" id="queryDellInputButton" data-hash="query" class="actionButtonDell">&nbspdell&nbsp</a></div>
+                        <a href="#" id="queryDellInputButton" data-hash="query"
+                           class="actionButtonDell">&nbspdell&nbsp</a></div>
                 </td>
                 <td class="hiddenByDefault"> Query is array, that have names of fields that will form standard query
                     Request, input the names of fields separated by commas without spaces
@@ -163,7 +214,7 @@
                         &nbsp<a href="#" id="uriSpecQueryAddInputButton" data-hash="uriSpecQuery"
                                 class="actionButtonAdd"> add </a>&nbsp
                         <a href="#" id="uriSpecQueryDellInputButton" data-hash="uriSpecQuery"
-                                class="actionButtonDell">&nbspdell&nbsp</a></div>
+                           class="actionButtonDell">&nbspdell&nbsp</a></div>
                 </td>
                 <td class="hiddenByDefault"> uriSpecQuery is array, that have names of fields that will be added to url
                     of Request, input the names of fields separated by commas without spaces
@@ -171,13 +222,67 @@
             </tr>
 
         </table>
-        <div style=" text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8">
-            <div id="saveBtn" onmouseover="this.style.cursor='pointer'">
+        <div style="clear: both"></div>
+        <div style="float:left; text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px;
+    border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8; margin-left: 5px;">
+            <div id="updateBtn" onmouseover="this.style.cursor='pointer'">
         <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
-        Save created Service
+        Save Service
         </span>
             </div>
         </div>
+        <div style="float:left;  text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:lightyellow; opacity: 0.8">
+            <div id="seeBtn" onmouseover="this.style.cursor='pointer'">
+        <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
+        See service on device
+        </span>
+            </div>
+        </div>
+        <div style="clear: both"></div>
 
     </form>
+</div>
+
+<!--<div class="showOnDisplay" id="showBlockScreen"-->
+<!--style="position: fixed; top: 0px;left: 0px; background-color: grey; opacity: 0.7; width: 100%; height: 100%;z-index: 99; display: none">-->
+<!-- -->
+<!--</div>-->
+
+<div class="showOnDisplayImg" id="mobilePhone"
+     style="border: 1px solid black; width: 500px; height: 900px; margin;  position: fixed; z-index: 100; top:10px; left:60%;  display: none; text-align: center ">
+    <table class="tableDisplayMobile" style="width: 100%">
+        <tr>
+            <td style="height: 150px;
+    vertical-align: top;">
+                <div style="width:100%; height:1px;clear: both"></div>
+                <div style="float:left; margin-left: 15px; font-size: 30px; color: grey; font-weight: bold;">Language:
+                </div>
+                <div id="chooseARBtn" class="mobileBtn" data-hash="EN" style="float:left; margin-left: 15px;">
+                    EN
+                </div>
+                <div id="chooseENBtn" class="mobileBtn" data-hash="AR" style="float:left;margin-left: 15px;">
+                    AR
+                </div>
+                <div id="closeBtn"
+                     style="float:left; margin-left: 170px; font-size: 40px; color: black; font-weight: bold; cursor: pointer;">
+                    X
+                </div>
+                <div style="width:100%; height:1px;clear: both"></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 550px;
+    vertical-align: top;">
+                <div id="mobileDisplay"></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="height: 150px;
+    vertical-align: bottom;">
+                <div id="refreshBtn" class="mobileBtn" style="width:50%; margin: auto;">
+                    Refresh Data
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
