@@ -134,6 +134,7 @@ describe('TRA Services tests  WHOIS, IMEI, BRAND', function () {
                 if (err) {
                     return done(err)
                 }
+
                 console.dir(res.body);
                 expect(res.body).to.be.instanceof(Array);
                 expect(res.body).to.be.empty;

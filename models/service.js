@@ -13,42 +13,43 @@ module.exports = function (db) {
                 EN: {type: String, default: ''},
                 AR: {type: String, default: ''}
             },
-            serviceDescription: {
-                EN: {type: String, default: ''},
-                AR: {type: String, default: ''}
-            },
-            serviceType: {type: String, required: true},
-            icon: {type: ObjectId, ref: CONST.MODELS.SERVICES_ICON, default: null},
-            baseUrl: {type: String, required: true},
             profile: {},
+            icon: {type: ObjectId, ref: CONST.MODELS.SERVICES_ICON, default: null},
+
+            url: {type: String, required: true},
+            method: {type: String, required: true},
+            params: {},
+            port: {type: String},
+
+            needAuth: {type: Boolean, default: false},
+            forUserType: {type: [], required: true},
+
+            updatedAt: {type: Date},
+            createdAt: {type: Date, default: Date.now},
+
             buttonTitle: {
                 EN: {type: String, default: ''},
                 AR: {type: String, default: ''}
             },
-            updatedAt: {type: Date},
-            createdAt: {type: Date, default: Date.now},
-            forUserType: {type:[], required: true},
-            method: {type: String, required: true},
-            port: {type: String},
-            url: {type: String},
-            params: {},
 
-            inputItems: [{
-                order: Number,
-                name: String,
-                inputType: String,
-                placeHolder: {
-                    EN: String,
-                    AR: String
-                },
-                displayName: {
-                    EN: String,
-                    AR: String
-                },
-                required: Boolean,
-                validateAs: String,
-                dataSource: []
-                //options:[]
+            pages: [{
+                number: Number,
+                inputItems: [{
+                    order: Number,
+                    name: String,
+                    inputType: String,
+                    placeHolder: {
+                        EN: String,
+                        AR: String
+                    },
+                    displayName: {
+                        EN: String,
+                        AR: String
+                    },
+                    required: Boolean,
+                    validateAs: String,
+                    dataSource: []
+                }]
             }]
         },
         {
@@ -63,4 +64,3 @@ module.exports = function (db) {
 
     mongoose.Schemas[CONST.MODELS.SERVICE] = serviceSchema;
 };
-

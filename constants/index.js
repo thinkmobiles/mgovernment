@@ -41,9 +41,38 @@ module.exports = {
     },
 
     SERVICE_PROVIDERS: {
-        CAPALABA: 'Capalaba',
-        TMA_TRA_SERVICES: 'TmaTraServices',
-        TMA_TRA_SERVICES_VIA_SOCKET: 'tmaTraServicesViaSocket'
+        DEFAULT_REST: 'DefaultRest',
+        TRA_TAS: 'TraTasTda',
+        TEST_TRA_SOCKET: 'TestTraSocket'
+    },
+
+    SERVICE_METHOD: {
+        GET: 'GET',
+        POST: 'POST'
+    },
+
+    SERVICE_PARAMS: {
+        BODY: 'body',
+        QUERY: 'query',
+        REST_QUERY: 'restQuery'
+    },
+
+    SERVICE_INPUT_TYPE: {
+        STRING: 'string',
+        TEXT: 'text',
+        BOOLEAN: 'boolean',
+        FILE: 'file',
+        DATE: 'date',
+        PICKER: 'picker',
+        TABLE: 'table'
+    },
+
+    SERVICE_VALIDATE_TYPE: {
+        NONE: 'none',
+        STRING: 'string',
+        NUMBER: 'number',
+        URL: 'url',
+        EMAIL: 'email'
     },
 
     ALPHABETICAL_FOR_TOKEN: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'

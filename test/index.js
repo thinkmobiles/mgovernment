@@ -7,7 +7,7 @@ var app = require('../app');
 //require('./testHandlers/favorites');
 //require('./testHandlers/layouts');
 //require('./testHandlers/services');
-//require('./testHandlers/userServices');
+require('./testHandlers/userServices');
 
 //require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/usersAuthCrm');
@@ -15,7 +15,7 @@ var app = require('../app');
 //require('./testHandlers/traServicesAboutInfo');
 //require('./testHandlers/traInnovations');
 //require('./testHandlers/usersAuthCrm');
-require('./testHandlers/servicesIcon');
+//require('./testHandlers/servicesIcon');
 //require('./testHandlers/language');
 //require('./testHandlers/forgotAndCahngePassword');
 //require('./testHandlers/getAndUpdateCrmProfile');
@@ -24,8 +24,8 @@ require('./testHandlers/servicesIcon');
 //require('./testHandlers/traServices WHOIS_IMEI_BRAND');
 //require('./testHandlers/traServices Complains ServiceProvider_TRA Services');
 //require('./testHandlers/traServices Complains Enquiries_Suggestion ');
-require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
-require('./testHandlers/userFeedback');
+//require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
+//require('./testHandlers/userFeedback');
 
 require('./testHandlers/traNewsAnnouncements');
 //require('./testHandlers/tdaServices');

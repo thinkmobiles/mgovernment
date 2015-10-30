@@ -34,11 +34,14 @@ var AccessHandler = function (db) {
             if (err) {
                 return callback(err);
             }
-            getServiceForTypes(options.serviceId, function (err, availableTypes) {
+            getServiceForTypes(options.serviceId, function (err, serviceAccessInfo) {
                 if (err) {
                     return callback(err);
                 }
-                var inAvailableTypes = availableTypes.indexOf(userType) > -1;
+                if (!serviceAccessInfo.needAuth) {
+                    return callback(null, true);
+                }
+                var inAvailableTypes = serviceAccessInfo.forUserType.indexOf(userType) > -1;
                 return callback(null, inAvailableTypes);
             })
         });
@@ -70,7 +73,7 @@ var AccessHandler = function (db) {
 
         Service
             .findOne({_id: serviceId})
-            .select('forUserType')
+            .select('forUserType needAuth')
             .exec(function (err, model) {
                 if (err) {
                     return callback(err);
@@ -82,7 +85,7 @@ var AccessHandler = function (db) {
                     return callback(error);
                 }
 
-                callback(null, model.forUserType);
+                callback(null, model);
             });
     }
 
