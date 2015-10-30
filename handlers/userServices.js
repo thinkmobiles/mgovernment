@@ -18,9 +18,8 @@ var UserService = function(db) {
     var User = db.model(CONST.MODELS.USER);
 
     var serviceWrappers =  {};
-    serviceWrappers[CONST.SERVICE_PROVIDERS.CAPALABA] = new Capalaba(db);
-    serviceWrappers[CONST.SERVICE_PROVIDERS.TMA_TRA_SERVICES] = new TmaTraServices(db);
-    serviceWrappers[CONST.SERVICE_PROVIDERS.TMA_TRA_SERVICES_VIA_SOCKET] = new tmaTraServicesViaSocket(db);
+    serviceWrappers[CONST.SERVICE_PROVIDERS.DEFAULT_REST] = new TmaTraServices(db);
+    serviceWrappers[CONST.SERVICE_PROVIDERS.TEST_TRA_SOCKET] = new tmaTraServicesViaSocket(db);
 
     var userHistoryHandler = new UserHistoryHandler(db);
 
@@ -117,17 +116,16 @@ var UserService = function(db) {
     };
 
     this.getServices = function (req, res, next) {
-        // TODO check this when session.language will be implemented
 
-        var language = req.query.lang ? req.query.lang : (req.session.language ? req.session.language : 'EN');
+        /*var language = req.query.lang ? req.query.lang : (req.session.language ? req.session.language : 'EN');
 
         if (req.query.lang) {
             req.session.language = req.query.lang;
-        }
+        }*/
 
         Service
             .find()
-            .select('_id serviceName.' + language +' icon ')
+            .select('_id serviceName icon needAuth')
             .lean()
             .exec(function (err, collection) {
                 var log;
@@ -137,21 +135,8 @@ var UserService = function(db) {
                     return res.status(500).send({error: err});
                 }
 
-                log = {
-                    user: req.session.uId || null,
-                    action: CONST.ACTION.GET,
-                    model: CONST.MODELS.SERVICE,
-                    modelId: '',
-                    req: {params: req.params, body: req.params},
-                    res: collection,
-                    description: 'Get Services'
-                };
-
-                userHistoryHandler.pushlog(log);
-
                 for (var i = responseCollection.length - 1; i >= 0; i --){
                     responseCollection[i].icon = responseCollection[i].icon ? '/icon/' + responseCollection[i].icon : null;
-                    responseCollection[i].serviceName = responseCollection[i].serviceName[language];
                 }
 
                 return res.status(200).send(responseCollection);

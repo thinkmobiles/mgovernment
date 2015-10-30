@@ -15,15 +15,11 @@ var AccessHandler = function (db) {
             serviceId: req.params.serviceId
         };
 
-        getAccessAvailability(checkOptions, function (err, available) {
+        getAccessAvailability(checkOptions, function (err) {
             if (err) {
                 return next(err);
             }
-            if (!available) {
-                err = new Error(RESPONSE.AUTH.NO_PERMISSIONS);
-                err.status = 403;
-                return next(err);
-            }
+
             return  next();
         });
     };
@@ -39,10 +35,20 @@ var AccessHandler = function (db) {
                     return callback(err);
                 }
                 if (!serviceAccessInfo.needAuth) {
-                    return callback(null, true);
+                    return callback(null);
+                } else if (!options.userId) {
+                    err = new Error(RESPONSE.AUTH.UN_AUTHORIZED);
+                    err.status = 401;
+                    return callback(err);
                 }
-                var inAvailableTypes = serviceAccessInfo.forUserType.indexOf(userType) > -1;
-                return callback(null, inAvailableTypes);
+
+                if (serviceAccessInfo.forUserType.indexOf(userType) > -1) {
+                    return callback(null);
+                } else {
+                    err = new Error(RESPONSE.AUTH.NO_PERMISSIONS);
+                    err.status = 403;
+                    return callback(err);
+                }
             })
         });
     }

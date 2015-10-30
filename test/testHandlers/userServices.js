@@ -62,6 +62,10 @@ describe('Service User: GET options, POST send request', function () {
                         console.dir(res.body);
                         expect(res.body).to.be.instanceof(Array);
                         expect(res.body).to.have.length.above(0);
+                        expect(res.body[0]).to.have.deep.property('serviceName.EN');
+                        expect(res.body[0]).to.have.deep.property('serviceName.AR');
+                        expect(res.body[0]).to.have.property('icon');
+                        expect(res.body[0]).to.have.property('needAuth');
 
                         serviceCollection = res.body;
                         done()

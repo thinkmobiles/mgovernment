@@ -17,6 +17,10 @@ var TmaTraServices = function(db) {
         //1  check session
         //2 if not - auth get token -> session.register + token -> 5
 
+        if(!checkRequiredFields(serviceOptions, userRequestBody)) {
+            return callback(new Error(RESPONSE.NOT_ENOUGH_PARAMS));
+        }
+
         if (!req.session.token && serviceOptions.params.needUserAuth) {
             console.log('!req.session.token && serviceOptions.params.needUserAuth', !req.session.token, serviceOptions.params.needUserAuth);
             return sendRequestWithAuth();
@@ -38,6 +42,18 @@ var TmaTraServices = function(db) {
             });
         }
 
+        function checkRequiredFields(serviceOptions, userRequestBody) {
+            for (var i = 0; i < serviceOptions.pages.length; i++) {
+                for (var j = 0; j < serviceOptions.pages[i].inputItems.length; j++) {
+                    if (serviceOptions.pages[i].inputItems[j].required
+                        && !userRequestBody[serviceOptions.pages[i].inputItems[j].name]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         function sendRequestWithAuth () {
             async.series([createSendAuthRequest(), createSendRequest()], function (err, results) {
                 if (err) {
@@ -50,7 +66,6 @@ var TmaTraServices = function(db) {
 
         function createSendRequest() {
             return function (callback) {
-                var uriSpecQueryString= '';
                 var tokenString = '';
                 var queryString = '';
                 var serviceUrl;
@@ -59,21 +74,23 @@ var TmaTraServices = function(db) {
                     tokenString = '?access_token=' + req.session.token;
                 }
 
-                if  (serviceOptions.params.uriSpecQuery) {
-
-                    for (var i = 0, len = serviceOptions.params.uriSpecQuery.length - 1 ;  i <= len; i++) {
-                        uriSpecQueryString += '/' + userRequestBody[serviceOptions.params.uriSpecQuery[i]];
+                if (serviceOptions.params.query) {
+                    queryString += '?';
+                    for (var i = 0, len = serviceOptions.params.query.length - 1; i <= len; i++) {
+                        if(i>0) {
+                            queryString += '&';
+                        }
+                        queryString += serviceOptions.params.query[i] + '=' + userRequestBody[serviceOptions.params.query[i]];
                     }
-                    uriSpecQueryString += '/';
                 }
 
-                serviceUrl = serviceOptions.baseUrl + serviceOptions.url + uriSpecQueryString + tokenString;
+                serviceUrl = serviceOptions.url + queryString;
 
                 console.log(serviceUrl);
 
                 request(serviceUrl, {
                     method: serviceOptions.method,
-                    headers: {'User-Agent': 'Kofevarka'},
+                    //headers: {'User-Agent': 'Kofevarka'},
                     body: userRequestBody,
                     json: true
                 }, function (err, res, body) {
