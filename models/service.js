@@ -22,7 +22,7 @@ module.exports = function (db) {
             port: {type: String},
 
             needAuth: {type: Boolean, default: false},
-            forUserType: {type: [], required: true},
+            forUserType: {type: [], default: [CONST.USER_TYPE.CLIENT]},
 
             updatedAt: {type: Date},
             createdAt: {type: Date, default: Date.now},

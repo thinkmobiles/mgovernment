@@ -25,27 +25,34 @@ var UserService = function(db) {
 
     this.getServiceOptions = function (req, res, next) {
 
+        Service
+            .findOne({_id: req.params.serviceId})
+            .select('_id serviceName pages needAuth icon buttonTitle')
+            .lean()
+            .exec(function (err, model) {
+
+                if (err) {
+                    return res.status(400).send({error: 'Service Option not found'});
+                }
+
+                model.icon = model.icon ? '/icon/' + model.icon : null;
+
+                return res.status(200).send(model);
+            });
+    };
+
+    this.getServiceOptionsCms = function (req, res, next) {
+
         var searchQuery = {
             _id: req.params.serviceId
         };
 
         getServiceOptionsById(searchQuery, function (err, model) {
 
-            var log = {
-                user: req.session.uId || null,
-                action: CONST.ACTION.GET,
-                model: CONST.MODELS.SERVICE,
-                modelId: searchQuery._id,
-                req: {params: req.params, body: req.params},
-                res: model,
-                description: 'getServiceOptions'
-            };
-
-            userHistoryHandler.pushlog(log);
-
             if (err) {
                 return res.status(400).send({error: 'Service Option not found'});
             }
+
             return res.status(200).send(model);
         })
     };
@@ -116,12 +123,6 @@ var UserService = function(db) {
     };
 
     this.getServices = function (req, res, next) {
-
-        /*var language = req.query.lang ? req.query.lang : (req.session.language ? req.session.language : 'EN');
-
-        if (req.query.lang) {
-            req.session.language = req.query.lang;
-        }*/
 
         Service
             .find()
