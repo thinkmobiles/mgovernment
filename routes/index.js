@@ -18,6 +18,7 @@ module.exports = function(app, db) {
     var userServicesRouter = require('./userServices')(db);
     var userTraServicesRouter = require('./userTraServices')(db);
     var userFeedbackRouter = require('./userFeedback')(db);
+    var userAttachmentRouter = require('./attachment')(db);
     var userAnnouncementRouter = require('./userAnnouncement')(db);
     var userInnovationRouter = require('./userInnovation')(db);
     var adminEmailReports = require('./adminEmailReport')(db);
@@ -48,6 +49,7 @@ module.exports = function(app, db) {
     app.use('/tra_api/service', userTraServicesRouter);
     app.get('/image/avatar', session.isAuthenticatedUser, attachmentHandler.getAttachmentBySession);
     app.get('/image/:imageId', session.isAdminBySession, attachmentHandler.getAttachmentById);
+    app.use('/attachment', userAttachmentRouter);
 
     app.use('/', crmRouter);
     app.use('/', testTRAServicesRouter);

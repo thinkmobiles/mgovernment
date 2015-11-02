@@ -29,8 +29,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
-                preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
+                preparingDb.createUsersByTemplate(USERS.COMPANY)
             ],
             function (err, results) {
                 if (err) {

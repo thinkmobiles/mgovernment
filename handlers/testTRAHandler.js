@@ -11,7 +11,6 @@ var TestTRAHandler = function (db) {
     var ObjectId = mongoose.Types.ObjectId;
     var mailer = require('../helpers/mailer');
     var validation = require('../helpers/validation');
-    var session = new SessionHandler(db);
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
     var Attachment = db.model(CONST.MODELS.ATTACHMENT);
 

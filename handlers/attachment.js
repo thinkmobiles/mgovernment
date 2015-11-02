@@ -5,23 +5,44 @@
 
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
+var HistoryHandler = require('./adminHistoryLog');
 
-var Attachment = function(db) {
+var AttachmentHandler = function(db) {
     'use strict';
 
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
-    var Attachments = db.model(CONST.MODELS.ATTACHMENT);
+    var adminHistoryHandler = new HistoryHandler(db);
+    var Attachment = db.model(CONST.MODELS.ATTACHMENT);
     var User = db.model(CONST.MODELS.USER);
 
+    this.createAttachment = function (req, res, next) {
+        if (!req.body.attachment) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        var attachmentImg = new Attachment({
+            attachment: req.body.attachment
+        });
+
+        attachmentImg
+            .save(function (err, model) {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.status(201).send({attachmentId: model._doc._id});
+            });
+    };
+
     this.getAttachmentById = function (req, res, next) {
-        var attachmentId = req.params.imageId;
+        var attachmentId = req.params.id;
 
         if (!ObjectId.isValid(attachmentId)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        Attachments
+        Attachment
             .findById(attachmentId)
             .exec(function (err, model) {
                 var srcBase64;
@@ -32,8 +53,8 @@ var Attachment = function(db) {
                 if (!model) {
                     return res.status(404).send({error: 'Not Found Attachment'})
                 }
+
                 srcBase64 = model.toJSON().attachment;
-                //res.status(200).send(' <img src ="' + srcBase64 +'">');
 
                 encodeFromBase64(srcBase64, function (err,imageData){
                     if (err){
@@ -118,6 +139,37 @@ var Attachment = function(db) {
         }
         callback(null, imageData);
     }
+
+    this.removeAttachment = function(req, res, next) {
+        var searchQuery = {
+            '_id': req.params.id
+        };
+
+        if (!searchQuery._id) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        Attachment
+            .findOne(searchQuery)
+            .remove()
+            .exec(function (err, model) {
+
+                if (err) {
+                    return next(err);
+                }
+
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.ATTACHMENT,
+                    modelId: req.params.id,
+                    description: 'Delete Attachment'
+                };
+                adminHistoryHandler.pushlog(log);
+
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+            });
+    }
 };
 
-module.exports = Attachment;
+module.exports = AttachmentHandler;
