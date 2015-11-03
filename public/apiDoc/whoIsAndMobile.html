@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Mgoverment Class: whoIsAndMobile</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cosmo.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Mgoverment</a>
+	</div>
+	<div class="navbar-collapse">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="attachment.html">attachment</a></li><li><a href="crmServices.html">crmServices</a></li><li><a href="testTraServices.html">testTraServices</a></li><li><a href="userFeedback.html">userFeedback</a></li><li><a href="userServices.html">userServices</a></li><li><a href="whoIsAndMobile.html">whoIsAndMobile</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+</div>
+
+
+<div class="container">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+    		<h1 class="page-title">Class: whoIsAndMobile</h1>
+			
+
+	<h1 class="page-title">Class: whoIsAndMobile</h1>
+<section>
+
+<header>
+    
+        <h2>
+        whoIsAndMobile
+        </h2>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+<dt>
+    <h4 class="name" id="whoIsAndMobile"><span class="type-signature"></span>new whoIsAndMobile<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Provides the services to get information by imei(tac), brand name, domain name</p>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id=".checkWhoisAvailable"><span class="type-signature">&lt;static> </span>checkWhoisAvailable<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>This <strong>method</strong> get information if the domain is available</p>
+<p><strong>URI:</strong> <strong><em><code>/checkWhoisAvailable</code></em></strong></p>
+<h2>METHOD:</h2><p><strong>GET</strong></p>
+<h2>Request:</h2><pre class="prettyprint source"><code>Query: checkUrl
+Exemple: /checkWhoisAvailable?checkUrl=tra.gov.ae</code></pre><h2>Responses:</h2><pre class="prettyprint source"><code> status (200) JSON object: {object}
+ status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}</code></pre>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">{     Not Available     }</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id=".searchMobile"><span class="type-signature">&lt;static> </span>searchMobile<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>This <strong>method</strong> search devices by imei (tac code)</p>
+<p><strong>URI:</strong> <strong><em><code>/searchMobile</code></em></strong></p>
+<h2>METHOD:</h2><p><strong>GET</strong></p>
+<h2>Request:</h2><pre class="prettyprint source"><code> Query:
+ imei
+ start //not require
+ end //not require
+
+Exemple: /searchMobile?imei=01385100</code></pre><h2>Responses:</h2><pre class="prettyprint source"><code> status (200) JSON object: {object}
+ status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}</code></pre>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">[{     &quot;tac&quot;: &quot;01355500&quot;,     &quot;marketingName&quot;: &quot;Apple iPhone 5 A1429&quot;,     &quot;designationType&quot;: &quot;A1429&quot;,     &quot;manufacturer&quot;: &quot;Apple Inc&quot;,     &quot;bands&quot;: &quot;GSM 1800, GSM 1900, GSM 900, GSM850 (GSM800), HSDPA, HSUPA, LTE FDD BAND 1, LTE FDD BAND 13, LTE FDD BAND 15, LTE FDD BAND 3, LTE FDD BAND 5, WCDMA FDD Band I, WCDMA FDD Band II, WCDMA FDD Band V, WCDMA FDD Band VIII, WiFi.&quot;,     &quot;allocationDate&quot;: &quot;2012-12-05&quot;,     &quot;countryCode&quot;: &quot;310&quot;,     &quot;fixedCode&quot;: &quot;MAN&quot;,     &quot;radioInterface&quot;: &quot;EDGE, GPRS&quot;,     &quot;manufacturerCode&quot;: &quot;205157&quot;,     &quot;startIndex&quot;: 0,     &quot;endIndex&quot;: 1000,     &quot;count&quot;: 1,     &quot;totalNumberofRecords&quot;: 1     }]</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id=".searchMobileBrand"><span class="type-signature">&lt;static> </span>searchMobileBrand<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>This <strong>method</strong> search device by brand name</p>
+<p><strong>URI:</strong> <strong><em><code>/searchMobileBrand</code></em></strong></p>
+<h2>METHOD:</h2><p><strong>GET</strong></p>
+<h2>Request:</h2><pre class="prettyprint source"><code> Query:
+ imei
+ start //not require
+ end //not require
+
+Exemple: /searchMobileBrand?brand=Appl%&start=2&end=5</code></pre><h2>Responses:</h2><pre class="prettyprint source"><code> status (200) JSON object: {object}
+ status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}</code></pre>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">[{     &quot;tac&quot;: &quot;01275800&quot;,     &quot;marketingName&quot;: &quot;iPhone 4 (A1332)&quot;,     &quot;designationType&quot;: &quot;iPhone 4 (A1332)&quot;,     &quot;manufacturer&quot;: &quot;Apple Inc&quot;,     &quot;bands&quot;: &quot;GSM 1800, GSM 1900, GSM 900, GSM850 (GSM800), WCDMA FDD Band I, WCDMA FDD Band II, WCDMA FDD Band V, WCDMA FDD Band VIII&quot;,     &quot;allocationDate&quot;: &quot;2011-03-24&quot;,     &quot;countryCode&quot;: &quot;310&quot;,     &quot;fixedCode&quot;: &quot;MAN&quot;,     &quot;radioInterface&quot;: &quot;NONE&quot;,     &quot;manufacturerCode&quot;: &quot;205157&quot;,     &quot;startIndex&quot;: 2,     &quot;endIndex&quot;: 5,     &quot;count&quot;: 3,     &quot;totalNumberofRecords&quot;: 1247     },*  ....     ]</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id=".testWhois"><span class="type-signature">&lt;static> </span>testWhois<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>This <strong>method</strong> get information about domain name</p>
+<p><strong>URI:</strong> <strong><em><code>/checkWhois</code></em></strong></p>
+<h2>METHOD:</h2><p><strong>GET</strong></p>
+<h2>Request:</h2><pre class="prettyprint source"><code>Query: checkUrl
+Exemple: /checkWhois?checkUrl=tra.gov.ae</code></pre><h2>Responses:</h2><pre class="prettyprint source"><code> status (200) JSON object: {object}
+ status (400, 403, 500) JSON object: {error: 'Text about error'} or  {error: object}</code></pre>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">{     Domain Name: &#x27;tra.gov.ae&#x27;,     Registrar ID: &#x27;Etisalat&#x27;,     Registrar Name:  &#x27;Etisalat&#x27;,     Status: &#x27;ok&#x27;....     ................     }</pre>
+
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	Thinkmobiles Copyright � 2014-2015 The contributors to the JSDoc3 and DocStrap projects.
+	</span>
+	<br />
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a>
+	on Tue Nov 3rd 2015 using the <a
+	href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<!--<script src="scripts/sunlight.js"></script>-->
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/bootstrap-dropdown.js"></script>
+<script src="scripts/toc.js"></script>
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "h1,h2,h3,h4",
+		showAndHide : false,
+		scrollTo    : "100px"
+	} );
+
+	$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+	//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+	$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			lang = "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+</body>
+</html>

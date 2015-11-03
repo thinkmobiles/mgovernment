@@ -9,7 +9,7 @@ var AnnouncementHandler = function(db) {
 
     var schedule = require('node-schedule');
     var request = require('request');
-    var xmlParser = require('xml2json');
+    //var xmlParser = require('xml2json');
 
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
@@ -21,7 +21,7 @@ var AnnouncementHandler = function(db) {
 
         if (!SCHEDULE_JOB) {
 
-            UpdateNews();
+           // UpdateNews();
 
             var rule = new schedule.RecurrenceRule();
             rule.minute = 5;
@@ -29,45 +29,45 @@ var AnnouncementHandler = function(db) {
             SCHEDULE_JOB = schedule.scheduleJob(rule, function () {
                 console.log('Schedule for Update News started at: ', new Date());
 
-                UpdateNews();
+               // UpdateNews();
             });
         }
     }
 
-    function UpdateNews() {
-        request(RSS_FEED_URL, {json: true}, function (err, res, body) {
-
-            if (err) {
-                console.log('Get News error: ' + err);
-                return;
-            }
-
-            var jsonData = xmlParser.toJson(body, {
-                sanitize: true,
-                object: true
-            });
-
-            try {
-                var newsItems = jsonData.rss.channel.item;
-            }
-            catch (err) {
-                console.log('Error on parse news (' + new Date() + '): ' + err);
-                return;
-            }
-
-            for (var i = 0; i < newsItems.length; i++) {
-                findOrCreateAnnouncement(newsItems[i], function (err) {
-                    if (err) {
-                        if (!isDuplicateIndexError(err)) {
-                            console.log('Error on create announcement: ' + err);
-                        }
-                    }
-                });
-            }
-
-            removeOldNews();
-        });
-    }
+    //function UpdateNews() {
+    //    request(RSS_FEED_URL, {json: true}, function (err, res, body) {
+    //
+    //        if (err) {
+    //            console.log('Get News error: ' + err);
+    //            return;
+    //        }
+    //
+    //        var jsonData = xmlParser.toJson(body, {
+    //            sanitize: true,
+    //            object: true
+    //        });
+    //
+    //        try {
+    //            var newsItems = jsonData.rss.channel.item;
+    //        }
+    //        catch (err) {
+    //            console.log('Error on parse news (' + new Date() + '): ' + err);
+    //            return;
+    //        }
+    //
+    //        for (var i = 0; i < newsItems.length; i++) {
+    //            findOrCreateAnnouncement(newsItems[i], function (err) {
+    //                if (err) {
+    //                    if (!isDuplicateIndexError(err)) {
+    //                        console.log('Error on create announcement: ' + err);
+    //                    }
+    //                }
+    //            });
+    //        }
+    //
+    //        removeOldNews();
+    //    });
+    //}
 
     function isDuplicateIndexError(err) {
         return (err instanceof Error && err.code == 11000);

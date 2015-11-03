@@ -20,34 +20,51 @@ module.exports = function(db) {
     /**
      * This __method__ for user upload attachment
      *
-     * __URI:__ ___`/feedback`___
+     * __URI:__ ___`/attachment`___
      *
-     *  ## METHOD:
-     * __POST__
+     * __METHOD:__ ___`POST`___
      *
-     *  ## Request:
+     * __Request:__
+     *
      *      Body:
-     *      serviceName,
-     *      rate,
-     *      feedback
+     *      attachment // image in Base64
      *
-     *  ## Responses:
-     *      status (201) JSON object: {id: 'attachmentId'}
+     * __Responses:__
+     *
+     *      status (201) JSON object: {attachmentId: 'attachmentId'}
      *      status (400, 500) JSON object: {error: 'Text about error'} or {error: object}
-     * @example
-     *      {
-     *      serviceName: 'searchMobile',
-     *      rate: 3,
-     *      feedback: 'Nice service',
-     *      }
      *
      *
-     * @method createFeedback
-     * @for userFeedback
-     * @memberOf userFeedback
+     * @method createAttachment
+     * @instance
+     * @for attachment
+     * @memberOf attachment
      */
     router.route('/')
         .post(attachmentHandler.createAttachment);
+
+    /**
+     * This __method__ for user upload attachment
+     *
+     * __URI:__ ___`/attachment/:id`___
+     *
+     * __METHOD:__ ___`GET`___
+     *
+     *  __Request:__ ___`/attachment/5638d152872dcb7832b84849`___
+     *
+     *
+     *
+     * __Responses:__
+     *
+     *      status (200) File (Response with Headers 'Content-Type': imageData.type, 'Content-Length': imageData.data.length and ImageData)
+     *      status (400, 500) JSON object: {error: 'Text about error'} or {error: object}
+     *
+     *
+     * @method getAttachmentById
+     * @instance
+     * @for attachment
+     * @memberOf attachment
+     */
 
     router.route('/:id')
         .get(attachmentHandler.getAttachmentById)
