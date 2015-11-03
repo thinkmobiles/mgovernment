@@ -292,7 +292,8 @@ module.exports = {
                             EN: '',
                             AR: ''
                         },
-                        required: false
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
                     }
                 ]
             },
@@ -316,7 +317,8 @@ module.exports = {
                             EN: '',
                             AR: ''
                         },
-                        required: false
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
                     }
                 ]
             },
@@ -335,7 +337,8 @@ module.exports = {
                             EN: '',
                             AR: ''
                         },
-                        required: true
+                        required: true,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
                     },
                     {
                         order: 0,
@@ -349,7 +352,8 @@ module.exports = {
                             EN: 'Select profile',
                             AR: 'AR Select profile'
                         },
-                        required: false
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
                     }
                 ]
             },
@@ -373,7 +377,8 @@ module.exports = {
                             EN: 'Some Table',
                             AR: 'AR Some Table'
                         },
-                        required: false
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
                     }
                 ]
             }
