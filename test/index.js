@@ -7,7 +7,7 @@ var app = require('../app');
 //require('./testHandlers/favorites');
 //require('./testHandlers/layouts');
 //require('./testHandlers/services');
-//require('./testHandlers/userServices');
+require('./testHandlers/userServices');
 
 //require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/usersAuthCrm');

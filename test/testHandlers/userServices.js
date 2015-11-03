@@ -30,6 +30,7 @@ describe('Service User: GET options, POST send request', function () {
             preparingDb.toFillUsers(2),
             preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_DOMAIN_WHOIS),
             preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_COMPLAIN_TRA),
+            preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_DOMAIN_WHOIS_TEST),
             preparingDb.createUsersByTemplate(USERS.CLIENT)
 
         ], function (err, results) {
