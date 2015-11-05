@@ -31,7 +31,7 @@ var UserService = function(db) {
             .lean()
             .exec(function (err, model) {
 
-                if (err) {
+                if (err || !model) {
                     return res.status(400).send({error: 'Service Option not found'});
                 }
 
