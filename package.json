@@ -36,7 +36,6 @@
     "pmx": "^0.3.31",
     "request": "^2.58.0",
     "supertest": "^1.0.1",
-    "xml2json": "^0.9.0",
     "yuidocjs": "^0.9.0"
   },
   "apidoc": {

@@ -28,5 +28,5 @@ var app = require('../app');
 //require('./testHandlers/userFeedback');
 
 //require('./testHandlers/traNewsAnnouncements');
-//require('./testHandlers/userAttachment');
-require('./testHandlers/tdaServices');
+require('./testHandlers/userAttachment');
+//require('./testHandlers/tdaServices');
