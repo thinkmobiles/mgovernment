@@ -60,6 +60,12 @@ module.exports = {
         phone: '+9876543210123'
     },
 
+    CLIENT_TDA_DATA: {
+        username: 'vimal005@mailinator.com',
+        password: 'dda89398276363bfa511f377bbfce89839174c31',
+        userType: '2'
+    },
+
     CLIENT_CRM_LOGIN_TAREK: {
         login: 'tarek001',
         pass: 'qweasd'

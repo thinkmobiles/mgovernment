@@ -7,7 +7,7 @@ var app = require('../app');
 //require('./testHandlers/favorites');
 //require('./testHandlers/layouts');
 //require('./testHandlers/services');
-require('./testHandlers/userServices');
+//require('./testHandlers/userServices');
 
 //require('./testHandlers/usersAuth'); //added register
 //require('./testHandlers/usersAuthCrm');
@@ -27,6 +27,6 @@ require('./testHandlers/userServices');
 //require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
 //require('./testHandlers/userFeedback');
 
-require('./testHandlers/traNewsAnnouncements');
-require('./testHandlers/userAttachment');
-//require('./testHandlers/tdaServices');
+//require('./testHandlers/traNewsAnnouncements');
+//require('./testHandlers/userAttachment');
+require('./testHandlers/tdaServices');
