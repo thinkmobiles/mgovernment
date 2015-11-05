@@ -2,14 +2,16 @@ define([
     'text!templates/service/update.html',
     'text!templates/service/create.html',
     'text!templates/service/inputItemsBlock.html',
+    'text!templates/service/pagesBlock.html',
     'models/service',
     'collections/icons',
     'validation'
 
-], function (content,createTemplate,inputBlockTemplate, ServiceModel, IconsCollection, Validation) {
+], function (content,createTemplate,inputBlockTemplate,pagesBlockTemplate, ServiceModel, IconsCollection, Validation) {
     'use strict';
 
-    var itemBlockCount = 0;
+    var itemBlockCount = [0];
+    var pageBlockCount = 0;
     var profileBlockCount = 0;
     var cloneService = false;
     var newService = false;
@@ -36,8 +38,12 @@ define([
             'click #seeBtn, #refreshBtn' : 'showMobileDisplay',
             'click #addProfileFieldBlock' : 'addProfileFieldBlock',
             'click #delProfileFieldBlock' : 'delProfileFieldBlock',
-            'click #addInputItemsBlock' : 'addInputItemsBlock',
-            'click #delInputItemsBlock' : 'delInputItemsBlock',
+            'click #addPageBlock' : 'addPageBlock',
+            'click .actionButtonHide' : 'hideBlock',
+            'click .actionButtonShow' : 'showBlock',
+            'click #delPageBlock' : 'delPageBlock',
+            'click .addInputItemsBlock' : 'addInputItemsBlock',
+            'click .delInputItemsBlock' : 'delInputItemsBlock',
             'change .enabledCheckBox' : 'enableInput',
             'change .itemBlockName' : 'updateItemsInputNameArray',
             'click .actionButtonAdd' : 'addItemToArray',
@@ -54,7 +60,8 @@ define([
         initialize: function (options) {
             cloneService = options ? options.cloneService : undefined;
             newService = options ? options.newService : undefined;
-            itemBlockCount = 0;
+            itemBlockCount = [0];
+            pageBlockCount = 0;
             profileBlockCount = 0;
             sendParams = {};
             itemsInputNameArray = [];
@@ -306,31 +313,73 @@ define([
                 remove();
         },
 
-
-        addInputItemsBlock: function(e) {
+        addPageBlock: function(e) {
             var el = this.$el;
+            var htmlContent;
 
             e.preventDefault();
             e.stopPropagation();
 
-            el.find("#itemBlock").before(_.template(inputBlockTemplate)({i: itemBlockCount}));
 
-            itemBlockCount++;
+            el.find("#pagesBlock").before(_.template(pagesBlockTemplate)({pageBlockCount: pageBlockCount}));
+
+            pageBlockCount++;
+            itemBlockCount[pageBlockCount] = 0;
+        },
+
+
+
+        showBlock: function(e) {
+            var el = this.$el;
+            var blockClassName = $(e.target).attr('data-hash');
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            el.find("." + blockClassName).show();
+            console.log("preesed  show: ",blockClassName)
+        },
+
+        hideBlock: function(e) {
+            var el = this.$el;
+            var blockClassName = $(e.target).attr('data-hash');
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            el.find("." + blockClassName ).hide();
+            console.log("preesed  hide: ",blockClassName)
+        },
+
+        addInputItemsBlock: function(e) {
+            var el = this.$el;
+            var page = +($(e.target).attr('data-page'));
+            //console.log('page: ', page,' type of: ', typeof(page));
+
+            e.preventDefault();
+            e.stopPropagation();
+
+
+            el.find("#itemBlockPage" + page).before(_.template(inputBlockTemplate)({i: itemBlockCount[page], page:  page}));
+
+            itemBlockCount[page]++;
+            console.log('itemBlockCount[',page,']: ', itemBlockCount[page]);
         },
 
         delInputItemsBlock: function(e) {
             var el = this.$el;
+            var page = $(e.target).attr('data-page');
 
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
 
-            if (itemBlockCount === 0) {
+            if (!itemBlockCount[page] || itemBlockCount[page] === 0) {
                 return this;
             }
-            itemBlockCount--;
 
-            el.find("#itemBlock" + itemBlockCount).
+            itemBlockCount[page]--;
+            el.find("#page" + page +"itemBlock" + itemBlockCount[page]).
                 empty().
                 remove();
 
@@ -361,16 +410,11 @@ define([
                 AR: el.find('#serviceNameAR').val().trim()
             };
 
-            data.serviceDescription = {
-                EN: el.find('#serviceDescriptionEN').val().trim(),
-                AR: el.find('#serviceDescriptionAR').val().trim()
-            };
 
             data.buttonTitle = {
                 EN: el.find('#buttonTitleEN').val().trim(),
                 AR: el.find('#buttonTitleAR').val().trim()
             };
-            data.serviceType = el.find('#serviceType').val().trim();
             data.baseUrl = el.find('#baseUrl').val().trim();
             data.icon = el.find('#icon').attr('data-hash');
             data.icon =  data.icon ?  data.icon : null;
@@ -579,8 +623,10 @@ define([
         render: function () {
             var service;
             var el = this.$el;
-            var tempTemplate;
+            var itemTempTemplate;
+            var pageTempTemplate;
             var inpuItems;
+            var textPage;
 
             if (newService) {
                 console.log ('newService: ', newService);
@@ -594,40 +640,57 @@ define([
 
             console.dir(service);
 
-            el.html(this.template( service));
+            el.html(this.template({service: service}));
 
             profileBlockCount =  service.profile ? Object.keys(service.profile).length : 0;
             sendParams = service.params;
-            inpuItems = service.inputItems;
-            itemBlockCount =  inpuItems.length;
+            pageBlockCount = service.pages.length;
+
+
+            //itemBlockCount =  inpuItems.length;
+            itemBlockCount = [];
+
+
+            //el.find("#itemBlockPage" + page).before(_.template(inputBlockTemplate)({i: itemBlockCount[page], page:  page}));
+
+
 
             console.log(itemBlockCount);
+            for (var j = 0; j <= pageBlockCount - 1; j ++) {
 
-            for (var i = 0; i < itemBlockCount; i++)
-            {
-                tempTemplate = $ (_.template(inputBlockTemplate)({i: i}));
-                tempTemplate.find('#inputType' + i).val(inpuItems[i].inputType);
-                tempTemplate.find('#name' + i).val(inpuItems[i].name);
-                tempTemplate.find('#order' + i).val(inpuItems[i].order);
+                el.find("#pagesBlock").before(_.template(pagesBlockTemplate)({pageBlockCount: j}));
+                console.dir(service.pages[j]);
+                itemBlockCount[j] = service.pages[j].inputItems.length;
+                textPage = '#page'+j;
+                inpuItems = service.pages[j].inputItems;
 
-                tempTemplate.find('#displayNameEN' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.EN : '');
-                tempTemplate.find('#displayNameAR' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.AR : '');
-                tempTemplate.find('#placeHolderEN' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.EN : '');
-                tempTemplate.find('#placeHolderAR' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.AR : '');
-                tempTemplate.find('#requiredCheck' + i).prop('checked', inpuItems[i].required);
-                tempTemplate.find('#inputValidate' + i).val(inpuItems[i].validateAs);
+                for (var i = 0; i <= itemBlockCount[j] - 1; i++) {
 
-                if (inpuItems[i].dataSource && inpuItems[i].dataSource.length) {
-                    sendParams['inputDataSource' + i] = inpuItems[i].dataSource;
-                    tempTemplate.find('#dataSourceValue' + i).text( sendParams['inputDataSource' + i]);
+                    itemTempTemplate = $(_.template(inputBlockTemplate)({i: i, page: j}));
+                    itemTempTemplate.find(textPage + 'inputType' + i).val(inpuItems[i].inputType);
+                    itemTempTemplate.find(textPage + 'name' + i).val(inpuItems[i].name);
+                    itemTempTemplate.find(textPage + 'order' + i).val(inpuItems[i].order);
 
+                    itemTempTemplate.find(textPage + 'displayNameEN' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.EN : '');
+                    itemTempTemplate.find(textPage + 'displayNameAR' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.AR : '');
+                    itemTempTemplate.find(textPage + 'placeHolderEN' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.EN : '');
+                    itemTempTemplate.find(textPage + 'placeHolderAR' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.AR : '');
+                    itemTempTemplate.find(textPage + 'requiredCheck' + i).prop('checked', inpuItems[i].required);
+                    itemTempTemplate.find(textPage + 'inputValidate' + i).val(inpuItems[i].validateAs);
+
+                    if (inpuItems[i].dataSource && inpuItems[i].dataSource.length) {
+                        sendParams['inputDataSource' + i] = inpuItems[i].dataSource;
+                        itemTempTemplate.find(textPage +'dataSourceValue' + i).text(JSON.stringify(sendParams['inputDataSource' + i]));
+
+                    }
+
+                    if (inpuItems[i].inputType === 'picker' || inpuItems[i].inputType === 'table') {
+                        itemTempTemplate.find(textPage + 'itemBlockInputDataSource' + i).show();
+                    }
+
+                    //console.log(typeof(itemTempTemplate), '  ', itemTempTemplate);
+                    el.find("#itemBlockPage" + j).before(itemTempTemplate);
                 }
-                if (inpuItems[i].inputType === 'picker') {
-                    tempTemplate.find('#itemBlockInputDataSource' + i).show();
-                }
-
-                //console.log(typeof(tempTemplate), '  ', tempTemplate);
-                el.find("#itemBlock").before(tempTemplate);
             }
 
             this.updateItemsInputNameArray();

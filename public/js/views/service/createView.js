@@ -358,5 +358,3 @@ define([
 
     return serviceCreateView;
 });
-
-

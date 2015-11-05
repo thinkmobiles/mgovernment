@@ -84,10 +84,17 @@ module.exports = function(db){
      *
      * @example
      *      {
-     *          ["complain Poor Coverage", "complain about TRA Service", "complain about Service Provider",
-     *          "complain Enquiries", "complain Suggestion", "Rating service", "Help Salim", "SMS Spam Block",
-     *          "SMS Spam Report", "Search Device By BrandName", "Search Device By Imei", "Check Domain Availability",
-     *          "Get Domain Data"]
+     *          [
+     *              "Coverage",
+     *              "Complain About TRA",
+     *              "Complain About Service Provider",
+     *              "Suggestion",
+     *              "Enquiries",
+     *              "Spam Report",
+     *              "Mobile Brand",
+     *              "Verification",
+     *              "Domain Check"
+     *          ]
      *      }
      *
      * @method getServiceNames

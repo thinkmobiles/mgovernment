@@ -27,6 +27,6 @@ var app = require('../app');
 //require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
 //require('./testHandlers/userFeedback');
 
-//require('./testHandlers/traNewsAnnouncements');
+require('./testHandlers/traNewsAnnouncements');
 require('./testHandlers/userAttachment');
 //require('./testHandlers/tdaServices');

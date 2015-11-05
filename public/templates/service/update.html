@@ -1,5 +1,5 @@
 <div style="align-content: center; margin-top: 5px; padding-bottom: 5px">
-    <% var showElement = "display: none" %>
+    <% var showElement = "display: none" ; %>
     <form>
         <datalist id="standartFieldsName">
             <option value="serviceName"/>
@@ -23,202 +23,204 @@
 
         <table class="tableView">
             <tr>
-                <th style="width:20%">List of properties</th>
+                <th style="width:25%">List of properties</th>
                 <th style="width:30%">Input, set properties</th>
                 <th>Description of properties</th>
             </tr>
 
             <tr>
                 <td class="hiddenByDefault"><b>serviceProvider:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="serviceProvider" size="20" maxlength="40"
-                                                   value="<%= serviceProvider %>"></td>
-                <td class="hiddenByDefault"> Input service provider name.</td>
+                <td class="hiddenByDefault">
+                    <select id="serviceProvider" value="<%= service.serviceProvider %>">
+                        <option value="DefaultRest">DefaultRest</option>
+                        <option value="TraTasTda">TraTasTda</option>
+                        <option value="TestTraSocket">TestTraSocket</option>
+                    </select>
+                </td>
+                <td class="hiddenByDefault"> Select service provider name.</td>
             </tr>
 
             <tr>
-                <td class="hiddenByDefault"><b>serviceName.EN:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="serviceNameEN" size="20" maxlength="40"
-                                                   value="<%= serviceName.EN %>"></td>
-                <td class="hiddenByDefault"> Input service name (like speed test or mobile verification check</td>
+                <td class="hiddenByDefault"><b>Service is enabled:</b></td>
+                <td class="hiddenByDefault">
+                    <input type="checkbox" id="serviceEnable" <% service.enable ? 'checked' : ''%>></td>
+                <td class="hiddenByDefault"> If service is 'Disable', users can't see it or use it </td>
             </tr>
 
             <tr>
-                <td class="hiddenByDefault"><b>serviceName.AR:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="serviceNameAR" size="20" maxlength="40"
-                                                   value="<%= serviceName.AR %>"></td>
-                <td class="hiddenByDefault"> Input service name on arabic</td>
+                <td class="hiddenByDefault" colspan="3" bgcolor="#dcdcdc" style="text-align: center; font-weight: bold">
+                    <a href="javascript:;" data-hash="serviceProfile" class="actionButtonShow">&nbsp show </a>&nbsp
+                    <a href="javascript:;" class="actionButtonHide" data-hash="serviceProfile">&nbsp hide &nbsp</a>&nbsp
+                    SERVICE'S PROFILE
+                </td>
             </tr>
 
-            <td class="hiddenByDefault"><b>serviceDescription.EN:</b></td>
-            <td class="hiddenByDefault"><textarea id="serviceDescriptionEN" rows="3" cols="22"   wrap="soft"><%= serviceDescription.EN %></textarea></td>
-            <td class="hiddenByDefault"> Input service description on english (like:  You can file a complaint or put remarks about your telecom service provider)</td>
+            <% if (service.profile){ var i = 0; %>
+
+
+            <% for (var k in service.profile){ %>
+            <tr id="profileFieldBlockEN<%= i %>" class="serviceProfile">
+                <td><b>profile.</b><input type="text" name="" id="profileFieldNameEN<%= i %>" size="15" maxlength="40"
+                                          value="<%= k %>"><b>.EN</b></td>
+                <td><input type="text" name="" id="profileFieldValueEN<%= i %>EN" size="30" maxlength="400"
+                           value="<%= service.profile[k].EN %>"></td>
+                <td> Input profile. fileds name and fields value</td>
             </tr>
+
+            <tr id="profileFieldBlockAR<%= i %>" class="serviceProfile">
+                <td><b>profile.</b><input type="text" name="" id="profileFieldNameAR<%= i %>" size="15" maxlength="40"
+                                          value="<%= k %>"><b>.AR</b></td>
+                <td><input type="text" name="" id="profileFieldValueAR<%= i %>" size="30" maxlength="400"
+                           value="<%= service.profile[k].AR %>"></td>
+                <td> Input profile. fileds name and fields value</td>
+            </tr>
+
+            <% i++ } %>
+            <% } %>
 
             <tr>
-                <td class="hiddenByDefault"><b>serviceDescription.AR:</b></td>
-                <td class="hiddenByDefault"><textarea id="serviceDescriptionAR" rows="3" cols="22"   wrap="soft"><%= serviceDescription.AR %></textarea></td>
-                <td class="hiddenByDefault"> Input service description on arabic</td>
+                <td class="hiddenByDefault" colspan="3" bgcolor="#dcdcdc" style="text-align: center; font-weight: bold">
+                    <a href="javascript:;" class="actionButtonShow" data-hash="mobileSidePart">&nbsp show </a>&nbsp
+                    <a href="javascript:;" class="actionButtonHide" data-hash="mobileSidePart">&nbsp hide &nbsp</a>&nbsp
+                    MOBILE-SIDE PART
+                </td>
             </tr>
 
-
-            <tr>
-                <td class="hiddenByDefault"><b>serviceType:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="serviceType" size="20" maxlength="40"
-                                                   value="<%= serviceType %>"></td>
-                <td class="hiddenByDefault">Like this: internet \ mobile \ money \ biznes \ government</td>
-            </tr>
-
-            <tr>
+            <tr class="mobileSidePart">
                 <td class="hiddenByDefault"><b>icon:</b></td>
-                <td class="hiddenByDefault"><img id="icon" src= "<%= icon ? '/icon/' + icon + '/@2x' : '' %>" data-hash="<%= icon %>" style="width: 50px; height: 50px;"> <a href="#"
-                                                                                                  id="selectIconShow"
-                                                                                                  data-hash="update"
-                                                                                                  class="actionButtonWhite"
-                                                                                                  style="text-decoration: none">&nbsp
+                <td class="hiddenByDefault"><img id="icon" src="<%= service.icon ? '/icon/' + service.icon + '/@2x' : '' %>"
+                                                 data-hash="<%= service.icon %>" style="width: 50px; height: 50px;"> <a href="#"
+                                                                                                                id="selectIconShow"
+                                                                                                                data-hash="update"
+                                                                                                                class="actionButtonWhite"
+                                                                                                                style="text-decoration: none">&nbsp
                     Select icon &nbsp</a></td>
                 <td class="hiddenByDefault">Select icon for service, this icon will show on mobiles</td>
             </tr>
 
-            <tr>
+            <tr class="mobileSidePart">
                 <td class="hiddenByDefault"><b>buttonTitle.EN:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="buttonTitleEN" size="20" maxlength="40"
-                                                   value="<%= buttonTitle.EN %>"></td>
-                <td class="hiddenByDefault">Input title of send Button on english (like: Send complain, Send Data, ....  </td>
+                <td class="hiddenByDefault"><input type="text" id="buttonTitleEN" size="30" maxlength="40"
+                                                   value="<%= service.buttonTitle.EN %>"></td>
+                <td class="hiddenByDefault">Input title of send Button on english (like: Send complain, Send Data,
+                    ....
+                </td>
             </tr>
 
-            <tr>
+            <tr class="mobileSidePart">
                 <td class="hiddenByDefault"><b>buttonTitle.AR:</b></td>
-                <td class="hiddenByDefault"><input type="text" id="buttonTitleAR" size="20" maxlength="40"
-                                                   value="<%= buttonTitle.AR %>"></td>
+                <td class="hiddenByDefault"><input type="text" id="buttonTitleAR" size="30" maxlength="40"
+                                                   value="<%= service.buttonTitle.AR %>"></td>
                 <td class="hiddenByDefault"> Input title of send Button on arabic</td>
             </tr>
 
-
-            <% if (profile){ var i = 0; %>
-            <% for (var k in profile){ %>
-            <tr id="profileFieldBlock<%= i %>">
-                <td><b>profile.</b><input type="text" name="" id="profileFieldName<%= i %>" size="10" maxlength="20"
-                                          value="<%= k %>"></td>
-                <td><input type="text" name="" id="profileFieldValue<%= i %>" size="20" maxlength="40"
-                           value="<%= profile[k] %>"></td>
-                <td> Input profile. fileds name and fields value</td>
+            <tr id="pagesBlock" class="mobileSidePart">
+                <td class="hiddenByDefault" style="color: goldenrod"><b>MOBILE PAGES [ ]</b></td>
+                <td class="hiddenByDefault"><a href="#" id="addPageBlock" class="actionButtonGray"
+                                               style=" text-decoration: none; font-size: 18px; color: lightgreen">
+                    ADD </a>&nbsp&nbsp<a
+                        href="#" id="delPageBlock" class="actionButtonGray"
+                        style=" text-decoration: none; font-size: 18px; color: lightcoral"> DELL </a></td>
+                <td class="hiddenByDefault">ADD or Delete last Mobile Page block</td>
             </tr>
-            <% i++ } %>
-            <% } %>
 
-            <tr id="profileBlock">
-                <td class="hiddenByDefault"><b>profile{ }</b></td>
-                <td class="hiddenByDefault"><a id="addProfileFieldBlock" data-hash="" class="actionButton"
-                                               style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
-                        id="delProfileFieldBlock" data-hash="" class="actionButton"
-                        style=" text-decoration: none; font-size: 18px; color: red">--</a></td>
-                <td class="hiddenByDefault">ADD or Delete last profiles fields block</td>
-            </tr>
 
             <tr>
-                <td class="hiddenByDefault"><b>baseUrl:</b></td>
+                <td class="hiddenByDefault" colspan="3" bgcolor="#dcdcdc" style="text-align: center; font-weight: bold">
+                    <a href="javascript:;" data-hash="serverSidePart" class="actionButtonShow">&nbsp show </a>&nbsp
+                    <a href="javascript:;" class="actionButtonHide" data-hash="serverSidePart">&nbsp hide &nbsp</a>&nbsp
+                    SERVER-SIDE PART
+                </td>
+            </tr>
+
+            <tr class="serverSidePart">
+                <td class="hiddenByDefault"><b>Url:</b></td>
                 <td class="hiddenByDefault">
-                    <input type="text" name="name" id="baseUrl" size="20" maxlength="40"
-                           value="<%= baseUrl %>"></td>
+                    <input type="text" name="name" id="url" size="30" maxlength="40"
+                           value="<%= service.url %>"></td>
                 <td class="hiddenByDefault">Start Provider url, like google.com</td>
             </tr>
 
-            <tr id="itemBlock">
-                <td class="hiddenByDefault"><b>inputItems [ ]</b></td>
-                <td class="hiddenByDefault"><a href="#" id="addInputItemsBlock" data-hash="signOut" class="actionButton"
-                                               style=" text-decoration: none; font-size: 18px; color: green"> + </a>&nbsp&nbsp<a
-                        href="#" id="delInputItemsBlock" data-hash="signOut" class="actionButton"
-                        style=" text-decoration: none; font-size: 18px; color: red">--</a></td>
-                <td class="hiddenByDefault">ADD or Delete last Items field-block</td>
-            </tr>
-
-            <tr>
+            <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>allow users type </b></td>
                 <td class="hiddenByDefault">
-                    <input type="checkbox" id="guest" value="guest"' <%=(forUserType.indexOf('guest') >= 0 ?
+                    <input type="checkbox" id="guest" value="guest"' <%=(service.forUserType.indexOf('guest') >= 0 ?
                     'checked':'')%> > Guest
-                    <input type="checkbox" id="client" value="client" <%=(forUserType.indexOf('client') >= 0 ?
+                    <input type="checkbox" id="client" value="client" <%=(service.forUserType.indexOf('client') >= 0 ?
                     'checked':'')%> > Client<br>
-                    <input type="checkbox" id="admin" value="admin" <%=(forUserType.indexOf('admin') >= 0 ?
+                    <input type="checkbox" id="admin" value="admin" <%=(service.forUserType.indexOf('admin') >= 0 ?
                     'checked':'')%> > Admin
-                    <input type="checkbox" id="company" value="company" <%=(forUserType.indexOf('company') >= 0 ?
+                    <input type="checkbox" id="company" value="company" <%=(service.forUserType.indexOf('company') >= 0 ?
                     'checked':'')%> > Company<br>
-                    <input type="checkbox" id="government" value="government" <%=(forUserType.indexOf('government') >= 0
+                    <input type="checkbox" id="government" value="government" <%=(service.forUserType.indexOf('government') >= 0
                     ? 'checked':'')%> > Government
                 </td>
                 <td class="hiddenByDefault">Choose who can use this service</td>
             </tr>
 
-            <tr>
+            <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>method </b></td>
                 <td class="hiddenByDefault">
-                    <input type="radio" name="Method" id="POST" value="POST" <%= method == 'POST' ? 'checked':''%>> POST
-                    <input type="radio" name="Method" id="GET" value="GET" <%= method == 'GET' ? 'checked':''%> > GET
+                    <input type="radio" name="Method" id="POST" value="POST" <%= service.method == 'POST' ? 'checked':''%>> POST
+                    <input type="radio" name="Method" id="GET" value="GET" <%= service.method == 'GET' ? 'checked':''%> > GET
                 </td>
                 <td class="hiddenByDefault">Choose method that client use when send request</td>
             </tr>
 
-            <tr>
-                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= port ?
+            <tr class="serverSidePart">
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= service.port ?
                     'checked' : '' %> >Socket is used </b></td>
-                <td class="hiddenByDefault"><b> PORT: </b><span id="portShow" <%= !port ? 'style="display: none"' : ''
+                <td class="hiddenByDefault"><b> PORT: </b><span id="portShow" <%= !service.port ? 'style="display: none"' : ''
                     %>>
-                    <input type="text" name="name" id="portInput" size="6" maxlength="4" value="<%=port ? port :'' %>">
+                    <input type="text" name="name" id="portInput" size="6" maxlength="4" value="<%= service.port ? service.port :'' %>">
                     </span></td>
                 <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
                 </td>
             </tr>
 
-            <tr>
-                <td class="hiddenByDefault"><b>Uri:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="url" size="20" maxlength="40"
-                                                   value="<%= url %>"></td>
-                <td class="hiddenByDefault">When service need uri response like: chackimei\ or \users\create</td>
-            </tr>
-            <tr>
+            <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>params.needUserAuth:</b></td>
                 <td class="hiddenByDefault">
-                    <input type="radio" name="auth" id="needUserAuth" value="true" <%= params.needUserAuth ?
+                    <input type="radio" name="auth" id="needUserAuth" value="true" <%= service.params.needUserAuth ?
                     'checked':''%>>true
-                    <input type="radio" name="auth" id="needUserAuth2" value="false" <%= !params.needUserAuth ?
+                    <input type="radio" name="auth" id="needUserAuth2" value="false" <%= !service.params.needUserAuth ?
                     'checked':''%> > false
                 </td>
                 <td class="hiddenByDefault">For using service authenticate is needed</td>
             </tr>
 
-            <tr>
+            <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>params {</b></td>
                 <td class="hiddenByDefault"></td>
                 <td class="hiddenByDefault">What params waiting from client? and how use them</td>
             </tr>
 
-            <tr style="vertical-align: top">
+            <tr style="vertical-align: top" class="serverSidePart">
                 <td class="hiddenByDefault">
-                    <b> <input type="checkbox" class="enabledCheckBox" id="body" value="body" <%= params.body ?
+                    <b> <input type="checkbox" class="enabledCheckBox" id="body" value="body" <%= service.params.body ?
                         'checked':''%> > .body </b></td>
-                <% if (params.body) { showElement = '' } %>
+                <% if (service.params.body) { showElement = '' } %>
                 <td class="hiddenByDefault" style=" word-break: break-all;">
                     <div id="bodyShow" style="<%= showElement %>"><p><b>body:
-                        [ </b><span id="bodyValue"><%=  params.body ? params.body.join(','):'' %></span><b> ]</b></p>
+                        [ </b><span id="bodyValue"><%=  service.params.body ? service.params.body.join(','):'' %></span><b> ]</b></p>
                         <select style="width: 170px; height: 25px;" id="bodyInput"></select>
                         &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"> add </a>&nbsp
                         <a href="#" id="bodyDellInputButton" data-hash="body"
                            class="actionButtonDell">&nbspdell&nbsp</a>
                     </div>
-
                 </td>
-
             </tr>
-            <tr>
+
+            <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="query" value="query"
-                    <%= params.query ? 'checked':''%>>
+                    <%= service.params.query ? 'checked':''%>>
                     .query </b></td>
 
                 <% showElement = "display: none"%>
-                <% if (params.query) { showElement = ''; } %>
+                <% if (service.params.query) { showElement = ''; } %>
                 <td class="hiddenByDefault">
                     <div id="queryShow" style="<%= showElement %>"><p><b>query: [ </b><span
-                            id="queryValue"><%= params.query ? params.query.join(','):''%></span><b> ]</b></p>
+                            id="queryValue"><%= service.params.query ? service.params.query.join(','):''%></span><b> ]</b></p>
                         <select style="width: 170px; height: 25px;" id="queryInput"></select>
                         &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"> add </a>&nbsp
                         <a href="#" id="queryDellInputButton" data-hash="query"
@@ -231,21 +233,22 @@
                 </td>
 
             </tr>
-            <tr>
+            <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="uriSpecQuery"
-                                                       value="uriSpecQuery"<%= params.uriSpecQuery ? 'checked':''%>>
+                                                       value="uriSpecQuery"<%= service.params.uriSpecQuery ? 'checked':''%>>
                     .uriSpecQuery </b></td>
                 <% showElement = "display: none"%>
-                <% if (params.uriSpecQuery) { showElement = ''; } %>
+                <% if (service.params.uriSpecQuery) { showElement = ''; } %>
                 <td class="hiddenByDefault">
                     <div id="uriSpecQueryShow" style="<%= showElement %>"><p><b>uriSpecQuery: [ </b><span
-                            id="uriSpecQueryValue"><%= params.uriSpecQuery ? params.uriSpecQuery.join(','):''%></span><b>
+                            id="uriSpecQueryValue"><%= service.params.uriSpecQuery ? params.uriSpecQuery.join(','):''%></span><b>
                         ]</b></p>
                         <select style="width: 170px; height: 25px;" id="uriSpecQueryInput"></select>
                         &nbsp<a href="#" id="uriSpecQueryAddInputButton" data-hash="uriSpecQuery"
                                 class="actionButtonAdd"> add </a>&nbsp
                         <a href="#" id="uriSpecQueryDellInputButton" data-hash="uriSpecQuery"
                            class="actionButtonDell">&nbspdell&nbsp</a>
+                    </div>
                 </td>
                 <td class="hiddenByDefault"> uriSpecQuery is array, that have names of fields that will be added to url
                     of Request, input the names of fields separated by commas without spaces
@@ -253,18 +256,17 @@
             </tr>
         </table>
 
-        <div style="clear: both"></div>
-        <div style="float:left; text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px;
-    border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8; margin-left: 5px;">
+        <div style="clear: both; margin-top: 5px;"></div>
+        <div style="float:left; text-align:center; width: 320px;  height: 35px; line-height:35px; background-color: #F8901F;  margin-left: 5px;">
             <div id="updateBtn" onmouseover="this.style.cursor='pointer'">
-        <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
+        <span style="font-family:Arial; font-size:20px;font-weight:bold; color: white;">
         Save Service
         </span>
             </div>
         </div>
-        <div style="float:left;  text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:lightyellow; opacity: 0.8">
+        <div style="float:left;  text-align:center; border:2px solid #F8901F; width: 320px;  height: 35px; line-height:35px; margin-left: 5px; background-color: white;">
             <div id="seeBtn" onmouseover="this.style.cursor='pointer'">
-        <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
+        <span style="font-family:Arial;font-size:20px;font-weight:bold; color:#F8901F; text-shadow: 1px 1px white;">
         See service on device
         </span>
             </div>
