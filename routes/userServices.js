@@ -332,6 +332,36 @@ module.exports = function(db){
 
     router.route('/:serviceId')
         .get(servicesHandler.getServiceOptions)
+
+    /**
+     * This __method__ use specific Service
+     *
+     * __URI:__ ___`/service/:serviceId`___
+     *
+     * __METHOD:__ ___`POST`___
+     *
+     *
+     * __Request:__
+     * ___`/service/5638bedc0568cfe809814ed4`___
+     *
+     *      Body:
+     *      title,
+     *      description,
+     *      //field names from pages[0].inputItems[0].name
+     *
+     * __Responses:__
+     *
+     *      status (200) JSON object: {}
+     *      status (403, 500) JSON object: {error: 'Text about error'} or  {error: object}
+     *
+     *
+     * @method useService
+     * @instance
+     * @for userServices
+     * @memberOf userServices
+     */
+
+    router.route('/:serviceId')
         .post(accessHandler.isAccessAvailable, servicesHandler.sendServiceRequest);
 
     return router;

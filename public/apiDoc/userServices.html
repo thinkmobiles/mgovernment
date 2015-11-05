@@ -243,16 +243,7 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">{
-         &quot;Name&quot;: &quot;Suggestion&quot;,
-         &quot;About the service&quot;: &quot;This service involves submitting a suggestion to TRA&quot;,
-         &quot;Service Package&quot;: &quot;.&quot;,
-         &quot;Expected time&quot;: &quot;Within 3 working days or more according to the subject of the suggestion&quot;,
-         &quot;Officer in charge of this service&quot;: &quot;Call Center Administrator&quot;,
-         &quot;Required documents&quot;: &quot;None&quot;,
-         &quot;Service fee&quot;: &quot;None&quot;,
-         &quot;Terms and conditions&quot;: &quot;Information of the applicant&quot;
-     }</pre>
+    <pre class="sunlight-highlight-javascript">{         &quot;Name&quot;: &quot;Suggestion&quot;,         &quot;About the service&quot;: &quot;This service involves submitting a suggestion to TRA&quot;,         &quot;Service Package&quot;: &quot;.&quot;,         &quot;Expected time&quot;: &quot;Within 3 working days or more according to the subject of the suggestion&quot;,         &quot;Officer in charge of this service&quot;: &quot;Call Center Administrator&quot;,         &quot;Required documents&quot;: &quot;None&quot;,         &quot;Service fee&quot;: &quot;None&quot;,         &quot;Terms and conditions&quot;: &quot;Information of the applicant&quot;     }</pre>
 
 
     
@@ -340,12 +331,7 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">{
-         [&quot;complain Poor Coverage&quot;, &quot;complain about TRA Service&quot;, &quot;complain about Service Provider&quot;,
-         &quot;complain Enquiries&quot;, &quot;complain Suggestion&quot;, &quot;Rating service&quot;, &quot;Help Salim&quot;, &quot;SMS Spam Block&quot;,
-         &quot;SMS Spam Report&quot;, &quot;Search Device By BrandName&quot;, &quot;Search Device By Imei&quot;, &quot;Check Domain Availability&quot;,
-         &quot;Get Domain Data&quot;]
-     }</pre>
+    <pre class="sunlight-highlight-javascript">{         [&quot;complain Poor Coverage&quot;, &quot;complain about TRA Service&quot;, &quot;complain about Service Provider&quot;,         &quot;complain Enquiries&quot;, &quot;complain Suggestion&quot;, &quot;Rating service&quot;, &quot;Help Salim&quot;, &quot;SMS Spam Block&quot;,         &quot;SMS Spam Report&quot;, &quot;Search Device By BrandName&quot;, &quot;Search Device By Imei&quot;, &quot;Check Domain Availability&quot;,         &quot;Get Domain Data&quot;]     }</pre>
 
 
     
@@ -435,85 +421,7 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">{
-             &quot;_id&quot;: &quot;5638bedc0568cfe809814ed4&quot;,
-             &quot;pages&quot;: [
-                 {
-                     &quot;number&quot;: 0,
-                     &quot;_id&quot;: &quot;5638bedc0568cfe809814ed7&quot;,
-                     &quot;inputItems&quot;: [
-                         {
-                             &quot;order&quot;: 0,
-                             &quot;name&quot;: &quot;title&quot;,
-                             &quot;inputType&quot;: &quot;string&quot;,
-                             &quot;required&quot;: true,
-                             &quot;validateAs&quot;: &quot;string&quot;,
-                             &quot;_id&quot;: &quot;5638bedc0568cfe809814ed9&quot;,
-                             &quot;dataSource&quot;: [],
-                             &quot;displayName&quot;: {
-                                 &quot;EN&quot;: &quot;title&quot;,
-                                 &quot;AR&quot;: &quot;title&quot;
-                                 },
-                             &quot;placeHolder&quot;: {
-                                 &quot;EN&quot;: &quot;write here&quot;,
-                                 &quot;AR&quot;: &quot;AR write here&quot;
-                                 }
-                         },
-                         {
-                             &quot;order&quot;: 1,
-                             &quot;name&quot;: &quot;description&quot;,
-                             &quot;inputType&quot;: &quot;text&quot;,
-                             &quot;required&quot;: true,
-                             &quot;validateAs&quot;: &quot;string&quot;,
-                             &quot;_id&quot;: &quot;5638bedc0568cfe809814ed8&quot;,
-                             &quot;dataSource&quot;: [],
-                             &quot;displayName&quot;: {
-                                 &quot;EN&quot;: &quot;message&quot;,
-                                 &quot;AR&quot;: &quot;AR message&quot;
-                                 },
-                             &quot;placeHolder&quot;: {
-                                 &quot;EN&quot;: &quot;your description&quot;,
-                                 &quot;AR&quot;: &quot;AR your description&quot;
-                                 }
-                        }
-                                 ]
-            },
-            {
-                 &quot;number&quot;: 1,
-                 &quot;_id&quot;: &quot;5638bedc0568cfe809814ed5&quot;,
-                 &quot;inputItems&quot;: [
-                     {
-                         &quot;order&quot;: 0,
-                         &quot;name&quot;: &quot;attachment&quot;,
-                         &quot;inputType&quot;: &quot;file&quot;,
-                         &quot;required&quot;: false,
-                         &quot;validateAs&quot;: &quot;none&quot;,
-                         &quot;_id&quot;: &quot;5638bedc0568cfe809814ed6&quot;,
-                         &quot;dataSource&quot;: [],
-                         &quot;displayName&quot;: {
-                             &quot;EN&quot;: &quot;attachment&quot;,
-                             &quot;AR&quot;: &quot;AR attachment&quot;
-                             },
-                         &quot;placeHolder&quot;: {
-                             &quot;EN&quot;: &quot;some image&quot;,
-                             &quot;AR&quot;: &quot;AR some image&quot;
-                             }
-                     }
-                             ]
-          }
-             ],
-        &quot;buttonTitle&quot;: {
-             &quot;AR&quot;: &quot;شكوى على الهيئة&quot;,
-             &quot;EN&quot;: &quot;Send Complain&quot;
-                     },
-        &quot;needAuth&quot;: true,
-        &quot;icon&quot;: null,  // or uri like: icon/56sdbrtrd0568cfe8098trt545d4 !!! WARNING: for download Icon use: uri + /iconType (one of: @2x|@3x|xxxhdpi|xxhdpi|xhdpi|hdpi|mdpi)
-                       //Example: http://projects.thinkmobiles.com:7791/icon/56sdbrtrd0568cfe8098trt545d4/@3x
-        &quot;serviceName&quot;: {
-             &quot;AR&quot;: &quot;Dynamic شكوى على الهيئة&quot;,
-             &quot;EN&quot;: &quot;Dynamic Complain TRA&quot;
-                     }
-         }</pre>
+    <pre class="sunlight-highlight-javascript">{             &quot;_id&quot;: &quot;5638bedc0568cfe809814ed4&quot;,             &quot;pages&quot;: [                 {                     &quot;number&quot;: 0,                     &quot;_id&quot;: &quot;5638bedc0568cfe809814ed7&quot;,                     &quot;inputItems&quot;: [                         {                             &quot;order&quot;: 0,                             &quot;name&quot;: &quot;title&quot;,                             &quot;inputType&quot;: &quot;string&quot;,                             &quot;required&quot;: true,                             &quot;validateAs&quot;: &quot;string&quot;,                             &quot;_id&quot;: &quot;5638bedc0568cfe809814ed9&quot;,                             &quot;dataSource&quot;: [],                             &quot;displayName&quot;: {                                 &quot;EN&quot;: &quot;title&quot;,                                 &quot;AR&quot;: &quot;title&quot;                                 },                             &quot;placeHolder&quot;: {                                 &quot;EN&quot;: &quot;write here&quot;,                                 &quot;AR&quot;: &quot;AR write here&quot;                                 }                         },                         {                             &quot;order&quot;: 1,                             &quot;name&quot;: &quot;description&quot;,                             &quot;inputType&quot;: &quot;text&quot;,                             &quot;required&quot;: true,                             &quot;validateAs&quot;: &quot;string&quot;,                             &quot;_id&quot;: &quot;5638bedc0568cfe809814ed8&quot;,                             &quot;dataSource&quot;: [],                             &quot;displayName&quot;: {                                 &quot;EN&quot;: &quot;message&quot;,                                 &quot;AR&quot;: &quot;AR message&quot;                                 },                             &quot;placeHolder&quot;: {                                 &quot;EN&quot;: &quot;your description&quot;,                                 &quot;AR&quot;: &quot;AR your description&quot;                                 }                        }                                 ]            },            {                 &quot;number&quot;: 1,                 &quot;_id&quot;: &quot;5638bedc0568cfe809814ed5&quot;,                 &quot;inputItems&quot;: [                     {                         &quot;order&quot;: 0,                         &quot;name&quot;: &quot;attachment&quot;,                         &quot;inputType&quot;: &quot;file&quot;,                         &quot;required&quot;: false,                         &quot;validateAs&quot;: &quot;none&quot;,                         &quot;_id&quot;: &quot;5638bedc0568cfe809814ed6&quot;,                         &quot;dataSource&quot;: [],                         &quot;displayName&quot;: {                             &quot;EN&quot;: &quot;attachment&quot;,                             &quot;AR&quot;: &quot;AR attachment&quot;                             },                         &quot;placeHolder&quot;: {                             &quot;EN&quot;: &quot;some image&quot;,                             &quot;AR&quot;: &quot;AR some image&quot;                             }                     }                             ]          }             ],        &quot;buttonTitle&quot;: {             &quot;AR&quot;: &quot;شكوى على الهيئة&quot;,             &quot;EN&quot;: &quot;Send Complain&quot;                     },        &quot;needAuth&quot;: true,        &quot;icon&quot;: null,  // or uri like: icon/56sdbrtrd0568cfe8098trt545d4 !!! WARNING: for download Icon use: uri + /iconType (one of: @2x|@3x|xxxhdpi|xxhdpi|xhdpi|hdpi|mdpi)                       //Example: http://projects.thinkmobiles.com:7791/icon/56sdbrtrd0568cfe8098trt545d4/@3x        &quot;serviceName&quot;: {             &quot;AR&quot;: &quot;Dynamic شكوى على الهيئة&quot;,             &quot;EN&quot;: &quot;Dynamic Complain TRA&quot;                     }         }</pre>
 
 
     
@@ -601,36 +509,96 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">[
-         {
-            _id: &#x27;5638c5c08714a2581508e5ad&#x27;,
-            needAuth: false,
-            icon: null,
-            serviceName: {
-                AR: &#x27;Dynamic تحقق من نطاق&#x27;,
-                EN: &#x27;Dynamic Domain WHOIS&#x27;
-                        }
-        },
-         {
-             _id: &#x27;5638c5c08714a2581508e5b0&#x27;,
-             needAuth: true,
-             icon: null,
-             serviceName: {
-               AR: &#x27;Dynamic شكوى على الهيئة&#x27;,
-               EN: &#x27;Dynamic Complain TRA&#x27;
-                     },
-         {
-             _id: &#x27;5638c5c08714a2581508e5b6&#x27;,
-             needAuth: false,
-             icon: null,
-             serviceName: {
-                 AR: &#x27;Dynamic TEST تحقق من نطاق&#x27;,
-                 EN: &#x27;Dynamic TEST WHOIS&#x27;
-                         }
-         }
-     ]</pre>
+    <pre class="sunlight-highlight-javascript">[         {            _id: &#x27;5638c5c08714a2581508e5ad&#x27;,            needAuth: false,            icon: null,            serviceName: {                AR: &#x27;Dynamic تحقق من نطاق&#x27;,                EN: &#x27;Dynamic Domain WHOIS&#x27;                        }        },         {             _id: &#x27;5638c5c08714a2581508e5b0&#x27;,             needAuth: true,             icon: null,             serviceName: {               AR: &#x27;Dynamic شكوى على الهيئة&#x27;,               EN: &#x27;Dynamic Complain TRA&#x27;                     },         {             _id: &#x27;5638c5c08714a2581508e5b6&#x27;,             needAuth: false,             icon: null,             serviceName: {                 AR: &#x27;Dynamic TEST تحقق من نطاق&#x27;,                 EN: &#x27;Dynamic TEST WHOIS&#x27;                         }         }     ]</pre>
 
 
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="useService"><span class="type-signature"></span>useService<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>This <strong>method</strong> use specific Service</p>
+<p><strong>URI:</strong> <strong><em><code>/service/:serviceId</code></em></strong></p>
+<p><strong>METHOD:</strong> <strong><em><code>POST</code></em></strong></p>
+<p><strong>Request:</strong>
+<strong><em><code>/service/5638bedc0568cfe809814ed4</code></em></strong></p>
+<pre class="prettyprint source"><code> Body:
+ title,
+ description,
+ //field names from pages[0].inputItems[0].name</code></pre><p><strong>Responses:</strong></p>
+<pre class="prettyprint source"><code> status (200) JSON object: {}
+ status (403, 500) JSON object: {error: 'Text about error'} or  {error: object}</code></pre>
+    </div>
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+    
+    
+
+    
+
+    
+
+    
+    
+    
+    
+    
+    
     
 </dd>
 
@@ -672,7 +640,7 @@
 
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.3</a>
-	on Tue Nov 3rd 2015 using the <a
+	on Thu Nov 5th 2015 using the <a
 	href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 </span>
 </footer>
