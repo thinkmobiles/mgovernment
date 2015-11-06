@@ -204,12 +204,8 @@ define([
 
         showSelectedItem: function(e){
             var el = this.$el;
-            var id = $(e.target).attr('data-hash');
+            var id = $(e.currentTarget).attr('data-hash');
 
-            if (!id) {
-                id = $(e.target.parentElement).attr('data-hash');
-            }
-            console.log('Show Selected: ',id);
 
             if (navigator.userAgent.search("Safari") >= 0 ) {
                 $('body').animate({scrollTop: $('#' + id).offset().top}, 1100);
@@ -302,7 +298,7 @@ define([
                 }
                 displayContent += '</div>';
             }
-            if (currentMobilePage === pageBlockCount) {
+            if (currentMobilePage === pageBlockCount - 1) {
                 displayContent += '<div  class="showArea' + language + '" data-hash="buttonTitleEN" style=" margin-top: 3px; text-align: center">';
             displayContent += '<span style="min-height: 20px; border: 1px solid grey;min-width: 50px; background-color: ghostwhite; opacity: 0.7;  border-radius: 6px; display: inline-block;"> ' + data.buttonTitle[language] + ' </span>';
             displayContent += '</div>';
