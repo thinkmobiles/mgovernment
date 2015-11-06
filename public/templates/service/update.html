@@ -32,9 +32,12 @@
                 <td class="hiddenByDefault"><b>serviceProvider:</b></td>
                 <td class="hiddenByDefault">
                     <select id="serviceProvider">
-                        <option value="DefaultRest" <%= service.serviceProvider == 'DefaultRest' ? 'selected': ''%>>DefaultRest</option>
-                        <option value="TraTasTda" <%= service.serviceProvider == 'TraTasTda' ? 'selected': ''%>>TraTasTda</option>
-                        <option value="TestTraSocket" <%= service.serviceProvider == 'TestTraSocket' ? 'selected': ''%>>TestTraSocket</option>
+                        <option value="DefaultRest"
+                        <%= service.serviceProvider == 'DefaultRest' ? 'selected': ''%>>DefaultRest</option>
+                        <option value="TraTasTda"
+                        <%= service.serviceProvider == 'TraTasTda' ? 'selected': ''%>>TraTasTda</option>
+                        <option value="TestTraSocket"
+                        <%= service.serviceProvider == 'TestTraSocket' ? 'selected': ''%>>TestTraSocket</option>
                     </select>
                 </td>
                 <td class="hiddenByDefault"> Select service provider name.</td>
@@ -43,8 +46,9 @@
             <tr>
                 <td class="hiddenByDefault"><b>Service is enabled:</b></td>
                 <td class="hiddenByDefault">
-                    <input type="checkbox" id="serviceEnable" <%= service.enable ? 'checked' : ''%>></td>
-                <td class="hiddenByDefault"> If service is 'Disable', users can't see it or use it </td>
+                    <input type="checkbox" id="serviceEnable" <%= service.enable ? 'checked' : ''%>>
+                </td>
+                <td class="hiddenByDefault"> If service is 'Disable', users can't see it or use it</td>
             </tr>
 
             <tr>
@@ -88,12 +92,14 @@
 
             <tr class="mobileSidePart">
                 <td class="hiddenByDefault"><b>icon:</b></td>
-                <td class="hiddenByDefault"><img id="icon" src="<%= service.icon ? '/icon/' + service.icon + '/@2x' : '' %>"
-                                                 data-hash="<%= service.icon %>" style="width: 50px; height: 50px;"> <a href="#"
-                                                                                                                id="selectIconShow"
-                                                                                                                data-hash="update"
-                                                                                                                class="actionButtonWhite"
-                                                                                                                style="text-decoration: none">&nbsp
+                <td class="hiddenByDefault"><img id="icon"
+                                                 src="<%= service.icon ? '/icon/' + service.icon + '/@2x' : '' %>"
+                                                 data-hash="<%= service.icon %>" style="width: 50px; height: 50px;"> <a
+                        href="#"
+                        id="selectIconShow"
+                        data-hash="update"
+                        class="actionButtonWhite"
+                        style="text-decoration: none">&nbsp
                     Select icon &nbsp</a></td>
                 <td class="hiddenByDefault">Select icon for service, this icon will show on mobiles</td>
             </tr>
@@ -144,17 +150,11 @@
             <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>allow users type </b></td>
                 <td class="hiddenByDefault">
-                    <input type="checkbox" id="guest" value="guest"' <%=(service.forUserType.indexOf('guest') >= 0 ?
-                    'checked':'')%> > Guest
-                    <input type="checkbox" id="client" value="client" <%=(service.forUserType.indexOf('client') >= 0 ?
-                    'checked':'')%> > Client<br>
-                    <input type="checkbox" id="admin" value="admin" <%=(service.forUserType.indexOf('admin') >= 0 ?
-                    'checked':'')%> > Admin
-                    <input type="checkbox" id="company" value="company" <%=(service.forUserType.indexOf('company') >= 0 ?
-                    'checked':'')%> > Company<br>
-                    <input type="checkbox" id="government" value="government" <%=(service.forUserType.indexOf('government') >= 0
-                    ? 'checked':'')%> > Government
-                </td>
+                    <input type="checkbox" id="guest" value="guest"' <%=(service.forUserType.indexOf('guest') >= 0 ? 'checked':'')%> > Guest
+                    <input type="checkbox" id="client" value="client" <%=(service.forUserType.indexOf('client') >= 0 ? 'checked':'')%> > Client<br>
+                    <input type="checkbox" id="admin" value="admin" <%=(service.forUserType.indexOf('admin') >= 0 ? 'checked':'')%> > Admin
+                    <input type="checkbox" id="company" value="company" <%=(service.forUserType.indexOf('company') >= 0 ? 'checked':'')%> > Company<br>
+                    <input type="checkbox" id="government" value="government" <%=(service.forUserType.indexOf('government') >= 0 ? 'checked':'')%> > Government</td>
                 <td class="hiddenByDefault">Choose who can use this service</td>
             </tr>
 
@@ -162,17 +162,17 @@
                 <td class="hiddenByDefault"><b>method </b></td>
                 <td class="hiddenByDefault">
                     <input type="radio" name="Method" id="POST" value="POST" <%= service.method == 'POST' ? 'checked':''%>> POST
-                    <input type="radio" name="Method" id="GET" value="GET" <%= service.method == 'GET' ? 'checked':''%> > GET
+                    <input type="radio" name="Method" id="GET" value="GET" <%= service.method == 'GET' ? 'checked':''%>
+                    > GET
                 </td>
                 <td class="hiddenByDefault">Choose method that client use when send request</td>
             </tr>
 
             <tr class="serverSidePart">
-                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= service.port ?
-                    'checked' : '' %> >Socket is used </b></td>
-                <td class="hiddenByDefault"><b> PORT: </b><span id="portShow" <%= !service.port ? 'style="display: none"' : ''
-                    %>>
-                    <input type="text" name="name" id="portInput" size="6" maxlength="4" value="<%= service.port ? service.port :'' %>">
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= service.port ? 'checked' : '' %> >Socket is used </b></td>
+                <td class="hiddenByDefault"><b> PORT: </b><span id="portShow" <%= !service.port ? 'style="display: none"' : '' %>>
+                    <input type="text" name="name" id="portInput" size="6" maxlength="4"
+                           value="<%= service.port ? service.port :'' %>">
                     </span></td>
                 <td class="hiddenByDefault">Server use socket for connection. Method (POST/GET) is ignored.
                 </td>
@@ -181,10 +181,8 @@
             <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>params.needUserAuth:</b></td>
                 <td class="hiddenByDefault">
-                    <input type="radio" name="auth" id="needUserAuth" value="true" <%= service.params.needUserAuth ?
-                    'checked':''%>>true
-                    <input type="radio" name="auth" id="needUserAuth2" value="false" <%= !service.params.needUserAuth ?
-                    'checked':''%> > false
+                    <input type="radio" name="auth" id="needUserAuth" value="true" <%= service.params.needUserAuth ? 'checked':''%>>true
+                    <input type="radio" name="auth" id="needUserAuth2" value="false" <%= !service.params.needUserAuth ? 'checked':''%> > false
                 </td>
                 <td class="hiddenByDefault">For using service authenticate is needed</td>
             </tr>
@@ -197,12 +195,12 @@
 
             <tr style="vertical-align: top" class="serverSidePart">
                 <td class="hiddenByDefault">
-                    <b> <input type="checkbox" class="enabledCheckBox" id="body" value="body" <%= service.params.body ?
-                        'checked':''%> > .body </b></td>
+                    <b> <input type="checkbox" class="enabledCheckBox" id="body" value="body" <%= service.params.body ? 'checked':''%> > .body </b></td>
                 <% if (service.params.body) { showElement = '' } %>
                 <td class="hiddenByDefault" style=" word-break: break-all;">
                     <div id="bodyShow" style="<%= showElement %>"><p><b>body:
-                        [ </b><span id="bodyValue"><%=  service.params.body ? service.params.body.join(','):'' %></span><b> ]</b></p>
+                        [ </b><span id="bodyValue"><%=  service.params.body ? service.params.body.join(','):'' %></span><b>
+                        ]</b></p>
                         <select style="width: 170px; height: 25px;" id="bodyInput"></select>
                         &nbsp<a href="#" id="bodyAddInputButton" data-hash="body" class="actionButtonAdd"> add </a>&nbsp
                         <a href="#" id="bodyDellInputButton" data-hash="body"
@@ -212,15 +210,14 @@
             </tr>
 
             <tr class="serverSidePart">
-                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="query" value="query"
-                    <%= service.params.query ? 'checked':''%>>
-                    .query </b></td>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="query" value="query" <%= service.params.query ? 'checked':''%>>.query </b></td>
 
                 <% showElement = "display: none"%>
                 <% if (service.params.query) { showElement = ''; } %>
                 <td class="hiddenByDefault">
                     <div id="queryShow" style="<%= showElement %>"><p><b>query: [ </b><span
-                            id="queryValue"><%= service.params.query ? service.params.query.join(','):''%></span><b> ]</b></p>
+                            id="queryValue"><%= service.params.query ? service.params.query.join(','):''%></span><b>
+                        ]</b></p>
                         <select style="width: 170px; height: 25px;" id="queryInput"></select>
                         &nbsp<a href="#" id="queryAddInputButton" data-hash="query" class="actionButtonAdd"> add </a>&nbsp
                         <a href="#" id="queryDellInputButton" data-hash="query"
@@ -235,8 +232,7 @@
             </tr>
             <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="uriSpecQuery"
-                                                       value="uriSpecQuery"<%= service.params.uriSpecQuery ? 'checked':''%>>
-                    .uriSpecQuery </b></td>
+                                                       value="uriSpecQuery"<%= service.params.uriSpecQuery ? 'checked':''%>>.uriSpecQuery </b></td>
                 <% showElement = "display: none"%>
                 <% if (service.params.uriSpecQuery) { showElement = ''; } %>
                 <td class="hiddenByDefault">
@@ -282,7 +278,7 @@
 <!--</div>-->
 
 <div class="showOnDisplayImg" id="mobilePhone"
-     style="border: 1px solid black; width: 500px; height: 900px; margin;  position: fixed; z-index: 100; top:10px; left:60%;  display: none; text-align: center ">
+     style="border: 1px solid black; width: 500px; height: 900px; position: fixed; z-index: 100; top:10px; left:60%;  display: none; text-align: center ">
     <table class="tableDisplayMobile" style="width: 100%">
         <tr>
             <td style="height: 150px;
@@ -309,8 +305,22 @@
                 <div id="mobileDisplay"></div>
             </td>
         </tr>
+
         <tr>
-            <td style="height: 150px;
+            <td style="height: 100px;
+    vertical-align: bottom">
+                <div id="mobilePage" style="font-size: 20px; ">
+                    <strong>
+                        <span id="previousPage"  class="mobileBtnPage" data-page="dec"><</span>
+                        <span id="currentPage" style="color: #F8901F; margin-left: 10px; margin-right: 10px"> Page[ ] </span>
+                        <span id="nextPage"  class="mobileBtnPage" data-page="inc">></span>
+                    </strong>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td style="height: 50px;
     vertical-align: bottom;">
                 <div id="refreshBtn" class="mobileBtn" style="width:50%; margin: auto;">
                     Refresh Data

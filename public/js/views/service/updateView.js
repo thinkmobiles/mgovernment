@@ -25,6 +25,7 @@ define([
     var itemsInputNameArray = [];
     var sendParams ={};
     var language = 'EN';
+    var currentMobilePage = 0;
 
     var serviceUpdateView = Backbone.View.extend({
         el: '#dataBlock',
@@ -53,7 +54,8 @@ define([
             'click #selectIcon': 'selectIcon',
             'click #closeIcon': 'closeSelectIcon',
             'click .iconSelectList': 'preSelectIcon',
-            'keyup #searchTerm': 'searchSelectIcon'
+            'keyup #searchTerm': 'searchSelectIcon',
+            'click .mobileBtnPage': 'changePageOnMobile'
 
         },
 
@@ -179,8 +181,24 @@ define([
 
         changeMobileLanguage: function(e){
             var lang = this.$el.find(e.target).attr('data-hash');
-            console.log('change language clocked');
+            console.log('change language clicked');
             language =  lang ? lang: language;
+            this.showMobileDisplay();
+        },
+
+        changePageOnMobile: function(e) {
+            var operation = this.$el.find(e.target).attr('data-page');
+
+            console.log('change mobile page  clicked, operation: ', operation);
+
+            if (operation == 'dec' && currentMobilePage > 0) {
+                currentMobilePage--
+            }
+
+            if (operation == 'inc' && currentMobilePage < pageBlockCount - 1) {
+                currentMobilePage++
+            }
+
             this.showMobileDisplay();
         },
 
@@ -226,6 +244,9 @@ define([
             var displayContent = "";
             var tempObj;
             var tempOrder;
+            var inputElements;
+            el.find('#currentPage').text(' Page[' + currentMobilePage + '] ');
+
             console.dir('rided data', data);
             console.log('rided data2', data);
 
@@ -239,51 +260,55 @@ define([
             displayContent += '<div style = "margin-left: 50px; margin-right: 47px; height:360px; overflow-y: auto">';
             console.log('data before sorting',data);
 
-            console.log(' before sorting data.inputItems.length - 1', data.inputItems.length - 1);
+            inputElements = data.pages[currentMobilePage].inputItems;
+            console.log(' before sorting data.inputItems.length - 1', inputElements.length - 1);
 
             //sort
 
-            for (var j = data.inputItems.length - 1; j >= 0; j-- ) {
+            for (var j = inputElements.length - 1; j >= 0; j-- ) {
                 for (var i = j; i >= 0; i--) {
-                    if (+data.inputItems[j].order > +data.inputItems[i].order) {
+                    if (+inputElements[j].order > +inputElements[i].order) {
 
-                        tempObj = data.inputItems[i];
-                        data.inputItems[i] = data.inputItems[j];
-                        data.inputItems[j] = tempObj;
+                        tempObj = inputElements[i];
+                        inputElements[i] = inputElements[j];
+                        inputElements[j] = tempObj;
                     }
                 }
             }
 
             console.log('data after sorting',data);
 
-            for (var i = data.inputItems.length - 1; i >= 0; i-- ){
-                displayContent += '<div class="showArea' + language + '" data-hash="itemBlockOrder' + data.inputItems[i].displayOrder + '">';
+            for (var i = inputElements.length - 1; i >= 0; i-- ){
+                displayContent += '<div class="showArea' + language + '" data-hash="page' + currentMobilePage + 'itemBlockOrder' + inputElements[i].displayOrder + '">';
 
-                if (data.inputItems[i].inputType === 'file') {
-                    displayContent += '<div style="color: lightslategray;">' + data.inputItems[i].displayName[language] + ' <img src="../img/attachSmall.png"></div>';
+                if (inputElements[i].inputType === 'file') {
+                    displayContent += '<div style="color: lightslategray;">' + inputElements[i].displayName[language] + ' <img src="../img/attachSmall.png"></div>';
                 } else {
 
-                    displayContent += '<div style="color: lightslategray; ">' + data.inputItems[i].displayName[language] + '</div>';
+                    displayContent += '<div style="color: lightslategray; ">' + inputElements[i].displayName[language] + '</div>';
 
-                    if (data.inputItems[i].inputType === 'string' || data.inputItems[i].inputType === 'number'|| data.inputItems[i].inputType === 'boolean') {
-                        displayContent += '<div style="color: black; border-bottom: 1px solid gray; width: 100%; height: 20px ">' + data.inputItems[i].placeHolder[language] + '</div>';
+                    if (inputElements[i].inputType === 'string' || inputElements[i].inputType === 'number'|| inputElements[i].inputType === 'boolean') {
+                        displayContent += '<div style="color: black; border-bottom: 1px solid gray; width: 100%; height: 20px ">' + inputElements[i].placeHolder[language] + '</div>';
                     }
 
-                    if (data.inputItems[i].inputType === 'picker') {
-                        displayContent += '<div style="color: black; border-bottom: 1px solid gray; width: 100%">' + (data.inputItems[i].dataSource ? data.inputItems[i].dataSource[0] : '')  + ' &#x25bc</div>';
+                    if (inputElements[i].inputType === 'picker') {
+                        displayContent += '<div style="color: black; border-bottom: 1px solid gray; width: 100%">' + (inputElements[i].dataSource ? inputElements[i].dataSource[0][language] : '')  + ' &#x25bc</div>';
                     }
 
 
-                    if (data.inputItems[i].inputType === 'text') {
-                        displayContent += '<div style="width: 100%; height: 55px; border: 1px solid grey;background-color: ghostwhite; opacity: 0.5;">' + data.inputItems[i].placeHolder[language] + '</div>';
+                    if (inputElements[i].inputType === 'text') {
+                        displayContent += '<div style="width: 100%; height: 55px; border: 1px solid grey;background-color: ghostwhite; opacity: 0.5;">' + inputElements[i].placeHolder[language] + '</div>';
                     }
                 }
                 displayContent += '</div>';
             }
-            displayContent += '<div  class="showArea' + language + '" data-hash="buttonTitleEN" style=" margin-top: 3px; text-align: center">';
+            if (currentMobilePage === pageBlockCount) {
+                displayContent += '<div  class="showArea' + language + '" data-hash="buttonTitleEN" style=" margin-top: 3px; text-align: center">';
             displayContent += '<span style="min-height: 20px; border: 1px solid grey;min-width: 50px; background-color: ghostwhite; opacity: 0.7;  border-radius: 6px; display: inline-block;"> ' + data.buttonTitle[language] + ' </span>';
             displayContent += '</div>';
+            }
             displayContent += '</div>';
+
 
             el.find('#mobilePhone').css({"background": "url('../img/mobile.jpg')", "background-size":"100% 100%"}).show();
             display.html(displayContent).show();
