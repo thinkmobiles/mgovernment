@@ -232,14 +232,14 @@ define([
             if (data === 'error') {
                 return this;
             }
-            displayContent += '<div style="margin-top:15px; color: white; font-weight: bold; font-size: 1.2em">' +  data.serviceName[language].toUpperCase() + '</div>';
+            displayContent += '<div style="margin-top:15px; color: white; font-weight: bold; font-size: 1.2em">' + data.profile.Name[language].toUpperCase() + '</div>';
             displayContent += '<div style="margin-top:15px; margin-bottom:18px; margin-left: 2px"><img src = "' + (data.icon ? '/icon/' + data.icon + '/@2x"': '"') + ' style="width: 64px; height: 64px; -webkit-filter: brightness() invert();"></div>';
-            displayContent += '<div style="color: white;font-size: 1.2em">' +  data.serviceName[language] +  (language == 'AR' ? ' \u0623\u062f\u0648\u0627\u062a' : ' Service') + ' </div>';
+            displayContent += '<div style="color: white;font-size: 1.2em">' + data.profile.Name[language] +  (language == 'AR' ? ' \u0623\u062f\u0648\u0627\u062a' : ' Service') + ' </div>';
             displayContent += '<br>';
             displayContent += '<div style = "margin-left: 50px; margin-right: 47px; height:360px; overflow-y: auto">';
             console.log('data before sorting',data);
 
-            console.log(' before sorting data.inputItems.length - 1',data.inputItems.length - 1);
+            console.log(' before sorting data.inputItems.length - 1', data.inputItems.length - 1);
 
             //sort
 
