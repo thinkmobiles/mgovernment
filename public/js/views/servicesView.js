@@ -130,7 +130,7 @@ define([
                 service = servicesCollection[i];
                 serviceId = service._id;
                 serviceDiv = $("#DbList" + serviceId);
-                textContent = service.serviceProvider + ', ' + service.serviceName.EN;
+                textContent = service.serviceProvider + ', ' + service.profile.Name.EN;
 
                 if (!serviceDiv.length) {
                     $("<div> </div>").

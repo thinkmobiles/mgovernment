@@ -403,19 +403,19 @@ define([
             var el = this.$el;
             var errors =[];
             var data ={};
+            var pageID = '';
+            var tempText;
+            var tempText2;
 
             data.serviceProvider = el.find('#serviceProvider').val().trim();
-            data.serviceName = {
-                EN: el.find('#serviceNameEN').val().trim(),
-                AR: el.find('#serviceNameAR').val().trim()
-            };
-
+            data.enable = el.find('#serviceEnable')[0].checked;
 
             data.buttonTitle = {
                 EN: el.find('#buttonTitleEN').val().trim(),
                 AR: el.find('#buttonTitleAR').val().trim()
             };
-            data.baseUrl = el.find('#baseUrl').val().trim();
+
+            data.url = el.find('#url').val().trim();
             data.icon = el.find('#icon').attr('data-hash');
             data.icon =  data.icon ?  data.icon : null;
 
@@ -448,27 +448,33 @@ define([
                 data.port = el.find('#portInput').val().trim();
             }
 
-            data.inputItems =[];
+            data.pages = [];
 
             // TODO add check if empty and .trim()
 
-            for (var i = itemBlockCount - 1; i >= 0; i-- ){
-                data.inputItems[i]= {
-                    inputType: el.find('#inputType' + i).val(),
-                    name: el.find('#name' + i).val().trim(),
-                    order: el.find('#order' + i).val().trim(),
-                    displayName:{
-                        EN: el.find('#displayNameEN' + i).val(),
-                        AR: el.find('#displayNameAR' + i).val()
-                    },
-                    placeHolder:{
-                        EN: el.find('#placeHolderEN' + i).val(),
-                        AR: el.find('#placeHolderAR' + i).val()
-                    },
-                    required: el.find('#requiredCheck' + i)[0].checked,
-                    validateAs: el.find('#inputValidate' + i).val(),
-                    dataSource: sendParams['inputDataSource' + i],
-                    displayOrder: i
+            for (var j = 0; j <= pageBlockCount - 1; j ++) {
+                pageID = '#page'+j;
+                data.pages[j] = {
+                    inputItems: []
+            }
+                for (var i = itemBlockCount[j] - 1; i >= 0; i--) {
+                    data.pages[j].inputItems[i] = {
+                        inputType: el.find(pageID + 'inputType' + i).val(),
+                        name: el.find(pageID + 'name' + i).val().trim(),
+                        order: el.find(pageID + 'order' + i).val().trim(),
+                        displayName: {
+                            EN: el.find(pageID + 'displayNameEN' + i).val(),
+                            AR: el.find(pageID + 'displayNameAR' + i).val()
+                        },
+                        placeHolder: {
+                            EN: el.find(pageID + 'placeHolderEN' + i).val(),
+                            AR: el.find(pageID + 'placeHolderAR' + i).val()
+                        },
+                        required: el.find(pageID + 'requiredCheck' + i)[0].checked,
+                        validateAs: el.find(pageID + 'inputValidate' + i).val(),
+                        dataSource: sendParams[pageID + 'inputDataSource' + i],
+                        displayOrder: i
+                    }
                 }
             }
 
@@ -476,12 +482,38 @@ define([
                 data.profile = {};
 
                 for (var i = profileBlockCount - 1; i >= 0; i-- ){
-                    data.profile[el.find('#profileFieldName' + i).val().trim()] =  el.find('#profileFieldValue' + i).val().trim();
+                    tempText = el.find('#profileFieldNameEN' + i).val();
+                    tempText = tempText ? tempText.trim(): '';
+
+
+                    tempText2 = el.find('#profileFieldValueEN' + i).val();
+                    tempText2 = tempText2 ? tempText2.trim(): '';
+
+                    if (!tempText || !tempText2){
+                        alert('Fields in profile cant be Empty !!!');
+                        return;
+                    }
+
+                    data.profile[tempText] = { EN:  tempText2};
+
+                    tempText = el.find('#profileFieldNameAR' + i).val();
+                    tempText = tempText ? tempText.trim(): '';
+
+
+                    tempText2 = el.find('#profileFieldValueAR' + i).val();
+                    tempText2 = tempText2 ? tempText2.trim(): '';
+
+                    if (!tempText || !tempText2){
+                        alert('Fields in profile cant be Empty !!!');
+                        return;
+                    }
+
+                    data.profile[tempText].AR =  tempText2;
                 }
             }
             console.dir(data);
 
-            Validation.checkUrlField(errors, true, data.baseUrl, 'Base Url');
+            Validation.checkUrlField(errors, true, data.url, 'Base Url');
             Validation.checkCompanyNameField(errors, true, data.serviceProvider, 'serviceProvider');
 
             if (errors.length){
@@ -526,52 +558,79 @@ define([
 
         addItemToArray: function(e) {
             var el = this.$el;
-            var id = $(e.target).attr('data-hash');
+            var paramsRequest = $(e.target).attr('data-hash');
+            var pageNumber = $(e.target).attr('data-page');
+            var itemNumber = $(e.target).attr('data-item');
             var inputFieldName;
-            var dataSourceId = $(e.target).attr('data-source');
+            var dataSourceId = '#page' + pageNumber + 'inputDataSource' + itemNumber;
             var dataSource;
-            console.log('addButtonClicked', id);
+            var inputFieldValue;
+            var inputFieldEN;
+            var inputFieldAR;
 
+            console.log('addButtonClicked pageNumber', pageNumber,'itemNumber: ', itemNumber);
 
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
 
-            if (id) {
-                inputFieldName = el.find('#' + id + 'Input').val();
+            if (paramsRequest) {
+                inputFieldName = el.find('#' + paramsRequest + 'Input').val();
 
-                if (!sendParams[id]) {
-                    sendParams[id] = []
+                if (!sendParams[paramsRequest]) {
+                    sendParams[paramsRequest] = []
                 }
 
-                if (!el.find('#' + id)[0].checked || !inputFieldName || sendParams[id].indexOf(inputFieldName) >= 0) {
+                if (!el.find('#' + paramsRequest)[0].checked || !inputFieldName || sendParams[paramsRequest].indexOf(inputFieldName) >= 0) {
                     return this;
                 }
 
-                sendParams[id].push(el.find('#' + id + 'Input').val().trim());
-                el.find('#' + id + 'Value').text(sendParams[id]);
-                console.log(id, ' ', sendParams[id]);
+                sendParams[paramsRequest].push(el.find('#' + paramsRequest + 'Input').val().trim());
+                el.find('#' + paramsRequest + 'Value').text(sendParams[paramsRequest]);
+                console.log(paramsRequest, ' ', sendParams[paramsRequest]);
 
                 return this;
             }
-            if (dataSourceId){
-                dataSource = 'inputDataSource' + dataSourceId;
-                inputFieldName = el.find('#' + dataSource).val().trim();
 
-                if (!sendParams[dataSource]) {
-                    sendParams[dataSource] = []
+            if (pageNumber && itemNumber){
+
+                inputFieldValue = el.find(dataSourceId + 'Value').val().trim();
+                inputFieldEN = el.find(dataSourceId + 'EN').val().trim();
+                inputFieldAR =  el.find(dataSourceId + 'AR').val().trim();
+
+                if (!inputFieldAR || !inputFieldEN || !inputFieldAR) {
+                    alert('Fill all inputs. ' + (!inputFieldValue ? ' Value ':'') + (!inputFieldEN ? ' EN ':'') + (!inputFieldAR ? ' AR ':'') + ' - Empty');
+
+                    return;
                 }
-                sendParams[dataSource].push(inputFieldName);
-                el.find('#dataSourceValue'  + dataSourceId).text(sendParams[dataSource]);
-                el.find('#' + dataSource).val('');
+
+                inputFieldName = {
+                    value: inputFieldValue ,
+                    EN: inputFieldEN,
+                    AR: inputFieldAR
+                };
+
+                if (!sendParams[dataSourceId]) {
+                    sendParams[dataSourceId] = []
+                }
+
+                sendParams[dataSourceId].push(inputFieldName);
+
+                el.find('#page' + pageNumber +'dataSourceValue' + itemNumber).text(JSON.stringify(sendParams[dataSourceId]));
+
+                el.find(dataSourceId + 'Value').val('');
+                el.find(dataSourceId + 'EN').val('');
+                el.find(dataSourceId + 'AR').val('');
+
             }
         },
 
         dellLastItemFromArray: function(e) {
             var el = this.$el;
-            var id = $(e.target).attr('data-hash');
-            var dataSourceId = $(e.target).attr('data-source');
-            var dataSource = 'inputDataSource' + dataSourceId;
+            var paramsRequest = $(e.target).attr('data-hash');
+            var pageNumber = $(e.target).attr('data-page');
+            var itemNumber = $(e.target).attr('data-item');
+            var dataSourceId = '#page' + pageNumber + 'inputDataSource' + itemNumber;
 
             e.preventDefault();
             e.stopPropagation();
@@ -579,36 +638,38 @@ define([
 
             console.log('dellButtonClicked');
 
-            if (id) {
+            if (paramsRequest) {
 
-                if (!el.find('#' + id)[0].checked || !sendParams[id].length) {
-                    return this;
+                if (!el.find('#' + paramsRequest)[0].checked || !sendParams[paramsRequest].length) {
+                    return;
                 }
 
-                sendParams[id].pop();
-                el.find('#' + id + 'Value').text(sendParams[id]);
+                sendParams[paramsRequest].pop();
+                el.find('#' + paramsRequest + 'Value').text(sendParams[paramsRequest]);
             }
 
-            if (dataSourceId) {
+            if (pageNumber && itemNumber) {
 
-                sendParams[dataSource].pop();
-                el.find('#dataSourceValue'  + dataSourceId).text(sendParams[dataSource]);
+                sendParams[dataSourceId].pop();
+                el.find('#page' + pageNumber +'dataSourceValue' + itemNumber).text(JSON.stringify(sendParams[dataSourceId]));
             }
         },
 
         updateItemsInputNameArray: function () {
             var el = this.$el;
             var newOptionsValue = '';
-            var value ='';
+            var value = '';
 
             itemsInputNameArray = [];
 
-            for (var i = itemBlockCount - 1; i >= 0; i-- ){
-                value = el.find('#name' + i).val().trim();
+            for (var j = pageBlockCount - 1; j >= 0; j--) {
+                for (var i = itemBlockCount[j] - 1; i >= 0; i--) {
+                    value = el.find('#page' + j + 'name' + i).val().trim();
 
-                if (value) {
-                    itemsInputNameArray.push(value);
-                    newOptionsValue = '<option>' + value + '</option>' + newOptionsValue;
+                    if (value) {
+                        itemsInputNameArray.push(value);
+                        newOptionsValue = '<option>' + value + '</option>' + newOptionsValue;
+                    }
                 }
             }
 
@@ -626,7 +687,7 @@ define([
             var itemTempTemplate;
             var pageTempTemplate;
             var inpuItems;
-            var textPage;
+            var pageID;
 
             if (newService) {
                 console.log ('newService: ', newService);
@@ -645,15 +706,7 @@ define([
             profileBlockCount =  service.profile ? Object.keys(service.profile).length : 0;
             sendParams = service.params;
             pageBlockCount = service.pages.length;
-
-
-            //itemBlockCount =  inpuItems.length;
             itemBlockCount = [];
-
-
-            //el.find("#itemBlockPage" + page).before(_.template(inputBlockTemplate)({i: itemBlockCount[page], page:  page}));
-
-
 
             console.log(itemBlockCount);
             for (var j = 0; j <= pageBlockCount - 1; j ++) {
@@ -661,31 +714,31 @@ define([
                 el.find("#pagesBlock").before(_.template(pagesBlockTemplate)({pageBlockCount: j}));
                 console.dir(service.pages[j]);
                 itemBlockCount[j] = service.pages[j].inputItems.length;
-                textPage = '#page'+j;
+                pageID = '#page'+j;
                 inpuItems = service.pages[j].inputItems;
 
                 for (var i = 0; i <= itemBlockCount[j] - 1; i++) {
 
                     itemTempTemplate = $(_.template(inputBlockTemplate)({i: i, page: j}));
-                    itemTempTemplate.find(textPage + 'inputType' + i).val(inpuItems[i].inputType);
-                    itemTempTemplate.find(textPage + 'name' + i).val(inpuItems[i].name);
-                    itemTempTemplate.find(textPage + 'order' + i).val(inpuItems[i].order);
+                    itemTempTemplate.find(pageID + 'inputType' + i).val(inpuItems[i].inputType);
+                    itemTempTemplate.find(pageID + 'name' + i).val(inpuItems[i].name);
+                    itemTempTemplate.find(pageID + 'order' + i).val(inpuItems[i].order);
 
-                    itemTempTemplate.find(textPage + 'displayNameEN' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.EN : '');
-                    itemTempTemplate.find(textPage + 'displayNameAR' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.AR : '');
-                    itemTempTemplate.find(textPage + 'placeHolderEN' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.EN : '');
-                    itemTempTemplate.find(textPage + 'placeHolderAR' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.AR : '');
-                    itemTempTemplate.find(textPage + 'requiredCheck' + i).prop('checked', inpuItems[i].required);
-                    itemTempTemplate.find(textPage + 'inputValidate' + i).val(inpuItems[i].validateAs);
+                    itemTempTemplate.find(pageID + 'displayNameEN' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.EN : '');
+                    itemTempTemplate.find(pageID + 'displayNameAR' + i).val(inpuItems[i].displayName ? inpuItems[i].displayName.AR : '');
+                    itemTempTemplate.find(pageID + 'placeHolderEN' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.EN : '');
+                    itemTempTemplate.find(pageID + 'placeHolderAR' + i).val(inpuItems[i].placeHolder ? inpuItems[i].placeHolder.AR : '');
+                    itemTempTemplate.find(pageID + 'requiredCheck' + i).prop('checked', inpuItems[i].required);
+                    itemTempTemplate.find(pageID + 'inputValidate' + i).val(inpuItems[i].validateAs);
 
                     if (inpuItems[i].dataSource && inpuItems[i].dataSource.length) {
-                        sendParams['inputDataSource' + i] = inpuItems[i].dataSource;
-                        itemTempTemplate.find(textPage +'dataSourceValue' + i).text(JSON.stringify(sendParams['inputDataSource' + i]));
+                        sendParams[pageID + 'inputDataSource' + i] = inpuItems[i].dataSource;
+                        itemTempTemplate.find(pageID +'dataSourceValue' + i).text(JSON.stringify(sendParams[pageID + 'inputDataSource' + i]));
 
                     }
 
                     if (inpuItems[i].inputType === 'picker' || inpuItems[i].inputType === 'table') {
-                        itemTempTemplate.find(textPage + 'itemBlockInputDataSource' + i).show();
+                        itemTempTemplate.find(pageID + 'itemBlockInputDataSource' + i).show();
                     }
 
                     //console.log(typeof(itemTempTemplate), '  ', itemTempTemplate);

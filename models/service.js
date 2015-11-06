@@ -9,6 +9,7 @@ module.exports = function (db) {
 
     var serviceSchema = new Schema({
             serviceProvider: {type: String, required: true},
+            enable: {type: Boolean, default: true},
             serviceName: {
                 EN: {type: String, default: ''},
                 AR: {type: String, default: ''}

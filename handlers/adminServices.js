@@ -40,24 +40,25 @@ var Service = function(db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        validation.checkUrlField(errors, true, body.baseUrl, 'Base Url');
+        validation.checkUrlField(errors, true, body.url, 'Url');
 
         if (errors.length) {
             return res.status(400).send({error: errors});
         }
 
+        //TODO validation for Query Body names and names from inputItems
 
-        if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-        if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-        if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
+        //if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        //}
+        //if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        //}
+        //if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        //}
 
-        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
+        body.url = body.url.charAt(body.url.length-1) === '/' ? body.url : body.url + '/';
         body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
@@ -90,23 +91,24 @@ var Service = function(db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        validation.checkUrlField(errors, true, body.baseUrl, 'Base Url');
+        validation.checkUrlField(errors, true, body.url, 'url');
 
         if (errors.length) {
             return res.status(400).send({error: errors});
         }
 
-        if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-        if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-        if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
+        //TODO validation for Query Body names and names from inputItems
+        //if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        //}
+        //if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        //}
+        //if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
+        //    return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        //}
 
-        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
+        body.url = body.url.charAt(body.url.length-1) === '/' ? body.url : body.url + '/';
         body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
@@ -132,7 +134,7 @@ var Service = function(db) {
     };
 
     this.getServiceById = function (req, res, next) {
-        var id = req.params.id
+        var id = req.params.id;
 
         if (!id) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
