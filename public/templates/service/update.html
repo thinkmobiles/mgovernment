@@ -31,10 +31,10 @@
             <tr>
                 <td class="hiddenByDefault"><b>serviceProvider:</b></td>
                 <td class="hiddenByDefault">
-                    <select id="serviceProvider" value="<%= service.serviceProvider %>">
-                        <option value="DefaultRest">DefaultRest</option>
-                        <option value="TraTasTda">TraTasTda</option>
-                        <option value="TestTraSocket">TestTraSocket</option>
+                    <select id="serviceProvider">
+                        <option value="DefaultRest" <%= service.serviceProvider == 'DefaultRest' ? 'selected': ''%>>DefaultRest</option>
+                        <option value="TraTasTda" <%= service.serviceProvider == 'TraTasTda' ? 'selected': ''%>>TraTasTda</option>
+                        <option value="TestTraSocket" <%= service.serviceProvider == 'TestTraSocket' ? 'selected': ''%>>TestTraSocket</option>
                     </select>
                 </td>
                 <td class="hiddenByDefault"> Select service provider name.</td>
@@ -43,7 +43,7 @@
             <tr>
                 <td class="hiddenByDefault"><b>Service is enabled:</b></td>
                 <td class="hiddenByDefault">
-                    <input type="checkbox" id="serviceEnable" <% service.enable ? 'checked' : ''%>></td>
+                    <input type="checkbox" id="serviceEnable" <%= service.enable ? 'checked' : ''%>></td>
                 <td class="hiddenByDefault"> If service is 'Disable', users can't see it or use it </td>
             </tr>
 

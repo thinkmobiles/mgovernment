@@ -14,7 +14,7 @@ define([
     var pageBlockCount = 0;
     var profileBlockCount = 0;
     var cloneService = false;
-    var newService = false;
+    var isNewService = false;
     var iconsCollection;
     var selectedIcon;
     var searchIcon;
@@ -59,7 +59,7 @@ define([
 
         initialize: function (options) {
             cloneService = options ? options.cloneService : undefined;
-            newService = options ? options.newService : undefined;
+            isNewService = options ? options.isNewService : undefined;
             itemBlockCount = [0];
             pageBlockCount = 0;
             profileBlockCount = 0;
@@ -383,8 +383,8 @@ define([
                 empty().
                 remove();
 
+            console.log('itemBlockCount[',page,']: ', itemBlockCount[page]);
             this.updateItemsInputNameArray();
-
         },
 
         enableInput: function(e) {
@@ -456,7 +456,7 @@ define([
                 pageID = '#page'+j;
                 data.pages[j] = {
                     inputItems: []
-            }
+                }
                 for (var i = itemBlockCount[j] - 1; i >= 0; i--) {
                     data.pages[j].inputItems[i] = {
                         inputType: el.find(pageID + 'inputType' + i).val(),
@@ -531,7 +531,7 @@ define([
 
 
             if (data !== 'error') {
-                if (cloneService || newService) {
+                if (cloneService || isNewService) {
                     model.save(data, {
                         success: function (model, response) {
                             Backbone.history.history.back();
@@ -688,14 +688,60 @@ define([
             var pageTempTemplate;
             var inpuItems;
             var pageID;
+            var defaultService = {
+                serviceProvider: 'DefaultRest',
+                'profile' : {
+                    'Terms and conditions' : {
+                        'AR' : '',
+                        'EN' : ''
+                    },
+                    'Service fee' : {
+                        'AR' : '',
+                        'EN' : ''
+                    },
+                    'Required documents' : {
+                        'AR' : '',
+                        'EN' : ''
+                    },
+                    'Officer in charge of this service' : {
+                        'AR' : '',
+                        'EN' : ''
+                    },
+                    'Expected time' : {
+                        'AR' : '',
+                        'EN' : ''
+                    },
+                    'Service Package' : {
+                        'AR' : '',
+                        'EN' : ''
+                    },
+                    'About the service' : {
+                        'AR' : '',
+                        'EN' : ''
+                    },
+                    'Name' : {
+                        'AR' : '',
+                        'EN' : ''
+                    }
+                },
+                buttonTitle: {
+                    EN:'',
+                    AR:''
+                },
+                forUserType: 'client',
+                params: {}
+            };
 
-            if (newService) {
-                console.log ('newService: ', newService);
-                el.html(_.template(createTemplate));
-                return this;
+            if (isNewService ||  !App.selectedService) {
+                console.log ('isNewService: ', isNewService);
+                //el.html(_.template(createTemplate));
+                el.html(this.template({service: defaultService}));
+                service = defaultService
+
+            } else {
+                service = App.selectedService.toJSON();
             }
 
-            service = App.selectedService.toJSON();
             service.port =  service.port || undefined;
             service.profile =  service.profile || undefined;
 
@@ -705,8 +751,8 @@ define([
 
             profileBlockCount =  service.profile ? Object.keys(service.profile).length : 0;
             sendParams = service.params;
-            pageBlockCount = service.pages.length;
-            itemBlockCount = [];
+            pageBlockCount = service.pages ? service.pages.length : 0;
+            itemBlockCount = [0];
 
             console.log(itemBlockCount);
             for (var j = 0; j <= pageBlockCount - 1; j ++) {

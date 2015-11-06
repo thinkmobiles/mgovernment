@@ -62,7 +62,7 @@ define([
                 this.contentView.undelegateEvents();
             }
             //this.contentView = new ServiceCreateView();
-            this.contentView = new ServiceUpdateView({newService: true});
+            this.contentView = new ServiceUpdateView({isNewService: true});
         },
 
         toUpdateServiceView: function () {
