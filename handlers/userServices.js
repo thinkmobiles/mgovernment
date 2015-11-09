@@ -27,7 +27,7 @@ var UserService = function(db) {
 
         Service
             .findOne({_id: req.params.serviceId})
-            .select('_id serviceName pages needAuth icon buttonTitle')
+            .select('_id enable serviceName pages needAuth icon buttonTitle')
             .lean()
             .exec(function (err, model) {
 
