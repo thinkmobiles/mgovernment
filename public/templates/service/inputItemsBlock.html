@@ -24,7 +24,7 @@
 <tr id="page<%= page %>itemBlockInputType<%= i %>" style="border-top: none">
     <td class="hiddenByDefault"><b>item[<%= i %>].type:</b></td>
     <td class="hiddenByDefault">
-        <select id="page<%= page %>inputType<%= i %>" class="inputType" data-hash="<%= i %>">
+        <select id="page<%= page %>inputType<%= i %>" class="inputType" data-hash="<%= i %>" data-page="<%= page %>">
             <option value="string">string</option>
             <option value="text">text</option>
             <option value="number">number</option>
@@ -33,7 +33,7 @@
             <option value="file">file</option>
             <option value="picker">picker</option>
             <option value="table">table</option>
-
+            <option value="tree">tree</option>
         </select></td>
     <td class="hiddenByDefault"> Input type of item[<%= i %>]:</td>
 </tr>

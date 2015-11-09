@@ -34,6 +34,7 @@ define([
         events: {
             'click #updateBtn' : 'updateService',
             'click #closeBtn' : 'hideMobileDisplay',
+            'click #closeTreeBtn' : 'hideTreeBlock',
             'click .showAreaEN, .showAreaAR' : 'showSelectedItem',
             'click .mobileBtn' : 'changeMobileLanguage',
             'click #seeBtn, #refreshBtn' : 'showMobileDisplay',
@@ -216,13 +217,14 @@ define([
 
         checkSelected: function(e) {
             var el = this.$el;
-            var i = $(e.target).attr('data-hash');
+            var item = $(e.target).attr('data-hash');
+            var mobilePage = $(e.target).attr('data-page');
 
-            if (e.target.value === 'picker'){
-                el.find('#itemBlockInputDataSource' + i).show();
+            if (e.target.value === 'picker' || e.target.value === 'table'){
+                el.find('#page' + mobilePage +'itemBlockInputDataSource' + item).show();
 
             } else {
-                el.find('#itemBlockInputDataSource' + i).hide();
+                el.find('#page' + mobilePage +'itemBlockInputDataSource' + item).hide();
             }
             console.log(e.target.value);
         },
@@ -232,6 +234,12 @@ define([
             el.find('#mobilePhone').hide();
             el.find('#mobileDisplay').hide();
         },
+
+        hideTreeBlock: function(){
+            var el = this.$el;
+            el.find('#treeDiv').hide();
+        },
+
 
         showMobileDisplay: function(){
             var el = this.$el;
@@ -259,18 +267,12 @@ define([
             inputElements = data.pages[currentMobilePage].inputItems;
             console.log(' before sorting data.inputItems.length - 1', inputElements.length - 1);
 
-            //sort
-
-            for (var j = inputElements.length - 1; j >= 0; j-- ) {
-                for (var i = j; i >= 0; i--) {
-                    if (+inputElements[j].order > +inputElements[i].order) {
-
-                        tempObj = inputElements[i];
-                        inputElements[i] = inputElements[j];
-                        inputElements[j] = tempObj;
-                    }
-                }
-            }
+            //http://jsperf.com/array-sort-vs-lodash-sort/2
+            inputElements.sort(function compare(a, b) {
+                if (a.order < b.order) return 1;
+                if (a.order > b.order) return -1;
+                return 0;
+            });
 
             console.log('data after sorting',data);
 
@@ -336,19 +338,15 @@ define([
 
         addPageBlock: function(e) {
             var el = this.$el;
-            var htmlContent;
 
             e.preventDefault();
             e.stopPropagation();
 
-
             el.find("#pagesBlock").before(_.template(pagesBlockTemplate)({pageBlockCount: pageBlockCount}));
 
-            pageBlockCount++;
             itemBlockCount[pageBlockCount] = 0;
+            pageBlockCount++;
         },
-
-
 
         showBlock: function(e) {
             var el = this.$el;
@@ -375,11 +373,9 @@ define([
         addInputItemsBlock: function(e) {
             var el = this.$el;
             var page = +($(e.target).attr('data-page'));
-            //console.log('page: ', page,' type of: ', typeof(page));
 
             e.preventDefault();
             e.stopPropagation();
-
 
             el.find("#itemBlockPage" + page).before(_.template(inputBlockTemplate)({i: itemBlockCount[page], page:  page}));
 
@@ -477,7 +473,8 @@ define([
                 pageID = '#page'+j;
                 data.pages[j] = {
                     inputItems: []
-                }
+                };
+
                 for (var i = itemBlockCount[j] - 1; i >= 0; i--) {
                     data.pages[j].inputItems[i] = {
                         inputType: el.find(pageID + 'inputType' + i).val(),
@@ -520,7 +517,6 @@ define([
                     tempText = el.find('#profileFieldNameAR' + i).val();
                     tempText = tempText ? tempText.trim(): '';
 
-
                     tempText2 = el.find('#profileFieldValueAR' + i).val();
                     tempText2 = tempText2 ? tempText2.trim(): '';
 
@@ -549,7 +545,6 @@ define([
             var model = new ServiceModel();
             var data = this.readInputsAndValidate();
             console.dir('saved data ',data);
-
 
             if (data !== 'error') {
                 if (cloneService || isNewService) {
@@ -584,7 +579,6 @@ define([
             var itemNumber = $(e.target).attr('data-item');
             var inputFieldName;
             var dataSourceId = '#page' + pageNumber + 'inputDataSource' + itemNumber;
-            var dataSource;
             var inputFieldValue;
             var inputFieldEN;
             var inputFieldAR;
@@ -706,7 +700,6 @@ define([
             var service;
             var el = this.$el;
             var itemTempTemplate;
-            var pageTempTemplate;
             var inpuItems;
             var pageID;
             var defaultService = {
@@ -812,6 +805,13 @@ define([
                     el.find("#itemBlockPage" + j).before(itemTempTemplate);
                 }
             }
+
+            el.find('#treeDiv').draggable({
+                containment: "document"
+            });
+            el.find('#mobilePhone').draggable({
+                containment: "document"
+            });
 
             this.updateItemsInputNameArray();
             console.dir(sendParams);
