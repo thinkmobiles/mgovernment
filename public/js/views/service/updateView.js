@@ -3,11 +3,12 @@ define([
     'text!templates/service/create.html',
     'text!templates/service/inputItemsBlock.html',
     'text!templates/service/pagesBlock.html',
+    'text!templates/service/treeNode.html',
     'models/service',
     'collections/icons',
     'validation'
 
-], function (content,createTemplate,inputBlockTemplate,pagesBlockTemplate, ServiceModel, IconsCollection, Validation) {
+], function (content,createTemplate,inputBlockTemplate,pagesBlockTemplate, treeNodeTemplate, ServiceModel, IconsCollection, Validation) {
     'use strict';
 
     var itemBlockCount = [0];
@@ -34,7 +35,8 @@ define([
         events: {
             'click #updateBtn' : 'updateService',
             'click #closeBtn' : 'hideMobileDisplay',
-            'click #closeTreeBtn' : 'hideTreeBlock',
+            'click .showTreeBtn' : 'showTreeBlock',
+            'click .hideTreeBtn' : 'hideTreeBlock',
             'click .showAreaEN, .showAreaAR' : 'showSelectedItem',
             'click .mobileBtn' : 'changeMobileLanguage',
             'click #seeBtn, #refreshBtn' : 'showMobileDisplay',
@@ -56,8 +58,9 @@ define([
             'click #closeIcon': 'closeSelectIcon',
             'click .iconSelectList': 'preSelectIcon',
             'keyup #searchTerm': 'searchSelectIcon',
-            'click .mobileBtnPage': 'changePageOnMobile'
-
+            'click .mobileBtnPage': 'changePageOnMobile',
+            'click .expandNode': 'treeExpandNode',
+            'click .collapseNode': 'treeCollapseNode'
         },
 
         initialize: function (options) {
@@ -74,6 +77,22 @@ define([
             searchIconTerm ='';
 
             this.render();
+        },
+
+        treeExpandNode: function (e) {
+            var el =  $(e.currentTarget);
+                $(el).toggle();
+                $(el).next().toggle();
+                $(el).parent().parent().children().last().toggle();
+            //console.dir(el);
+        },
+
+        treeCollapseNode: function (e) {
+            var el =  $(e.currentTarget);
+            $(el).toggle();
+            $(el).prev().toggle();
+            $(el).parent().parent().children().last().toggle();
+            //console.dir(el);
         },
 
         searchSelectIcon: function(e){
@@ -219,6 +238,14 @@ define([
             var el = this.$el;
             var item = $(e.target).attr('data-hash');
             var mobilePage = $(e.target).attr('data-page');
+            //var testEl = el.find('#page' + mobilePage +'itemBlock' + item + '  .treeBtn');
+            //console.dir(testEl);
+
+            if (e.target.value === 'tree') {
+                el.find('#page' + mobilePage +'itemBlock' + item + '  .showTreeBtn').show();
+            } else {
+                el.find('#page' + mobilePage +'itemBlock' + item + '  .showTreeBtn').hide();
+            }
 
             if (e.target.value === 'picker' || e.target.value === 'table'){
                 el.find('#page' + mobilePage +'itemBlockInputDataSource' + item).show();
@@ -226,7 +253,7 @@ define([
             } else {
                 el.find('#page' + mobilePage +'itemBlockInputDataSource' + item).hide();
             }
-            console.log(e.target.value);
+            console.log('select: ',e.target.value,' page:',mobilePage,' item: ', item);
         },
 
         hideMobileDisplay: function(){
@@ -235,9 +262,29 @@ define([
             el.find('#mobileDisplay').hide();
         },
 
-        hideTreeBlock: function(){
+        showTreeBlock: function(e){
             var el = this.$el;
-            el.find('#treeDiv').hide();
+            var item = $(e.target).attr('data-item');
+            var mobilePage = $(e.target).attr('data-page');
+            var tree = el.find('#treeDiv');
+            //tree.
+            //    empty().
+            //    remove();
+
+            tree.show();
+        },
+
+        hideTreeBlock: function(e){
+            //TODO make block empty
+            var el = this.$el;
+            var item = $(e.target).attr('data-item');
+            //var mobilePage = $(e.target).attr('data-page');
+            var tree = el.find('#treeDiv');
+            ////tree.
+            //    empty().
+            //    remove();
+
+            tree.hide();
         },
 
 
