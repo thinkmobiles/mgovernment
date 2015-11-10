@@ -253,6 +253,7 @@ module.exports = function(db){
      * @example
      *          {
      *              "_id": "5638bedc0568cfe809814ed4",
+     *              "enable": true
      *              "pages": [
      *                  {
      *                      "number": 0,

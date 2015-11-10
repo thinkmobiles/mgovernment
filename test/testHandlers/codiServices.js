@@ -10,7 +10,7 @@ var PreparingBd = require('./preparingDb');
 
 var app = require('../../app');
 
-describe('User TDA Services', function () {
+describe('User Codi Services', function () {
     this.timeout(10000);
 
     var agent = request.agent(app);
@@ -31,39 +31,15 @@ describe('User TDA Services', function () {
         });
     });
 
-    it('Request for supplier of telecom devices (register dealer)', function (done) {
+    it('Get Codi lessons', function (done) {
 
         var loginData = {
-            username: USERS.CLIENT_TDA_DATA.username,
-            password: USERS.CLIENT_TDA_DATA.password,
-            userType: USERS.CLIENT_TDA_DATA.userType
+            username: USERS.CLIENT_CODI_DATA.username,
+            password: USERS.CLIENT_CODI_DATA.password
         };
 
         agent
-            .post('/tda/register')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                console.dir(res.body);
-
-                done();
-            });
-    });
-
-    it('Renew for supplier of telecom devices (renew dealer certification)', function (done) {
-
-        var loginData = {
-            username: USERS.CLIENT_TDA_DATA.username,
-            password: USERS.CLIENT_TDA_DATA.password,
-            userType: USERS.CLIENT_TDA_DATA.userType
-        };
-
-        agent
-            .post('/tda/signIn')
+            .post('/codi/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -72,11 +48,8 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .post('/tda/renewCert')
-                    .send({
-                        cert: '12123'
-                    })
-                    .expect(400)
+                    .get('/codi/lesson')
+                    .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
@@ -87,16 +60,15 @@ describe('User TDA Services', function () {
             });
     });
 
-    it('Update info of supplier of telecom devices (modify dealer profile)', function (done) {
+    it('Enroll Codi lesson', function (done) {
 
         var loginData = {
-            username: USERS.CLIENT_TDA_DATA.username,
-            password: USERS.CLIENT_TDA_DATA.password,
-            userType: USERS.CLIENT_TDA_DATA.userType
+            username: USERS.CLIENT_CODI_DATA.username,
+            password: USERS.CLIENT_CODI_DATA.password
         };
 
         agent
-            .post('/tda/signIn')
+            .post('/codi/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -105,9 +77,9 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .put('/tda/profile')
+                    .post('/codi/lesson')
                     .send({
-
+                        lesson: 'lesson_id'
                     })
                     .expect(200)
                     .end(function (err, res) {
@@ -121,16 +93,15 @@ describe('User TDA Services', function () {
             });
     });
 
-    it('Request for registration of telecom devices (Equipment registration)', function (done) {
+    it('Get App Checking Status', function (done) {
 
         var loginData = {
-            username: USERS.CLIENT_TDA_DATA.username,
-            password: USERS.CLIENT_TDA_DATA.password,
-            userType: USERS.CLIENT_TDA_DATA.userType
+            username: USERS.CLIENT_CODI_DATA.username,
+            password: USERS.CLIENT_CODI_DATA.password
         };
 
         agent
-            .post('/tda/signIn')
+            .post('/codi/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -139,10 +110,7 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .post('/tda/equipment')
-                    .send({
-
-                    })
+                    .get('/codi/appStatus')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -155,46 +123,11 @@ describe('User TDA Services', function () {
             });
     });
 
-    it('Renew for registration of telecom devices (Renew Equipment registration)', function (done) {
+    it('Get App Checking Report', function (done) {
 
         var loginData = {
-            username: USERS.CLIENT_TDA_DATA.username,
-            password: USERS.CLIENT_TDA_DATA.password,
-            userType: USERS.CLIENT_TDA_DATA.userType
-        };
-
-        agent
-            .put('/tda/signIn')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                agent
-                    .put('/tda/equipment')
-                    .send({
-
-                    })
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-                        console.dir(res.body);
-
-                        done();
-                    });
-            });
-    });
-
-    it('Customs clearance', function (done) {
-
-        var loginData = {
-            username: USERS.CLIENT_TDA_DATA.username,
-            password: USERS.CLIENT_TDA_DATA.password,
-            userType: USERS.CLIENT_TDA_DATA.userType
+            username: USERS.CLIENT_CODI_DATA.username,
+            password: USERS.CLIENT_CODI_DATA.password
         };
 
         agent
@@ -207,7 +140,7 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .get('/tda/customClearance')
+                    .get('/codi/appReport')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {

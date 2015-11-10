@@ -3,11 +3,12 @@ define([
     'text!templates/service/create.html',
     'text!templates/service/inputItemsBlock.html',
     'text!templates/service/pagesBlock.html',
+    'text!templates/service/treeNode.html',
     'models/service',
     'collections/icons',
     'validation'
 
-], function (content,createTemplate,inputBlockTemplate,pagesBlockTemplate, ServiceModel, IconsCollection, Validation) {
+], function (content,createTemplate,inputBlockTemplate,pagesBlockTemplate, treeNodeTemplate, ServiceModel, IconsCollection, Validation) {
     'use strict';
 
     var itemBlockCount = [0];
@@ -34,6 +35,8 @@ define([
         events: {
             'click #updateBtn' : 'updateService',
             'click #closeBtn' : 'hideMobileDisplay',
+            'click .showTreeBtn' : 'showTreeBlock',
+            'click .hideTreeBtn' : 'hideTreeBlock',
             'click .showAreaEN, .showAreaAR' : 'showSelectedItem',
             'click .mobileBtn' : 'changeMobileLanguage',
             'click #seeBtn, #refreshBtn' : 'showMobileDisplay',
@@ -55,8 +58,9 @@ define([
             'click #closeIcon': 'closeSelectIcon',
             'click .iconSelectList': 'preSelectIcon',
             'keyup #searchTerm': 'searchSelectIcon',
-            'click .mobileBtnPage': 'changePageOnMobile'
-
+            'click .mobileBtnPage': 'changePageOnMobile',
+            'click .expandNode': 'treeExpandNode',
+            'click .collapseNode': 'treeCollapseNode'
         },
 
         initialize: function (options) {
@@ -73,6 +77,22 @@ define([
             searchIconTerm ='';
 
             this.render();
+        },
+
+        treeExpandNode: function (e) {
+            var el =  $(e.currentTarget);
+                $(el).toggle();
+                $(el).next().toggle();
+                $(el).parent().parent().children().last().toggle();
+            //console.dir(el);
+        },
+
+        treeCollapseNode: function (e) {
+            var el =  $(e.currentTarget);
+            $(el).toggle();
+            $(el).prev().toggle();
+            $(el).parent().parent().children().last().toggle();
+            //console.dir(el);
         },
 
         searchSelectIcon: function(e){
@@ -216,15 +236,24 @@ define([
 
         checkSelected: function(e) {
             var el = this.$el;
-            var i = $(e.target).attr('data-hash');
+            var item = $(e.target).attr('data-hash');
+            var mobilePage = $(e.target).attr('data-page');
+            //var testEl = el.find('#page' + mobilePage +'itemBlock' + item + '  .treeBtn');
+            //console.dir(testEl);
 
-            if (e.target.value === 'picker'){
-                el.find('#itemBlockInputDataSource' + i).show();
+            if (e.target.value === 'tree') {
+                el.find('#page' + mobilePage +'itemBlock' + item + '  .showTreeBtn').show();
+            } else {
+                el.find('#page' + mobilePage +'itemBlock' + item + '  .showTreeBtn').hide();
+            }
+
+            if (e.target.value === 'picker' || e.target.value === 'table'){
+                el.find('#page' + mobilePage +'itemBlockInputDataSource' + item).show();
 
             } else {
-                el.find('#itemBlockInputDataSource' + i).hide();
+                el.find('#page' + mobilePage +'itemBlockInputDataSource' + item).hide();
             }
-            console.log(e.target.value);
+            console.log('select: ',e.target.value,' page:',mobilePage,' item: ', item);
         },
 
         hideMobileDisplay: function(){
@@ -232,6 +261,32 @@ define([
             el.find('#mobilePhone').hide();
             el.find('#mobileDisplay').hide();
         },
+
+        showTreeBlock: function(e){
+            var el = this.$el;
+            var item = $(e.target).attr('data-item');
+            var mobilePage = $(e.target).attr('data-page');
+            var tree = el.find('#treeDiv');
+            //tree.
+            //    empty().
+            //    remove();
+
+            tree.show();
+        },
+
+        hideTreeBlock: function(e){
+            //TODO make block empty
+            var el = this.$el;
+            var item = $(e.target).attr('data-item');
+            //var mobilePage = $(e.target).attr('data-page');
+            var tree = el.find('#treeDiv');
+            ////tree.
+            //    empty().
+            //    remove();
+
+            tree.hide();
+        },
+
 
         showMobileDisplay: function(){
             var el = this.$el;
@@ -259,18 +314,12 @@ define([
             inputElements = data.pages[currentMobilePage].inputItems;
             console.log(' before sorting data.inputItems.length - 1', inputElements.length - 1);
 
-            //sort
-
-            for (var j = inputElements.length - 1; j >= 0; j-- ) {
-                for (var i = j; i >= 0; i--) {
-                    if (+inputElements[j].order > +inputElements[i].order) {
-
-                        tempObj = inputElements[i];
-                        inputElements[i] = inputElements[j];
-                        inputElements[j] = tempObj;
-                    }
-                }
-            }
+            //http://jsperf.com/array-sort-vs-lodash-sort/2
+            inputElements.sort(function compare(a, b) {
+                if (a.order < b.order) return 1;
+                if (a.order > b.order) return -1;
+                return 0;
+            });
 
             console.log('data after sorting',data);
 
@@ -336,19 +385,15 @@ define([
 
         addPageBlock: function(e) {
             var el = this.$el;
-            var htmlContent;
 
             e.preventDefault();
             e.stopPropagation();
 
-
             el.find("#pagesBlock").before(_.template(pagesBlockTemplate)({pageBlockCount: pageBlockCount}));
 
-            pageBlockCount++;
             itemBlockCount[pageBlockCount] = 0;
+            pageBlockCount++;
         },
-
-
 
         showBlock: function(e) {
             var el = this.$el;
@@ -375,11 +420,9 @@ define([
         addInputItemsBlock: function(e) {
             var el = this.$el;
             var page = +($(e.target).attr('data-page'));
-            //console.log('page: ', page,' type of: ', typeof(page));
 
             e.preventDefault();
             e.stopPropagation();
-
 
             el.find("#itemBlockPage" + page).before(_.template(inputBlockTemplate)({i: itemBlockCount[page], page:  page}));
 
@@ -477,7 +520,8 @@ define([
                 pageID = '#page'+j;
                 data.pages[j] = {
                     inputItems: []
-                }
+                };
+
                 for (var i = itemBlockCount[j] - 1; i >= 0; i--) {
                     data.pages[j].inputItems[i] = {
                         inputType: el.find(pageID + 'inputType' + i).val(),
@@ -520,7 +564,6 @@ define([
                     tempText = el.find('#profileFieldNameAR' + i).val();
                     tempText = tempText ? tempText.trim(): '';
 
-
                     tempText2 = el.find('#profileFieldValueAR' + i).val();
                     tempText2 = tempText2 ? tempText2.trim(): '';
 
@@ -549,7 +592,6 @@ define([
             var model = new ServiceModel();
             var data = this.readInputsAndValidate();
             console.dir('saved data ',data);
-
 
             if (data !== 'error') {
                 if (cloneService || isNewService) {
@@ -584,7 +626,6 @@ define([
             var itemNumber = $(e.target).attr('data-item');
             var inputFieldName;
             var dataSourceId = '#page' + pageNumber + 'inputDataSource' + itemNumber;
-            var dataSource;
             var inputFieldValue;
             var inputFieldEN;
             var inputFieldAR;
@@ -706,7 +747,6 @@ define([
             var service;
             var el = this.$el;
             var itemTempTemplate;
-            var pageTempTemplate;
             var inpuItems;
             var pageID;
             var defaultService = {
@@ -812,6 +852,13 @@ define([
                     el.find("#itemBlockPage" + j).before(itemTempTemplate);
                 }
             }
+
+            el.find('#treeDiv').draggable({
+                containment: "document"
+            });
+            el.find('#mobilePhone').draggable({
+                containment: "document"
+            });
 
             this.updateItemsInputNameArray();
             console.dir(sendParams);
