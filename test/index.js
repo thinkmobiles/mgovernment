@@ -29,4 +29,5 @@ var app = require('../app');
 
 require('./testHandlers/traNewsAnnouncements');
 require('./testHandlers/userAttachment');
-//require('./testHandlers/tdaServices');
+require('./testHandlers/tdaServices');
+require('./testHandlers/codiServices');
