@@ -1,4 +1,16 @@
+.tree { width: 100% }
 
+.tree ul { list-style: none; }
+
+.tree li { padding-top: 10px }
+
+.tree ul, .tree  li, .tree  div { float:left }
+
+.tree ul, .tree li { width:100% }
+
+.expandNode { width:15px; height:15px; }
+
+.collapseNode { width:15px; height:15px; display:none }
 
 .pagination {
     width: 100%;
@@ -426,6 +438,30 @@
     font-family: Arial;
     font-weight: bold;
     cursor: pointer;
+}
+
+.actionButtonShowTree, .actionButtonShowTree:hover, .actionButtonShowTree:visited {
+
+    text-decoration: none;
+    color: darkgreen;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid gray;
+    height: 20px;
+    line-height: 20px;
+    /*clear: both;*/
+    border-radius: 4px;
+    -moz-border-radius: 5px;
+    -khtml-border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+    font-family: Arial;
+    font-weight: bold;
+    cursor: pointer;
+}
+.showTreeBtn{
+    display: none;
 }
 
 .actionButtonAdd:hover {

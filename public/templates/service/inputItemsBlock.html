@@ -24,7 +24,7 @@
 <tr id="page<%= page %>itemBlockInputType<%= i %>" style="border-top: none">
     <td class="hiddenByDefault"><b>item[<%= i %>].type:</b></td>
     <td class="hiddenByDefault">
-        <select id="page<%= page %>inputType<%= i %>" class="inputType" data-hash="<%= i %>">
+        <select id="page<%= page %>inputType<%= i %>" class="inputType" data-hash="<%= i %>" data-page="<%= page %>">
             <option value="string">string</option>
             <option value="text">text</option>
             <option value="number">number</option>
@@ -33,8 +33,10 @@
             <option value="file">file</option>
             <option value="picker">picker</option>
             <option value="table">table</option>
-
-        </select></td>
+            <option value="tree">tree</option>
+        </select>
+        <span id = "page<%= page %>showTreeBtn<%= i %>" class="showTreeBtn" data-page="<%= page %>" data-item="<%= i %>">  <a href="javascript:;" class="actionButtonShowTree">&nbsp Show Tree &nbsp</a></span>
+    </td>
     <td class="hiddenByDefault"> Input type of item[<%= i %>]:</td>
 </tr>
 
@@ -72,7 +74,7 @@
     <td class="hiddenByDefault"> Check if field item[<%= i %>] is reqiured</td>
 </tr>
 
-<tr id="page<%= page %>itemBlockDisplayNameEN<%= i %>" style="border-top: none">
+<tr id="page<%= page %>itemBlockDisplayNameEN<%= i %>" style="border-top: none" class="">
     <td class="hiddenByDefault"><b>item[<%= i %>].displayName.EN:</b></td>
     <td class="hiddenByDefault"><input type="text" id="page<%= page %>displayNameEN<%= i %>" size="20" maxlength="50">
     </td>
