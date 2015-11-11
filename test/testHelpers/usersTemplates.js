@@ -66,6 +66,11 @@ module.exports = {
         userType: '2'
     },
 
+    CLIENT_CODI_DATA: {
+        username: 'coditest@codi.gov.ae',
+        password: 'TRAtest1!'
+    },
+
     CLIENT_CRM_LOGIN_TAREK: {
         login: 'tarek001',
         pass: 'qweasd'
