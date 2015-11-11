@@ -11,7 +11,7 @@ var PreparingBd = require('./preparingDb');
 
 var app = require('../../app');
 
-describe('User CRM register/ logIn / logOut', function () {
+describe('User CRM Register / LogIn / LogOut', function () {
     this.timeout(10000);
 
     var agent = request.agent(app);
@@ -271,6 +271,5 @@ describe('User CRM register/ logIn / logOut', function () {
                     });
             });
     });
-
 
 });
