@@ -1,16 +1,49 @@
-.tree { width: 100% }
+.treeNode {
+  /*margin-left: 18px;*/
+  zoom: 1;
+  background-image: url("../img/line.gif");
+  background-position: top left;
+  background-repeat: repeat-y;
+}
+.clickNodeName{
+  cursor: pointer;
+}
 
-.tree ul { list-style: none; }
+.treeNodeIsLast {
+  background-image: url("../img/line_up.gif");
+  background-repeat: no-repeat;
+}
 
-.tree li { padding-top: 10px }
+.tree {
+  width: 100%
+}
 
-.tree ul, .tree  li, .tree  div { float:left }
+.tree ul {
+  list-style: none;
+}
 
-.tree ul, .tree li { width:100% }
+.tree li {
+  padding-top: 5px
+}
 
-.expandNode { width:15px; height:15px; }
+.tree ul, .tree li, .tree div {
+  float: left
+}
 
-.collapseNode { width:15px; height:15px; display:none }
+.tree ul, .tree li {
+  width: 100%
+}
+
+.expandNode {
+  width: 15px;
+  height: 15px;
+}
+
+.collapseNode {
+  width: 15px;
+  height: 15px;
+  display: none
+}
 
 .pagination {
   width: 100%;
@@ -18,19 +51,24 @@
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
 .pagination div {
   float: left;
 }
+
 .pagination .countOnPage {
   float: left;
 }
+
 .pagination .nextPrev {
   float: right;
   margin-right: 5px;
 }
+
 .pagination .countOnPage {
   margin-left: 5px;
 }
+
 .pagination #previousPage,
 .pagination #nextPage,
 .pagination .currentPageList,
@@ -58,30 +96,37 @@
   display: block;
   font-size: 12px;
 }
+
 .pagination #previousPage {
   margin: 0 3px;
   font-size: 12px;
 }
+
 .pagination #nextPage {
   margin: 0 3px;
   font-size: 12px;
 }
+
 .pagination .allPage {
   position: relative;
 }
+
 .pagination button {
   color: rgba(0, 0, 0, 0.75);
 }
+
 .pagination button:hover {
   background-color: #F7F8F9;
   color: rgba(0, 0, 0, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.9);
 }
+
 .pagination button[disabled] {
   color: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(0, 0, 0, 0.3);
   cursor: default;
 }
+
 .pagination #currentShowPage {
   border: 1px solid rgba(0, 0, 0, 0.4);
   border-right: 1px solid rgba(0, 0, 0, 0);
@@ -90,6 +135,7 @@
   margin-left: 5px;
   font-size: 12px !important;
 }
+
 .pagination #pageList {
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.4);
@@ -98,6 +144,7 @@
   left: -7px;
   display: none;
 }
+
 .pagination #pageList li {
   display: block;
   width: 25px;
@@ -106,15 +153,18 @@
   text-align: center;
   font-size: 12px;
 }
+
 .pagination #pageList li:hover {
   background-color: #13C4A5;
   color: white;
   text-decoration: none;
 }
+
 .pagination .currentPageList {
   margin-right: 5px;
   font-size: 12px;
 }
+
 .pagination .currentPageList .caret {
   display: block;
   height: 15px;
@@ -122,9 +172,11 @@
   background-position: 50% 50%;
   background-repeat: no-repeat;
 }
+
 .pagination .pageList {
   position: relative;
 }
+
 .pagination .pageList button {
   background-color: white;
   background-image: none;
@@ -134,9 +186,11 @@
   line-height: 10px;
   font-size: 12px;
 }
+
 .pagination .pageList button:hover {
   background-color: #F7F8F9;
 }
+
 .pagination .pageList ul {
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.4);
@@ -146,6 +200,7 @@
   display: none;
   font-size: 12px;
 }
+
 .pagination .pageList ul li a {
   display: block;
   width: 25px;
@@ -153,6 +208,7 @@
   line-height: 20px;
   text-align: center;
 }
+
 .pagination .pageList ul li a:hover {
   background-color: #13C4A5;
   color: white;
@@ -173,55 +229,56 @@
   text-decoration: none;
 }
 
-.DbList{
+.DbList {
   background-color: white;
   cursor: pointer;
   color: #0A0EF2;
   clear: both;
-  vertical-align:middle;
+  vertical-align: middle;
 }
 
-.iconList{
+.iconList {
   background-color: white;
   cursor: pointer;
   color: #0A0EF2;
   clear: both;
-  vertical-align:middle;
+  vertical-align: middle;
   height: 70px;
 }
 
-.iconSelectList{
+.iconSelectList {
   background-color: white;
   cursor: pointer;
   color: #0A0EF2;
   clear: both;
-  vertical-align:middle;
+  vertical-align: middle;
   height: 50px;
   border-bottom: 1px solid grey;
 }
 
-
-.DbList:hover{
+.DbList:hover {
   background-color: #d3d3d3;
   font-weight: bold;
 }
 
-.iconSelectList:hover, .iconList:hover{
+.iconSelectList:hover, .iconList:hover {
   background-color: #d3d3d3;
   font-weight: bold;
 }
 
-.iconDiv{
+.iconDiv {
   /*height: 90px;*/
   width: 95%;
   margin-left: 5px;
   /*border: 1px solid black*/
 }
+
 .iconDiv span {
   color: black;
   font-weight: bold;
   font-size: 17px;
 }
+
 .iconDiv input {
   width: 95px
 }
@@ -231,7 +288,6 @@
   background-color: white;
   opacity: 0.9;
 }
-
 
 .topBarButton {
   margin-left: 5px;
@@ -278,7 +334,6 @@
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-
 .showAreaAR {
   text-align: right;
   margin-right: 50px;
@@ -315,13 +370,13 @@
   background-color: rgba(0, 0, 0, 0.01);
 }
 
-
 .mobileBtn:hover {
   border: 1px solid goldenrod;
   color: goldenrod;
   background-color: rgba(0, 0, 0, 0.01);
 }
-.itemBlockBG{
+
+.itemBlockBG {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
@@ -329,10 +384,10 @@
   background-color: rgba(0, 0, 0, 0.01);
 }
 
-.serviceProfile{
+.serviceProfile {
 }
 
-.serviceProfileHide{
+.serviceProfileHide {
 }
 
 .actionButton {
@@ -376,7 +431,6 @@
   cursor: pointer;
   text-shadow: 1px 1px white;
 }
-
 
 .actionButtonGray {
   text-align: center;
@@ -460,7 +514,8 @@
   font-weight: bold;
   cursor: pointer;
 }
-.showTreeBtn{
+
+.showTreeBtn {
   display: none;
 }
 
@@ -468,7 +523,7 @@
   text-decoration: none;
 }
 
-.actionButtonDell{
+.actionButtonDell {
 
   font-size: 18px;
   color: red;
@@ -495,7 +550,6 @@
   text-decoration: none;
 }
 
-
 .actionButtonWhite {
   text-align: center;
   vertical-align: middle;
@@ -514,6 +568,22 @@
   font-weight: bold;
   color: #000000;
   text-shadow: 1px 1px grey;
+}
+
+.actionButtonNode {
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid gray;
+  width: 70px;
+  height: 30px;
+  line-height: 30px;
+  clear: both;
+  background-color: white;
+  font-family: Arial;
+  font-size: 12px;
+  font-weight: bold;
+  color: #000000;
+
 }
 
 .input_field {
@@ -541,8 +611,8 @@ th {
   font-size: 18px;
   font-weight: bold;
 }
-.tableDisplayMobile table
-{
+
+.tableDisplayMobile table {
   border-collapse: collapse;
   width: 100%;
 }
@@ -555,7 +625,7 @@ th {
   width: 100%;
 }
 
-.tableView th{
+.tableView th {
   color: black;
   font-size: 14px;
   font-weight: bold;
@@ -563,7 +633,7 @@ th {
   padding: 2px;
 }
 
-.tableView tr{
+.tableView tr {
   border-top: 1px solid #ababab;
 }
 
@@ -598,6 +668,7 @@ th.oe_sortable_sub .arrow {
   line-height: 23px;
   background: none;
 }
+
 .sortUP, .sortDN {
   display: none;
 }
@@ -613,19 +684,24 @@ th.oe_sortable_sub .arrow {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
 .pagination div {
   float: left;
 }
+
 .pagination .countOnPage {
   float: left;
 }
+
 .pagination .nextPrev {
   float: right;
   margin-right: 5px;
 }
+
 .pagination .countOnPage {
   margin-left: 5px;
 }
+
 .pagination #previousPage,
 .pagination #nextPage,
 .pagination .currentPageList,
@@ -645,6 +721,7 @@ th.oe_sortable_sub .arrow {
   background-repeat: no-repeat;
   float: left;
 }
+
 .pagination #firstShowPage,
 .pagination #lastShowPage {
   width: 30px;
@@ -652,30 +729,37 @@ th.oe_sortable_sub .arrow {
   display: block;
   font-size: 12px;
 }
+
 .pagination #previousPage {
   margin: 0 3px;
   font-size: 12px;
 }
+
 .pagination #nextPage {
   margin: 0 3px;
   font-size: 12px;
 }
+
 .pagination .allPage {
   position: relative;
 }
+
 .pagination button {
   color: rgba(0, 0, 0, 0.75);
 }
+
 .pagination button:hover {
   background-color: #F7F8F9;
   color: rgba(0, 0, 0, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.9);
 }
+
 .pagination button[disabled] {
   color: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(0, 0, 0, 0.3);
   cursor: default;
 }
+
 .pagination #currentShowPage {
   border: 1px solid rgba(0, 0, 0, 0.4);
   border-right: 1px solid rgba(0, 0, 0, 0);
@@ -684,6 +768,7 @@ th.oe_sortable_sub .arrow {
   margin-left: 5px;
   font-size: 12px !important;
 }
+
 .pagination #pageList {
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.4);
@@ -692,6 +777,7 @@ th.oe_sortable_sub .arrow {
   left: -7px;
   display: none;
 }
+
 .pagination #pageList li {
   display: block;
   width: 25px;
@@ -700,15 +786,18 @@ th.oe_sortable_sub .arrow {
   text-align: center;
   font-size: 12px;
 }
+
 .pagination #pageList li:hover {
   background-color: #13C4A5;
   color: white;
   text-decoration: none;
 }
+
 .pagination .currentPageList {
   margin-right: 5px;
   font-size: 12px;
 }
+
 .pagination .currentPageList .caret {
   display: block;
   height: 15px;
@@ -716,9 +805,11 @@ th.oe_sortable_sub .arrow {
   background-position: 50% 50%;
   background-repeat: no-repeat;
 }
+
 .pagination .pageList {
   position: relative;
 }
+
 .pagination .pageList button {
   background-color: white;
   background-image: none;
@@ -728,9 +819,11 @@ th.oe_sortable_sub .arrow {
   line-height: 10px;
   font-size: 12px;
 }
+
 .pagination .pageList button:hover {
   background-color: #F7F8F9;
 }
+
 .pagination .pageList ul {
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.4);
@@ -740,6 +833,7 @@ th.oe_sortable_sub .arrow {
   display: none;
   font-size: 12px;
 }
+
 .pagination .pageList ul li a {
   display: block;
   width: 25px;
@@ -747,6 +841,7 @@ th.oe_sortable_sub .arrow {
   line-height: 20px;
   text-align: center;
 }
+
 .pagination .pageList ul li a:hover {
   background-color: #13C4A5;
   color: white;
