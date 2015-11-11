@@ -8,7 +8,7 @@ define([
     'collections/icons',
     'validation'
 
-], function (content,createTemplate,inputBlockTemplate,pagesBlockTemplate, treeNodeTemplate, ServiceModel, IconsCollection, Validation) {
+], function (content, createTemplate, inputBlockTemplate, pagesBlockTemplate, treeNodeTemplate, ServiceModel, IconsCollection, Validation) {
     'use strict';
 
     var itemBlockCount = [0];
@@ -16,6 +16,10 @@ define([
     var profileBlockCount = 0;
     var cloneService = false;
     var isNewService = false;
+    var treeNodeCounts = [1, 0, 0, 0, 0];
+    var treeNodeValues = [];
+    //TODO change this to {}
+    var currentNodeValues = [returnNewTreeNodeObject('Node 0')];
     var iconsCollection;
     var selectedIcon;
     var searchIcon;
@@ -24,34 +28,62 @@ define([
 
     var selectIconDiv;
     var itemsInputNameArray = [];
-    var sendParams ={};
+    var sendParams = {};
     var language = 'EN';
     var currentMobilePage = 0;
+
+    function returnNewTreeNodeObject(nodeName) {
+        return {
+            value: nodeName ? nodeName : '',
+            EN: '',
+            AR: '',
+            items: []
+        }
+    }
+
+    function recursionCreateNodeObjByAddress(nodeObj, nodeAddressArray, nodeValue ) {
+        var index = nodeAddressArray[0];
+
+        if (nodeAddressArray.length == 1) {
+             nodeObj.items[index] = returnNewTreeNodeObject(nodeValue);
+            return;
+        }
+        nodeAddressArray.shift();
+        return recursionCreateNodeObjByAddress(nodeObj.items[index], nodeAddressArray, nodeValue);
+    }
+
+
+
+
 
     var serviceUpdateView = Backbone.View.extend({
         el: '#dataBlock',
         template: _.template(content),
 
         events: {
-            'click #updateBtn' : 'updateService',
-            'click #closeBtn' : 'hideMobileDisplay',
-            'click .showTreeBtn' : 'showTreeBlock',
-            'click .hideTreeBtn' : 'hideTreeBlock',
-            'click .showAreaEN, .showAreaAR' : 'showSelectedItem',
-            'click .mobileBtn' : 'changeMobileLanguage',
-            'click #seeBtn, #refreshBtn' : 'showMobileDisplay',
-            'click #addProfileFieldBlock' : 'addProfileFieldBlock',
-            'click #delProfileFieldBlock' : 'delProfileFieldBlock',
-            'click #addPageBlock' : 'addPageBlock',
-            'click .actionButtonHide' : 'hideBlock',
-            'click .actionButtonShow' : 'showBlock',
-            'click #delPageBlock' : 'delPageBlock',
-            'click .addInputItemsBlock' : 'addInputItemsBlock',
-            'click .delInputItemsBlock' : 'delInputItemsBlock',
-            'change .enabledCheckBox' : 'enableInput',
-            'change .itemBlockName' : 'updateItemsInputNameArray',
-            'click .actionButtonAdd' : 'addItemToArray',
-            'click .actionButtonDell' : 'dellLastItemFromArray',
+            'click #updateBtn': 'updateService',
+            'click #closeBtn': 'hideMobileDisplay',
+            'click .showTreeBtn': 'showTreeBlock',
+            'click .hideTreeBtn': 'hideTreeBlock',
+            'click .clickNodeName': 'selectNodeName',
+            'click .addNode': 'treeAddNode',
+            'click .addNodeItem': 'treeAddNodeItem',
+            'click .dellNode': 'treeDellNode',
+            'click .showAreaEN, .showAreaAR': 'showSelectedItem',
+            'click .mobileBtn': 'changeMobileLanguage',
+            'click #seeBtn, #refreshBtn': 'showMobileDisplay',
+            'click #addProfileFieldBlock': 'addProfileFieldBlock',
+            'click #delProfileFieldBlock': 'delProfileFieldBlock',
+            'click #addPageBlock': 'addPageBlock',
+            'click .actionButtonHide': 'hideBlock',
+            'click .actionButtonShow': 'showBlock',
+            'click #delPageBlock': 'delPageBlock',
+            'click .addInputItemsBlock': 'addInputItemsBlock',
+            'click .delInputItemsBlock': 'delInputItemsBlock',
+            'change .enabledCheckBox': 'enableInput',
+            'change .itemBlockName': 'updateItemsInputNameArray',
+            'click .actionButtonAdd': 'addItemToArray',
+            'click .actionButtonDell': 'dellLastItemFromArray',
             'change .inputType': 'checkSelected',
             'click #selectIconShow': 'showSelectIcon',
             'click #selectIcon': 'selectIcon',
@@ -66,7 +98,9 @@ define([
         initialize: function (options) {
             cloneService = options ? options.cloneService : undefined;
             isNewService = options ? options.isNewService : undefined;
+            treeNodeCounts = [1, 0, 0, 0, 0];
             itemBlockCount = [0];
+            treeNodeValues = [];
             pageBlockCount = 0;
             profileBlockCount = 0;
             sendParams = {};
@@ -74,48 +108,195 @@ define([
             iconsCollection = [];
             selectedIcon = null;
             selectIconDiv = null;
-            searchIconTerm ='';
+            searchIconTerm = '';
 
             this.render();
         },
 
+        initializeTreeNodeArray: function(nodeAddress, nodeValue){
+            var treeNodeAddress = nodeAddress.split('_');
+            var firstIndex = treeNodeAddress[0];
+            var obj;
+
+            if(treeNodeAddress.length == 1) {
+                currentNodeValues[firstIndex] = returnNewTreeNodeObject(nodeValue);
+            } else {
+                treeNodeAddress.shift();
+                recursionCreateNodeObjByAddress(currentNodeValues[firstIndex], treeNodeAddress, nodeValue);
+            }
+
+            //if(treeNodeAddress.length == 2) {
+            //    currentNodeValues[treeNodeAddress[0]].items[treeNodeAddress[1]] = returnNewTreeNodeObject(nodeValue)
+            //}
+            //
+            //if(treeNodeAddress.length == 3) {
+            //    currentNodeValues[treeNodeAddress[0]].items[treeNodeAddress[1]].items[treeNodeAddress[2]] = returnNewTreeNodeObject(nodeValue)
+            //}
+            //
+            //if(treeNodeAddress.length == 4) {
+            //    currentNodeValues[treeNodeAddress[0]].items[treeNodeAddress[1]].items[treeNodeAddress[2]].items[treeNodeAddress[3]] = returnNewTreeNodeObject(nodeValue)
+            //}
+            //
+            //if(treeNodeAddress.length == 5) {
+            //    currentNodeValues[treeNodeAddress[0]].items[treeNodeAddress[1]].items[treeNodeAddress[2]].items[treeNodeAddress[3]].items[treeNodeAddress[4]] = returnNewTreeNodeObject(nodeValue)
+            //}
+        },
+
+        treeAddNode: function (e) {
+            var el = $(e.currentTarget);
+            var currentTreeUl = $($(el.parent()[0]).parents("ul"))[0];
+            var nodeAddress = $(el.parent()[0]).attr('data-hash');
+            var treeNodeAddress = nodeAddress.split('_');
+            var newNodeAddress;
+
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            treeNodeAddress[treeNodeAddress.length - 1]++;
+            treeNodeAddress[treeNodeAddress.length - 1] = treeNodeCounts[treeNodeAddress.length - 1];
+            treeNodeCounts[treeNodeAddress.length - 1]++;
+            newNodeAddress = treeNodeAddress.join('_');
+
+
+            console.dir($($(el.parent()[0]).parents("ul"))[0]);
+
+
+            //currentTreeUl.find('#nodeLi' + lastNodeAddress).after(_.template(treeNodeTemplate)({
+            $(currentTreeUl).append(_.template(treeNodeTemplate)({
+                node: {
+                    address: newNodeAddress,
+                    value: 'Node ' + newNodeAddress
+                }
+            }));
+
+            this.initializeTreeNodeArray(newNodeAddress,'Node ' + newNodeAddress);
+
+            console.log('nodeAddress: ', nodeAddress);
+            console.log('treeNodeAddress: ', treeNodeAddress);
+        },
+
+        treeDellNode: function (e) {
+            var el = $(e.currentTarget);
+            //console.dir($($(el.parent()[0]).parents("ul"))[0]);
+            var currentTreeUl = $($(el.parent()[0]).parents("ul"))[0];
+            var nodeAddress = $(el.parent()[0]).attr('data-hash');
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            $(currentTreeUl).find('#nodeLi' + nodeAddress).remove();
+            console.log('nodeAddress: ', nodeAddress);
+        },
+
+        selectNodeName: function (e) {
+            var el = $(e.currentTarget);
+            var treeDiv = $(this.$el).find('#treeDiv');
+            var nodeAddress = el.attr('data-hash');
+            var nodeName;
+
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            //TODO check MainObj if exist information
+            //TODO write this info in #saveNode | #treeNodeInfo | #treeValue | #treeEN | #treeAR
+            nodeName = $(treeDiv).find('#nodeName' + nodeAddress).text();
+
+            $(treeDiv).find('#saveNode').attr('data-hash', nodeAddress);
+            $(treeDiv).find('#treeValue').val(nodeName);
+
+            console.log('nodeAddress: ', nodeAddress);
+        },
+
+        treeAddNodeItem: function (e) {
+            var el = $(e.currentTarget);
+            //var treeUl = $('#treeList');
+            //console.dir($($(el.parent()[0]).parents("ul"))[0]);
+            var newTreeUl = $("<ul> </ul>");
+            var nodeAddress = $(el.parent()[0]).attr('data-hash');
+            var treeNodeAddress = nodeAddress.split('_');
+            var lastNodeAddress;
+            var newNodeAddress;
+            var currentNodeCount = treeNodeCounts[treeNodeAddress.length];
+            var newTreeNodeAddress;
+            // check if olredy has <ul>
+
+            var searchChildrenUl = $(el.parent()[0]).parent().children("ul");
+            //console.log('searchChildrenUl.length: ', searchChildrenUl.length);
+
+            if (treeNodeAddress.length === 5) {
+                alert('Available only 5 steps in depth!');
+                return;
+            }
+
+            if (searchChildrenUl.length) {
+                newTreeUl = $(searchChildrenUl[0]);
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            treeNodeAddress[treeNodeAddress.length] = currentNodeCount;
+            treeNodeCounts[treeNodeAddress.length - 1]++;
+            newNodeAddress = treeNodeAddress.join('_');
+
+            //currentTreeUl.find('#nodeLi' + lastNodeAddress).after(_.template(treeNodeTemplate)({
+            newTreeUl.append(_.template(treeNodeTemplate)({
+                node: {
+                    address: newNodeAddress,
+                    value: 'Node ' + newNodeAddress
+                }
+            }));
+
+            this.initializeTreeNodeArray(newNodeAddress,'Node ' + newNodeAddress);
+
+            if (!searchChildrenUl.length) {
+                el.parent().parent().append(newTreeUl);
+            }
+
+            console.log('nodeAddress: ', nodeAddress);
+            console.log('treeNodeAddress: ', treeNodeAddress);
+            console.log('treeNodeCounts: ', treeNodeCounts);
+        },
+
         treeExpandNode: function (e) {
-            var el =  $(e.currentTarget);
-                $(el).toggle();
-                $(el).next().toggle();
-                $(el).parent().parent().children().last().toggle();
+            var el = $(e.currentTarget);
+            $(el).toggle();
+            $(el).next().toggle();
+            $(el).parent().parent().children().last().toggle();
             //console.dir(el);
         },
 
         treeCollapseNode: function (e) {
-            var el =  $(e.currentTarget);
+            var el = $(e.currentTarget);
             $(el).toggle();
             $(el).prev().toggle();
             $(el).parent().parent().children().last().toggle();
             //console.dir(el);
         },
 
-        searchSelectIcon: function(e){
+        searchSelectIcon: function (e) {
             searchIconTerm = $(e.target).val();
-            console.log('searchSelectIcon: ',searchIconTerm);
+            console.log('searchSelectIcon: ', searchIconTerm);
             this.showSelectIcon();
         },
 
-        preSelectIcon: function(e){
-            var iconId =  $(e.currentTarget).attr('data-hash');
+        preSelectIcon: function (e) {
+            var iconId = $(e.currentTarget).attr('data-hash');
             selectedIcon = iconsCollection.toJSON()[iconId];
-            console.log('preSelectIcon clicked',iconId);
+            console.log('preSelectIcon clicked', iconId);
             selectIconDiv.find('#selectedIcon').text(selectedIcon.title);
         },
 
-        closeSelectIcon: function (e){
+        closeSelectIcon: function (e) {
             console.log('Close clicked');
             e.preventDefault();
             e.stopPropagation();
             selectIconDiv.hide();
         },
 
-        selectIcon: function (e){
+        selectIcon: function (e) {
             console.log('selectIcon clicked');
             e.preventDefault();
             e.stopPropagation();
@@ -127,7 +308,7 @@ define([
             }
         },
 
-        showSelectIcon: function(e) {
+        showSelectIcon: function (e) {
             var el = this.$el;
             iconsCollection = new IconsCollection();
             var data = {
@@ -150,10 +331,11 @@ define([
                 e.stopPropagation();
             }
 
-            iconsCollection.fetch({data: data,
-                success: function(){
+            iconsCollection.fetch({
+                data: data,
+                success: function () {
 
-                    console.dir('Loaded iconsCollection: ',iconsCollection.toJSON());
+                    console.dir('Loaded iconsCollection: ', iconsCollection.toJSON());
 
                     //iconList.find('.iconSelectList:odd').css("background-color", "whitesmoke");
                     if (!selectIconDiv) {
@@ -169,16 +351,16 @@ define([
                     }
 
                 },
-                error: function(err, xhr, model){
+                error: function (err, xhr, model) {
                     alert(xhr);
                 }
             });
 
-            function updateIconList (){
+            function updateIconList() {
                 iconList = selectIconDiv.find('#iconList');
                 iconList.html('');
 
-                for (var i = 0,l = iconsCollection.length-1; i <= l; i++){
+                for (var i = 0, l = iconsCollection.length - 1; i <= l; i++) {
                     icon = iconsCollection.toJSON()[i];
                     iconId = icon._id;
                     iconDiv = $("#DbList" + iconId);
@@ -199,14 +381,14 @@ define([
         },
 
 
-        changeMobileLanguage: function(e){
+        changeMobileLanguage: function (e) {
             var lang = this.$el.find(e.target).attr('data-hash');
             console.log('change language clicked');
-            language =  lang ? lang: language;
+            language = lang ? lang : language;
             this.showMobileDisplay();
         },
 
-        changePageOnMobile: function(e) {
+        changePageOnMobile: function (e) {
             var operation = this.$el.find(e.target).attr('data-page');
 
             console.log('change mobile page  clicked, operation: ', operation);
@@ -222,19 +404,20 @@ define([
             this.showMobileDisplay();
         },
 
-        showSelectedItem: function(e){
+        showSelectedItem: function (e) {
             var el = this.$el;
             var id = $(e.currentTarget).attr('data-hash');
 
 
-            if (navigator.userAgent.search("Safari") >= 0 ) {
+            if (navigator.userAgent.search("Safari") >= 0) {
                 $('body').animate({scrollTop: $('#' + id).offset().top}, 1100);
             } else {
                 $('html').animate({scrollTop: $('#' + id).offset().top}, 1100);
-            };
+            }
+            ;
         },
 
-        checkSelected: function(e) {
+        checkSelected: function (e) {
             var el = this.$el;
             var item = $(e.target).attr('data-hash');
             var mobilePage = $(e.target).attr('data-page');
@@ -242,39 +425,58 @@ define([
             //console.dir(testEl);
 
             if (e.target.value === 'tree') {
-                el.find('#page' + mobilePage +'itemBlock' + item + '  .showTreeBtn').show();
+                el.find('#page' + mobilePage + 'itemBlock' + item + '  .showTreeBtn').show();
             } else {
-                el.find('#page' + mobilePage +'itemBlock' + item + '  .showTreeBtn').hide();
+                el.find('#page' + mobilePage + 'itemBlock' + item + '  .showTreeBtn').hide();
             }
 
-            if (e.target.value === 'picker' || e.target.value === 'table'){
-                el.find('#page' + mobilePage +'itemBlockInputDataSource' + item).show();
+            if (e.target.value === 'picker' || e.target.value === 'table') {
+                el.find('#page' + mobilePage + 'itemBlockInputDataSource' + item).show();
 
             } else {
-                el.find('#page' + mobilePage +'itemBlockInputDataSource' + item).hide();
+                el.find('#page' + mobilePage + 'itemBlockInputDataSource' + item).hide();
             }
-            console.log('select: ',e.target.value,' page:',mobilePage,' item: ', item);
+            console.log('select: ', e.target.value, ' page:', mobilePage, ' item: ', item);
         },
 
-        hideMobileDisplay: function(){
+        hideMobileDisplay: function () {
             var el = this.$el;
             el.find('#mobilePhone').hide();
             el.find('#mobileDisplay').hide();
         },
 
-        showTreeBlock: function(e){
-            var el = this.$el;
-            var item = $(e.target).attr('data-item');
-            var mobilePage = $(e.target).attr('data-page');
-            var tree = el.find('#treeDiv');
-            //tree.
-            //    empty().
-            //    remove();
 
-            tree.show();
+        showTreeBlock: function (e) {
+            var el = this.$el;
+            var item = $(e.target).parent().attr('data-item');
+            var mobilePage = $(e.target).parent().attr('data-page');
+            var treeList = el.find('#treeDiv').find('#treeList');
+
+
+            if (!treeNodeValues['page' + mobilePage + 'item' + item]) {
+                treeNodeValues['page' + mobilePage + 'item' + item] = returnNewTreeNodeObject('Node 0');
+            }
+
+
+
+            $(treeList).empty();
+            this.addNodesToTreeByObj( treeNodeValues['page' + mobilePage + 'item' + item], treeList,0);
+            el.find('#treeDiv').show();
         },
 
-        hideTreeBlock: function(e){
+
+        addNodesToTreeByObj: function (treeObj, treeList, nodeAddress) {
+            // TODO make recursive function reading treeObj and add Nodes on tree
+            treeList.append(_.template(treeNodeTemplate)({
+                node: {
+                    address: nodeAddress,
+                    value: treeObj.value
+                }
+            }));
+
+        },
+
+        hideTreeBlock: function (e) {
             //TODO make block empty
             var el = this.$el;
             var item = $(e.target).attr('data-item');
@@ -288,7 +490,7 @@ define([
         },
 
 
-        showMobileDisplay: function(){
+        showMobileDisplay: function () {
             var el = this.$el;
             var data = this.readInputsAndValidate();
             var display = el.find('#mobileDisplay');
@@ -305,11 +507,11 @@ define([
                 return this;
             }
             displayContent += '<div style="margin-top:15px; color: white; font-weight: bold; font-size: 1.2em">' + data.profile.Name[language].toUpperCase() + '</div>';
-            displayContent += '<div style="margin-top:15px; margin-bottom:18px; margin-left: 2px"><img src = "' + (data.icon ? '/icon/' + data.icon + '/@2x"': '"') + ' style="width: 64px; height: 64px; -webkit-filter: brightness() invert();"></div>';
-            displayContent += '<div style="color: white;font-size: 1.2em">' + data.profile.Name[language] +  (language == 'AR' ? ' \u0623\u062f\u0648\u0627\u062a' : ' Service') + ' </div>';
+            displayContent += '<div style="margin-top:15px; margin-bottom:18px; margin-left: 2px"><img src = "' + (data.icon ? '/icon/' + data.icon + '/@2x"' : '"') + ' style="width: 64px; height: 64px; -webkit-filter: brightness() invert();"></div>';
+            displayContent += '<div style="color: white;font-size: 1.2em">' + data.profile.Name[language] + (language == 'AR' ? ' \u0623\u062f\u0648\u0627\u062a' : ' Service') + ' </div>';
             displayContent += '<br>';
             displayContent += '<div style = "margin-left: 50px; margin-right: 47px; height:360px; overflow-y: auto">';
-            console.log('data before sorting',data);
+            console.log('data before sorting', data);
 
             inputElements = data.pages[currentMobilePage].inputItems;
             console.log(' before sorting data.inputItems.length - 1', inputElements.length - 1);
@@ -321,9 +523,9 @@ define([
                 return 0;
             });
 
-            console.log('data after sorting',data);
+            console.log('data after sorting', data);
 
-            for (var i = inputElements.length - 1; i >= 0; i-- ){
+            for (var i = inputElements.length - 1; i >= 0; i--) {
                 displayContent += '<div class="showArea' + language + '" data-hash="page' + currentMobilePage + 'itemBlockOrder' + inputElements[i].displayOrder + '">';
 
                 if (inputElements[i].inputType === 'file') {
@@ -332,12 +534,12 @@ define([
 
                     displayContent += '<div style="color: lightslategray; ">' + inputElements[i].displayName[language] + '</div>';
 
-                    if (inputElements[i].inputType === 'string' || inputElements[i].inputType === 'number'|| inputElements[i].inputType === 'boolean') {
+                    if (inputElements[i].inputType === 'string' || inputElements[i].inputType === 'number' || inputElements[i].inputType === 'boolean') {
                         displayContent += '<div style="color: black; border-bottom: 1px solid gray; width: 100%; height: 20px ">' + inputElements[i].placeHolder[language] + '</div>';
                     }
 
                     if (inputElements[i].inputType === 'picker') {
-                        displayContent += '<div style="color: black; border-bottom: 1px solid gray; width: 100%">' + (inputElements[i].dataSource ? inputElements[i].dataSource[0][language] : '')  + ' &#x25bc</div>';
+                        displayContent += '<div style="color: black; border-bottom: 1px solid gray; width: 100%">' + (inputElements[i].dataSource ? inputElements[i].dataSource[0][language] : '') + ' &#x25bc</div>';
                     }
 
 
@@ -349,18 +551,21 @@ define([
             }
             if (currentMobilePage === pageBlockCount - 1) {
                 displayContent += '<div  class="showArea' + language + '" data-hash="buttonTitleEN" style=" margin-top: 3px; text-align: center">';
-            displayContent += '<span style="min-height: 20px; border: 1px solid grey;min-width: 50px; background-color: ghostwhite; opacity: 0.7;  border-radius: 6px; display: inline-block;"> ' + data.buttonTitle[language] + ' </span>';
-            displayContent += '</div>';
+                displayContent += '<span style="min-height: 20px; border: 1px solid grey;min-width: 50px; background-color: ghostwhite; opacity: 0.7;  border-radius: 6px; display: inline-block;"> ' + data.buttonTitle[language] + ' </span>';
+                displayContent += '</div>';
             }
             displayContent += '</div>';
 
 
-            el.find('#mobilePhone').css({"background": "url('../img/mobile.jpg')", "background-size":"100% 100%"}).show();
+            el.find('#mobilePhone').css({
+                "background": "url('../img/mobile.jpg')",
+                "background-size": "100% 100%"
+            }).show();
             display.html(displayContent).show();
             //console.log('displayContent:',displayContent);
         },
 
-        addProfileFieldBlock: function(e) {
+        addProfileFieldBlock: function (e) {
 
             var textContent = '<td><b>profile.</b><input type="text" name="" id="profileFieldName' + profileBlockCount + '" size="10" maxlength="20"></td><td><input type="text" name="" id="profileFieldValue' + profileBlockCount + '" size="20" maxlength="40"></td><td> Input profile. fileds name and fields value </td>';
 
@@ -372,7 +577,7 @@ define([
             profileBlockCount++;
         },
 
-        delProfileFieldBlock: function(e) {
+        delProfileFieldBlock: function (e) {
 
             if (profileBlockCount === 0) {
                 return;
@@ -383,7 +588,7 @@ define([
                 remove();
         },
 
-        addPageBlock: function(e) {
+        addPageBlock: function (e) {
             var el = this.$el;
 
             e.preventDefault();
@@ -395,7 +600,7 @@ define([
             pageBlockCount++;
         },
 
-        showBlock: function(e) {
+        showBlock: function (e) {
             var el = this.$el;
             var blockClassName = $(e.target).attr('data-hash');
 
@@ -403,34 +608,37 @@ define([
             e.stopPropagation();
 
             el.find("." + blockClassName).show();
-            console.log("preesed  show: ",blockClassName)
+            console.log("preesed  show: ", blockClassName)
         },
 
-        hideBlock: function(e) {
+        hideBlock: function (e) {
             var el = this.$el;
             var blockClassName = $(e.target).attr('data-hash');
 
             e.preventDefault();
             e.stopPropagation();
 
-            el.find("." + blockClassName ).hide();
-            console.log("preesed  hide: ",blockClassName)
+            el.find("." + blockClassName).hide();
+            console.log("preesed  hide: ", blockClassName)
         },
 
-        addInputItemsBlock: function(e) {
+        addInputItemsBlock: function (e) {
             var el = this.$el;
             var page = +($(e.target).attr('data-page'));
 
             e.preventDefault();
             e.stopPropagation();
 
-            el.find("#itemBlockPage" + page).before(_.template(inputBlockTemplate)({i: itemBlockCount[page], page:  page}));
+            el.find("#itemBlockPage" + page).before(_.template(inputBlockTemplate)({
+                i: itemBlockCount[page],
+                page: page
+            }));
 
             itemBlockCount[page]++;
-            console.log('itemBlockCount[',page,']: ', itemBlockCount[page]);
+            console.log('itemBlockCount[', page, ']: ', itemBlockCount[page]);
         },
 
-        delInputItemsBlock: function(e) {
+        delInputItemsBlock: function (e) {
             var el = this.$el;
             var page = $(e.target).attr('data-page');
 
@@ -443,30 +651,30 @@ define([
             }
 
             itemBlockCount[page]--;
-            el.find("#page" + page +"itemBlock" + itemBlockCount[page]).
+            el.find("#page" + page + "itemBlock" + itemBlockCount[page]).
                 empty().
                 remove();
 
-            console.log('itemBlockCount[',page,']: ', itemBlockCount[page]);
+            console.log('itemBlockCount[', page, ']: ', itemBlockCount[page]);
             this.updateItemsInputNameArray();
         },
 
-        enableInput: function(e) {
+        enableInput: function (e) {
             var idName = e.target.id;
             var el = this.$el;
 
             if (e.target.checked) {
-                el.find('#'+ idName + 'Show').show();
+                el.find('#' + idName + 'Show').show();
             } else {
-                el.find('#'+ idName + 'Show').hide();
+                el.find('#' + idName + 'Show').hide();
             }
 
         },
 
-        readInputsAndValidate: function(){
+        readInputsAndValidate: function () {
             var el = this.$el;
-            var errors =[];
-            var data ={};
+            var errors = [];
+            var data = {};
             var pageID = '';
             var tempText;
             var tempText2;
@@ -481,14 +689,14 @@ define([
 
             data.url = el.find('#url').val().trim();
             data.icon = el.find('#icon').attr('data-hash');
-            data.icon =  data.icon ?  data.icon : null;
+            data.icon = data.icon ? data.icon : null;
 
             data.forUserType = [];
             el.find('#guest')[0].checked ? data.forUserType.push('guest') : undefined;
             el.find('#client')[0].checked ? data.forUserType.push('client') : undefined;
             el.find('#admin')[0].checked ? data.forUserType.push('admin') : undefined;
             el.find('#company')[0].checked ? data.forUserType.push('company') : undefined;
-            el.find('#government')[0].checked ?  data.forUserType.push('government') : undefined;
+            el.find('#government')[0].checked ? data.forUserType.push('government') : undefined;
 
             data.method = el.find('#POST')[0].checked ? 'POST' : 'GET';
             data.url = el.find('#url').val();
@@ -516,8 +724,8 @@ define([
 
             // TODO add check if empty and .trim()
 
-            for (var j = 0; j <= pageBlockCount - 1; j ++) {
-                pageID = '#page'+j;
+            for (var j = 0; j <= pageBlockCount - 1; j++) {
+                pageID = '#page' + j;
                 data.pages[j] = {
                     inputItems: []
                 };
@@ -546,33 +754,33 @@ define([
             if (profileBlockCount > 0) {
                 data.profile = {};
 
-                for (var i = profileBlockCount - 1; i >= 0; i-- ){
+                for (var i = profileBlockCount - 1; i >= 0; i--) {
                     tempText = el.find('#profileFieldNameEN' + i).val();
-                    tempText = tempText ? tempText.trim(): '';
+                    tempText = tempText ? tempText.trim() : '';
 
 
                     tempText2 = el.find('#profileFieldValueEN' + i).val();
-                    tempText2 = tempText2 ? tempText2.trim(): '';
+                    tempText2 = tempText2 ? tempText2.trim() : '';
 
-                    if (!tempText || !tempText2){
+                    if (!tempText || !tempText2) {
                         alert('Fields in profile cant be Empty !!!');
                         return;
                     }
 
-                    data.profile[tempText] = { EN:  tempText2};
+                    data.profile[tempText] = {EN: tempText2};
 
                     tempText = el.find('#profileFieldNameAR' + i).val();
-                    tempText = tempText ? tempText.trim(): '';
+                    tempText = tempText ? tempText.trim() : '';
 
                     tempText2 = el.find('#profileFieldValueAR' + i).val();
-                    tempText2 = tempText2 ? tempText2.trim(): '';
+                    tempText2 = tempText2 ? tempText2.trim() : '';
 
-                    if (!tempText || !tempText2){
+                    if (!tempText || !tempText2) {
                         alert('Fields in profile cant be Empty !!!');
                         return;
                     }
 
-                    data.profile[tempText].AR =  tempText2;
+                    data.profile[tempText].AR = tempText2;
                 }
             }
             console.dir(data);
@@ -580,7 +788,7 @@ define([
             Validation.checkUrlField(errors, true, data.url, 'Base Url');
             Validation.checkCompanyNameField(errors, true, data.serviceProvider, 'serviceProvider');
 
-            if (errors.length){
+            if (errors.length) {
                 alert(errors);
                 return 'error';
             }
@@ -588,10 +796,10 @@ define([
             return data;
         },
 
-        updateService: function(e) {
+        updateService: function (e) {
             var model = new ServiceModel();
             var data = this.readInputsAndValidate();
-            console.dir('saved data ',data);
+            console.dir('saved data ', data);
 
             if (data !== 'error') {
                 if (cloneService || isNewService) {
@@ -619,7 +827,7 @@ define([
             }
         },
 
-        addItemToArray: function(e) {
+        addItemToArray: function (e) {
             var el = this.$el;
             var paramsRequest = $(e.target).attr('data-hash');
             var pageNumber = $(e.target).attr('data-page');
@@ -630,7 +838,7 @@ define([
             var inputFieldEN;
             var inputFieldAR;
 
-            console.log('addButtonClicked pageNumber', pageNumber,'itemNumber: ', itemNumber);
+            console.log('addButtonClicked pageNumber', pageNumber, 'itemNumber: ', itemNumber);
 
             e.preventDefault();
             e.stopPropagation();
@@ -654,20 +862,20 @@ define([
                 return this;
             }
 
-            if (pageNumber && itemNumber){
+            if (pageNumber && itemNumber) {
 
                 inputFieldValue = el.find(dataSourceId + 'Value').val().trim();
                 inputFieldEN = el.find(dataSourceId + 'EN').val().trim();
-                inputFieldAR =  el.find(dataSourceId + 'AR').val().trim();
+                inputFieldAR = el.find(dataSourceId + 'AR').val().trim();
 
                 if (!inputFieldAR || !inputFieldEN || !inputFieldAR) {
-                    alert('Fill all inputs. ' + (!inputFieldValue ? ' Value ':'') + (!inputFieldEN ? ' EN ':'') + (!inputFieldAR ? ' AR ':'') + ' - Empty');
+                    alert('Fill all inputs. ' + (!inputFieldValue ? ' Value ' : '') + (!inputFieldEN ? ' EN ' : '') + (!inputFieldAR ? ' AR ' : '') + ' - Empty');
 
                     return;
                 }
 
                 inputFieldName = {
-                    value: inputFieldValue ,
+                    value: inputFieldValue,
                     EN: inputFieldEN,
                     AR: inputFieldAR
                 };
@@ -678,7 +886,7 @@ define([
 
                 sendParams[dataSourceId].push(inputFieldName);
 
-                el.find('#page' + pageNumber +'dataSourceValue' + itemNumber).text(JSON.stringify(sendParams[dataSourceId]));
+                el.find('#page' + pageNumber + 'dataSourceValue' + itemNumber).text(JSON.stringify(sendParams[dataSourceId]));
 
                 el.find(dataSourceId + 'Value').val('');
                 el.find(dataSourceId + 'EN').val('');
@@ -687,7 +895,7 @@ define([
             }
         },
 
-        dellLastItemFromArray: function(e) {
+        dellLastItemFromArray: function (e) {
             var el = this.$el;
             var paramsRequest = $(e.target).attr('data-hash');
             var pageNumber = $(e.target).attr('data-page');
@@ -713,7 +921,7 @@ define([
             if (pageNumber && itemNumber) {
 
                 sendParams[dataSourceId].pop();
-                el.find('#page' + pageNumber +'dataSourceValue' + itemNumber).text(JSON.stringify(sendParams[dataSourceId]));
+                el.find('#page' + pageNumber + 'dataSourceValue' + itemNumber).text(JSON.stringify(sendParams[dataSourceId]));
             }
         },
 
@@ -751,50 +959,50 @@ define([
             var pageID;
             var defaultService = {
                 serviceProvider: 'DefaultRest',
-                'profile' : {
-                    'Terms and conditions' : {
-                        'AR' : '',
-                        'EN' : ''
+                'profile': {
+                    'Terms and conditions': {
+                        'AR': '',
+                        'EN': ''
                     },
-                    'Service fee' : {
-                        'AR' : '',
-                        'EN' : ''
+                    'Service fee': {
+                        'AR': '',
+                        'EN': ''
                     },
-                    'Required documents' : {
-                        'AR' : '',
-                        'EN' : ''
+                    'Required documents': {
+                        'AR': '',
+                        'EN': ''
                     },
-                    'Officer in charge of this service' : {
-                        'AR' : '',
-                        'EN' : ''
+                    'Officer in charge of this service': {
+                        'AR': '',
+                        'EN': ''
                     },
-                    'Expected time' : {
-                        'AR' : '',
-                        'EN' : ''
+                    'Expected time': {
+                        'AR': '',
+                        'EN': ''
                     },
-                    'Service Package' : {
-                        'AR' : '',
-                        'EN' : ''
+                    'Service Package': {
+                        'AR': '',
+                        'EN': ''
                     },
-                    'About the service' : {
-                        'AR' : '',
-                        'EN' : ''
+                    'About the service': {
+                        'AR': '',
+                        'EN': ''
                     },
-                    'Name' : {
-                        'AR' : '',
-                        'EN' : ''
+                    'Name': {
+                        'AR': '',
+                        'EN': ''
                     }
                 },
                 buttonTitle: {
-                    EN:'',
-                    AR:''
+                    EN: '',
+                    AR: ''
                 },
                 forUserType: 'client',
                 params: {}
             };
 
-            if (isNewService ||  !App.selectedService) {
-                console.log ('isNewService: ', isNewService);
+            if (isNewService || !App.selectedService) {
+                console.log('isNewService: ', isNewService);
                 //el.html(_.template(createTemplate));
                 el.html(this.template({service: defaultService}));
                 service = defaultService
@@ -803,25 +1011,25 @@ define([
                 service = App.selectedService.toJSON();
             }
 
-            service.port =  service.port || undefined;
-            service.profile =  service.profile || undefined;
+            service.port = service.port || undefined;
+            service.profile = service.profile || undefined;
 
             console.dir(service);
 
             el.html(this.template({service: service}));
 
-            profileBlockCount =  service.profile ? Object.keys(service.profile).length : 0;
+            profileBlockCount = service.profile ? Object.keys(service.profile).length : 0;
             sendParams = service.params;
             pageBlockCount = service.pages ? service.pages.length : 0;
             itemBlockCount = [0];
 
             console.log(itemBlockCount);
-            for (var j = 0; j <= pageBlockCount - 1; j ++) {
+            for (var j = 0; j <= pageBlockCount - 1; j++) {
 
                 el.find("#pagesBlock").before(_.template(pagesBlockTemplate)({pageBlockCount: j}));
                 console.dir(service.pages[j]);
                 itemBlockCount[j] = service.pages[j].inputItems.length;
-                pageID = '#page'+j;
+                pageID = '#page' + j;
                 inpuItems = service.pages[j].inputItems;
 
                 for (var i = 0; i <= itemBlockCount[j] - 1; i++) {
@@ -840,7 +1048,7 @@ define([
 
                     if (inpuItems[i].dataSource && inpuItems[i].dataSource.length) {
                         sendParams[pageID + 'inputDataSource' + i] = inpuItems[i].dataSource;
-                        itemTempTemplate.find(pageID +'dataSourceValue' + i).text(JSON.stringify(sendParams[pageID + 'inputDataSource' + i]));
+                        itemTempTemplate.find(pageID + 'dataSourceValue' + i).text(JSON.stringify(sendParams[pageID + 'inputDataSource' + i]));
 
                     }
 
