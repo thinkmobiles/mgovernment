@@ -41,33 +41,104 @@ define([
         }
     }
 
+    function recursionDellNodeObjByAddress(nodeObj, nodeAddressArray) {
+        var index = +nodeAddressArray[0];
+
+        if (nodeAddressArray.length == 1) {
+            nodeObj.items.splice( index, 1);
+            return;
+        }
+
+        nodeAddressArray.shift();
+        return recursionDellNodeObjByAddress(nodeObj.items[index], nodeAddressArray);
+    }
+
     function recursionCreateNodeObjByAddress(nodeObj, nodeAddressArray, nodeValue ) {
-        var index = nodeAddressArray[0];
+        var index = +nodeAddressArray[0];
 
         if (nodeAddressArray.length == 1) {
-             nodeObj.items[index] = returnNewTreeNodeObject(nodeValue);
+            nodeObj.items[index] = returnNewTreeNodeObject(nodeValue);
             return;
         }
         nodeAddressArray.shift();
         return recursionCreateNodeObjByAddress(nodeObj.items[index], nodeAddressArray, nodeValue);
     }
 
-    function recursionCreateNodeObjByAddress(nodeObj, nodeAddressArray, options ) { //options ( value:  EN: AR:}
-        var index = nodeAddressArray[0];
+    function recursionReadNodeObjByAddress(nodeObj, nodeAddressArray) {
+        var index = +nodeAddressArray[0];
+
+        if (nodeAddressArray.length == 1) {
+            return  nodeObj.items[index];
+        }
+        nodeAddressArray.shift();
+        return recursionReadNodeObjByAddress(nodeObj.items[index], nodeAddressArray);
+    }
+
+    function recursionSaveNodeObjByAddress(nodeObj, nodeAddressArray, options ) { //options ( value:,  EN:, AR:,}
+        var index = +nodeAddressArray[0];
 
         if (nodeAddressArray.length == 1) {
             nodeObj.items[index].value = options.value;
-            nodeObj.items[index].value = options.value;
-            nodeObj.items[index].value = options.value;
+            nodeObj.items[index].EN = options.EN;
+            nodeObj.items[index].AR = options.AR;
+            return;
+        }
+
+        nodeAddressArray.shift();
+        return recursionSaveNodeObjByAddress(nodeObj.items[index], nodeAddressArray, options);
+    }
+
+    function initializeTreeNode (nodeAddress, nodeValue){
+        var treeNodeAddress = nodeAddress.split('_');
+        var firstIndex = treeNodeAddress[0];
+
+        if(treeNodeAddress.length == 1) {
+            currentNodeValues[firstIndex] = returnNewTreeNodeObject(nodeValue);
+        } else {
+            treeNodeAddress.shift();
+            recursionCreateNodeObjByAddress(currentNodeValues[firstIndex], treeNodeAddress, nodeValue);
+        }
+    }
+
+    function readTreeNode (nodeAddress){
+        var treeNodeAddress = nodeAddress.split('_');
+        var firstIndex = treeNodeAddress[0];
+
+        if(treeNodeAddress.length == 1) {
+            return currentNodeValues[firstIndex];
+        } else {
+            treeNodeAddress.shift();
+            return  recursionReadNodeObjByAddress(currentNodeValues[firstIndex], treeNodeAddress);
+        }
+    }
+
+    function dellTreeNode (nodeAddress){
+        var treeNodeAddress = nodeAddress.split('_');
+        var firstIndex = treeNodeAddress[0];
+
+        if (treeNodeAddress.length == 1) {
+            currentNodeValues.splice(treeNodeAddress[0], 1);
 
             return;
         }
-        nodeAddressArray.shift();
-        return recursionCreateNodeObjByAddress(nodeObj.items[index], nodeAddressArray, nodeValue);
+        treeNodeAddress.shift();
+        recursionDellNodeObjByAddress(currentNodeValues[firstIndex], treeNodeAddress);
     }
 
+    function saveTreeNode (nodeAddress, options){
+        var treeNodeAddress = nodeAddress.split('_');
+        var firstIndex = treeNodeAddress[0];
 
+        if(treeNodeAddress.length == 1) {
+            currentNodeValues[firstIndex].value = options.value;
+            currentNodeValues[firstIndex].EN = options.EN;
+            currentNodeValues[firstIndex].AR = options.AR;
+            return;
+        }
+        treeNodeAddress.shift();
+        recursionSaveNodeObjByAddress(currentNodeValues[firstIndex], treeNodeAddress, options);
 
+    }
 
 
     var serviceUpdateView = Backbone.View.extend({
@@ -79,7 +150,8 @@ define([
             'click #closeBtn': 'hideMobileDisplay',
             'click .showTreeBtn': 'showTreeBlock',
             'click .hideTreeBtn': 'hideTreeBlock',
-            'click .clickNodeName': 'selectNodeName',
+            'click .clickNodeName': 'selectTreeNodeGetInfo',
+            'click #saveNode': 'clickSaveTreeNode',
             'click .addNode': 'treeAddNode',
             'click .addNodeItem': 'treeAddNodeItem',
             'click .dellNode': 'treeDellNode',
@@ -127,34 +199,6 @@ define([
             this.render();
         },
 
-        initializeTreeNodeArray: function(nodeAddress, nodeValue){
-            var treeNodeAddress = nodeAddress.split('_');
-            var firstIndex = treeNodeAddress[0];
-            var obj;
-
-            if(treeNodeAddress.length == 1) {
-                currentNodeValues[firstIndex] = returnNewTreeNodeObject(nodeValue);
-            } else {
-                treeNodeAddress.shift();
-                recursionCreateNodeObjByAddress(currentNodeValues[firstIndex], treeNodeAddress, nodeValue);
-            }
-
-            //if(treeNodeAddress.length == 2) {
-            //    currentNodeValues[treeNodeAddress[0]].items[treeNodeAddress[1]] = returnNewTreeNodeObject(nodeValue)
-            //}
-            //
-            //if(treeNodeAddress.length == 3) {
-            //    currentNodeValues[treeNodeAddress[0]].items[treeNodeAddress[1]].items[treeNodeAddress[2]] = returnNewTreeNodeObject(nodeValue)
-            //}
-            //
-            //if(treeNodeAddress.length == 4) {
-            //    currentNodeValues[treeNodeAddress[0]].items[treeNodeAddress[1]].items[treeNodeAddress[2]].items[treeNodeAddress[3]] = returnNewTreeNodeObject(nodeValue)
-            //}
-            //
-            //if(treeNodeAddress.length == 5) {
-            //    currentNodeValues[treeNodeAddress[0]].items[treeNodeAddress[1]].items[treeNodeAddress[2]].items[treeNodeAddress[3]].items[treeNodeAddress[4]] = returnNewTreeNodeObject(nodeValue)
-            //}
-        },
 
         treeAddNode: function (e) {
             var el = $(e.currentTarget);
@@ -184,7 +228,7 @@ define([
                 }
             }));
 
-            this.initializeTreeNodeArray(newNodeAddress,'Node ' + newNodeAddress);
+            initializeTreeNode(newNodeAddress,'Node ' + newNodeAddress);
 
             console.log('nodeAddress: ', nodeAddress);
             console.log('treeNodeAddress: ', treeNodeAddress);
@@ -200,25 +244,57 @@ define([
             e.stopPropagation();
 
             $(currentTreeUl).find('#nodeLi' + nodeAddress).remove();
+            dellTreeNode(nodeAddress);
             console.log('nodeAddress: ', nodeAddress);
         },
 
-        selectNodeName: function (e) {
+        clickSaveTreeNode: function (e) {
+            var el = $(e.currentTarget);
+            var nodeAddress = $(el).attr('data-hash');
+            var treeDiv = $(this.$el).find('#treeDiv');
+            var options = {
+                value: treeDiv.find('#treeValue').val(),
+                EN: treeDiv.find('#treeEN').val(),
+                AR: treeDiv.find('#treeAR').val()
+            };
+
+            if (!options.value || !options.EN ||!options.AR) {
+                alert('Fields cant bee empty!! ');
+                return;
+            }
+
+            $(treeDiv).find('#nodeName' + nodeAddress).text(options.value);
+            treeDiv.find('#treeValue').val('');
+            treeDiv.find('#treeEN').val('');
+            treeDiv.find('#treeAR').val('');
+
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            saveTreeNode(nodeAddress,options);
+
+            console.log('nodeAddress: ', nodeAddress);
+        },
+
+        selectTreeNodeGetInfo: function (e) {
             var el = $(e.currentTarget);
             var treeDiv = $(this.$el).find('#treeDiv');
             var nodeAddress = el.attr('data-hash');
-            var nodeName;
-
+            var nodeOptions;
 
             e.preventDefault();
             e.stopPropagation();
 
             //TODO check MainObj if exist information
             //TODO write this info in #saveNode | #treeNodeInfo | #treeValue | #treeEN | #treeAR
-            nodeName = $(treeDiv).find('#nodeName' + nodeAddress).text();
+            nodeOptions = readTreeNode(nodeAddress);
+            //nodeOptions = $(treeDiv).find('#nodeName' + nodeAddress).text();
 
             $(treeDiv).find('#saveNode').attr('data-hash', nodeAddress);
-            $(treeDiv).find('#treeValue').val(nodeName);
+            $(treeDiv).find('#treeValue').val(nodeOptions.value);
+            $(treeDiv).find('#treeEN').val(nodeOptions.EN);
+            $(treeDiv).find('#treeAR').val(nodeOptions.AR);
 
             console.log('nodeAddress: ', nodeAddress);
         },
@@ -263,11 +339,11 @@ define([
                 }
             }));
 
-            this.initializeTreeNodeArray(newNodeAddress,'Node ' + newNodeAddress);
-
             if (!searchChildrenUl.length) {
                 el.parent().parent().append(newTreeUl);
             }
+
+            initializeTreeNode(newNodeAddress,'Node ' + newNodeAddress);
 
             console.log('nodeAddress: ', nodeAddress);
             console.log('treeNodeAddress: ', treeNodeAddress);
@@ -276,6 +352,10 @@ define([
 
         treeExpandNode: function (e) {
             var el = $(e.currentTarget);
+
+            e.preventDefault();
+            e.stopPropagation();
+
             $(el).toggle();
             $(el).next().toggle();
             $(el).parent().parent().children().last().toggle();
@@ -284,6 +364,10 @@ define([
 
         treeCollapseNode: function (e) {
             var el = $(e.currentTarget);
+
+            e.preventDefault();
+            e.stopPropagation();
+
             $(el).toggle();
             $(el).prev().toggle();
             $(el).parent().parent().children().last().toggle();
@@ -291,6 +375,9 @@ define([
         },
 
         searchSelectIcon: function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
             searchIconTerm = $(e.target).val();
             console.log('searchSelectIcon: ', searchIconTerm);
             this.showSelectIcon();
@@ -298,15 +385,20 @@ define([
 
         preSelectIcon: function (e) {
             var iconId = $(e.currentTarget).attr('data-hash');
+
+            e.preventDefault();
+            e.stopPropagation();
+
             selectedIcon = iconsCollection.toJSON()[iconId];
             console.log('preSelectIcon clicked', iconId);
             selectIconDiv.find('#selectedIcon').text(selectedIcon.title);
         },
 
         closeSelectIcon: function (e) {
-            console.log('Close clicked');
+            //console.log('Close clicked');
             e.preventDefault();
             e.stopPropagation();
+
             selectIconDiv.hide();
         },
 
