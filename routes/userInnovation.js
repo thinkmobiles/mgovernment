@@ -14,5 +14,11 @@ module.exports = function(db) {
         .post(session.isAuthenticatedUser, userInnovation.createInnovation)
         .get(session.isAuthenticatedUser, userInnovation.getAllInnovations);
 
+    router.route('/admin')
+        .get(session.isAdminBySession, userInnovation.getInnovations)
+        .post(session.isAdminBySession, userInnovation.createInnovation)
+        .put(session.isAdminBySession, userInnovation.editInnovations)
+        .delete(session.isAdminBySession, userInnovation.deleteInnovations);
+
     return router;
 };
