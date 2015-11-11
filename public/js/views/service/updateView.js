@@ -52,6 +52,20 @@ define([
         return recursionCreateNodeObjByAddress(nodeObj.items[index], nodeAddressArray, nodeValue);
     }
 
+    function recursionCreateNodeObjByAddress(nodeObj, nodeAddressArray, options ) { //options ( value:  EN: AR:}
+        var index = nodeAddressArray[0];
+
+        if (nodeAddressArray.length == 1) {
+            nodeObj.items[index].value = options.value;
+            nodeObj.items[index].value = options.value;
+            nodeObj.items[index].value = options.value;
+
+            return;
+        }
+        nodeAddressArray.shift();
+        return recursionCreateNodeObjByAddress(nodeObj.items[index], nodeAddressArray, nodeValue);
+    }
+
 
 
 
