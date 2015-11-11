@@ -1,8 +1,21 @@
-<li>
-    <div>
-        <img alt="" class="expandNode" src="Images/Minus.png"/>
-        <img alt="" class="collapseNode" src="Images/Plus.png"/>
-    </div>
-    <div>Node 1
-    </div>
+<li class="treeNode" id="nodeLi<%= node.address %>">
+        <div>
+            <img alt="" class="expandNode" src="img/minus.png"/>
+            <img alt="" class="collapseNode" src="img/plus.png"/>
+        </div>
+        <span class="clickNodeName" id="nodeName<%= node.address %>"
+              data-hash="<%= node.address %>"><%= node.value %></span>
+    <span data-hash="<%= node.address %>" style="margin-left: 5px;">
+        <a href="#" class="addNode actionButtonNode"
+           style="text-decoration: none;  color: #F8901F">
+            &nbsp Add Node &nbsp</a>
+
+        <a href="#" class="addNodeItem actionButtonNode"
+           style=" text-decoration: none; color: green">
+            &nbsp Add Item &nbsp</a>
+
+        <a href="#" class="dellNode actionButtonNode"
+           style=" text-decoration: none; color: red">
+            &nbsp Dell &nbsp</a>
+    </span>
 </li>
