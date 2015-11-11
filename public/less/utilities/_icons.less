@@ -1,0 +1,78 @@
+.spritebox(@left, @top, @height, @width) {
+  background-image: url('../img/iconsNav.png');
+  background-repeat: no-repeat;
+  background-position: @left @top;
+  height: @height;
+  width: @width
+}
+
+.iconAdminHistoryLog {
+  &:before {
+    .spritebox(-0px, -0px, 46px, 46px);
+  }
+  &:hover, &:active, &:focus, &.active {
+    &:before {
+      .spritebox(-46px, -0px, 46px, 46px);
+    }
+  }
+}
+.iconFeedbacks {
+  &:before {
+    .spritebox(-0px, -46px, 46px, 46px);
+  }
+  &:hover, &:active, &:focus, &.active {
+    &:before {
+      .spritebox(-92px, -0px, 46px, 46px);
+    }
+  }
+}
+.iconEmailReports {
+  &:before {
+    .spritebox(-92px, -46px, 46px, 46px);
+  }
+  &:hover, &:active, &:focus, &.active {
+    &:before {
+      .spritebox(-46px, -46px, 46px, 46px);
+    }
+  }
+}
+.iconIcons {
+  &:before {
+    .spritebox(-0px, -92px, 46px, 46px);
+  }
+  &:hover, &:active, &:focus, &.active {
+    &:before {
+      .spritebox(-46px, -92px, 46px, 46px);
+    }
+  }
+}
+.iconServices {
+  &:before {
+    .spritebox(-92px, -92px, 46px, 46px);
+  }
+  &:hover, &:active, &:focus, &.active {
+    &:before {
+      .spritebox(-138px, -0px, 46px, 46px);
+    }
+  }
+}
+.iconSignin {
+  &:before {
+    .spritebox(-138px, -46px, 46px, 46px);
+  }
+  &:hover, &:active, &:focus, &.active {
+    &:before {
+      .spritebox(-138px, -92px, 46px, 46px);
+    }
+  }
+}
+.iconUsers {
+  &:before {
+    .spritebox(-0px, -138px, 46px, 46px);
+  }
+  &:hover, &:active, &:focus, &.active {
+    &:before {
+      .spritebox(-46px, -138px, 46px, 46px);
+    }
+  }
+}
