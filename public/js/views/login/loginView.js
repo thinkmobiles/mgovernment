@@ -41,6 +41,7 @@ define([
                     e.stopImmediatePropagation();
 
                     //TODO dell class from body
+                    $('body').removeClass('loginForm');
 
                     App.authorized = true;
                     Backbone.history.fragment = '';
@@ -57,7 +58,8 @@ define([
 
         render: function () {
             //TODO add class to body
-            
+            $('body').addClass('loginForm');
+
             this.$el.html(this.template());
             return this;
         }

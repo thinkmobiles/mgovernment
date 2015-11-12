@@ -88,6 +88,20 @@ define([
         return recursionSaveNodeObjByAddress(nodeObj.items[index], nodeAddressArray, options);
     }
 
+    function recursionValidateNodeObj(nodeObj, cb) {
+
+        if (!nodeObj.value || !nodeObj.EN || !nodeObj.AR ){
+            alert(nodeObj.value + ' has empty fields. Please fill thay!');
+            return cb('error');
+        }
+
+        for ( var i = nodeObj.items.length; i >= 0; i --){
+            if (nodeObj.items[i]) {
+                recursionValidateNodeObj(nodeObj.items[i], cb)
+            }
+        }
+    }
+
     function initializeTreeNode (nodeAddress, nodeValue){
         var treeNodeAddress = nodeAddress.split('_');
         var firstIndex = treeNodeAddress[0];
@@ -558,10 +572,21 @@ define([
             var mobilePage = $(e.target).parent().attr('data-page');
             var treeList = el.find('#treeDiv').find('#treeList');
 
-            // TODO Normalize currentNodeValues
-            currentNodeValues.items =_.compact(currentNodeValues.items);
-
+            recursionValidateNodeObj
             // TODO validate if there are empty fields
+            for (var i = currentNodeValues.length - 1; i >= 0; i --){
+                if (currentNodeValues[i]) {
+                    recursionValidateNodeObj(currentNodeValues[i], function(err){
+                        if (err) {
+                            return;
+                        }
+                    })
+                }
+            }
+
+
+            // TODO Normalize currentNodeValues
+            currentNodeValues =_.compact(currentNodeValues);
 
             pagesTreeNodesValues['page' + mobilePage + 'item' + item] = currentNodeValues;
 
