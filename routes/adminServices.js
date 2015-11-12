@@ -14,8 +14,6 @@ module.exports = function(db){
     var router = express.Router();
     var servicesHandler = new ServicesHandler(db);
 
-
-
     router.route('/')
         .post(servicesHandler.createService)
         .get(servicesHandler.getServices);

@@ -10,7 +10,7 @@ var PreparingDB = require('./preparingDB');
 
 var app = require('../../app');
 
-describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function () {
+describe('TRA Services Complains SMSSpam, HelpSalim, PoorCoverage', function () {
     this.timeout(35000);
 
     var agent = request.agent(app);
@@ -38,31 +38,6 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
                 done();
             });
     });
-
-    //it('Unauthorized GET serviceList', function (done) {
-    //    console.log('GET serviceList: ');
-    //    agent
-    //        .post('/user/signOut')
-    //        .send({})
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //
-    //            agent
-    //                .get('/service/')
-    //                .expect(200)
-    //                .end(function (err, res) {
-    //                    if (err) {
-    //                        return done(err)
-    //                    }
-    //                    serviceCollection = res.body;
-    //                    console.log('serviceCollection :',res.body);
-    //                    done()
-    //                });
-    //        });
-    //});
 
     it('SEND data to ComplainSmsBlock', function (done) {
 
@@ -187,7 +162,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
     it('SEND data to Help Salim with BAD values', function (done) {
 
         var data = {
-            url: 'blabla.',
+            url: 'blabla',
             description: 1221212
         };
 
