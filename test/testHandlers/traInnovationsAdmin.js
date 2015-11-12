@@ -11,7 +11,7 @@ var url = 'http://localhost:80';
 
 var app = require('../../app');
 
-describe('User Innovations', function () {
+describe('Admin Innovations', function () {
     this.timeout(10000);
 
     var agent = request.agent(app);
