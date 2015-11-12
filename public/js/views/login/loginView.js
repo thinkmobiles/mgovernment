@@ -40,6 +40,8 @@ define([
                     e.stopPropagation();
                     e.stopImmediatePropagation();
 
+                    //TODO dell class from body
+
                     App.authorized = true;
                     Backbone.history.fragment = '';
                     Backbone.history.navigate('index', {trigger: true, replace: true});
@@ -54,6 +56,8 @@ define([
         },
 
         render: function () {
+            //TODO add class to body
+            
             this.$el.html(this.template());
             return this;
         }
