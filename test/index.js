@@ -26,8 +26,10 @@ require('./testHandlers/traInnovationsAdmin');
 //require('./testHandlers/traServices Complains ServiceProvider_TRA Services');
 //require('./testHandlers/traServices Complains Enquiries_Suggestion ');
 //require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
-//require('./testHandlers/userFeedback');
+require('./testHandlers/userFeedback');
 
 //require('./testHandlers/traNewsAnnouncements');
 //require('./testHandlers/userAttachment');
 //require('./testHandlers/tdaServices');
+
+require('./testHandlers/adminEmailReport');

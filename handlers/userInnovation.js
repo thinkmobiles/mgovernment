@@ -42,7 +42,7 @@ var InnovationHandler = function(db) {
     this.editInnovations = function (req, res, next) {
 
         var body = req.body;
-        var id = req.query.id;
+        var id = req.params.id;
         var data = {};
 
         if (!body.title || !body.message || !body.type) {
@@ -77,7 +77,7 @@ var InnovationHandler = function(db) {
 
     this.deleteInnovations = function (req, res, next) {
 
-        var id = req.query.id;
+        var id = req.params.id;
 
         Innovation
             .findByIdAndRemove({_id: id}, function (err, model) {
@@ -91,7 +91,7 @@ var InnovationHandler = function(db) {
 
     this.getInnovations = function (req, res, next) {
 
-        var id = req.query.id;
+        var id = req.params.id;
 
         Innovation
             .findById({_id: id}, function (err, model) {

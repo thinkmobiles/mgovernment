@@ -56,6 +56,21 @@ var EmailReport = function (db) {
             });
     };
 
+    this.deleteEmailReport = function (req, res, next) {
+
+        var id = req.params.id;
+
+        EmailReport
+            .findByIdAndRemove({_id: id})
+            .exec(function (err, model) {
+               if (err) {
+                   return next(err);
+               }
+
+                return res.status(200).send(model);
+            });
+    };
+
     this.getCount = function (req, res, next) {
         var filter = req.query.filter ? req.query.filter.split(',') : [];
         var searchQuery = {};
