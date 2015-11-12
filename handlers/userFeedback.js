@@ -87,6 +87,21 @@ var Feedback = function(db) {
             });
     };
 
+    this.deleteFeedback = function (req, res, next) {
+
+        var id = req.params.id;
+
+        Feedback
+            .findByIdAndRemove({_id: id})
+            .exec(function (err, model) {
+               if (err) {
+                   return next(err);
+               }
+
+                return res.status(200).send(model);
+            });
+    };
+
     this.getCount = function (req, res, next) {
 
         Feedback

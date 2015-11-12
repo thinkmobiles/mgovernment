@@ -21,6 +21,9 @@ module.exports = function(db) {
     router.route('/')
         .get(session.isAdminBySession, emailReport.getAllEmailReports);
 
+    router.route('/:id')
+        .delete(session.isAdminBySession, emailReport.deleteEmailReport);
+
     router.route('/getCount/')
         .get(session.isAdminBySession, emailReport.getCount);
 

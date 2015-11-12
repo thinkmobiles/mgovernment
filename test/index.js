@@ -14,12 +14,13 @@ var app = require('../app');
 //require('./testHandlers/traServicesComplainsEnquiriesSuggestion');
 //require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
 
-require('./testHandlers/userFeedback');
+//require('./testHandlers/userFeedback');
 require('./testHandlers/traNewsAnnouncements');
 //require('./testHandlers/userAttachment');
 //require('./testHandlers/traServicesAboutInfo');
-require('./testHandlers/traInnovations');
+//require('./testHandlers/traInnovations');
 require('./testHandlers/traInnovationsAdmin');
+require('./testHandlers/adminEmailReport');
 
 ////not implemented
 //require('./testHandlers/tdaServices');

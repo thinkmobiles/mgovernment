@@ -11,7 +11,7 @@ var url = 'http://localhost:80';
 
 var app = require('../../app');
 
-describe('User Innovations', function () {
+describe('Admin Innovations', function () {
     this.timeout(10000);
 
     var agent = request.agent(app);
@@ -121,7 +121,7 @@ describe('User Innovations', function () {
                 }
 
                 agent
-                    .put('/innovation/admin?id='+editInnovationId)
+                    .put('/innovation/admin/'+editInnovationId)
                     .send({
                         title: editData.title,
                         message: editData.message,
@@ -134,7 +134,7 @@ describe('User Innovations', function () {
                         }
 
                         agent
-                            .get('/innovation/admin?id='+editInnovationId)
+                            .get('/innovation/admin/'+editInnovationId)
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {
@@ -171,7 +171,7 @@ describe('User Innovations', function () {
                 }
 
                 agent
-                    .put('/innovation/admin?id='+editInnovationId)
+                    .put('/innovation/admin/'+editInnovationId)
                     .send({
                         title: editData.title,
                         message: editData.message,
@@ -202,7 +202,7 @@ describe('User Innovations', function () {
                 }
 
                 agent
-                    .delete('/innovation/admin?id='+deletedInnovationId)
+                    .delete('/innovation/admin/'+deletedInnovationId)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -210,7 +210,7 @@ describe('User Innovations', function () {
                         }
 
                         agent
-                            .get('/innovation/admin?id='+deletedInnovationId)
+                            .get('/innovation/admin/'+deletedInnovationId)
                             .expect(404)
                             .end(function (err, res) {
                                 if (err) {
