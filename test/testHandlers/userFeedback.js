@@ -18,7 +18,7 @@ describe('Feedback tests - Create, Get ,', function () {
     var serviceCollection;
 
     before(function (done) {
-        this.timeout(40000);
+        this.timeout(30000);
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
@@ -26,11 +26,11 @@ describe('Feedback tests - Create, Get ,', function () {
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
-                //preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
+                preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
                 preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
+                preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_DOMAIN_WHOIS)
             ],
             function (err, results) {
                 if (err) {
@@ -65,72 +65,72 @@ describe('Feedback tests - Create, Get ,', function () {
             });
     });
 
-    //it('SEND Good feedback', function (done) {
-    //
-    //    var service = serviceCollection[0];
-    //    var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
-    //    var feedback = {
-    //        serviceName: service.serviceName,
-    //        serviceId: service._id,
-    //        rate: 3,
-    //        feedback: 'awesome, max rate'
-    //    };
-    //
-    //    agent
-    //        .post('/crm/signIn')
-    //        .send(loginData)
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //
-    //            agent
-    //                .post('/feedback')
-    //                .send(feedback)
-    //                .expect(201)
-    //                .end(function (err, res) {
-    //                    console.dir(res.body);
-    //                    if (err) {
-    //                        return done(err)
-    //                    }
-    //                    done();
-    //                });
-    //        });
-    //});
-    //
-    //it('SEND  feedback with BAD values', function (done) {
-    //
-    //    var service = serviceCollection[0];
-    //    var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
-    //    var feedback = {
-    //        serviceName: service.serviceName,
-    //        rate: 5,
-    //        feedback: 'the worst one'
-    //    };
-    //
-    //    agent
-    //        .post('/crm/signIn')
-    //        .send(loginData)
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //
-    //            agent
-    //                .post('/feedback')
-    //                .send(feedback)
-    //                .expect(201)
-    //                .end(function (err, res) {
-    //                    console.dir(res.body);
-    //                    if (err) {
-    //                        return done(err)
-    //                    }
-    //                    done();
-    //                });
-    //        });
-    //});
+    it('SEND Good feedback', function (done) {
+
+        var service = serviceCollection[0];
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+        var feedback = {
+            serviceName: service.serviceName,
+            serviceId: service._id,
+            rate: 3,
+            feedback: 'awesome, max rate'
+        };
+
+        agent
+            .post('/crm/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/feedback')
+                    .send(feedback)
+                    .expect(201)
+                    .end(function (err, res) {
+                        console.dir(res.body);
+                        if (err) {
+                            return done(err)
+                        }
+                        done();
+                    });
+            });
+    });
+
+    it('SEND  feedback with BAD values', function (done) {
+
+        var service = serviceCollection[0];
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+        var feedback = {
+            serviceName: service.serviceName,
+            rate: 5,
+            feedback: 'the worst one'
+        };
+
+        agent
+            .post('/crm/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/feedback')
+                    .send(feedback)
+                    .expect(201)
+                    .end(function (err, res) {
+                        console.dir(res.body);
+                        if (err) {
+                            return done(err)
+                        }
+                        done();
+                    });
+            });
+    });
 
     it('SEND GOOD feedback UnAuthorized', function (done) {
 
@@ -139,7 +139,7 @@ describe('Feedback tests - Create, Get ,', function () {
         var feedback = {
             serviceName: service.serviceName,
             serviceId: service._id,
-            rate: 3,
+            rate: '3',
             feedback: 'pretty nice'
         };
 

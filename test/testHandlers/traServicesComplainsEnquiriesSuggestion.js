@@ -7,13 +7,13 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:7791';
 
+var app = require('../../app');
 
-describe('TRA Services tests Complains Enquiries_Suggestion', function () {
-    this.timeout(55000);
+describe('TRA Services Enquiries, Suggestions', function () {
+    this.timeout(30000);
 
-    var agent = request.agent(url);
+    var agent = request.agent(app);
     var serviceCollection;
 
     before(function (done) {
@@ -23,13 +23,9 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
 
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
-                preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
-                preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-                preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
                 preparingDb.createUsersByTemplate(USERS.COMPANY)
-
             ],
             function (err, results) {
                 if (err) {
@@ -42,14 +38,14 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
 
     it('SEND complainEnquiries', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_DATA;
         var data = {
             title: 'I dont like such enquiries',
             description: 'I dont like such enquiries. Because...'
         };
 
         agent
-            .post('/user/signIn')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -72,28 +68,39 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
     });
 
     it('SEND complainEnquiries with BAD values', function (done) {
+
+        var loginData = USERS.CLIENT_CRM_DATA;
+
         var data = {
             title: 'I dont like such enquiries',
             description: 55
         };
 
         agent
-            .post('/complainEnquiries')
-            .send(data)
-            .expect(400)
+            .post('/crm/signIn')
+            .send(loginData)
+            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
-                done();
-            });
 
+                agent
+                    .post('/complainEnquiries')
+                    .send(data)
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
+            });
     });
 
     it('SEND complainEnquiries UnAuthorized', function (done) {
 
-        var loginData = USERS.CLIENT;
         var data = {
             title: 'I dont like enquirie _________________',
             description: 'I dont like such enquiries. Because...',
@@ -101,8 +108,8 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
         };
 
         agent
-            .post('/user/signOut')
-            .send(loginData)
+            .post('/crm/signOut')
+            .send({})
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -123,10 +130,9 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
             });
     });
 
-    // ------------
     it('SEND Suggestion', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_DATA;
         var data = {
             title: 'Hi there. I am Ibrahim. I want to _______',
             description: 'I there. I am Ibrahim. I want to _______ in TRA servicce.... ',
@@ -134,7 +140,7 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
         };
 
         agent
-            .post('/user/signIn')
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -158,36 +164,43 @@ describe('TRA Services tests Complains Enquiries_Suggestion', function () {
 
     it('SEND Suggestion with BAD values', function (done) {
 
-        var loginData = USERS.CLIENT;
+        var loginData = USERS.CLIENT_CRM_DATA;
         var data = {
             title: 'Hi there. I am Ibrahim. I want to _______'
         };
 
         agent
-            .post('/sendSuggestion')
-            .send(data)
-            .expect(400)
+            .post('/crm/signIn')
+            .send(loginData)
+            .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
-                console.dir(res.body);
-                done();
+                agent
+                    .post('/sendSuggestion')
+                    .send(data)
+                    .expect(400)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        done();
+                    });
             });
     });
 
     it('SEND Suggestion UnAuthorized', function (done) {
 
-        var loginData = USERS.CLIENT;
         var data = {
             title: 'Need new license of service _________________',
             description: 'Need new license of ______________ service........ I license number: 2323324232432'
-
         };
 
         agent
-            .post('/user/signOut')
-            .send(loginData)
+            .post('/crm/signOut')
+            .send({})
             .expect(200)
             .end(function (err, res) {
                 if (err) {
