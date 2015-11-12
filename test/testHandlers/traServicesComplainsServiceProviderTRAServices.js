@@ -7,12 +7,11 @@ var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:80';
 
 var app = require('../../app');
 
-describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function () {
-    this.timeout(35000);
+describe('TRA Services Complain Service Provider, Complain TRA Services', function () {
+    this.timeout(30000);
 
     var agent = request.agent(app);
     var serviceCollection;

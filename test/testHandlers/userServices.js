@@ -4,7 +4,6 @@ var request = require('supertest');
 var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var async = require('async');
-
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');

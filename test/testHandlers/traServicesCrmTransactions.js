@@ -9,7 +9,7 @@ var PreparingDB = require('./preparingDB');
 
 var app = require('../../app');
 
-describe('TRA CRM Services tests SMSSpam', function () {
+describe('TRA CRM Services GET Transactions, Pagination, Search', function () {
     this.timeout(30000);
 
     var agent = request.agent(app);
@@ -121,7 +121,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
 
-    /*it('SEND Suggestion AND Get Transactions', function (done) {
+    it('SEND Suggestion AND Get Transactions', function (done) {
 
         var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
@@ -161,7 +161,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                             });
                     });
             });
-    });*/
+    });
 
     it('Get Transactions SEARCH=work Page 1 Count 5', function (done) {
 
