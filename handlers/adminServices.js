@@ -11,20 +11,23 @@ var Service = function(db) {
     var adminHistoryHandler = new HistoryHandler(db);
     var validation = require('../helpers/validation');
 
-    function checkReceivedParamsFieldNamesWithItemsNames(recivedArray, arrayTocompareName){
+    function checkReceivedParamsFieldNamesWithItemsNames(receivedArray, arrayToCompareName) {
         var foundEqualFieldName = false;
 
-        for (var i = recivedArray.length - 1; i >= 0; i--) {
-            for (var j = arrayTocompareName.length - 1; j >= 0; j --) {
-                for (var m = arrayTocompareName[j].inputItems.length - 1; m >= 0; m --) {
-                    if (recivedArray[i] ===  arrayTocompareName[j].inputItems[m].name){
+        for (var i = receivedArray.length - 1; i >= 0; i--) {
+            foundEqualFieldName = false;
+
+            for (var j = arrayToCompareName.length - 1; j >= 0; j--) {
+
+                for (var m = arrayToCompareName[j].inputItems.length - 1; m >= 0; m--) {
+
+                    if (receivedArray[i] === arrayToCompareName[j].inputItems[m].name) {
                         foundEqualFieldName = true;
                     }
                 }
-                if (!foundEqualFieldName) {
-                    return false;
-                }
-                foundEqualFieldName = false;
+            }
+            if (!foundEqualFieldName) {
+                return false;
             }
         }
         return true;
@@ -128,7 +131,8 @@ var Service = function(db) {
                     description: 'Create new Service'
                 };
                 adminHistoryHandler.pushlog(log);
-                res.status(200).send(model.toJSON());
+
+                res.status(201).send(model.toJSON());
             })
     };
 

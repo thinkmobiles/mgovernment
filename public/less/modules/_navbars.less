@@ -2,11 +2,11 @@
   position: fixed;
   width: 315px;
   left: 0;
-  top: 0;
-  margin: 56px 0 0;
+  top: 56px;
+  margin: 0;
   height: 100%;
-  height: calc(100% + 60px);
-  height: -moz-calc(100%);
+  height: ~"calc(100% -56px)";
+  height: ~"-moz-calc(100% - 56px)";
   padding-bottom: 60px;
   background-color: @sideNavBgColor;
   z-index: 999;
@@ -16,6 +16,15 @@
   &.rightAligned {
     will-change: right;
     right: -105%;
+    left: auto;
+  }
+}
+.sideNav.fixed {
+  left: 0;
+  position: fixed;
+
+  &.rightAligned {
+    right: 0;
     left: auto;
   }
 }
@@ -32,6 +41,10 @@
   padding: 20px 10px 20px 100px;
   font-family: @fontFamily-3;
   .fontSize(24);
+
+  &.iconSignin {
+    border-top: 1px solid @sideNavSignBtnBorderColor;
+  }
 
   &:hover, &:active, &:focus, &.active {
     border-left: 5px solid @sideNavBtnBorderLeftColor;

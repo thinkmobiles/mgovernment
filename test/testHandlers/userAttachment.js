@@ -12,7 +12,7 @@ var PreparingBd = require('./preparingDb');
 
 var app = require('../../app');
 
-describe('Attachment POST, GET, DELETE for User', function () {
+describe('Attachment POST, GET, DELETE', function () {
 
     var agent = request.agent(app);
 
