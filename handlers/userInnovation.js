@@ -49,24 +49,24 @@ var InnovationHandler = function(db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        if (! /^[123456]$/.test(body.type)) {
+        if (!/^[123456]$/.test(body.type)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': type'});
         }
 
-        if (!body.title) {
+        if (body.title) {
             data.title = body.title;
         }
 
-        if (!body.message) {
+        if (body.message) {
             data.message = body.message;
         }
 
-        if(!body.type) {
+        if (body.type) {
             data.type = body.type;
         }
 
         Innovation
-            .findByIdAndUpdate({_id: id}, {$set: data}, function(err, model) {
+            .findByIdAndUpdate({_id: id}, {$set: data}, function (err, model) {
                 if (err) {
                     return next(err);
                 }
