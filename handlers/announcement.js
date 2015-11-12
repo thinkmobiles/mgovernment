@@ -4,12 +4,18 @@ var SCHEDULE_JOB;
 var RSS_FEED_URL = 'http://www.forbes.com/technology/index.xml';
 var MAX_NEWS_COUNT = 200;
 
+var REGULAR_EXPRESSION_ITEM = '<item>\n+([^]+?)<\/item>';
+var REGULAR_EXPRESSION_LINK = '<link>([^]+?)<\/link>';
+var REGULAR_EXPRESSION_TITLE = '<title>([^]+?)<\/title>';
+var REGULAR_EXPRESSION_DESCRIPTION = '<description>([^]+?)<\/description>';
+var REGULAR_EXPRESSION_PUB_DATE = '<pubDate>([^]+?)<\/pubDate>';
+var REGULAR_EXPRESSION_MEDIA_CONTENT = '<media:content url="([^]+?)"';
+
 var AnnouncementHandler = function(db) {
     'use strict';
 
     var schedule = require('node-schedule');
     var request = require('request');
-    //var xmlParser = require('xml2json');
 
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
@@ -21,7 +27,7 @@ var AnnouncementHandler = function(db) {
 
         if (!SCHEDULE_JOB) {
 
-           // UpdateNews();
+            UpdateNews();
 
             var rule = new schedule.RecurrenceRule();
             rule.minute = 5;
@@ -29,45 +35,59 @@ var AnnouncementHandler = function(db) {
             SCHEDULE_JOB = schedule.scheduleJob(rule, function () {
                 console.log('Schedule for Update News started at: ', new Date());
 
-               // UpdateNews();
+                UpdateNews();
             });
         }
     }
 
-    //function UpdateNews() {
-    //    request(RSS_FEED_URL, {json: true}, function (err, res, body) {
-    //
-    //        if (err) {
-    //            console.log('Get News error: ' + err);
-    //            return;
-    //        }
-    //
-    //        var jsonData = xmlParser.toJson(body, {
-    //            sanitize: true,
-    //            object: true
-    //        });
-    //
-    //        try {
-    //            var newsItems = jsonData.rss.channel.item;
-    //        }
-    //        catch (err) {
-    //            console.log('Error on parse news (' + new Date() + '): ' + err);
-    //            return;
-    //        }
-    //
-    //        for (var i = 0; i < newsItems.length; i++) {
-    //            findOrCreateAnnouncement(newsItems[i], function (err) {
-    //                if (err) {
-    //                    if (!isDuplicateIndexError(err)) {
-    //                        console.log('Error on create announcement: ' + err);
-    //                    }
-    //                }
-    //            });
-    //        }
-    //
-    //        removeOldNews();
-    //    });
-    //}
+    function UpdateNews() {
+        request(RSS_FEED_URL, {json: true}, function (err, res, body) {
+
+            if (err) {
+                console.log('Get News error: ' + err);
+                return;
+            }
+
+            var newsItems = parserXml(body);
+
+            for (var i = 0; i < newsItems.length; i++) {
+                findOrCreateAnnouncement(newsItems[i], function (err) {
+                    if (err) {
+                        if (!isDuplicateIndexError(err)) {
+                            console.log('Error on create announcement: ' + err);
+                        }
+                    }
+                });
+            }
+
+            removeOldNews();
+        });
+    }
+
+    function parserXml(xmlBody) {
+
+        var regexp = new RegExp(REGULAR_EXPRESSION_ITEM,'gm');
+        var regexpLink = new RegExp(REGULAR_EXPRESSION_LINK,'m');
+        var regexpTitle = new RegExp(REGULAR_EXPRESSION_TITLE,'m');
+        var regexpDescription = new RegExp(REGULAR_EXPRESSION_DESCRIPTION,'m');
+        var regexpPubDate = new RegExp(REGULAR_EXPRESSION_PUB_DATE,'m');
+        var regexpMediaContent = new RegExp(REGULAR_EXPRESSION_MEDIA_CONTENT,'m');
+
+        var parsedXml = [];
+        var parsedXmlObject = [];
+
+        while (parsedXml = regexp.exec(xmlBody)) {
+
+            parsedXmlObject.push({
+                link: regexpLink.exec(parsedXml)[1],
+                title: regexpTitle.exec(parsedXml)[1],
+                description: regexpDescription.exec(parsedXml)[1],
+                pubDate: new Date(Date.parse(regexpPubDate.exec(parsedXml)[1])),
+                image: (regexpMediaContent.exec(parsedXml)) ? regexpMediaContent.exec(parsedXml)[1] : null
+            });
+        }
+        return parsedXmlObject;
+    }
 
     function isDuplicateIndexError(err) {
         return (err instanceof Error && err.code == 11000);
@@ -88,24 +108,12 @@ var AnnouncementHandler = function(db) {
 
     function createAnnouncement(newsItem, callback) {
 
-        var pubDate = new Date(Date.parse(newsItem.pubDate));
-
-        var imageLink = null;
-        if (newsItem['media:content']) {
-            imageLink = newsItem['media:content'].url;
-        }
         if (typeof newsItem.description !== 'string') {
             console.dir(newsItem.description);
             newsItem.description = newsItem.title;
         }
 
-        var announcement = new Announcement({
-            title: newsItem.title,
-            description: newsItem.description,
-            pubDate: pubDate,
-            link: newsItem.link,
-            image: imageLink
-        });
+        var announcement = new Announcement(newsItem);
 
         announcement
             .save(function (err, ann) {

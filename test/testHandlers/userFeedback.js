@@ -137,7 +137,7 @@ describe('Feedback tests - Create, Get ,', function () {
         var service = serviceCollection[0];
         var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var feedback = {
-            serviceName: service.serviceName,
+            //serviceName: service.serviceName,
             serviceId: service._id,
             rate: '3',
             feedback: 'pretty nice'
@@ -192,12 +192,38 @@ describe('Feedback tests - Create, Get ,', function () {
             });
     });
 
-    it('GET ALL feedback by NOT Admin', function (done) {
+    //it('GET ALL feedback by NOT Admin', function (done) {
+    //
+    //    var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+    //
+    //    agent
+    //        .post('/crm/signIn')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //
+    //            agent
+    //                .get('/feedback')
+    //                .expect(403)
+    //                .end(function (err, res) {
+    //                    if (err) {
+    //                        return done(err)
+    //                    }
+    //                    console.dir(res.body);
+    //                    done();
+    //                });
+    //        });
+    //});
 
-        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+    it('GET SEARCHED feedback by Admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/crm/signIn')
+            .post('/user/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -206,13 +232,49 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback')
-                    .expect(403)
+                    .get('/feedback?search=pretty')
+                    .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
                         console.dir(res.body);
+                        expect(res.body).to.not.empty;
+                        for (var i = 0; res.body.length > i; i++){
+                            expect(res.body[i]).to.satisfy(function(data){
+                                var indexFeedback = data.feedback.toLowerCase().indexOf('pretty');
+                                return indexFeedback > -1
+                            })
+                        }
+
+                        done();
+                    });
+            });
+    });
+
+    it('GET SEARCHED feedback with WRONG key by Admin', function(done){
+
+        var loginData = USERS.ADMIN_DEFAULT;
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/feedback?search=query1223')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.dir(res.body);
+                        expect(res.body).to.empty;
+
                         done();
                     });
             });

@@ -39,6 +39,75 @@ var InnovationHandler = function(db) {
             })
     };
 
+    this.editInnovations = function (req, res, next) {
+
+        var body = req.body;
+        var id = req.query.id;
+        var data = {};
+
+        if (!body.title || !body.message || !body.type) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        if (! /^[123456]$/.test(body.type)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': type'});
+        }
+
+        if (!body.title) {
+            data.title = body.title;
+        }
+
+        if (!body.message) {
+            data.message = body.message;
+        }
+
+        if(!body.type) {
+            data.type = body.type;
+        }
+
+        Innovation
+            .findByIdAndUpdate({_id: id}, {$set: data}, function(err, model) {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.status(200).send(model);
+            });
+    };
+
+    this.deleteInnovations = function (req, res, next) {
+
+        var id = req.query.id;
+
+        Innovation
+            .findByIdAndRemove({_id: id}, function (err, model) {
+                if (err) {
+                    return next(err);
+                }
+
+                return res.status(200).send(model);
+            });
+    };
+
+    this.getInnovations = function (req, res, next) {
+
+        var id = req.query.id;
+
+        Innovation
+            .findById({_id: id}, function (err, model) {
+                if (err) {
+                    return next(err);
+                }
+                if (model === null) {
+
+                    return res.status(404).send(model);
+                } else {
+
+                    return res.status(200).send(model);
+                }
+            })
+    };
+
     this.getAllInnovations = function (req, res, next) {
 
         var sortField = req.query.orderBy || 'createdAt';

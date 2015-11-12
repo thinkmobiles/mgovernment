@@ -1,0 +1,60 @@
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+html {
+  font-size: 100%;
+}
+body {
+  padding: 0;
+  margin: 0;
+  background: @bgMainColor;
+  color: @textMainColor;
+}
+a {
+  background-color: transparent;
+  color: @linkMainColor;
+}
+a:active,
+a:hover {
+  color: @linkHoverColor;
+  outline: 0;
+}
+img {
+  max-width: 100%;
+  display: inline-block;
+}
+input[type='text'],
+input[type='tel'],
+input[type='email'],
+input[type='password'],
+input[type='search'],
+textarea {
+  &:focus {
+    &::-webkit-input-placeholder {color: transparent;}
+    &::-moz-placeholder          {color: transparent;}
+    &:-moz-placeholder           {color: transparent;}
+    &:-ms-input-placeholder      {color: transparent;}
+  }
+}
+
+.footerFixed {
+  min-height: 100%;
+  position: relative;
+
+  body {
+    height: 100%;
+  }
+  #footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+}
