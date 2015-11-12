@@ -17,6 +17,8 @@ describe('Feedback tests - Create, Get ,', function () {
     var agent = request.agent(app);
     var serviceCollection;
 
+    var deletedFeedbackId;
+
     before(function (done) {
         this.timeout(30000);
         console.log('>>> before');
@@ -187,6 +189,8 @@ describe('Feedback tests - Create, Get ,', function () {
                             return done(err)
                         }
                         console.dir(res.body);
+                        deletedFeedbackId = res.body[0]._id;
+
                         done();
                     });
             });
@@ -276,6 +280,44 @@ describe('Feedback tests - Create, Get ,', function () {
                         expect(res.body).to.empty;
 
                         done();
+                    });
+            });
+    });
+
+    it('DELETED feedback by admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .delete('/feedback/'+deletedFeedbackId)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        agent
+                            .get('/feedback?search=pretty')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+
+                                expect(res.body).to.be.empty;
+                                console.log(res.body);
+
+                                done();
+                            });
                     });
             });
     });
