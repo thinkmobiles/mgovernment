@@ -39,8 +39,6 @@ define([
                     e.preventDefault();
                     e.stopPropagation();
                     e.stopImmediatePropagation();
-
-                    //TODO dell class from body
                     $('body').removeClass('loginForm');
 
                     App.authorized = true;
@@ -57,9 +55,7 @@ define([
         },
 
         render: function () {
-            //TODO add class to body
             $('body').addClass('loginForm');
-
             this.$el.html(this.template());
             return this;
         }
