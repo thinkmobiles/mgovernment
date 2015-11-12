@@ -1,8 +1,40 @@
 .loginBlock {
-  display: -webkit-flex;
-  display: flex;
+  max-width: 400px;
   height: 380px;
+  margin: 65px auto 60px;
+  padding: 70px 85px;
   background: @loginFormBgColor;
+
+  input[type='text'],
+  input[type='password'],
+  input[type='email'] {
+    width: 100%;
+    border: 1px solid @loginInputBorderColor;
+    padding: 5px 10px;
+    height: 34px;
+  }
+
+  label {
+    padding-left: 15px;
+    font-family: @fontFamily-3;
+    color: @loginLabelColor;
+    font-weight: 300;
+    .fontSize(18);
+  }
+
+  .actionButton {
+    margin: 20px auto 0;
+    width: 140px;
+    height: 35px;
+    padding: 5px 10px;
+    text-align: center;
+    background: @loginBtnBgColor;
+    color: @loginLabelColor;
+    cursor: pointer;
+    font-family: @fontFamily-2;
+    .fontSize(18);
+
+  }
 }
 
 
