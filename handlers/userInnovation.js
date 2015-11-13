@@ -1,5 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
+var HistoryHandler = require('./adminHistoryLog');
 
 var InnovationHandler = function(db) {
     'use strict';
@@ -7,6 +8,8 @@ var InnovationHandler = function(db) {
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
     var Innovation = db.model(CONST.MODELS.INNOVATION);
+    var User = db.model(CONST.MODELS.USER);
+    var adminHistoryHandler = new HistoryHandler(db);
 
     this.createInnovation = function (req, res, next) {
         var body = req.body;
@@ -35,15 +38,52 @@ var InnovationHandler = function(db) {
                     return next(err);
                 }
 
+                getUserTypeById(userRef, function (err, userType) {
+                    if (userType === CONST.USER_TYPE.ADMIN) {
+
+                        var log = {
+                            user: req.session.uId,
+                            action: CONST.ACTION.CREATE,
+                            model: CONST.MODELS.SERVICE,
+                            modelId: req.params.id,
+                            description: 'Create Innovation'
+                        };
+
+                        adminHistoryHandler.pushlog(log);
+                    }
+                });
+
                 return res.status(201).send(model);
             })
     };
 
-    this.editInnovations = function (req, res, next) {
+    function getUserTypeById(userId, callback) {
+
+        User
+            .findOne({'_id': userId})
+            .exec(function (err, model) {
+                if (err) {
+                    return callback(err);
+                }
+                if (model) {
+                    return callback(null, model.userType);
+                } else {
+                    return callback(new Error(RESPONSE.ON_ACTION.NOT_FOUND));
+                }
+            });
+    }
+
+    this.editInnovationsById = function (req, res, next) {
 
         var body = req.body;
-        var id = req.params.id;
         var data = {};
+        var searchQuery = {
+            '_id': req.params.id
+        };
+
+        if (!searchQuery._id) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
 
         if (!body.title || !body.message || !body.type) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
@@ -66,35 +106,63 @@ var InnovationHandler = function(db) {
         }
 
         Innovation
-            .findByIdAndUpdate({_id: id}, {$set: data}, function(err, model) {
+            .findByIdAndUpdate(searchQuery, {$set: data}, function(err, model) {
                 if (err) {
                     return next(err);
                 }
+
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.UPDATE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: req.params.id,
+                    description: 'Edit Innovation'
+                };
+                adminHistoryHandler.pushlog(log);
 
                 return res.status(200).send(model);
             });
     };
 
-    this.deleteInnovations = function (req, res, next) {
+    this.deleteInnovationsById = function (req, res, next) {
+        var searchQuery = {
+            '_id': req.params.id
+        };
 
-        var id = req.params.id;
+        if (!searchQuery._id) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
 
         Innovation
-            .findByIdAndRemove({_id: id}, function (err, model) {
+            .findByIdAndRemove(searchQuery, function (err, model) {
                 if (err) {
                     return next(err);
                 }
 
-                return res.status(200).send(model);
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: req.params.id,
+                    description: 'Delete Innovation'
+                };
+                adminHistoryHandler.pushlog(log);
+
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
 
-    this.getInnovations = function (req, res, next) {
+    this.getInnovationsById = function (req, res, next) {
+        var searchQuery = {
+            '_id': req.params.id
+        };
 
-        var id = req.params.id;
+        if (!searchQuery._id) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
 
         Innovation
-            .findById({_id: id}, function (err, model) {
+            .findById(searchQuery, function (err, model) {
                 if (err) {
                     return next(err);
                 }
