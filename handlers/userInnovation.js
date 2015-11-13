@@ -76,37 +76,31 @@ var InnovationHandler = function(db) {
     this.editInnovationsById = function (req, res, next) {
 
         var body = req.body;
+        var id = req.params.id;
         var data = {};
-        var searchQuery = {
-            '_id': req.params.id
-        };
-
-        if (!searchQuery._id) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
 
         if (!body.title || !body.message || !body.type) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        if (! /^[123456]$/.test(body.type)) {
+        if (!/^[123456]$/.test(body.type)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ': type'});
         }
 
-        if (!body.title) {
+        if (body.title) {
             data.title = body.title;
         }
 
-        if (!body.message) {
+        if (body.message) {
             data.message = body.message;
         }
 
-        if(!body.type) {
+        if (body.type) {
             data.type = body.type;
         }
 
         Innovation
-            .findByIdAndUpdate(searchQuery, {$set: data}, function(err, model) {
+            .findByIdAndUpdate({_id: id}, {$set: data}, function(err, model) {
                 if (err) {
                     return next(err);
                 }
@@ -125,16 +119,11 @@ var InnovationHandler = function(db) {
     };
 
     this.deleteInnovationsById = function (req, res, next) {
-        var searchQuery = {
-            '_id': req.params.id
-        };
-
-        if (!searchQuery._id) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
+        
+        var id = req.params.id;
 
         Innovation
-            .findByIdAndRemove(searchQuery, function (err, model) {
+            .findByIdAndRemove({_id: id}, function (err, model) {
                 if (err) {
                     return next(err);
                 }
@@ -153,16 +142,11 @@ var InnovationHandler = function(db) {
     };
 
     this.getInnovationsById = function (req, res, next) {
-        var searchQuery = {
-            '_id': req.params.id
-        };
 
-        if (!searchQuery._id) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
+        var id = req.params.id;
 
         Innovation
-            .findById(searchQuery, function (err, model) {
+            .findById({_id: id}, function (err, model) {
                 if (err) {
                     return next(err);
                 }

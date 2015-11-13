@@ -40,6 +40,9 @@ define([
                     e.stopPropagation();
                     e.stopImmediatePropagation();
 
+                    //TODO dell class from body
+                    $('body').removeClass('loginForm');
+
                     App.authorized = true;
                     Backbone.history.fragment = '';
                     Backbone.history.navigate('index', {trigger: true, replace: true});
@@ -54,6 +57,9 @@ define([
         },
 
         render: function () {
+            //TODO add class to body
+            $('body').addClass('loginForm');
+
             this.$el.html(this.template());
             return this;
         }

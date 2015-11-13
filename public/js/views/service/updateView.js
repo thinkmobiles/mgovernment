@@ -17,7 +17,7 @@ define([
     var cloneService = false;
     var isNewService = false;
     var treeNodeCounts = [1, 0, 0, 0, 0];
-    var treeNodeValues = [];
+    var pagesTreeNodesValues = [];
     //TODO change this to {}
     var currentNodeValues = [returnNewTreeNodeObject('Node 0')];
     var iconsCollection;
@@ -45,7 +45,7 @@ define([
         var index = +nodeAddressArray[0];
 
         if (nodeAddressArray.length == 1) {
-            nodeObj.items.splice( index, 1);
+            nodeObj.items[index] = undefined ;
             return;
         }
 
@@ -88,6 +88,20 @@ define([
         return recursionSaveNodeObjByAddress(nodeObj.items[index], nodeAddressArray, options);
     }
 
+    function recursionValidateNodeObj(nodeObj, cb) {
+
+        if (!nodeObj.value || !nodeObj.EN || !nodeObj.AR ){
+            alert(nodeObj.value + ' has empty fields. Please fill thay!');
+            return cb('error');
+        }
+
+        for ( var i = nodeObj.items.length; i >= 0; i --){
+            if (nodeObj.items[i]) {
+                recursionValidateNodeObj(nodeObj.items[i], cb)
+            }
+        }
+    }
+
     function initializeTreeNode (nodeAddress, nodeValue){
         var treeNodeAddress = nodeAddress.split('_');
         var firstIndex = treeNodeAddress[0];
@@ -117,7 +131,7 @@ define([
         var firstIndex = treeNodeAddress[0];
 
         if (treeNodeAddress.length == 1) {
-            currentNodeValues.splice(treeNodeAddress[0], 1);
+            currentNodeValues[treeNodeAddress[0]] = undefined;
 
             return;
         }
@@ -150,6 +164,7 @@ define([
             'click #closeBtn': 'hideMobileDisplay',
             'click .showTreeBtn': 'showTreeBlock',
             'click .hideTreeBtn': 'hideTreeBlock',
+            'click .saveTreeAndCloseBtn': 'saveTreeAndClose',
             'click .clickNodeName': 'selectTreeNodeGetInfo',
             'click #saveNode': 'clickSaveTreeNode',
             'click .addNode': 'treeAddNode',
@@ -186,7 +201,7 @@ define([
             isNewService = options ? options.isNewService : undefined;
             treeNodeCounts = [1, 0, 0, 0, 0];
             itemBlockCount = [0];
-            treeNodeValues = [];
+            pagesTreeNodesValues = [];
             pageBlockCount = 0;
             profileBlockCount = 0;
             sendParams = {};
@@ -520,7 +535,6 @@ define([
             } else {
                 $('html').animate({scrollTop: $('#' + id).offset().top}, 1100);
             }
-            ;
         },
 
         checkSelected: function (e) {
@@ -552,6 +566,38 @@ define([
         },
 
 
+        saveTreeAndClose: function (e) {
+            var el = this.$el;
+            var item = $(e.target).parent().attr('data-item');
+            var mobilePage = $(e.target).parent().attr('data-page');
+            var treeList = el.find('#treeDiv').find('#treeList');
+
+            recursionValidateNodeObj
+            // TODO validate if there are empty fields
+            for (var i = currentNodeValues.length - 1; i >= 0; i --){
+                if (currentNodeValues[i]) {
+                    recursionValidateNodeObj(currentNodeValues[i], function(err){
+                        if (err) {
+                            return;
+                        }
+                    })
+                }
+            }
+
+
+            // TODO Normalize currentNodeValues
+            currentNodeValues =_.compact(currentNodeValues);
+
+            pagesTreeNodesValues['page' + mobilePage + 'item' + item] = currentNodeValues;
+
+            treeNodeCounts = [1, 0, 0, 0, 0];
+            //TODO change this to {}
+            currentNodeValues = [returnNewTreeNodeObject('Node 0')];
+
+            $(treeList).empty();
+            el.find('#treeDiv').hide();
+        },
+
         showTreeBlock: function (e) {
             var el = this.$el;
             var item = $(e.target).parent().attr('data-item');
@@ -559,15 +605,13 @@ define([
             var treeList = el.find('#treeDiv').find('#treeList');
 
 
-            if (!treeNodeValues['page' + mobilePage + 'item' + item]) {
-                treeNodeValues['page' + mobilePage + 'item' + item] = returnNewTreeNodeObject('Node 0');
+            if (!pagesTreeNodesValues['page' + mobilePage + 'item' + item]) {
+                pagesTreeNodesValues['page' + mobilePage + 'item' + item] = returnNewTreeNodeObject('Node 0');
             }
 
-
-
             $(treeList).empty();
-            this.addNodesToTreeByObj( treeNodeValues['page' + mobilePage + 'item' + item], treeList,0);
-            el.find('#treeDiv').show();
+            this.addNodesToTreeByObj( pagesTreeNodesValues['page' + mobilePage + 'item' + item], treeList,0);
+            el.find('#treeDiv').attr('data-item',item).attr('data-page',mobilePage).show();
         },
 
 
