@@ -49,7 +49,8 @@ module.exports = function (db) {
                     },
                     required: Boolean,
                     validateAs: String,
-                    dataSource: []
+                    dataSource: [],
+                    additional: {}
                 }]
             }]
         },
