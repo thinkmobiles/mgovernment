@@ -16,6 +16,7 @@ describe('Service CRUD by admin,', function () {
     var serviceId;
 
     before(function (done) {
+        this.timeout(30000);
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
@@ -48,7 +49,7 @@ describe('Service CRUD by admin,', function () {
                 }
 
                 agent
-                    .post('/adminService/')
+                    .post('/cms/adminService/')
                     .send(data)
                     .expect(201)
                     .end(function (err, res) {
@@ -77,7 +78,7 @@ describe('Service CRUD by admin,', function () {
                 }
 
                 agent
-                    .get('/adminService/' + serviceId)
+                    .get('/cms/adminService/' + serviceId)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -96,7 +97,7 @@ describe('Service CRUD by admin,', function () {
         var dataForUpdate = SERVICES.DYNAMIC_DOMAIN_WHOIS_TEST;
 
         agent
-            .post('/adminService/')
+            .post('/cms/adminService/')
             .send(data)
             .expect(201)
             .end(function (err, res) {
@@ -107,7 +108,7 @@ describe('Service CRUD by admin,', function () {
                 console.log(serviceId);
 
                 agent
-                    .put('/adminService/' + serviceId)
+                    .put('/cms/adminService/' + serviceId)
                     .send(dataForUpdate)
                     .expect(200)
                     .end(function (err, res) {
@@ -126,7 +127,7 @@ describe('Service CRUD by admin,', function () {
         var data = SERVICES.DYNAMIC_DOMAIN_WHOIS;
 
         agent
-            .post('/adminService/')
+            .post('/cms/adminService/')
             .send(data)
             .expect(201)
             .end(function (err, res) {
@@ -137,7 +138,7 @@ describe('Service CRUD by admin,', function () {
                 console.log('id for delete: ', serviceId);
 
                 agent
-                    .delete('/adminService/' + serviceId)
+                    .delete('/cms/adminService/' + serviceId)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -153,7 +154,7 @@ describe('Service CRUD by admin,', function () {
     it('Admin GET ALL Services with Query', function (done) {
 
         agent
-            .get('/adminService/?orderBy=createAt&order=1&page=1&count=20')
+            .get('/cms/adminService/?orderBy=createAt&order=1&page=1&count=20')
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -168,7 +169,7 @@ describe('Service CRUD by admin,', function () {
     it('Admin GET Count of Services', function (done) {
 
         agent
-            .get('/adminService/getCount')
+            .get('/cms/adminService/getCount')
             .expect(200)
             .end(function (err, res) {
                 if (err) {

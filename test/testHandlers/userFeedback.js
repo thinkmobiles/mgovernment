@@ -198,7 +198,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback')
+                    .get('/cms/feedback')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -252,7 +252,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback?search=pretty')
+                    .get('/cms/feedback?search=pretty')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -286,7 +286,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback?search=query1223')
+                    .get('/cms/feedback?search=query1223')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -314,7 +314,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .delete('/feedback/'+deletedFeedbackId)
+                    .delete('/cms/feedback/'+deletedFeedbackId)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -322,7 +322,7 @@ describe('Feedback tests - Create, Get ,', function () {
                         }
 
                         agent
-                            .get('/feedback?search=pretty')
+                            .get('/cms/feedback?search=pretty')
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {

@@ -48,13 +48,13 @@ module.exports = function(db) {
      */
     router.route('/')
         .post(userFeedback.createFeedback)
-        .get(session.isAdminBySession, userFeedback.getAllFeedback);
+      //  .get(session.isAdminBySession, userFeedback.getAllFeedback);
 
-    router.route('/:id')
-        .delete(session.isAdminBySession, userFeedback.deleteFeedback);
+//    router.route('/:id')
+      //  .delete(session.isAdminBySession, userFeedback.deleteFeedback);
 
-    router.route('/getCount/')
-        .get(session.isAdminBySession, userFeedback.getCount);
+//    router.route('/getCount/')
+      //  .get(session.isAdminBySession, userFeedback.getCount);
 
     return router;
 };

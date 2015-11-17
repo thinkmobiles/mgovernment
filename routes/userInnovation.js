@@ -116,8 +116,8 @@ module.exports = function(db) {
      *  @for userInnovation
      *  @memberOf userInnovation
      */
-    router.route('/admin')
-        .post(session.isAdminBySession, userInnovation.createInnovation);
+    //router.route('/admin')
+    //    .post(session.isAdminBySession, userInnovation.createInnovation);
 
     /**
      * This __method__ edit Innovation by Admin
@@ -151,8 +151,8 @@ module.exports = function(db) {
      *  @memberOf userInnovation
      *
      */
-    router.route('/admin/:id')
-        .put(session.isAdminBySession, userInnovation.editInnovationsById)
+    //router.route('/admin/:id')
+    //    .put(session.isAdminBySession, userInnovation.editInnovationsById)
 
     /**
      * This __method__ get information about Innovation by Admin
@@ -182,7 +182,7 @@ module.exports = function(db) {
      *  @memberOf userInnovation
      *
      */
-        .get(session.isAdminBySession, userInnovation.getInnovationsById)
+    //    .get(session.isAdminBySession, userInnovation.getInnovationsById)
 
     /**
      * This __method__ delete Innovation by Admin
@@ -207,7 +207,7 @@ module.exports = function(db) {
      *  @memberOf userInnovation
      *
      */
-        .delete(session.isAdminBySession, userInnovation.deleteInnovationsById);
+    //    .delete(session.isAdminBySession, userInnovation.deleteInnovationsById);
 
     return router;
 };
