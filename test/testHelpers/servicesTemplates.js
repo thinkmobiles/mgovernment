@@ -364,10 +364,12 @@ module.exports = {
                         order: 0,
                         name: 'tableContent',
                         inputType: CONST.SERVICE_INPUT_TYPE.TABLE,
+                        additional: {sectorField: 'position'},
                         dataSource: [
                             {value: 'id', AR: 'al Reference #', EN: 'Reference #'},
                             {value: 'first', AR: 'al First Name', EN: 'FirstName'},
-                            {value: 'last', AR: 'al Last Name', EN: 'Last Name'}
+                            {value: 'last', AR: 'al Last Name', EN: 'Last Name'},
+                            {value: 'position', AR: 'al Job Position', EN: 'Job Position'}
                         ],
                         placeHolder: {
                             EN: '',
