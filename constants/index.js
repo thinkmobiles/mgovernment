@@ -75,6 +75,7 @@ module.exports = {
         EMAIL: 'email'
     },
 
-    ALPHABETICAL_FOR_TOKEN: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890'
+    ALPHABETICAL_FOR_TOKEN: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890',
 
+    APPLICATION_KEY_FOR_TOKEN: 'testAppKey'
 };

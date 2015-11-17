@@ -60,13 +60,7 @@ var EmailReport = function (db) {
 
     this.deleteEmailReport = function (req, res, next) {
 
-        var searchQuery = {
-            '_id': req.params.id
-        };
-
-        if (!searchQuery._id) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
+        var id = req.params.id;
 
         EmailReport
             .findByIdAndRemove({_id: id})

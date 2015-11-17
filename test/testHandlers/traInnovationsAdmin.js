@@ -40,7 +40,7 @@ describe('Admin Innovations', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -75,7 +75,7 @@ describe('Admin Innovations', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -97,6 +97,7 @@ describe('Admin Innovations', function () {
                         expect(res.body).to.be.instanceOf(Array);
 
                         done();
+
                     });
             });
     });
@@ -112,7 +113,7 @@ describe('Admin Innovations', function () {
         };
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -162,7 +163,7 @@ describe('Admin Innovations', function () {
         };
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -193,7 +194,7 @@ describe('Admin Innovations', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {

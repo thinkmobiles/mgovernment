@@ -41,6 +41,8 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
+            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -50,6 +52,8 @@ describe('User Innovations', function () {
 
                 agent
                     .post('/innovation')
+                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
                     .send({
                         title: 'test',
                         message: 'some message',
@@ -77,6 +81,8 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
+            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -86,6 +92,8 @@ describe('User Innovations', function () {
 
                 agent
                     .post('/innovation')
+                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
                     .send({
                         title: 'test',
                         message: 'some message',
@@ -111,6 +119,8 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
+            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -120,6 +130,8 @@ describe('User Innovations', function () {
 
                 agent
                     .get('/innovation')
+                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -143,6 +155,8 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
+            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -152,6 +166,8 @@ describe('User Innovations', function () {
 
                 agent
                     .get('/innovation?offset=0&limit=5')
+                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {

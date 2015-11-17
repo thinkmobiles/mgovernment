@@ -19,8 +19,8 @@ var app = require('../app');
 //require('./testHandlers/userAttachment');
 //require('./testHandlers/traServicesAboutInfo');
 //require('./testHandlers/traInnovations');
-require('./testHandlers/traInnovationsAdmin');
-//require('./testHandlers/adminEmailReport');
+//require('./testHandlers/traInnovationsAdmin');
+require('./testHandlers/adminEmailReport');
 
 ////not implemented
 //require('./testHandlers/tdaServices');
