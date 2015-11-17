@@ -68,7 +68,6 @@ module.exports = function(db) {
 
     router.route('/:id')
         .get(attachmentHandler.getAttachmentById)
-     //   .delete(session.isAdminBySession, attachmentHandler.removeAttachment);
 
     return router;
 };
