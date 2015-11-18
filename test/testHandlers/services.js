@@ -319,18 +319,18 @@ describe('Service CRUD by admin,', function () {
                         console.dir(res.body);
                         expect(res.body).to.be.instanceof(Array);
                         expect(res.body).to.have.length.above(0);
-                        expect(res.body[0]).to.have.deep.property('serviceName.EN');
-                        expect(res.body[0]).to.have.deep.property('serviceName.AR');
-                        expect(res.body[0]).to.have.property('icon');
-                        expect(res.body[0]).to.have.property('needAuth');
 
                         for(var i in res.body) {
-
                             expect(res.body[i]._id).not.equal(serviceNotHomeScreen);
                             expect(res.body[i]._id).not.equal(serviceNotEnable);
+                            expect(res.body[i]).to.have.deep.property('serviceName.EN');
+                            expect(res.body[i]).to.have.deep.property('serviceName.AR');
+                            expect(res.body[i]).to.have.property('icon');
+                            expect(res.body[i]).to.have.property('needAuth');
 
                             if (res.body[i]._id === serviceHubId) {
                                 expect(res.body[i]).to.have.property('items');
+
                                 for (var j in res.body[i].items) {
                                     var serviceHubItems = res.body[i].items;
                                     expect(serviceHubItems).to.be.instanceof(Array);
@@ -341,9 +341,10 @@ describe('Service CRUD by admin,', function () {
                                     expect(serviceHubItems[0]).to.have.property('icon');
                                     expect(serviceHubItems[0]).to.have.property('needAuth');
                                 }
+
                                 return done();
-                                }
                             }
+                        }
 
                         done('Not found Service Hub');
                     });
