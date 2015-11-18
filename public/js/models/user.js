@@ -2,7 +2,7 @@ define([], function(){
     var userModel = Backbone.Model.extend({
         idAttribute: '_id',
         urlRoot:  function(){
-            return '/user/'
+            return '//user/'
         }
     });
     return userModel;

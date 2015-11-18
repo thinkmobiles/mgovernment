@@ -3,7 +3,7 @@ define([
 ], function(userHistoryLogModel){
     var userHistoryLogsCollection = Backbone.Collection.extend({
         model: userHistoryLogModel,
-        url: '/userHistory/'
+        url: '/cms/userHistory/'
     });
     return userHistoryLogsCollection;
 });

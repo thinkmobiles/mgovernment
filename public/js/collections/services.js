@@ -3,7 +3,7 @@ define([
 ], function(serviceModel){
     var ServicesCollection = Backbone.Collection.extend({
         model: serviceModel,
-        url: '/adminService/'
+        url: '/cms/adminService/'
     });
     return ServicesCollection;
 });
