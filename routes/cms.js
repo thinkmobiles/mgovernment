@@ -32,6 +32,8 @@ module.exports = function(db) {
     router.route('/adminService')
         .post(servicesHandler.createService)
         .get(servicesHandler.getServices);
+    router.route('/adminService/hub')
+        .post(servicesHandler.createServiceHub);
     router.route('/adminService/getCount')
         .get(servicesHandler.getCount);
     router.route('/adminService/:id')

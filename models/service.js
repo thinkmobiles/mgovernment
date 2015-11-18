@@ -52,7 +52,11 @@ module.exports = function (db) {
                     dataSource: [],
                     additional: {}
                 }]
-            }]
+            }],
+
+            items: [
+                {type: ObjectId, ref: CONST.MODELS.SERVICE}
+            ]
         },
         {
             collection: CONST.MODELS.SERVICE + 's'

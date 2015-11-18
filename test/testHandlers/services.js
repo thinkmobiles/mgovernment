@@ -2,6 +2,7 @@
 
 var request = require('supertest');
 var mongoose = require('mongoose');
+var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var SERVICES = require('./../testHelpers/servicesTemplates');
 var USERS = require('./../testHelpers/usersTemplates');
@@ -14,6 +15,7 @@ describe('Service CRUD by admin,', function () {
 
     var agent = request.agent(app);
     var serviceId;
+    var serviceHubId;
 
     before(function (done) {
         this.timeout(30000);
@@ -179,6 +181,100 @@ describe('Service CRUD by admin,', function () {
                 console.dir(res.body);
 
                 done();
+            });
+    });
+
+    it('Admin Create Service HUB', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+        var serviceHubData = SERVICES.DYNAMIC_SERVICE_HUB_TEST;
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/cms/adminService')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        console.log('GET ALL Services with Query:');
+                        console.dir(res.body);
+
+                        expect(res.body).to.be.instanceof(Array);
+                        expect(res.body).to.have.length.above(0);
+
+                        for (var i in res.body) {
+                            serviceHubData.items.push(res.body[i]._id);
+                        }
+
+                        agent
+                            .post('/cms/adminService/hub')
+                            .send(serviceHubData)
+                            .expect(201)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err)
+                                }
+                                serviceHubId = res.body._id;
+                                console.log(serviceHubId);
+
+                                done();
+                            });
+                    });
+            });
+    });
+
+    it('User GET Service List with HUB', function (done) {
+
+        agent
+            .post('/user/signOut')
+            .send({})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/service')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        console.dir(res.body);
+                        expect(res.body).to.be.instanceof(Array);
+                        expect(res.body).to.have.length.above(0);
+                        expect(res.body[0]).to.have.deep.property('serviceName.EN');
+                        expect(res.body[0]).to.have.deep.property('serviceName.AR');
+                        expect(res.body[0]).to.have.property('icon');
+                        expect(res.body[0]).to.have.property('needAuth');
+
+                        for(var i in res.body) {
+                            if (res.body[i]._id === serviceHubId) {
+                                expect(res.body[i]).to.have.property('items');
+                                var serviceHubItems = res.body[i].items;
+                                expect(serviceHubItems).to.be.instanceof(Array);
+                                expect(serviceHubItems).to.have.length.above(0);
+                                expect(serviceHubItems[0]).to.have.deep.property('serviceName.EN');
+                                expect(serviceHubItems[0]).to.have.deep.property('serviceName.AR');
+                                expect(serviceHubItems[0]).to.have.property('icon');
+                                expect(serviceHubItems[0]).to.have.property('needAuth');
+                                return done();
+                            }
+                        }
+
+                        done('Not found Service Hub');
+                    });
             });
     });
 });
