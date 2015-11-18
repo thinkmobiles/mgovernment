@@ -15,7 +15,7 @@ require('./testHandlers/services');
 //require('./testHandlers/traServicesComplainsSMSSpamBlockHelpSalimPoorCoverage');
 
 require('./testHandlers/userFeedback');
-//require('./testHandlers/traNewsAnnouncements');
+require('./testHandlers/traNewsAnnouncements');
 require('./testHandlers/userAttachment');
 //require('./testHandlers/traServicesAboutInfo');
 //require('./testHandlers/traInnovations');

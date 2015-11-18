@@ -10,7 +10,6 @@ module.exports = function(app, db) {
     var models = require('../models/index')(db);
 
     var usersRouter = require('./users')(db);
-    var clientLayoutsRouter = require('./clientLayouts')(db);
     var servicesIcon = require('./servicesIcon')(db);
     var userServicesRouter = require('./userServices')(db);
     var userTraServicesRouter = require('./userTraServices')(db);
@@ -21,7 +20,7 @@ module.exports = function(app, db) {
     var testTRAServicesRouter = require('./testTRAServices')(db);
     var whoIsAndMobileRouter = require('./whoIsAndMobile')(db);
     var crmRouter = require('./crmServices')(db);
-    var cmsRouter = require('./cms')(db);
+    var cmsRouter = require('./cms/cms')(db);
 
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
@@ -34,7 +33,6 @@ module.exports = function(app, db) {
 
     app.use('/cms', session.isAdminBySession, cmsRouter);
     app.use('/user', accessHTTP.appAccessHTTP, usersRouter);
-    app.use('/clientLayout',accessHTTP.appAccessHTTP, clientLayoutsRouter);
     app.use('/icon', accessHTTP.appAccessHTTP, servicesIcon);
     app.use('/service', accessHTTP.appAccessHTTP, userServicesRouter);
     app.use('/feedback', accessHTTP.appAccessHTTP, userFeedbackRouter);
