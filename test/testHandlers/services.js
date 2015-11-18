@@ -15,6 +15,8 @@ describe('Service CRUD by admin,', function () {
 
     var agent = request.agent(app);
     var serviceId;
+    var serviceNotHomeScreen;
+    var serviceNotEnable;
     var serviceHubId;
 
     before(function (done) {
@@ -60,6 +62,68 @@ describe('Service CRUD by admin,', function () {
                         }
                         serviceId = res.body._id;
                         console.log(serviceId);
+
+                        done();
+                    });
+            });
+    });
+
+    it('Admin Create Service { homeScreen = false }', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+        var data = SERVICES.DYNAMIC_COMPLAIN_TRA;
+        data.homeScreen = false;
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/cms/adminService/')
+                    .send(data)
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        serviceNotHomeScreen = res.body._id;
+                        console.log(serviceNotHomeScreen);
+
+                        done();
+                    });
+            });
+    });
+
+    it('Admin Create Service { enable = false }', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+        var data = SERVICES.DYNAMIC_COMPLAIN_TRA;
+        data.enable = false;
+
+        agent
+            .post('/user/signIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/cms/adminService/')
+                    .send(data)
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        serviceNotEnable = res.body._id;
+                        console.log(serviceNotEnable);
 
                         done();
                     });
@@ -232,6 +296,7 @@ describe('Service CRUD by admin,', function () {
             });
     });
 
+
     it('User GET Service List with HUB', function (done) {
 
         agent
@@ -260,22 +325,30 @@ describe('Service CRUD by admin,', function () {
                         expect(res.body[0]).to.have.property('needAuth');
 
                         for(var i in res.body) {
+
+                            expect(res.body[i]._id).not.equal(serviceNotHomeScreen);
+                            expect(res.body[i]._id).not.equal(serviceNotEnable);
+
                             if (res.body[i]._id === serviceHubId) {
                                 expect(res.body[i]).to.have.property('items');
-                                var serviceHubItems = res.body[i].items;
-                                expect(serviceHubItems).to.be.instanceof(Array);
-                                expect(serviceHubItems).to.have.length.above(0);
-                                expect(serviceHubItems[0]).to.have.deep.property('serviceName.EN');
-                                expect(serviceHubItems[0]).to.have.deep.property('serviceName.AR');
-                                expect(serviceHubItems[0]).to.have.property('icon');
-                                expect(serviceHubItems[0]).to.have.property('needAuth');
+                                for (var j in res.body[i].items) {
+                                    var serviceHubItems = res.body[i].items;
+                                    expect(serviceHubItems).to.be.instanceof(Array);
+                                    expect(serviceHubItems).to.have.length.above(0);
+                                    expect(serviceHubItems[j]._id).not.equal(serviceNotEnable);
+                                    expect(serviceHubItems[0]).to.have.deep.property('serviceName.EN');
+                                    expect(serviceHubItems[0]).to.have.deep.property('serviceName.AR');
+                                    expect(serviceHubItems[0]).to.have.property('icon');
+                                    expect(serviceHubItems[0]).to.have.property('needAuth');
+                                }
                                 return done();
+                                }
                             }
-                        }
 
                         done('Not found Service Hub');
                     });
             });
     });
+
 });
 
