@@ -27,7 +27,7 @@ define([
                 collection   : this.servicesCollection,
                 countPerPage : options.countPerPage,
                 url          : 'services',
-                urlGetCount  : '/adminService/getCount',
+                urlGetCount  : this.servicesCollection.url + 'getCount',
                 padding      : 2,
                 page         : options.page,
                 ends         : true,

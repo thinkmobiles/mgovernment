@@ -47,6 +47,9 @@ define([
             e.preventDefault();
             e.stopPropagation();
 
+            $(targetEl).parent().find('.active').removeClass('active');
+            $(targetEl).addClass('active');
+
             Backbone.history.fragment = '';
             Backbone.history.navigate(hash, {trigger: true});
         },

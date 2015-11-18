@@ -38,7 +38,7 @@ define([
                 collection: this.emailReportsCollecion,
                 countPerPage: options.countPerPage,
                 url: 'emailReports',
-                urlGetCount: '/emailReport/getCount',
+                urlGetCount: this.emailReportsCollecion.url + 'getCount',
                 padding: 2,
                 page: options.page,
                 ends: true,

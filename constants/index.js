@@ -64,7 +64,8 @@ module.exports = {
         FILE: 'file',
         DATE: 'date',
         PICKER: 'picker',
-        TABLE: 'table'
+        TABLE: 'table',
+        TREE: 'tree'
     },
 
     SERVICE_VALIDATE_TYPE: {

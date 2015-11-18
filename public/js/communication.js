@@ -3,7 +3,7 @@ define(function () {
     // check authorization
     var checkLogin = function (callback) {
         $.ajax({
-            url: "/user/adminSignIn",
+            url: "user/adminSignIn",
             type: "GET",
             success: function (data) {
                 return callback(null, data);

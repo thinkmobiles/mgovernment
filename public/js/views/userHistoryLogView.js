@@ -20,7 +20,7 @@ define([
                 collection: this.userHistoryLogsCollection,
                 countPerPage: options.countPerPage,
                 url: 'userHistoryLog',
-                urlGetCount: '/userHistory/getCount',
+                urlGetCount: this.userHistoryLogsCollection.url + 'getCount',
                 padding: 2,
                 page: options.page,
                 ends: true,

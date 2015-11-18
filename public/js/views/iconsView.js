@@ -31,7 +31,7 @@ define([
                 collection   : this.iconsCollection,
                 countPerPage : options.countPerPage,
                 url          : 'icon',
-                urlGetCount  : '/icon/getCount',
+                urlGetCount  : this.iconsCollection.url + 'getCount',
                 padding      : 2,
                 page         : options.page,
                 ends         : true,

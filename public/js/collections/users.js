@@ -3,7 +3,7 @@ define([
 ], function(userModel){
     var UsersCollection = Backbone.Collection.extend({
         model: userModel,
-        url: '/user/'
+        url: '/cms/user/'
     });
     return UsersCollection;
 });
