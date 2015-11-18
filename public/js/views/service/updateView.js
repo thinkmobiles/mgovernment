@@ -88,17 +88,51 @@ define([
         return recursionSaveNodeObjByAddress(nodeObj.items[index], nodeAddressArray, options);
     }
 
-    function recursionValidateNodeObj(nodeObj, cb) {
+    function recursionValidateNodeObj(nodeObj, err) {
 
         if (!nodeObj.value || !nodeObj.EN || !nodeObj.AR ){
             alert(nodeObj.value + ' has empty fields. Please fill thay!');
-            return cb('error');
+            err.push(nodeObj.value);
+            return;
         }
 
-        for ( var i = nodeObj.items.length; i >= 0; i --){
+        for ( var i = nodeObj.items.length - 1; i >= 0; i --){
             if (nodeObj.items[i]) {
-                recursionValidateNodeObj(nodeObj.items[i], cb)
+                recursionValidateNodeObj(nodeObj.items[i], err)
             }
+        }
+    }
+
+    function recursionNormalizeNodeObj(nodeObj) {
+        nodeObj.items = _.compact( nodeObj.items);
+
+        for ( var i = nodeObj.items.length - 1 ; i >= 0; i --){
+            recursionNormalizeNodeObj(nodeObj.items[i])
+        }
+    }
+
+    function recursionBildTree(nodeObj, treeList, nodeAdress ) {
+        var childTreeListUl;
+        var searchChildrenUl;
+
+        addNodesToTreeByObj(nodeObj, treeList, nodeAdress);
+
+        if (nodeObj.items.length) {
+            searchChildrenUl = $(treeList).children("ul");
+
+            if (searchChildrenUl.length) {
+                childTreeListUl = $(searchChildrenUl[0]);
+
+            } else {
+                $(treeList).find('#nodeLi' + nodeAdress).append("<ul> </ul>");
+                searchChildrenUl = $(treeList).find('#nodeLi' + nodeAdress).children("ul");
+                childTreeListUl = $(searchChildrenUl[0]);
+            }
+        }
+
+
+        for ( var i = 0, len = nodeObj.items.length - 1 ; i <= len; i ++){
+            recursionBildTree(nodeObj.items[i], childTreeListUl, nodeAdress + '_' + i);
         }
     }
 
@@ -151,6 +185,16 @@ define([
         }
         treeNodeAddress.shift();
         recursionSaveNodeObjByAddress(currentNodeValues[firstIndex], treeNodeAddress, options);
+    }
+
+    function addNodesToTreeByObj  (treeObj, treeList, nodeAddress) {
+        // TODO make recursive function reading treeObj and add Nodes on tree
+        treeList.append(_.template(treeNodeTemplate)({
+            node: {
+                address: nodeAddress,
+                value: treeObj.value
+            }
+        }));
 
     }
 
@@ -163,7 +207,7 @@ define([
             'click #updateBtn': 'updateService',
             'click #closeBtn': 'hideMobileDisplay',
             'click .showTreeBtn': 'showTreeBlock',
-            'click .hideTreeBtn': 'hideTreeBlock',
+            'click .closeTreeBtn': 'hideTreeBlock',
             'click .saveTreeAndCloseBtn': 'saveTreeAndClose',
             'click .clickNodeName': 'selectTreeNodeGetInfo',
             'click #saveNode': 'clickSaveTreeNode',
@@ -273,6 +317,14 @@ define([
                 AR: treeDiv.find('#treeAR').val()
             };
 
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (!nodeAddress) {
+                alert('First select Node.');
+                return;
+            }
+
             if (!options.value || !options.EN ||!options.AR) {
                 alert('Fields cant bee empty!! ');
                 return;
@@ -282,10 +334,7 @@ define([
             treeDiv.find('#treeValue').val('');
             treeDiv.find('#treeEN').val('');
             treeDiv.find('#treeAR').val('');
-
-
-            e.preventDefault();
-            e.stopPropagation();
+            $(el).attr('data-hash','');
 
             saveTreeNode(nodeAddress,options);
 
@@ -569,26 +618,31 @@ define([
         saveTreeAndClose: function (e) {
             var el = this.$el;
             var item = $(e.target).parent().attr('data-item');
-            var mobilePage = $(e.target).parent().attr('data-page');
+            var currentPage = $(e.target).parent().attr('data-page');
             var treeList = el.find('#treeDiv').find('#treeList');
+            var err = [];
+            var infoIndex = '#page' + currentPage + 'inputDataSource' + item;
 
-            recursionValidateNodeObj
+
             // TODO validate if there are empty fields
             for (var i = currentNodeValues.length - 1; i >= 0; i --){
                 if (currentNodeValues[i]) {
-                    recursionValidateNodeObj(currentNodeValues[i], function(err){
-                        if (err) {
-                            return;
-                        }
-                    })
+                    recursionValidateNodeObj(currentNodeValues[i], err)
                 }
             }
 
+            if (err.length) {
+                return;
+            }
 
             // TODO Normalize currentNodeValues
             currentNodeValues =_.compact(currentNodeValues);
 
-            pagesTreeNodesValues['page' + mobilePage + 'item' + item] = currentNodeValues;
+            for (var i = currentNodeValues.length - 1; i >= 0; i --){
+                recursionNormalizeNodeObj(currentNodeValues[i])
+            }
+
+            sendParams[infoIndex] = currentNodeValues;
 
             treeNodeCounts = [1, 0, 0, 0, 0];
             //TODO change this to {}
@@ -601,30 +655,33 @@ define([
         showTreeBlock: function (e) {
             var el = this.$el;
             var item = $(e.target).parent().attr('data-item');
-            var mobilePage = $(e.target).parent().attr('data-page');
+            var currentPage = $(e.target).parent().attr('data-page');
             var treeList = el.find('#treeDiv').find('#treeList');
+            var infoIndex = '#page' + currentPage + 'inputDataSource' + item;
 
+            //el.find('#treeDiv').attr('data-item',item).attr('data-page',currentPage).show();
 
-            if (!pagesTreeNodesValues['page' + mobilePage + 'item' + item]) {
-                pagesTreeNodesValues['page' + mobilePage + 'item' + item] = returnNewTreeNodeObject('Node 0');
+            if (!sendParams[infoIndex]) {
+                sendParams[infoIndex] = [returnNewTreeNodeObject('Node 0')];
+                treeNodeCounts = [1, 0, 0, 0, 0];
             }
 
+            currentNodeValues = sendParams[infoIndex];
+
             $(treeList).empty();
-            this.addNodesToTreeByObj( pagesTreeNodesValues['page' + mobilePage + 'item' + item], treeList,0);
-            el.find('#treeDiv').attr('data-item',item).attr('data-page',mobilePage).show();
+
+
+
+            for(var i = 0, len = currentNodeValues.length - 1; i <= len; i ++ ){
+                recursionBildTree(currentNodeValues[i], treeList, i);
+                //addNodesToTreeByObj(currentNodeValues[i], treeList, i);
+            }
+
+            el.find('#treeDiv').attr('data-item',item).attr('data-page',currentPage).show();
         },
 
 
-        addNodesToTreeByObj: function (treeObj, treeList, nodeAddress) {
-            // TODO make recursive function reading treeObj and add Nodes on tree
-            treeList.append(_.template(treeNodeTemplate)({
-                node: {
-                    address: nodeAddress,
-                    value: treeObj.value
-                }
-            }));
 
-        },
 
         hideTreeBlock: function (e) {
             //TODO make block empty
@@ -758,7 +815,7 @@ define([
             e.stopPropagation();
 
             el.find("." + blockClassName).show();
-            console.log("preesed  show: ", blockClassName)
+            console.log("pressed  show: ", blockClassName)
         },
 
         hideBlock: function (e) {
@@ -769,7 +826,7 @@ define([
             e.stopPropagation();
 
             el.find("." + blockClassName).hide();
-            console.log("preesed  hide: ", blockClassName)
+            console.log("pressed  hide: ", blockClassName)
         },
 
         addInputItemsBlock: function (e) {
@@ -1186,6 +1243,11 @@ define([
 
                     itemTempTemplate = $(_.template(inputBlockTemplate)({i: i, page: j}));
                     itemTempTemplate.find(pageID + 'inputType' + i).val(inpuItems[i].inputType);
+                    if (inpuItems[i].inputType != 'tree') {
+                        console.log(inpuItems[i].inputType ,' != tree');
+                        itemTempTemplate.find(pageID + 'showTreeBtn' + i).hide()
+                    }
+
                     itemTempTemplate.find(pageID + 'name' + i).val(inpuItems[i].name);
                     itemTempTemplate.find(pageID + 'order' + i).val(inpuItems[i].order);
 
