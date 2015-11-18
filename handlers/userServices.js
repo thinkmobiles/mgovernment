@@ -126,7 +126,8 @@ var UserService = function(db) {
 
         Service
             .find()
-            .select('_id serviceName icon needAuth')
+            .select('_id serviceName icon needAuth items')
+            .populate({path: 'items', select: '_id serviceName icon needAuth items'})
             .lean()
             .exec(function (err, collection) {
                 var log;

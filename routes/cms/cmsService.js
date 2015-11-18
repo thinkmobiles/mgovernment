@@ -11,8 +11,10 @@ module.exports = function(db) {
 
     router.route('/')
         .post(servicesHandler.createService)
-
         .get(servicesHandler.getServices);
+
+    router.route('/hub')
+        .post(servicesHandler.createServiceHub);
 
     router.route('/getCount')
         .get(servicesHandler.getCount);
