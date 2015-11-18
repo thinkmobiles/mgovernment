@@ -60,7 +60,7 @@ describe('CRUD  icons for services', function () {
                 }
 
                 agent
-                    .post('/icon')
+                    .post('/cms/icon')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -82,7 +82,7 @@ describe('CRUD  icons for services', function () {
         };
 
         agent
-            .post('/icon')
+            .post('/cms/icon')
             .send(data)
             .expect(500)
             .end(function (err, res) {
@@ -100,7 +100,7 @@ describe('CRUD  icons for services', function () {
         var resp =[];
 
         agent
-            .get('/icon/?type=@3x')
+            .get('/cms/icon/?type=@3x')
             .expect(200)
             .end(function (err, res) {
                 resp = res.body;
@@ -117,7 +117,7 @@ describe('CRUD  icons for services', function () {
 
     it('Get servicesIcon  by id', function (done) {
         agent
-            .get('/icon/' + lastServiceIconId)
+            .get('/cms/icon/' + lastServiceIconId)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
