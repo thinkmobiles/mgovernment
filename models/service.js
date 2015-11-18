@@ -49,9 +49,14 @@ module.exports = function (db) {
                     },
                     required: Boolean,
                     validateAs: String,
-                    dataSource: []
+                    dataSource: [],
+                    additional: {}
                 }]
-            }]
+            }],
+
+            items: [
+                {type: ObjectId, ref: CONST.MODELS.SERVICE}
+            ]
         },
         {
             collection: CONST.MODELS.SERVICE + 's'

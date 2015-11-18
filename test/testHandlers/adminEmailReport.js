@@ -46,6 +46,8 @@ describe('Admin Email Report tests', function () {
 
         agent
             .post('/user/signOut')
+            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -55,6 +57,8 @@ describe('Admin Email Report tests', function () {
 
                 agent
                     .post('/sendPoorCoverage')
+                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
+                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -73,7 +77,7 @@ describe('Admin Email Report tests', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -82,7 +86,7 @@ describe('Admin Email Report tests', function () {
                 }
 
                 agent
-                    .get('/emailReport')
+                    .get('/cms/emailReport')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -90,7 +94,7 @@ describe('Admin Email Report tests', function () {
                         }
 
                         deleteEmailReportId = res.body[0]._id;
-                        console.log(res.body);
+                        console.log(deleteEmailReportId);
 
                         done();
                     });
@@ -102,7 +106,7 @@ describe('Admin Email Report tests', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/SignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -111,7 +115,7 @@ describe('Admin Email Report tests', function () {
                 }
 
                 agent
-                    .delete('/emailReport/'+deleteEmailReportId)
+                    .delete('/cms/emailReport/'+deleteEmailReportId)
                     .expect(200)
                     .end(function (err, res) {
                        if (err) {

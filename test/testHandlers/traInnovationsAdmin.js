@@ -40,7 +40,7 @@ describe('Admin Innovations', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -49,7 +49,7 @@ describe('Admin Innovations', function () {
                 }
 
                 agent
-                    .post('/innovation/admin')
+                    .post('/cms/innovation')
                     .send({
                         title: 'test',
                         message: 'some message',
@@ -75,7 +75,7 @@ describe('Admin Innovations', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -97,6 +97,7 @@ describe('Admin Innovations', function () {
                         expect(res.body).to.be.instanceOf(Array);
 
                         done();
+
                     });
             });
     });
@@ -112,7 +113,7 @@ describe('Admin Innovations', function () {
         };
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -121,7 +122,7 @@ describe('Admin Innovations', function () {
                 }
 
                 agent
-                    .put('/innovation/admin/'+editInnovationId)
+                    .put('/cms/innovation/'+editInnovationId)
                     .send({
                         title: editData.title,
                         message: editData.message,
@@ -134,7 +135,7 @@ describe('Admin Innovations', function () {
                         }
 
                         agent
-                            .get('/innovation/admin/'+editInnovationId)
+                            .get('/cms/innovation/'+editInnovationId)
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {
@@ -162,7 +163,7 @@ describe('Admin Innovations', function () {
         };
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -171,7 +172,7 @@ describe('Admin Innovations', function () {
                 }
 
                 agent
-                    .put('/innovation/admin/'+editInnovationId)
+                    .put('/cms/innovation/'+editInnovationId)
                     .send({
                         title: editData.title,
                         message: editData.message,
@@ -193,7 +194,7 @@ describe('Admin Innovations', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -202,7 +203,7 @@ describe('Admin Innovations', function () {
                 }
 
                 agent
-                    .delete('/innovation/admin/'+deletedInnovationId)
+                    .delete('/cms/innovation/'+deletedInnovationId)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -210,7 +211,7 @@ describe('Admin Innovations', function () {
                         }
 
                         agent
-                            .get('/innovation/admin/'+deletedInnovationId)
+                            .get('/cms/innovation/'+deletedInnovationId)
                             .expect(404)
                             .end(function (err, res) {
                                 if (err) {

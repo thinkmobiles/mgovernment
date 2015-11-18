@@ -108,7 +108,7 @@ describe('Attachment POST, GET, DELETE', function () {
                         }
 
                         agent
-                            .delete('/attachment/' + attachmentId)
+                            .delete('/cms/attachment/' + attachmentId)
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {

@@ -1,5 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
+var HistoryHandler = require('./adminHistoryLog');
 
 var Feedback = function(db) {
     'use strict';
@@ -7,6 +8,7 @@ var Feedback = function(db) {
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
     var Feedback = db.model(CONST.MODELS.FEEDBACK);
+    var adminHistoryHandler = new HistoryHandler(db);
 
     this.createFeedback = function (req, res, next) {
         var body = req.body;
@@ -89,16 +91,31 @@ var Feedback = function(db) {
 
     this.deleteFeedback = function (req, res, next) {
 
-        var id = req.params.id;
+        var searchQuery = {
+            '_id': req.params.id
+        };
+
+        if (!searchQuery._id) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
 
         Feedback
-            .findByIdAndRemove({_id: id})
+            .findByIdAndRemove(searchQuery)
             .exec(function (err, model) {
                if (err) {
                    return next(err);
                }
 
-                return res.status(200).send(model);
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: req.params.id,
+                    description: 'Delete Feedback'
+                };
+                adminHistoryHandler.pushlog(log);
+
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
 

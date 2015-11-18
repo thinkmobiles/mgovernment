@@ -305,9 +305,9 @@ module.exports = {
                         name: 'urltype',
                         inputType: CONST.SERVICE_INPUT_TYPE.PICKER,
                         dataSource: [
-                            {value: 0, AR: 'al du', EN: 'du'},
-                            {value: 1, AR: 'al Etisalat', EN: 'Etisalat'},
-                            {value: 2, AR: 'al Yahsat', EN: 'Yahsat'}
+                            {value: '0', AR: 'al du', EN: 'du'},
+                            {value: '1', AR: 'al Etisalat', EN: 'Etisalat'},
+                            {value: '2', AR: 'al Yahsat', EN: 'Yahsat'}
                         ],
                         placeHolder: {
                             EN: 'Select Type',
@@ -364,10 +364,12 @@ module.exports = {
                         order: 0,
                         name: 'tableContent',
                         inputType: CONST.SERVICE_INPUT_TYPE.TABLE,
+                        additional: {sectorField: 'position'},
                         dataSource: [
                             {value: 'id', AR: 'al Reference #', EN: 'Reference #'},
                             {value: 'first', AR: 'al First Name', EN: 'FirstName'},
-                            {value: 'last', AR: 'al Last Name', EN: 'Last Name'}
+                            {value: 'last', AR: 'al Last Name', EN: 'Last Name'},
+                            {value: 'position', AR: 'al Job Position', EN: 'Job Position'}
                         ],
                         placeHolder: {
                             EN: '',
@@ -383,6 +385,31 @@ module.exports = {
                 ]
             }
         ]
+    },
+
+    DYNAMIC_SERVICE_HUB_TEST: {
+
+        serviceProvider: CONST.SERVICE_PROVIDERS.DEFAULT_REST,
+        serviceName: {
+            EN: 'Dynamic TEST Hub',
+            AR: 'Dynamic TEST شكوى على الهيئة'
+        },
+
+        profile: null,
+        icon: null,
+
+        url: 'hub',
+        method: 'hub',
+        params: null,
+        port: null,
+
+        needAuth: false,
+        forUserType: [CONST.USER_TYPE.CLIENT],
+
+        buttonTitle: null,
+
+        pages: [],
+        items: []
     }
 
 };

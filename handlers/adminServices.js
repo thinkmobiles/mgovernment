@@ -249,6 +249,58 @@ var Service = function(db) {
                 return callback(null, model);
             });
     }
+
+    this.createServiceHub = function (req, res, next) {
+
+        var body = req.body;
+        var service;
+        var errors =[];
+
+        if (!body) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        /*validation.checkUrlField(errors, true, body.url, 'url');
+
+        if (errors.length) {
+            return res.status(400).send({error: errors});
+        }
+
+        if (body.params.body && !checkReceivedParamsFieldNamesWithItemsNames(body.params.body, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.query && !checkReceivedParamsFieldNamesWithItemsNames(body.params.query, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.uriSpecQuery && !checkReceivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        body.url = body.url.charAt(body.url.length-1) === '/' ? body.url : body.url + '/';
+        body.url = body.url.replace(/^\/+|\/+$/g,'');*/
+
+        body.updatedAt = new Date();
+        service = new Service(body);
+
+        service
+            .save(function (err, model) {
+
+                if (err) {
+                    return next(err);
+                }
+
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.CREATE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: model._id,
+                    description: 'Create new Service Hub'
+                };
+                adminHistoryHandler.pushlog(log);
+
+                res.status(201).send(model.toJSON());
+            })
+    };
 };
 
 module.exports = Service;

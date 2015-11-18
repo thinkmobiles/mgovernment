@@ -8,24 +8,21 @@
 var express = require('express');
 var router = express.Router();
 
-var EmailReport = require('../handlers/adminEmailReport');
-var SessionHandler = require('../handlers/sessions');
-
+var EmailReport = require('../../handlers/adminEmailReport');
 
 module.exports = function(db) {
     'use strict';
 
     var emailReport = new EmailReport(db);
-    var session = new SessionHandler(db);
 
     router.route('/')
-        .get(session.isAdminBySession, emailReport.getAllEmailReports);
+        .get(emailReport.getAllEmailReports);
 
     router.route('/:id')
-        .delete(session.isAdminBySession, emailReport.deleteEmailReport);
+        .delete(emailReport.deleteEmailReport);
 
     router.route('/getCount/')
-        .get(session.isAdminBySession, emailReport.getCount);
+        .get(emailReport.getCount);
 
     return router;
 };
