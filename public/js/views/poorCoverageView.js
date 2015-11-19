@@ -11,7 +11,8 @@ define([
         el: '#dataBlock',
         template: _.template(content),
         events: {
-            "click .oe_sortable": "goSort"
+            "click .oe_sortable": "goSort",
+            'keyup #searchTerm': "searchByTerm"
         },
 
         initialize: function(options){
@@ -27,11 +28,27 @@ define([
                 steps: true,
                 data: {
                     orderBy: options.orderBy,
-                    order: options.order
+                    order: options.order,
+                    searchTerm: options.searchTerm
                 }
             });
 
+            if (!options.searchTerm) {
+                App.searchTerm = '';
+            }
+
             this.listenTo(this.poorCoveragesCollections, 'reset remove', this.render);
+        },
+
+        searchByTerm: function(e){
+            var sortOrder = this.paginationView.stateModel.toJSON().data.orderBy;
+            var sortBy = this.paginationView.stateModel.toJSON().data.order;
+            var searchTerm =  e.target.value;
+
+            App.searchTerm = searchTerm;
+
+            console.log('searchTerm:',searchTerm);
+            this.paginationView.setData({orderBy: sortBy, order: sortOrder, searchTerm: searchTerm});
         },
 
         goSort: function (e) {
@@ -65,6 +82,7 @@ define([
             console.log('poorCoveragesView render');
             el.html(this.template({collection: this.poorCoveragesCollections.toJSON()}));
             el.find("#paginationDiv").html(this.paginationView.render().$el);
+            el.find("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
             this.paginationView.showOrderBy(el);
 
             return this;

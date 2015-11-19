@@ -14,6 +14,7 @@ module.exports = function(db) {
     var servicesIcon = require('./cmsServicesIcon')(db);
     var poorCoverageRouter = require('./cmsPoorCoverage')(db);
     var helpSalimRouter = require('./cmsHelpSalim')(db);
+    var usersRouter = require('./cmsUsers')(db);
 
     router.use('/feedback', userFeedbackRouter);
     router.use('/adminService', adminServicesRouter);
@@ -25,6 +26,7 @@ module.exports = function(db) {
     router.use('/icon', servicesIcon);
     router.use('/poorCoverage', poorCoverageRouter);
     router.use('/helpSalim', helpSalimRouter);
+    router.use('/user', usersRouter);
 
     return router;
 };
