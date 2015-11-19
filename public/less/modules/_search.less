@@ -1,1 +1,34 @@
-/*--------- SEARCH ---------*/
+.searchBlock {
+  input[type="text"] {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid @inputBorderColor;
+    border-radius: 0;
+    outline: none;
+    height: 3rem;
+    width: 100%;
+
+    //font-size: 1rem;
+    margin: 0 0 15px 0;
+    padding: 0;
+    box-shadow: none;
+    .box-sizing(content-box);
+    transition: all .3s;
+
+    &::-webkit-input-placeholder {
+      color: lighten(@inputBorderColor, 20%);
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+      color: lighten(@inputBorderColor, 20%);
+    }
+
+    &::-moz-placeholder {  /* Firefox 19+ */
+      color: lighten(@inputBorderColor, 20%);
+    }
+
+    &:-ms-input-placeholder {
+      color: lighten(@inputBorderColor, 20%);
+    }
+  }
+}

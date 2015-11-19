@@ -1,15 +1,13 @@
-<div style=" padding-bottom: 5px;margin-left: 5px; margin-right: 5px; vertical-align: top">
+<div>
 
-    <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
-        <div style="width: 79%;margin-right: 7px; background-color: lightsteelblue;  float: left; text-align: center; opacity: 0.8;">
-            <span style="font-size: 22px; "><b>List of emailReports</b></span>
-        </div>
-        <div style="text-align: right">
-            <input id="searchTerm" style="border-color: #595959; width: 200px; height: 30px;"
-                   class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" type="text" placeholder="Search a Report">
-        </div>
+    <div class="searchBlock">
+        <input id="searchTerm"
+               class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" type="text" placeholder="Search a Report">
     </div>
-    <div class = "tableFilter"><b> Show: </b>
+    <div class="headerPage">
+        <span>List of emailReports</span>
+    </div>
+    <div class="tableFilter table"><b> Show: </b>
         <b> <input type="checkbox" class="filterServiceType" id="filterHelpSalim"
                    value="Help Salim"<%= filter.length ? ( filter.match(/Help Salim/) ? '' : 'checked') : 'checked' %>> Help Salim </b>
         <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
@@ -53,15 +51,15 @@
             <!--<td><%= collection[i].user %></td>-->
             <td><%= collection[i].title %></td>
             <td><%= collection[i].description %></td>
-            <td style="text-align: center"><% if (collection[i].attachment) {%>
+            <td><% if (collection[i].attachment) {%>
             <!--<a href="<%= collection[i].attachment %>" target="_blank"> <img src="<%= collection[i].attachment %>" style=" height: 40px"></a>-->
 
                 <a href="/image/<%= collection[i].attachment %>" target="_blank"> <img src="../../img/attachment.png" style=" height: 40px" alt = "attachment"></a>
                 <% } %>
             </td>
-            <td style=" word-break: break-all;"><%= collection[i].mailTo %></td>
-            <td style=" word-break: break-all;"><%= collection[i].createdAt %></td>
-            <td  style=" word-break: break-all;"><%= collection[i].response ?  ( collection[i].response.message ? collection[i].response.message : collection[i].response) : '' %></td>
+            <td><%= collection[i].mailTo %></td>
+            <td><%= collection[i].createdAt %></td>
+            <td ><%= collection[i].response ?  ( collection[i].response.message ? collection[i].response.message : collection[i].response) : '' %></td>
         </tr>
 
         <% } %>
