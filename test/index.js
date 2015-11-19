@@ -2,8 +2,8 @@
 
 var app = require('../app');
 
-//require('./testHandlers/services');
-//require('./testHandlers/userServices');
+require('./testHandlers/services');
+require('./testHandlers/userServices');
 //require('./testHandlers/servicesIcon');
 require('./testHandlers/userServiceInitialRequest');
 

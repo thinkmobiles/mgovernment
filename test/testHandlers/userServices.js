@@ -26,7 +26,6 @@ describe('Service User: GET options, POST send request', function () {
 
         async.series([
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
-            preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
             preparingDb.toFillUsers(2),
             preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_DOMAIN_WHOIS),
             preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_COMPLAIN_TRA),

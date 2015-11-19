@@ -1,109 +1,53 @@
-@tableBorder: #cdcdcd;
-@tableStripedBg: #f3f3f3;
-@tableBg: #fff;
-@slategray: #444;
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 .table {
   width: 100%;
   max-width: 100%;
-  .tableRow {
-    display: table-row;
-    width: 100%;
-  }
-  .tableCell {
-    padding: 2px 4px;
-    vertical-align: middle;
-    border-left: 1px solid @tableBorder;
-    border-right: 1px solid @tableBorder;
-    border-bottom: 1px solid @tableBorder;
-    line-height: 1.42857143;
-    white-space: nowrap;
-    display: table-cell;
-  }
-  .tableHead {
-    display: table;
-    .tableCell {
-      border-top: 1px solid @tableBorder;
-      font-weight: bold;
-      vertical-align: bottom;
+  tr {
+    th, td {
+      padding: 8px;
     }
-  }
-  .tableBody {
-    display: table;
-    .tableRow {
-      &:nth-of-type(odd) {
-        background-color: @tableStripedBg;
-      }
+    th {
+      font-weight: 300;
+      font-family: @fontFamily-3;
+      .fontSize(18);
     }
-  }
-  .tableFooter {
-    display: table;
-    .tableCell {
-      font-weight: bold;
-      vertical-align: bottom;
-      border-top: 1px solid @tableBorder;
-    }
-  }
-}
-.tablePayRoll {
-  height: ~"calc(100vh - 145px)";
-  .tableBody {
-    width: 100%;
-  }
-  .tableCell {
-    width: 7%;
-    &:nth-child(3) {
-      width: 20%;
-    }
-    &:nth-child(12) {
-      width: 10%;
+    td {
+      font-family: @fontFamily-1;
+      .fontSize(14);
     }
   }
 }
 .tableResponsive {
-  //width: 100%;
-  //min-height: 0.01%;
-  //overflow-x: auto;
+  width: 100%;
+  min-height: 0.01%;
+  overflow-x: auto;
 }
-.tableFixed {
-  position: relative;
-  margin: 55px 0 27px;
-  .tableHead {
-    background-color: @tableBg;
-    width: ~"calc(100% - 12px)";
-    position: absolute;
-    height: 55px;
-    top: -56px;
-    left: 0;
-    display: block;
-    .tableRow {
-      background-color: @tableBg;
-      width: 100%;
-      display: table;
+.tableView {
+  background: @tableViewBgColor;
+  tr {
+    border: none;
+    td, th {
+      border: none;
+      text-align: left;
+      &:first-child {
+        padding-left: 40px;
+      }
+      &:last-child {
+        padding-right: 20px;
+      }
+    }
+    th {
+      background: @tableViewThBgColor;
+      color: @tableViewThTextColor;
+    }
+    td {
+      color: @tableViewTextColor;
     }
   }
-  .tableBody {
-    height: 100%;
-    width: 100%;
-    display: block;
-    overflow-y: scroll;
-    overflow-x: visible;
-    .tableRow {
-      width: 100%;
-      display: table;
-    }
-  }
-  .tableFooter {
-    background-color: @tableBg;
-    position: absolute;
-    height: 27px;
-    bottom: -27px;
-    left: 0;
-    width: ~"calc(100% - 12px)";
-    display: block;
-    .tableRow {
-      background-color: @tableBg;
-      width: 100%;
-      display: table;
-    }
-  }
+  thead {}
+  tbody {}
+  tfoot {}
 }
