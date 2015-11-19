@@ -1,6 +1,7 @@
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  width: 100%;
 }
 .table {
   width: 100%;
@@ -47,7 +48,12 @@ table {
       color: @tableViewTextColor;
     }
   }
-  thead {}
-  tbody {}
-  tfoot {}
+}
+.tableFilter {
+  background: @tableFilterBgColor;
+  color: @tableFilterTextColor;
+  font-family: @fontFamily-3;
+  b {
+    margin-right: 5px;
+  }
 }
