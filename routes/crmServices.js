@@ -6,14 +6,12 @@
  */
 var express = require('express');
 var router = express.Router();
-var UserHandler = require('../handlers/users');
 var SessionHandler = require('../handlers/sessions');
 var TraCrmHandler = require('../handlers/traCrmHandler');
 
 module.exports = function(db) {
     'use strict';
 
-    var users = new UserHandler(db);
     var session = new SessionHandler(db);
     var traCrmHandler = new TraCrmHandler(db);
 
