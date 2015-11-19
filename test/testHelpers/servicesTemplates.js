@@ -484,12 +484,45 @@ module.exports = {
             AR: 'Dynamic TEST شكوى على الهيئة'
         },
 
-        profile: null,
+        profile:   {
+            'Name': {
+                EN: 'Dynamic TEST Hub',
+                AR: 'Dynamic TEST شكوى على الهيئة'
+            },
+            'About the service': {
+                EN: 'You can file a complaint or put remarks about your telecom service provider',
+                AR: ''
+            },
+            'Service Package': {
+                EN: '.',
+                AR: ''
+            },
+            'Expected time': {
+                EN: 'Within 3 working days; could take more time based on the subject of the complaint',
+                AR: ''
+            },
+            'Officer in charge of this service': {
+                EN: 'Call center administrator',
+                AR: ''
+            },
+            'Required documents': {
+                EN: 'None',
+                AR: ''
+            },
+            'Service fee': {
+                EN: 'None',
+                AR: ''
+            },
+            'Terms and conditions': {
+                EN: 'Applicant information',
+                AR: ''
+            }
+        },
         icon: null,
 
         url: 'hub',
         method: 'hub',
-        params: null,
+        params: {},
         port: null,
 
         needAuth: false,
