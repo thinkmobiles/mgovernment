@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates')
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
 
@@ -46,6 +47,7 @@ describe('TRA Services Enquiries, Suggestions', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -54,7 +56,8 @@ describe('TRA Services Enquiries, Suggestions', function () {
                 }
 
                 agent
-                    .post('/complainEnquiries')
+                    .post('/crm/complainEnquiries')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -78,6 +81,7 @@ describe('TRA Services Enquiries, Suggestions', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -86,7 +90,8 @@ describe('TRA Services Enquiries, Suggestions', function () {
                 }
 
                 agent
-                    .post('/complainEnquiries')
+                    .post('/crm/complainEnquiries')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(400)
                     .end(function (err, res) {
@@ -109,6 +114,7 @@ describe('TRA Services Enquiries, Suggestions', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -117,7 +123,8 @@ describe('TRA Services Enquiries, Suggestions', function () {
                 }
 
                 agent
-                    .post('/complainEnquiries')
+                    .post('/crm/complainEnquiries')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(401)
                     .end(function (err, res) {
@@ -141,6 +148,7 @@ describe('TRA Services Enquiries, Suggestions', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -149,7 +157,8 @@ describe('TRA Services Enquiries, Suggestions', function () {
                 }
 
                 agent
-                    .post('/sendSuggestion')
+                    .post('/crm/sendSuggestion')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -171,6 +180,7 @@ describe('TRA Services Enquiries, Suggestions', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -178,7 +188,8 @@ describe('TRA Services Enquiries, Suggestions', function () {
                     return done(err)
                 }
                 agent
-                    .post('/sendSuggestion')
+                    .post('/crm/sendSuggestion')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(400)
                     .end(function (err, res) {
@@ -200,6 +211,7 @@ describe('TRA Services Enquiries, Suggestions', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -208,7 +220,8 @@ describe('TRA Services Enquiries, Suggestions', function () {
                 }
 
                 agent
-                    .post('/sendSuggestion')
+                    .post('/crm/sendSuggestion')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(401)
                     .end(function (err, res) {

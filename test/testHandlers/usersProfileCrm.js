@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
 
@@ -42,6 +43,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -51,6 +53,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
                 agent
                     .get('/crm/profile')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -76,6 +79,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -85,6 +89,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
                 agent
                     .get('/crm/profileImage')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -113,6 +118,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -122,6 +128,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
                 agent
                     .put('/crm/profile')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(changeProfileData)
                     .expect(200)
                     .end(function (err, res) {
@@ -131,6 +138,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
                         agent
                             .get('/crm/profile')
+                            .set(USER_AGENT.ANDROID_DEVICE)
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {
@@ -165,6 +173,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -174,6 +183,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
                 agent
                     .put('/crm/profile')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(changeProfileData)
                     .expect(200)
                     .end(function (err, res) {
@@ -183,6 +193,7 @@ describe('User CRM change Profile, change Pass, forgot Pass', function () {
 
                         agent
                             .get('/crm/profile')
+                            .set(USER_AGENT.ANDROID_DEVICE)
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {

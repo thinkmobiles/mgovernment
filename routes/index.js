@@ -43,9 +43,9 @@ module.exports = function(app, db) {
     app.get('/image/:imageId', accessHTTP.appAccessHTTP, session.isAdminBySession, attachmentHandler.getAttachmentById);
     app.use('/attachment', accessHTTP.appAccessHTTP, userAttachmentRouter);
 
-    app.use('/', crmRouter);
-    app.use('/', testTRAServicesRouter);
-    app.use('/', whoIsAndMobileRouter);
+    app.use('/crm', accessHTTP.appAccessHTTP, crmRouter);
+    app.use('/', accessHTTP.appAccessHTTP, testTRAServicesRouter);
+    app.use('/', accessHTTP.appAccessHTTP, whoIsAndMobileRouter);
 
     app.get('/', function (req, res) {
         res.sendfile('./index.html');

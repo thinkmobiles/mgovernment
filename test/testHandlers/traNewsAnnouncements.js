@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
 
@@ -36,8 +37,7 @@ describe('User Announcements', function () {
 
         agent
             .get('/announcement')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -66,8 +66,7 @@ describe('User Announcements', function () {
 
         agent
             .get('/announcement?offset=5&limit=10')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.IPAD_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -89,8 +88,7 @@ describe('User Announcements', function () {
 
         agent
             .get('/announcement?offset=0&limit=10&search=season')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.IPAD_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -120,8 +118,7 @@ describe('User Announcements', function () {
 
         agent
             .get('/announcement?offset=0&limit=10&search=qwertylkjfh')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.IPAD_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {

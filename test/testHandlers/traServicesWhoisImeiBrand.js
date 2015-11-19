@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
 var url = 'http://localhost:80';
@@ -42,6 +43,7 @@ describe('TRA Services WHOIS, IMEI, BRAND', function () {
 
         agent
             .get('/checkWhois?checkUrl=' + existUrl)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -59,6 +61,7 @@ describe('TRA Services WHOIS, IMEI, BRAND', function () {
 
         agent
             .get('/checkWhois?checkUrl=' + notExistUrl)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -76,6 +79,7 @@ describe('TRA Services WHOIS, IMEI, BRAND', function () {
 
         agent
             .get('/checkWhoisAvailable?checkUrl=' + availableUrl)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -94,6 +98,7 @@ describe('TRA Services WHOIS, IMEI, BRAND', function () {
 
         agent
             .get('/checkWhoisAvailable?checkUrl=' + notAvailableUrl)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -112,6 +117,7 @@ describe('TRA Services WHOIS, IMEI, BRAND', function () {
 
         agent
             .get('/searchMobile?imei=' + imeiCode)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -129,6 +135,7 @@ describe('TRA Services WHOIS, IMEI, BRAND', function () {
 
         agent
             .get('/searchMobile?imei=' + imeiCode)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -148,6 +155,7 @@ describe('TRA Services WHOIS, IMEI, BRAND', function () {
 
         agent
             .get('/searchMobileBrand?brand=' + brandName)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
