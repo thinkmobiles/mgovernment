@@ -125,8 +125,12 @@ var UserService = function(db) {
     this.getServices = function (req, res, next) {
 
         Service
-            .find()
-            .select('_id serviceName icon needAuth')
+            .find({homeScreen: true, enable: true})
+            .select('_id serviceName icon needAuth items')
+            .populate({
+                path: 'items',
+                match: {enable: true},
+                select: '_id serviceName icon needAuth items'})
             .lean()
             .exec(function (err, collection) {
                 var log;

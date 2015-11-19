@@ -2,7 +2,7 @@ define([], function(){
     var adminHistoryLogModel = Backbone.Model.extend({
         idAttribute: '_id',
         urlRoot:  function(){
-            return '/adminHistory/'
+            return '/cms/adminHistory/'
         }
     });
     return adminHistoryLogModel;

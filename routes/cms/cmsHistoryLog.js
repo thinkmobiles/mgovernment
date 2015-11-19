@@ -8,7 +8,7 @@
 var express = require('express');
 var router = express.Router();
 
-var AdminHistoryLog = require('../handlers/adminHistoryLog');
+var AdminHistoryLog = require('../../handlers/adminHistoryLog');
 
 module.exports = function(db) {
     'use strict';

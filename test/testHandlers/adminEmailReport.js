@@ -86,7 +86,7 @@ describe('Admin Email Report tests', function () {
                 }
 
                 agent
-                    .get('/emailReport')
+                    .get('/cms/emailReport')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -115,7 +115,7 @@ describe('Admin Email Report tests', function () {
                 }
 
                 agent
-                    .delete('/emailReport/'+deleteEmailReportId)
+                    .delete('/cms/emailReport/'+deleteEmailReportId)
                     .expect(200)
                     .end(function (err, res) {
                        if (err) {

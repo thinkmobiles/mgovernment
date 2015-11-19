@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDB');
 
@@ -28,7 +29,6 @@ describe('Feedback tests - Create, Get ,', function () {
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
-                preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
                 preparingDb.createUsersByTemplate(USERS.COMPANY),
@@ -46,8 +46,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
         agent
             .post('/crm/signOut')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -57,8 +56,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
                 agent
                     .get('/service/')
-                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -84,8 +82,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
         agent
             .post('/crm/signIn')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -95,8 +92,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
                 agent
                     .post('/feedback')
-                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(feedback)
                     .expect(201)
                     .end(function (err, res) {
@@ -121,8 +117,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
         agent
             .post('/crm/signIn')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -132,8 +127,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
                 agent
                     .post('/feedback')
-                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(feedback)
                     .expect(201)
                     .end(function (err, res) {
@@ -159,8 +153,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
         agent
             .post('/crm/signOut')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -170,8 +163,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
                 agent
                     .post('/feedback')
-                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(feedback)
                     .expect(201)
                     .end(function (err, res) {
@@ -198,7 +190,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback')
+                    .get('/cms/feedback')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -252,7 +244,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback?search=pretty')
+                    .get('/cms/feedback?search=pretty')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -286,7 +278,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback?search=query1223')
+                    .get('/cms/feedback?search=query1223')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -314,7 +306,7 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .delete('/feedback/'+deletedFeedbackId)
+                    .delete('/cms/feedback/'+deletedFeedbackId)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -322,7 +314,7 @@ describe('Feedback tests - Create, Get ,', function () {
                         }
 
                         agent
-                            .get('/feedback?search=pretty')
+                            .get('/cms/feedback?search=pretty')
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {

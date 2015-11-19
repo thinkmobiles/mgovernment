@@ -21,7 +21,7 @@ define([
                 collection: this.feedbacksCollection,
                 countPerPage: options.countPerPage,
                 url: 'feedbacks',
-                urlGetCount: '/feedback/getCount',
+                urlGetCount: this.feedbacksCollection.url + 'getCount',
                 padding: 2,
                 page: options.page,
                 ends: true,

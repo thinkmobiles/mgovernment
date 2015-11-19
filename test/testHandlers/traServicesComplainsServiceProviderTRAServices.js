@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
 
@@ -52,6 +53,7 @@ describe('TRA Services Complain Service Provider, Complain TRA Services', functi
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -60,7 +62,8 @@ describe('TRA Services Complain Service Provider, Complain TRA Services', functi
                 }
 
                 agent
-                    .post('/complainServiceProvider')
+                    .post('/crm/complainServiceProvider')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -85,6 +88,7 @@ describe('TRA Services Complain Service Provider, Complain TRA Services', functi
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -93,7 +97,8 @@ describe('TRA Services Complain Service Provider, Complain TRA Services', functi
                 }
 
                 agent
-                    .post('/complainServiceProvider')
+                    .post('/crm/complainServiceProvider')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(401)
                     .end(function (err, res) {
@@ -116,6 +121,7 @@ describe('TRA Services Complain Service Provider, Complain TRA Services', functi
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -124,7 +130,8 @@ describe('TRA Services Complain Service Provider, Complain TRA Services', functi
                 }
 
                 agent
-                    .post('/complainTRAService')
+                    .post('/crm/complainTRAService')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -148,6 +155,7 @@ describe('TRA Services Complain Service Provider, Complain TRA Services', functi
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -156,7 +164,8 @@ describe('TRA Services Complain Service Provider, Complain TRA Services', functi
                 }
 
                 agent
-                    .post('/complainTRAService')
+                    .post('/crm/complainTRAService')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(401)
                     .end(function (err, res) {

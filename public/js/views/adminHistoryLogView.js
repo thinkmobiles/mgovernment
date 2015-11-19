@@ -21,7 +21,7 @@ define([
                 collection: this.adminHistoryLogsCollection,
                 countPerPage: options.countPerPage,
                 url: 'adminHistoryLog',
-                urlGetCount: '/adminHistory/getCount',
+                urlGetCount:  this.adminHistoryLogsCollection.url + 'getCount',
                 padding: 2,
                 page: options.page,
                 ends: true,

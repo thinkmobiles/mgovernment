@@ -7,6 +7,7 @@ var async = require('async');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var PreparingBd = require('./preparingDb');
 
 var app = require('../../app');
@@ -44,6 +45,7 @@ describe('Service User: GET options, POST send request', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -53,6 +55,7 @@ describe('Service User: GET options, POST send request', function () {
 
                 agent
                     .get('/service')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -80,6 +83,7 @@ describe('Service User: GET options, POST send request', function () {
 
         agent
             .get('/service/' + data._id)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send()
             .expect(200)
             .end(function (err, res) {
@@ -99,6 +103,7 @@ describe('Service User: GET options, POST send request', function () {
 
         agent
             .post('/service/' + data._id)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(userRequestBody)
             .expect(200)
             .end(function (err, res) {
@@ -117,6 +122,7 @@ describe('Service User: GET options, POST send request', function () {
 
         agent
             .get('/service/' + data._id)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send()
             .expect(200)
             .end(function (err, res) {
@@ -126,6 +132,7 @@ describe('Service User: GET options, POST send request', function () {
 
                 agent
                     .post('/service/' + data._id)
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send({})
                     .expect(400)
                     .end(function (err, res) {
@@ -148,6 +155,7 @@ describe('Service User: GET options, POST send request', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -157,6 +165,7 @@ describe('Service User: GET options, POST send request', function () {
 
                 agent
                     .post('/service/' + serviceData._id)
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(methodData)
                     .expect(401)
                     .end(function (err, res) {
@@ -180,6 +189,7 @@ describe('Service User: GET options, POST send request', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -189,6 +199,7 @@ describe('Service User: GET options, POST send request', function () {
 
                 agent
                     .post('/service/' + serviceData._id)
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(methodData)
                     .expect(200)
                     .end(function (err, res) {

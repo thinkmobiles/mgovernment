@@ -3,7 +3,7 @@ define([
 ], function(feedbackModel){
     var FeedbacksCollection = Backbone.Collection.extend({
         model: feedbackModel,
-        url: '/feedback/'
+        url: '/cms/feedback/'
     });
     return FeedbacksCollection;
 });

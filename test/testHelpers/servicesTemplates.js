@@ -274,6 +274,95 @@ module.exports = {
                         },
                         required: true,
                         validateAs: CONST.SERVICE_VALIDATE_TYPE.URL
+                    },
+                    {
+                        order: 1,
+                        name: 'checkTree',
+                        inputType: CONST.SERVICE_INPUT_TYPE.TREE,
+                        "dataSource": [
+                            {
+                                "value": "Node 1s",
+                                "EN": "sss",
+                                "AR": "sss",
+                                "items": [
+                                    {
+                                        "value": "Node 1_1d",
+                                        "EN": "ddd",
+                                        "AR": "ddd",
+                                        "items": []
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "Node 2f",
+                                "EN": "ff",
+                                "AR": "ff",
+                                "items": []
+                            },
+                            {
+                                "value": "Node 3g",
+                                "EN": "gg",
+                                "AR": "al gg",
+                                "items": [
+                                    {
+                                        "value": "Node 3_3asa",
+                                        "EN": "asa",
+                                        "AR": "asa",
+                                        "items": [
+                                            {
+                                                "value": "Node 3_3_1s",
+                                                "EN": "asdasd",
+                                                "AR": "asdas",
+                                                "items": []
+                                            },
+                                            {
+                                                "value": "Node 3_3_2d",
+                                                "EN": "sasd",
+                                                "AR": "asdasd",
+                                                "items": [
+                                                    {
+                                                        "value": "Node 3_3_2_1e",
+                                                        "EN": "weqw",
+                                                        "AR": "eqweqwe",
+                                                        "items": [
+                                                            {
+                                                                "value": "Node 3_3_2_1_0a",
+                                                                "EN": "adasd",
+                                                                "AR": "asdasdas",
+                                                                "items": []
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "value": "Node 5as",
+                                "EN": "asas",
+                                "AR": "asas",
+                                "items": [
+                                    {
+                                        "value": "Node 5_5f",
+                                        "EN": "ff",
+                                        "AR": "ff",
+                                        "items": []
+                                    }
+                                ]
+                            }
+                        ],
+                        placeHolder: {
+                            EN: 'Check Some',
+                            AR: 'AR Check Some'
+                        },
+                        displayName: {
+                            EN: 'Check Some',
+                            AR: 'AR Check Some'
+                        },
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
                     }
                 ]
             },
@@ -305,9 +394,9 @@ module.exports = {
                         name: 'urltype',
                         inputType: CONST.SERVICE_INPUT_TYPE.PICKER,
                         dataSource: [
-                            {value: 0, AR: 'al du', EN: 'du'},
-                            {value: 1, AR: 'al Etisalat', EN: 'Etisalat'},
-                            {value: 2, AR: 'al Yahsat', EN: 'Yahsat'}
+                            {value: '0', AR: 'al du', EN: 'du'},
+                            {value: '1', AR: 'al Etisalat', EN: 'Etisalat'},
+                            {value: '2', AR: 'al Yahsat', EN: 'Yahsat'}
                         ],
                         placeHolder: {
                             EN: 'Select Type',
@@ -385,6 +474,31 @@ module.exports = {
                 ]
             }
         ]
+    },
+
+    DYNAMIC_SERVICE_HUB_TEST: {
+
+        serviceProvider: CONST.SERVICE_PROVIDERS.DEFAULT_REST,
+        serviceName: {
+            EN: 'Dynamic TEST Hub',
+            AR: 'Dynamic TEST شكوى على الهيئة'
+        },
+
+        profile: null,
+        icon: null,
+
+        url: 'hub',
+        method: 'hub',
+        params: null,
+        port: null,
+
+        needAuth: false,
+        forUserType: [CONST.USER_TYPE.CLIENT],
+
+        buttonTitle: null,
+
+        pages: [],
+        items: []
     }
 
 };

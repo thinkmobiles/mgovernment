@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
 
@@ -41,6 +42,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -74,6 +76,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(400)
             .end(function (err, res) {
@@ -91,6 +94,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -100,6 +104,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
                 agent
                     .post('/crm/register')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(registerData)
                     .expect(200)
                     .end(function (err, res) {
@@ -144,6 +149,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -153,6 +159,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
                 agent
                     .post('/crm/register')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(registerData)
                     .expect(400)
                     .end(function (err, res) {
@@ -175,6 +182,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -183,6 +191,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
                 }
                 agent
                     .post('/crm/signIn')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(loginData)
                     .expect(200)
                     .end(function (err, res) {
@@ -215,6 +224,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -224,6 +234,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
                 agent
                     .post('/crm/register')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(registerData)
                     .expect(400)
                     .end(function (err, res) {
@@ -250,6 +261,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -259,6 +271,7 @@ describe('User CRM Register / LogIn / LogOut', function () {
 
                 agent
                     .post('/crm/register')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(registerData)
                     .expect(400)
                     .end(function (err, res) {

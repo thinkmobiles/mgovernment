@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:80';
@@ -41,8 +42,7 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -52,8 +52,7 @@ describe('User Innovations', function () {
 
                 agent
                     .post('/innovation')
-                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send({
                         title: 'test',
                         message: 'some message',
@@ -81,8 +80,7 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.IPAD_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -92,8 +90,7 @@ describe('User Innovations', function () {
 
                 agent
                     .post('/innovation')
-                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+                    .set(USER_AGENT.IPAD_DEVICE)
                     .send({
                         title: 'test',
                         message: 'some message',
@@ -119,8 +116,7 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.IPHONE_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -130,8 +126,7 @@ describe('User Innovations', function () {
 
                 agent
                     .get('/innovation')
-                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+                    .set(USER_AGENT.IPHONE_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -155,8 +150,7 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
-            .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-            .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -166,8 +160,7 @@ describe('User Innovations', function () {
 
                 agent
                     .get('/innovation?offset=0&limit=5')
-                    .set('appkey', CONST.APPLICATION_KEY_FOR_TOKEN)
-                    .set('user-agent','Mozilla/5.0 (iPad; CPU OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Mobile/9B206')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
