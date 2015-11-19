@@ -16,11 +16,11 @@ describe('Service User Initial Request', function () {
 
     var serviceCollection;
     var agent = request.agent(app);
-    SERVICES.DYNAMIC_DOMAIN_WHOIS.initialRequest = {
+    /*SERVICES.DYNAMIC_DOMAIN_WHOIS.initialRequest = {
         method: 'GET',
         url: 'http://google.com.ua/'
     };
-    SERVICES.DYNAMIC_DOMAIN_WHOIS.dataContent = null;
+    SERVICES.DYNAMIC_DOMAIN_WHOIS.dataContent = null;*/
 
     before(function (done) {
         this.timeout(30000);
@@ -33,7 +33,7 @@ describe('Service User Initial Request', function () {
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
             preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
             preparingDb.toFillUsers(2),
-            preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_DOMAIN_WHOIS),
+            preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_SERVICE_INITIAL_REQUEST_TEST),
             preparingDb.createUsersByTemplate(USERS.CLIENT)
 
         ], function (err, results) {
@@ -83,7 +83,7 @@ describe('Service User Initial Request', function () {
     it('Unauthorized GET DYNAMIC_DOMAIN_WHOIS', function (done) {
 
         var data = serviceCollection[0];
-        var initialRequestData;
+
         agent
             .get('/service/' + data._id)
             .set(USER_AGENT.ANDROID_DEVICE)
@@ -94,9 +94,7 @@ describe('Service User Initial Request', function () {
                     return done(err)
                 }
 
-                console.log(res.body.initialRequest);
-                initialRequestData = res.body.initialRequest;
-              //  console.log(res.body);
+                expect(res.body.dataContent).not.be.empty;
                 done();
             });
     });

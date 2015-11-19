@@ -38,13 +38,11 @@ var UserService = function(db) {
 
                 model.icon = model.icon ? '/icon/' + model.icon : null;
 
-                console.log(model.initialRequest);
                 if (model.initialRequest) {
                     request(model.initialRequest.url, {
                         method: model.initialRequest.method
                     }, function(err, result, body){
                         if (!err || result.statusCode == 200) {
-                            console.log(body);
                             model.dataContent = body;
                         }
 

@@ -6,7 +6,7 @@ var AccessHTTP = function () {
 
     this.appAccessHTTP = function(req, res, next)  {
         var userAgent = req.headers['user-agent'];
-        console.log(userAgent);
+        console.log('userAgent: ' + userAgent);
         var checkMobileDevice = userAgent.indexOf('Android');
 
         if (checkMobileDevice === -1) {
