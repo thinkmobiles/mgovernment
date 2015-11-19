@@ -1,5 +1,5 @@
 <div style="align-content: center; margin-top: 5px; padding-bottom: 5px">
-    <% var showElement = "display: none" ; %>
+    <% var showElement = "display: none" ; service.params = service.params ? service.params : {} %>
     <form>
         <datalist id="standartFieldsName">
             <option value="serviceName"/>
@@ -181,8 +181,8 @@
             <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>params.needUserAuth:</b></td>
                 <td class="hiddenByDefault">
-                    <input type="radio" name="auth" id="needUserAuth" value="true" <%= service.params.needUserAuth ? 'checked':''%>>true
-                    <input type="radio" name="auth" id="needUserAuth2" value="false" <%= !service.params.needUserAuth ? 'checked':''%> > false
+                    <input type="radio" name="auth" id="needAuth" value="true" <%= service.needAuth ? 'checked':''%>>true
+                    <input type="radio" name="auth" id="needAuth2" value="false" <%= !service.needAuth ? 'checked':''%> > false
                 </td>
                 <td class="hiddenByDefault">For using service authenticate is needed</td>
             </tr>

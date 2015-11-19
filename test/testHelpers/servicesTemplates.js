@@ -453,12 +453,16 @@ module.exports = {
                         order: 0,
                         name: 'tableContent',
                         inputType: CONST.SERVICE_INPUT_TYPE.TABLE,
-                        additional: {sectorField: 'position'},
+                        additional: {sectorField: 'dealerType'},
                         dataSource: [
-                            {value: 'id', AR: 'al Reference #', EN: 'Reference #'},
-                            {value: 'first', AR: 'al First Name', EN: 'FirstName'},
-                            {value: 'last', AR: 'al Last Name', EN: 'Last Name'},
-                            {value: 'position', AR: 'al Job Position', EN: 'Job Position'}
+                            {value: 'referenceNumber', AR: 'al Reference Number', EN: 'Reference Number'},
+                            {value: 'status', AR: 'al Status', EN: 'Status'},
+                            {value: 'workitemName', AR: 'al Workitem Name', EN: 'Workitem Name'},
+                            {value: 'taskType', AR: 'al Task Type', EN: 'Task Type'},
+                            {value: 'organizationName', AR: 'al Organization Name', EN: 'Organization Name'},
+                            {value: 'createdBy', AR: 'al Created By', EN: 'Created By'},
+                            {value: 'createdDate', AR: 'al Created Date', EN: 'Created Date'},
+                            {value: 'dealerType', AR: 'Dealer Type', EN: 'Dealer Type'}
                         ],
                         placeHolder: {
                             EN: '',
@@ -484,12 +488,45 @@ module.exports = {
             AR: 'Dynamic TEST شكوى على الهيئة'
         },
 
-        profile: null,
+        profile:   {
+            'Name': {
+                EN: 'Dynamic TEST Hub',
+                AR: 'Dynamic TEST شكوى على الهيئة'
+            },
+            'About the service': {
+                EN: 'You can file a complaint or put remarks about your telecom service provider',
+                AR: ''
+            },
+            'Service Package': {
+                EN: '.',
+                AR: ''
+            },
+            'Expected time': {
+                EN: 'Within 3 working days; could take more time based on the subject of the complaint',
+                AR: ''
+            },
+            'Officer in charge of this service': {
+                EN: 'Call center administrator',
+                AR: ''
+            },
+            'Required documents': {
+                EN: 'None',
+                AR: ''
+            },
+            'Service fee': {
+                EN: 'None',
+                AR: ''
+            },
+            'Terms and conditions': {
+                EN: 'Applicant information',
+                AR: ''
+            }
+        },
         icon: null,
 
         url: 'hub',
         method: 'hub',
-        params: null,
+        params: {},
         port: null,
 
         needAuth: false,

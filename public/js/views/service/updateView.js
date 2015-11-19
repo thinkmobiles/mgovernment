@@ -907,9 +907,8 @@ define([
 
             data.method = el.find('#POST')[0].checked ? 'POST' : 'GET';
             data.url = el.find('#url').val();
-            data.params = {
-                needUserAuth: el.find('#needUserAuth')[0].checked
-            };
+            data.needAuth = el.find('#needAuth')[0].checked;
+
 
             if (el.find('#uriSpecQuery')[0].checked) {
                 data.params.uriSpecQuery = sendParams.uriSpecQuery;
