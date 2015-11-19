@@ -189,7 +189,6 @@ describe('Service User: GET options, POST send request', function () {
 
         agent
             .post('/crm/signIn')
-            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -199,7 +198,6 @@ describe('Service User: GET options, POST send request', function () {
 
                 agent
                     .post('/service/' + serviceData._id)
-                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(methodData)
                     .expect(200)
                     .end(function (err, res) {

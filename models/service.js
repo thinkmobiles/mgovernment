@@ -23,6 +23,9 @@ module.exports = function (db) {
             params: {},
             port: {type: String},
 
+            initialRequest: {type: Object, default: null},
+            dataContent: {type: Object, default: null},
+
             needAuth: {type: Boolean, default: false},
             forUserType: {type: [], default: [CONST.USER_TYPE.CLIENT]},
 

@@ -1,3 +1,4 @@
+var request = require('request');
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var UserHistoryHandler = require('./userHistoryLog');
@@ -27,7 +28,7 @@ var UserService = function(db) {
 
         Service
             .findOne({_id: req.params.serviceId})
-            .select('_id enable serviceName pages needAuth icon buttonTitle')
+            .select('_id enable serviceName pages needAuth icon buttonTitle initialRequest dataContent')
             .lean()
             .exec(function (err, model) {
 
@@ -37,7 +38,22 @@ var UserService = function(db) {
 
                 model.icon = model.icon ? '/icon/' + model.icon : null;
 
-                return res.status(200).send(model);
+                console.log(model.initialRequest);
+                if (model.initialRequest) {
+                    request(model.initialRequest.url, {
+                        method: model.initialRequest.method
+                    }, function(err, result, body){
+                        if (!err || result.statusCode == 200) {
+                            console.log(body);
+                            model.dataContent = body;
+                        }
+
+                        return res.status(200).send(model);
+                    });
+                } else {
+
+                    return res.status(200).send(model);
+                }
             });
     };
 
@@ -126,11 +142,11 @@ var UserService = function(db) {
 
         Service
             .find({homeScreen: true, enable: true})
-            .select('_id serviceName icon needAuth items')
+            .select('_id serviceName icon needAuth items initialRequest')
             .populate({
                 path: 'items',
                 match: {enable: true},
-                select: '_id serviceName icon needAuth items'})
+                select: '_id serviceName icon needAuth items initialRequest'})
             .lean()
             .exec(function (err, collection) {
                 var log;
