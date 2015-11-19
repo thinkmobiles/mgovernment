@@ -107,6 +107,18 @@
   -o-transform: translate(@x, @y);
   transform: translate(@x, @y);
 }
+.translateX(@x) {
+  -webkit-transform: translate(@x);
+  -ms-transform: translate(@x);
+  -o-transform: translate(@x);
+  transform: translate(@x);
+}
+.translateY(@y) {
+  -webkit-transform: translate(@y);
+  -ms-transform: translate(@y);
+  -o-transform: translate(@y);
+  transform: translate(@y);
+}
 .translate3d(@x; @y; @z) {
   -webkit-transform: translate3d(@x, @y, @z);
   transform: translate3d(@x, @y, @z);

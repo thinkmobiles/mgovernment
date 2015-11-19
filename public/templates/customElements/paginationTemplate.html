@@ -1,4 +1,4 @@
-<div>
+<div class="paginationBlock">
     <ul class="pagination">
         <% for(page in pages) { %>
         <li class="<% if (pages[page].clNam) {%>arrow<%}%><% if(pages[page].active) { %>active<% } %> item">
@@ -10,7 +10,7 @@
         </li>
         <% } %>
     </ul>
-    <div>
+    <div class="result">
         <span>
             <span id="grid-start"> <%= gridStart %> </span> -
             <span id="grid-end"><%= gridEnd %></span> of
@@ -22,7 +22,7 @@
             <option value="20" <% if (countPerPage == '20') { %> selected <% } %> >20</option>
             <option value="50" <% if (countPerPage == '50') { %> selected <% } %> >50</option>
         </select>
-        <span>Per Page </span>
+        <span>Per Page</span>
     </div>
     <div style="clear: both"></div>
 </div>

@@ -1,0 +1,171 @@
+.input-field {
+  position: relative;
+  margin-top: 1rem;
+
+  label {
+    color: @inputBorderColor;
+    position: absolute;
+    top: 0.8rem;
+    left: @gutter-width / 2;
+    font-size: 1rem;
+    cursor: text;
+    .transition(.2s ease-out);
+  }
+  label.active {
+    .fontSize(14);
+    .translateY(-140%);
+  }
+}
+form p {
+  margin-bottom: 10px;
+  text-align: left;
+}
+form p:last-child {
+  margin-bottom: 0;
+}
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+}
+[type="checkbox"] {
+  + label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    .fontSize(16);
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+  }
+  + label:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    z-index: 0;
+    border: 2px solid @radioEmptyEolor;
+    border-radius: 1px;
+    margin-top: 2px;
+    .transition(.2s);
+  }
+  &:not(:checked):disabled + label:before {
+    border: none;
+    background-color: @inputDisabledColor;
+  }
+}
+[type="checkbox"]:checked {
+  + label:before {
+    top: 0;
+    left: 6px;
+    width: 12px; height: 22px;
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent;
+    border-right: 2px solid @radioFillColor;
+    border-bottom: 2px solid @radioFillColor;
+    .rotate(35deg);
+    -webkit-backface-visibility: hidden;
+    .transform-origin(100% 100%);
+  }
+  &:disabled + label:before {
+    border-right: 2px solid @inputDisabledColor;
+    border-bottom: 2px solid @inputDisabledColor;
+  }
+}
+[type="checkbox"]:indeterminate {
+  +label:before {
+    left: -10px;
+    top: -11px;
+    width: 10px; height: 22px;
+    border-top: none;
+    border-left: none;
+    border-right: 2px solid @radioFillColor;
+    border-bottom: none;
+    .rotate(90deg);
+    -webkit-backface-visibility: hidden;
+    .transform-origin(100% 100%);
+  }
+  &:disabled + label:before {
+    border-right: 2px solid @inputDisabledColor;
+    background-color: transparent;
+  }
+}
+[type="checkbox"].filledIn {
+  + label:before,
+  + label:after {
+    content: '';
+    left: 5px;
+    position: absolute;
+    transition: border .25s, background-color .25s, width .20s .1s, height .20s .1s, top .20s .1s, left .20s .1s;
+    z-index: 1;
+  }
+  &:not(:checked) + label:before {
+    width: 0;
+    height: 0;
+    border: 3px solid transparent;
+    left: 6px;
+    top: 10px;
+
+    -webkit-transform: rotateZ(37deg);
+    transform: rotateZ(37deg);
+    -webkit-transform-origin: 20% 40%;
+    transform-origin: 100% 100%;
+  }
+  &:not(:checked) + label:after {
+    height: 20px;
+    width: 20px;
+    background-color: transparent;
+    border: 2px solid @radioEmptyEolor;
+    top: 5px;
+    z-index: 0;
+  }
+  &:checked {
+    + label:before {
+      top: 5px;
+      left: 6px;
+      width: 8px;
+      height: 13px;
+      border-top: 1px solid transparent;
+      border-left: 1px solid transparent;
+      border-right: 1px solid @input-bg-color;
+      border-bottom: 1px solid @input-bg-color;
+      -webkit-transform: rotateZ(35deg);
+      transform: rotateZ(35deg);
+
+      -webkit-transform-origin: 100% 100%;
+      transform-origin: 100% 100%;
+    }
+    + label:after {
+      top: 5px;
+      width: 20px;
+      height: 20px;
+      border: 2px solid @secondary-color;
+      background-color: @secondary-color;
+      z-index: 0;
+    }
+  }
+  &:disabled:not(:checked) + label:before {
+    background-color: transparent;
+    border: 2px solid transparent;
+  }
+  &:disabled:not(:checked) + label:after {
+    border-color: transparent;
+    background-color: @inputDisabledSolidColor;
+  }
+  &:disabled:checked + label:before {
+    background-color: transparent;
+
+  }
+  &:disabled:checked + label:after {
+    background-color: @inputDisabledSolidColor;
+    border-color: @inputDisabledSolidColor;
+  }
+}
