@@ -1,0 +1,46 @@
+<div class="content">
+
+    <!--<div style="clear: both; margin: 1%">-->
+    <!--</div>-->
+
+    <div class="headerPage">
+        <span>List of Poor Coverages</span>
+    </div>
+
+    <table class="tableView table">
+        <tr>
+            <th class="oe_sortable" data-sort="address">Address<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+            <th class="oe_sortable" data-sort="location.latitude" >Latitude<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+            <th class="oe_sortable" data-sort="location.longitude" >Longitude<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+            <th class="oe_sortable" data-sort="signalLevel" >SignalLevel<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+            <th class="oe_sortable" data-sort="user" >User<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+            <th class="oe_sortable" data-sort="createdAt" >CreatedAt<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+        </tr>
+
+        <% if (collection.length) { %>
+        <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
+        <tr>
+            <td><%= collection[i].address ? collection[i].address : '-  ' %></td>
+            <% if (collection[i].location) { %>
+            <td><%= collection[i].location.latitude %></td>
+            <td><%= collection[i].location.longitude %></td>
+            <% } else { %>
+            <td>-</td>
+            <td>-</td>
+            <% } %>
+            <td><%= collection[i].signalLevel %></td>
+            <td><%= collection[i].user ? collection[i].user.login : 'UnAuthorized' %></td>
+            <td><%= collection[i].createdAt %></td>
+        </tr>
+
+        <% } %>
+        <% } %>
+
+    </table>
+
+    <div style="clear:both; "></div>
+
+    <div id="paginationDiv" style="">
+    </div>
+
+</div>

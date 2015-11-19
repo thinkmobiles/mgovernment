@@ -36,16 +36,52 @@ describe('Poor Coverage test', function () {
             });
     });
 
-    it('SEND Poor Coverage UnAuthorized', function (done) {
+    it('SEND Poor Coverage with Location by UnAuthorized', function (done) {
+
+        var loginData = USERS.CLIENT;
+
+        var data = {
+            location: {
+                latitude: 24.9821547,
+                longitude: 55.402868
+            },
+            signalLevel: 4
+        };
+
+        agent
+            .post('/user/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/sendPoorCoverage')
+                    .set(USER_AGENT.ANDROID_DEVICE)
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        expect(res.body).to.have.deep.property('success');
+                        expect(res.body.success).to.equal('Success');
+
+                        done();
+                    });
+            });
+    });
+
+    it('SEND Poor Coverage with Address by UnAuthorized', function (done) {
 
         var loginData = USERS.CLIENT;
 
         var data = {
             address: 'Some location',
-            location: {
-                latitude: 24.9821547,
-                longitude: 55.402868
-            },
             signalLevel: 4
         };
 
