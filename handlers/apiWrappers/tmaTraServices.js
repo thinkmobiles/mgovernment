@@ -21,11 +21,11 @@ var TmaTraServices = function(db) {
             return callback(new Error(RESPONSE.NOT_ENOUGH_PARAMS));
         }
 
-        if (!req.session.token && serviceOptions.params.needUserAuth) {
-            console.log('!req.session.token && serviceOptions.params.needUserAuth', !req.session.token, serviceOptions.params.needUserAuth);
+        if (!req.session.token && serviceOptions.needAuth) {
+            console.log('!req.session.token && serviceOptions.params.needUserAuth', !req.session.token, serviceOptions.needAuth);
             return sendRequestWithAuth();
         } else {
-            console.log('!req.session.token && serviceOptions.params.needUserAuth', req.session.token, serviceOptions.params.needUserAuth);
+            console.log('!req.session.token && serviceOptions.params.needUserAuth', req.session.token, serviceOptions.needAuth);
             return async.series([createSendRequest()], function (err, results) {
                 if (err) {
                     console.log(err);
@@ -70,11 +70,11 @@ var TmaTraServices = function(db) {
                 var queryString = '';
                 var serviceUrl;
 
-                if  (serviceOptions.params.needUserAuth) {
+                if  (serviceOptions.needAuth) {
                     tokenString = '?access_token=' + req.session.token;
                 }
 
-                if (serviceOptions.params.query) {
+                if (serviceOptions.params && serviceOptions.params.query) {
                     queryString += '?';
                     for (var i = 0, len = serviceOptions.params.query.length - 1; i <= len; i++) {
                         if(i>0) {
@@ -98,7 +98,7 @@ var TmaTraServices = function(db) {
 
                         return callback(null, res.body)
                     }
-                    return callback(err + res.statusMessage)
+                    return callback(err)
                 });
             }
         }

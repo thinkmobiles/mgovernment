@@ -256,11 +256,11 @@ var UserService = function(db) {
 
                     serviceOptions = model.toJSON();
 
-                    if (serviceOptions.params.needUserAuth) {
+                    if (serviceOptions.needAuth) {
                         console.log('serviceOptions.params.needUserAuth= ',serviceOptions.params.needUserAuth)
 
                     }
-                    return callback(null, serviceOptions.params.needUserAuth);
+                    return callback(null, serviceOptions.needAuth);
                 })
             };
         }
