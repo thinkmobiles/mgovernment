@@ -12,7 +12,6 @@ module.exports = function(app, db) {
     var usersRouter = require('./users')(db);
     var servicesIcon = require('./servicesIcon')(db);
     var userServicesRouter = require('./userServices')(db);
-    var userTraServicesRouter = require('./userTraServices')(db);
     var userFeedbackRouter = require('./userFeedback')(db);
     var userAttachmentRouter = require('./attachment')(db);
     var userAnnouncementRouter = require('./userAnnouncement')(db);
@@ -38,7 +37,6 @@ module.exports = function(app, db) {
     app.use('/feedback', accessHTTP.appAccessHTTP, userFeedbackRouter);
     app.use('/announcement', accessHTTP.appAccessHTTP, userAnnouncementRouter);
     app.use('/innovation', accessHTTP.appAccessHTTP, userInnovationRouter);
-    app.use('/tra_api/service', accessHTTP.appAccessHTTP, userTraServicesRouter);
     app.get('/image/avatar', accessHTTP.appAccessHTTP, session.isAuthenticatedUser, attachmentHandler.getAttachmentBySession);
     app.get('/image/:imageId', accessHTTP.appAccessHTTP, session.isAdminBySession, attachmentHandler.getAttachmentById);
     app.use('/attachment', accessHTTP.appAccessHTTP, userAttachmentRouter);
