@@ -528,7 +528,6 @@ module.exports = {
             url: 'http://localhost:7791/test/serviceInitial',
             method: 'GET'
         },
-        dataContent: null,
 
         url: 'http://mobws.tra.gov.ae/checkWhois',
         method: CONST.SERVICE_METHOD.GET,

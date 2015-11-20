@@ -88,7 +88,9 @@ describe('Service User Initial Request', function () {
                     return done(err)
                 }
 
-                expect(res.body.dataContent).not.be.empty;
+                console.log(res.body.pages[0].inputItems);
+                console.log(res.body.pages[1].inputItems);
+                console.log(res.body.pages[2].inputItems);
 
                 done();
             });

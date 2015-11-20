@@ -6,8 +6,8 @@ module.exports = function(){
     router.route('/serviceInitial')
         .get(function (req, res, next) {
             var dataInitial = {
-                message: 'message',
-                url: '1',
+               // message: 'message',
+                urltype: '1',
                 tableContent: [
                     {
                         referenceNumber: '1',

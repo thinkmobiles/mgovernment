@@ -44,7 +44,7 @@ var UserService = function(db) {
                         json: true
                     }, function(err, result, body){
                         if (!err || result.statusCode == 200) {
-                            model.dataContent = body;
+                            prepareDataContent(model, body);
                         }
 
                         return res.status(200).send(model);
@@ -54,6 +54,17 @@ var UserService = function(db) {
                     return res.status(200).send(model);
                 }
             });
+    };
+
+    function prepareDataContent(model, data) {
+        if (data) {
+            for (var i in model.pages) {
+                for (var j in model.pages[i].inputItems) {
+                    var key = model.pages[i].inputItems[j].name;
+                    model.pages[i].inputItems[j].dataContent = data[key] ? data[key] : null;
+                }
+            }
+        }
     };
 
     this.getServiceOptionsCms = function (req, res, next) {
