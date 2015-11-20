@@ -616,6 +616,41 @@ module.exports = {
                         validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
                     }
                 ]
+            },
+            {
+                number: 2,
+                inputItems: [
+                    {
+                        order: 0,
+                        name: 'testBoolean',
+                        inputType: CONST.SERVICE_INPUT_TYPE.BOOLEAN,
+                        placeHolder: {
+                            EN: '',
+                            AR: ''
+                        },
+                        displayName: {
+                            EN: 'Some Boolean',
+                            AR: 'AR Some Boolean'
+                        },
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
+                    },
+                    {
+                        order: 0,
+                        name: 'title',
+                        inputType: CONST.SERVICE_INPUT_TYPE.STRING,
+                        placeHolder: {
+                            EN: 'write here',
+                            AR: 'AR write here'
+                        },
+                        displayName: {
+                            EN: 'title',
+                            AR: 'title'
+                        },
+                        required: true,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.STRING
+                    }
+                ]
             }
         ]
 

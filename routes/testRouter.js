@@ -39,7 +39,9 @@ module.exports = function(){
                         createdDate: '2014/02/03',
                         dealerType: 'dealer type'
                     }
-                ]
+                ],
+                testBoolean: false,
+                title: 'some'
             };
             res.status(200).send(dataInitial);
         });

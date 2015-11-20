@@ -95,6 +95,7 @@ describe('Service User Initial Request', function () {
                 }
 
                 expect(res.body.dataContent).not.be.empty;
+
                 done();
             });
     });

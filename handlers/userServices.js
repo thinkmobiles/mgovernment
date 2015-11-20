@@ -40,7 +40,8 @@ var UserService = function(db) {
 
                 if (model.initialRequest) {
                     request(model.initialRequest.url, {
-                        method: model.initialRequest.method
+                        method: model.initialRequest.method,
+                        json: true
                     }, function(err, result, body){
                         if (!err || result.statusCode == 200) {
                             model.dataContent = body;
