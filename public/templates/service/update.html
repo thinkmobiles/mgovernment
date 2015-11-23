@@ -46,7 +46,8 @@
             <tr>
                 <td class="hiddenByDefault"><b>Service is enabled:</b></td>
                 <td class="hiddenByDefault">
-                    <input type="checkbox" id="serviceEnable" <%= service.enable ? 'checked' : ''%>>
+                    <input type="checkbox" id="serviceEnable" class="filledIn" <%= service.enable ? 'checked' : ''%>>
+                    <label for="serviceEnable"></label>
                 </td>
                 <td class="hiddenByDefault"> If service is 'Disable', users can't see it or use it</td>
             </tr>
@@ -150,26 +151,26 @@
             <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>allow users type </b></td>
                 <td class="hiddenByDefault">
-                    <input type="checkbox" id="guest" value="guest"' <%=(service.forUserType.indexOf('guest') >= 0 ? 'checked':'')%> > Guest
-                    <input type="checkbox" id="client" value="client" <%=(service.forUserType.indexOf('client') >= 0 ? 'checked':'')%> > Client<br>
-                    <input type="checkbox" id="admin" value="admin" <%=(service.forUserType.indexOf('admin') >= 0 ? 'checked':'')%> > Admin
-                    <input type="checkbox" id="company" value="company" <%=(service.forUserType.indexOf('company') >= 0 ? 'checked':'')%> > Company<br>
-                    <input type="checkbox" id="government" value="government" <%=(service.forUserType.indexOf('government') >= 0 ? 'checked':'')%> > Government</td>
+                    <input type="checkbox" id="guest" class="filledIn" value="guest"' <%=(service.forUserType.indexOf('guest') >= 0 ? 'checked':'')%> ><label for="guest">Guest</label>
+                    <input type="checkbox" id="client" class="filledIn" value="client" <%=(service.forUserType.indexOf('client') >= 0 ? 'checked':'')%> ><label for="client">Client</label><br>
+                    <input type="checkbox" id="admin" class="filledIn" value="admin" <%=(service.forUserType.indexOf('admin') >= 0 ? 'checked':'')%> ><label for="admin">Admin</label>
+                    <input type="checkbox" id="company" class="filledIn" value="company" <%=(service.forUserType.indexOf('company') >= 0 ? 'checked':'')%> ><label for="company">Company</label><br>
+                    <input type="checkbox" id="government" class="filledIn" value="government" <%=(service.forUserType.indexOf('government') >= 0 ? 'checked':'')%> ><label for="government">Government</label></td>
                 <td class="hiddenByDefault">Choose who can use this service</td>
             </tr>
 
             <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>method </b></td>
                 <td class="hiddenByDefault">
-                    <input type="radio" name="Method" id="POST" value="POST" <%= service.method == 'POST' ? 'checked':''%>> POST
-                    <input type="radio" name="Method" id="GET" value="GET" <%= service.method == 'GET' ? 'checked':''%>
+                    <input type="radio" name="Method" id="POST" class="filledIn" value="POST" <%= service.method == 'POST' ? 'checked':''%>> POST
+                    <input type="radio" name="Method" id="GET" class="filledIn" value="GET" <%= service.method == 'GET' ? 'checked':''%>
                     > GET
                 </td>
                 <td class="hiddenByDefault">Choose method that client use when send request</td>
             </tr>
 
             <tr class="serverSidePart">
-                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="port" <%= service.port ? 'checked' : '' %> >Socket is used </b></td>
+                <td class="hiddenByDefault"><b> <input type="checkbox"  class="enabledCheckBox filledIn" id="port" <%= service.port ? 'checked' : '' %> ><label for="port">Socket is used</label></b></td>
                 <td class="hiddenByDefault"><b> PORT: </b><span id="portShow" <%= !service.port ? 'style="display: none"' : '' %>>
                     <input type="text" name="name" id="portInput" size="6" maxlength="4"
                            value="<%= service.port ? service.port :'' %>">
@@ -181,8 +182,8 @@
             <tr class="serverSidePart">
                 <td class="hiddenByDefault"><b>params.needUserAuth:</b></td>
                 <td class="hiddenByDefault">
-                    <input type="radio" name="auth" id="needAuth" value="true" <%= service.needAuth ? 'checked':''%>>true
-                    <input type="radio" name="auth" id="needAuth2" value="false" <%= !service.needAuth ? 'checked':''%> > false
+                    <input type="radio" name="auth" id="needAuth" class="filledIn" value="true" <%= service.needAuth ? 'checked':''%>><label for="needAuth">true</label>
+                    <input type="radio" name="auth" id="needAuth2" class="filledIn" value="false" <%= !service.needAuth ? 'checked':''%> ><label for="needAuth2">false</label>
                 </td>
                 <td class="hiddenByDefault">For using service authenticate is needed</td>
             </tr>
@@ -195,7 +196,7 @@
 
             <tr style="vertical-align: top" class="serverSidePart">
                 <td class="hiddenByDefault">
-                    <b> <input type="checkbox" class="enabledCheckBox" id="body" value="body" <%= service.params.body ? 'checked':''%> > .body </b></td>
+                    <b> <input type="checkbox" class="enabledCheckBox filledIn" id="body" value="body" <%= service.params.body ? 'checked':''%> ><label for="body">.body</label> </b></td>
                 <% if (service.params.body) { showElement = '' } %>
                 <td class="hiddenByDefault" style=" word-break: break-all;">
                     <div id="bodyShow" style="<%= showElement %>"><p><b>body:
@@ -210,7 +211,7 @@
             </tr>
 
             <tr class="serverSidePart">
-                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="query" value="query" <%= service.params.query ? 'checked':''%>>.query </b></td>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox filledIn" id="query" value="query" <%= service.params.query ? 'checked':''%>><label for="query">.query</label></b></td>
 
                 <% showElement = "display: none"%>
                 <% if (service.params.query) { showElement = ''; } %>
@@ -231,8 +232,8 @@
 
             </tr>
             <tr class="serverSidePart">
-                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox" id="uriSpecQuery"
-                                                       value="uriSpecQuery"<%= service.params.uriSpecQuery ? 'checked':''%>>.uriSpecQuery </b></td>
+                <td class="hiddenByDefault"><b> <input type="checkbox" class="enabledCheckBox filledIn" id="uriSpecQuery"
+                                                       value="uriSpecQuery"<%= service.params.uriSpecQuery ? 'checked':''%>><label for="uriSpecQuery">.uriSpecQuery</label></b></td>
                 <% showElement = "display: none"%>
                 <% if (service.params.uriSpecQuery) { showElement = ''; } %>
                 <td class="hiddenByDefault">
