@@ -21,6 +21,7 @@ var HelpSalim = function (db) {
             .sort(sortOrder)
             .skip(skipCount)
             .limit(limitCount)
+            .populate({path: 'user', select: '_id login'})
             .exec(function (err, collection){
                 if (err) {
                     return next(err);
