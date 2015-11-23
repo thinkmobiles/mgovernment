@@ -1,4 +1,5 @@
-var CONST = require('../../constants/index');
+var CONST = require('../../constants/index')
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 
 module.exports = {
 
@@ -479,6 +480,182 @@ module.exports = {
             }
         ]
     },
+
+    DYNAMIC_SERVICE_INITIAL_REQUEST_TEST: {
+
+        serviceProvider: CONST.SERVICE_PROVIDERS.DEFAULT_REST,
+        serviceName: {
+            EN: 'Dynamic TEST WITH INITIAL TABLE',
+            AR: 'Dynamic TEST WITH INITIAL TABLE تحقق من نطاق'
+        },
+        profile: {
+            'Name': {
+                EN: 'Dynamic TEST WITH INITIAL TABLE',
+                AR: 'Dynamic TEST WITH INITIAL TABLE تحقق من نطاق'
+            },
+            'About the service': {
+                EN: 'You can file a complaint or put remarks about your telecom service provider',
+                AR: ''
+            },
+            'Service Package': {
+                EN: '.',
+                AR: ''
+            },
+            'Expected time': {
+                EN: 'Within 3 working days; could take more time based on the subject of the complaint',
+                AR: ''
+            },
+            'Officer in charge of this service': {
+                EN: 'Call center administrator',
+                AR: ''
+            },
+            'Required documents': {
+                EN: 'None',
+                AR: ''
+            },
+            'Service fee': {
+                EN: 'None',
+                AR: ''
+            },
+            'Terms and conditions': {
+                EN: 'Applicant information',
+                AR: ''
+            }
+        },
+        icon: null,
+
+        initialRequest: {
+            url: 'http://localhost:7791/test/serviceInitial',
+            method: 'GET'
+        },
+
+        url: 'http://mobws.tra.gov.ae/checkWhois',
+        method: CONST.SERVICE_METHOD.GET,
+        params: {
+            query: ['checkUrl']
+        },
+        port: null,
+
+        needAuth: false,
+        forUserType: [CONST.USER_TYPE.CLIENT],
+
+        buttonTitle: {
+            EN: 'WHOIS',
+            AR: 'تحقق من نطاق'
+        },
+
+        pages: [
+            {
+                number: 0,
+                inputItems: [
+                    {
+                        order: 0,
+                        name: 'message',
+                        inputType: CONST.SERVICE_INPUT_TYPE.TEXT,
+                        placeHolder: {
+                            EN: 'Insert message here',
+                            AR: 'AR Insert message here'
+                        },
+                        displayName: {
+                            EN: '',
+                            AR: ''
+                        },
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
+                    },
+                    {
+                        order: 0,
+                        name: 'urltype',
+                        inputType: CONST.SERVICE_INPUT_TYPE.PICKER,
+                        dataSource: [
+                            {value: '0', AR: 'al du', EN: 'du'},
+                            {value: '1', AR: 'al Etisalat', EN: 'Etisalat'},
+                            {value: '2', AR: 'al Yahsat', EN: 'Yahsat'}
+                        ],
+                        placeHolder: {
+                            EN: 'Select Type',
+                            AR: 'AR Select Type'
+                        },
+                        displayName: {
+                            EN: '',
+                            AR: ''
+                        },
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
+                    }
+                ]
+            },
+            {
+                number: 1,
+                inputItems: [
+                    {
+                        order: 0,
+                        name: 'tableContent',
+                        inputType: CONST.SERVICE_INPUT_TYPE.TABLE,
+                        additional: {sectorField: 'dealerType'},
+                        dataSource: [
+                            {value: 'referenceNumber', AR: 'al Reference Number', EN: 'Reference Number'},
+                            {value: 'status', AR: 'al Status', EN: 'Status'},
+                            {value: 'workitemName', AR: 'al Workitem Name', EN: 'Workitem Name'},
+                            {value: 'taskType', AR: 'al Task Type', EN: 'Task Type'},
+                            {value: 'organizationName', AR: 'al Organization Name', EN: 'Organization Name'},
+                            {value: 'createdBy', AR: 'al Created By', EN: 'Created By'},
+                            {value: 'createdDate', AR: 'al Created Date', EN: 'Created Date'},
+                            {value: 'dealerType', AR: 'Dealer Type', EN: 'Dealer Type'}
+                        ],
+                        placeHolder: {
+                            EN: '',
+                            AR: ''
+                        },
+                        displayName: {
+                            EN: 'Some Table',
+                            AR: 'AR Some Table'
+                        },
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
+                    }
+                ]
+            },
+            {
+                number: 2,
+                inputItems: [
+                    {
+                        order: 0,
+                        name: 'testBoolean',
+                        inputType: CONST.SERVICE_INPUT_TYPE.BOOLEAN,
+                        placeHolder: {
+                            EN: '',
+                            AR: ''
+                        },
+                        displayName: {
+                            EN: 'Some Boolean',
+                            AR: 'AR Some Boolean'
+                        },
+                        required: false,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.NONE
+                    },
+                    {
+                        order: 0,
+                        name: 'title',
+                        inputType: CONST.SERVICE_INPUT_TYPE.STRING,
+                        placeHolder: {
+                            EN: 'write here',
+                            AR: 'AR write here'
+                        },
+                        displayName: {
+                            EN: 'title',
+                            AR: 'title'
+                        },
+                        required: true,
+                        validateAs: CONST.SERVICE_VALIDATE_TYPE.STRING
+                    }
+                ]
+            }
+        ]
+
+    },
+
+
 
     DYNAMIC_SERVICE_HUB_TEST: {
 

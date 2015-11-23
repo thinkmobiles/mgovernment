@@ -8,29 +8,13 @@
     <div class="headerPage">
         <span>List of emailReports</span>
     </div>
-    <div class="tableFilter">
-        <div>
-            <b> Show: </b>
-        </div>
-        <div>
-            <b> <input type="checkbox" class="filterServiceType filledIn" id="filterHelpSalim"
-                       value="Help Salim"<%= filter.length ? ( filter.match(/Help Salim/) ? '' : 'checked') : 'checked' %>> <label for="filterHelpSalim">Help Salim</label> </b>
-            <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
-            <b> <input type="checkbox" class="filterServiceType filledIn" id="filterSMSSpam"
-                       value="SMS Spam" <%= filter.length ? ( filter.match(/SMS Spam/) ? '' : 'checked') : 'checked' %>> <label for="filterSMSSpam">SMS Spam</label></b>
-            <b> <input type="checkbox" class="filterServiceType filledIn" id="filterSMSBlock"
-                       value="SMS Block" <%= filter.length ? ( filter.match(/SMS Block/) ? '' : 'checked') : 'checked' %>> <label for="filterSMSBlock">SMS Block</label></b>
-            <b> <input type="checkbox" class="filterServiceType filledIn" id="filterServiceProvider"
-                       value="Service Provider"<%= filter.length ? ( filter.match(/Service Provider/) ? '' : 'checked') : 'checked' %>> <label for="filterServiceProvider">Service Provider</label> </b>
-            <b> <input type="checkbox" class="filterServiceType filledIn" id="filterTRAService"
-                       value="TRA Service" <%= filter.length ? ( filter.match(/TRA Service/) ? '' : 'checked') : 'checked' %>> <label for="filterTRAService">TRA Service</label></b>
-            <b> <input type="checkbox" class="filterServiceType filledIn" id="filterEnquiries"
-                       value="Enquiries" <%= filter.length ? ( filter.match(/Enquiries/) ? '' : 'checked') : 'checked' %>> <label for="filterEnquiries">Enquiries</label></b>
-            <b> <input type="checkbox" class="filterServiceType filledIn" id="filterSuggestion"
-                       value="Suggestion"<%= filter.length ? ( filter.match(/Suggestion/) ? '' : 'checked') : 'checked' %>> <label for="filterSuggestion">Suggestion</label> </b>
-            <b> <input type="checkbox" class="filterServiceType filledIn" id="filterPoorCoverage"
-                       value="Poor Coverage" <%= filter.length ? ( filter.match(/Poor Coverage/) ? '' : 'checked') : 'checked' %>> <label for="filterPoorCoverage">Poor Coverage</label></b>
-        </div>
+    <div class="tableFilter"><b> Show: </b>
+        <b> <input type="checkbox" class="filterServiceType filledIn" id="filterHelpSalim"
+                   value="Help Salim"<%= filter.length ? ( filter.match(/Help Salim/) ? '' : 'checked') : 'checked' %>> <label for="filterHelpSalim">Help Salim</label> </b>
+        <b> <input type="checkbox" class="filterServiceType filledIn" id="filterSMSBlock"
+                   value="SMS Block" <%= filter.length ? ( filter.match(/SMS Block/) ? '' : 'checked') : 'checked' %>> <label for="filterSMSBlock">SMS Block</label></b>
+        <b> <input type="checkbox" class="filterServiceType filledIn" id="filterPoorCoverage"
+                   value="Poor Coverage" <%= filter.length ? ( filter.match(/Poor Coverage/) ? '' : 'checked') : 'checked' %>> <label for="filterPoorCoverage">Poor Coverage</label></b>
 
     </div>
 

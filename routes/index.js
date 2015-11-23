@@ -20,6 +20,7 @@ module.exports = function(app, db) {
     var whoIsAndMobileRouter = require('./whoIsAndMobile')(db);
     var crmRouter = require('./crmServices')(db);
     var cmsRouter = require('./cms/cms')(db);
+    var testRouter = require('./testRouter')();
 
     var session = new SessionHandler(db);
     var testTRAHandler = new TestTRAHandler(db);
@@ -29,6 +30,8 @@ module.exports = function(app, db) {
     app.get('/', function (req, res, next) {
         res.status(200).send('Express start succeed');
     });
+
+    app.use('/test', testRouter);
 
     app.use('/cms', session.isAdminBySession, cmsRouter);
     app.use('/user', accessHTTP.appAccessHTTP, usersRouter);
