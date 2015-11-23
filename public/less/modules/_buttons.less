@@ -1,0 +1,41 @@
+.btn {
+  border: 1px solid @borderBtnColor;
+  padding: 0 20px;
+  line-height: 40px;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  color: @textBtnColor;
+  cursor: pointer;
+  font-weight: 300;
+  .fontSize(18);
+
+  &:hover, &:active, &:focus {
+    color: @textBtnColor;
+    font-weight: 700;
+  }
+}
+.btnCreate {
+  background: @bgBtnCreate;
+  color: @textBtnCreateColor;
+  &:hover, &:active, &:focus {
+    color: @textBtnCreateColor;
+  }
+}
+.btnClone {
+  background: transparent;
+}
+.btnUpdate {
+  background: @bgBtnUpdate;
+}
+.btnDelete {
+  background: @bgBtnDelete;
+}
+.btnGroup {
+  margin-bottom: 25px !important;
+  .btn {
+    width: 24.75%;
+    margin-right: 1px;
+  }
+  .clearfix();
+}
