@@ -14,6 +14,7 @@ table {
       font-weight: 300;
       font-family: @fontFamily-3;
       .fontSize(18);
+      line-height: 24px;
     }
     td {
       font-family: @fontFamily-1;
@@ -53,7 +54,19 @@ table {
   background: @tableFilterBgColor;
   color: @tableFilterTextColor;
   font-family: @fontFamily-3;
+  padding: 0 20px 0 40px;
+  .clearfix();
   b {
     margin-right: 5px;
+  }
+  &> div {
+    float: left;
+    position: relative;
+    &:first-child {
+      width: 7%;
+    }
+    &:last-child {
+      width: 93%;
+    }
   }
 }

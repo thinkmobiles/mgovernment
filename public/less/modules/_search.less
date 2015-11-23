@@ -1,4 +1,5 @@
 .searchBlock {
+  position: relative;
   input[type="text"] {
     background-color: transparent;
     border: none;
@@ -8,11 +9,10 @@
     height: 3rem;
     width: 100%;
 
-    //font-size: 1rem;
     margin: 0 0 15px 0;
-    padding: 0;
+    padding: 0 @gutter-width 0 @gutter-width / 2;
     box-shadow: none;
-    .box-sizing(content-box);
+    .box-sizing(border-box);
     transition: all .3s;
 
     &::-webkit-input-placeholder {
@@ -30,39 +30,35 @@
     &:-ms-input-placeholder {
       color: lighten(@inputBorderColor, 20%);
     }
+    &:focus {
+      + label {
+        .fontSize(16);
+        .translateY(-140%);
+      }
+    }
+  }
+  &:after {
+    position: absolute;
+    content: '';
+    width: 12px;
+    height: 14px;
+    display: block;
+    top: 50%;
+    right: @gutter-width / 2;
+    margin-top: -14px;
+    background: url('../img/ic_search.png') no-repeat center center;
+  }
+  label {
+    color: @inputBorderColor;
+    position: absolute;
+    top: 0.8rem;
+    left: @gutter-width / 2;
+    font-size: 1rem;
+    cursor: text;
+    .transition(.2s ease-out);
+  }
+  label.active {
+    .fontSize(16);
+    .translateY(-140%);
   }
 }
-//.input-field input[type=search] {
-//  display: block;
-//  line-height: inherit;
-//  padding-left: 4rem;
-//  width: calc(100% - 4rem);
-//
-//  &:focus {
-//    background-color: $input-bg-color;
-//    border: 0;
-//    box-shadow: none;
-//    color: #444;
-//
-//    & + label i,
-//    & ~ .mdi-navigation-close,
-//    & ~ .material-icons {
-//      color: #444;
-//    }
-//  }
-//
-//  & + label {
-//    left: 1rem;
-//  }
-//
-//  & ~ .mdi-navigation-close,
-//  & ~ .material-icons {
-//    position: absolute;
-//    top: 0;
-//    right: 1rem;
-//    color: transparent;
-//    cursor: pointer;
-//    font-size: 2rem;
-//    transition: .3s color;
-//  }
-//}

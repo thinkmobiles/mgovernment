@@ -17,15 +17,14 @@ define([
     var cloneService = false;
     var isNewService = false;
     var treeNodeCounts = [1, 0, 0, 0, 0];
+    var treeNodeMaxIndex = 0;
+
     var pagesTreeNodesValues = [];
-    //TODO change this to {}
     var currentNodeValues = [returnNewTreeNodeObject('Node 0')];
     var iconsCollection;
     var selectedIcon;
     var searchIcon;
     var searchIconTerm;
-
-
     var selectIconDiv;
     var itemsInputNameArray = [];
     var sendParams = {};
@@ -115,7 +114,11 @@ define([
         var childTreeListUl;
         var searchChildrenUl;
 
-        addNodesToTreeByObj(nodeObj, treeList, nodeAdress);
+        addNodesTemplateToTree(nodeObj, treeList, nodeAdress);
+
+        if (!nodeObj.items) {
+            return;
+        }
 
         if (nodeObj.items.length) {
             searchChildrenUl = $(treeList).children("ul");
@@ -130,6 +133,7 @@ define([
             }
         }
 
+        treeNodeMaxIndex =  treeNodeMaxIndex < nodeObj.items.length ? nodeObj.items.length : treeNodeMaxIndex;
 
         for ( var i = 0, len = nodeObj.items.length - 1 ; i <= len; i ++){
             recursionBildTree(nodeObj.items[i], childTreeListUl, nodeAdress + '_' + i);
@@ -187,14 +191,17 @@ define([
         recursionSaveNodeObjByAddress(currentNodeValues[firstIndex], treeNodeAddress, options);
     }
 
-    function addNodesToTreeByObj  (treeObj, treeList, nodeAddress) {
-        // TODO make recursive function reading treeObj and add Nodes on tree
+    function addNodesTemplateToTree  (treeObj, treeList, nodeAddress) {
+        var list = treeList.children();
+        treeList.children().last().removeClass('treeNodeIsLast');
+
         treeList.append(_.template(treeNodeTemplate)({
             node: {
                 address: nodeAddress,
                 value: treeObj.value
             }
         }));
+        treeList.children().last().addClass('treeNodeIsLast');
 
     }
 
@@ -266,7 +273,6 @@ define([
             var treeNodeAddress = nodeAddress.split('_');
             var newNodeAddress;
 
-
             e.preventDefault();
             e.stopPropagation();
 
@@ -275,18 +281,9 @@ define([
             treeNodeCounts[treeNodeAddress.length - 1]++;
             newNodeAddress = treeNodeAddress.join('_');
 
+            //console.dir($($(el.parent()[0]).parents("ul"))[0]);
 
-            console.dir($($(el.parent()[0]).parents("ul"))[0]);
-
-
-            //currentTreeUl.find('#nodeLi' + lastNodeAddress).after(_.template(treeNodeTemplate)({
-            $(currentTreeUl).append(_.template(treeNodeTemplate)({
-                node: {
-                    address: newNodeAddress,
-                    value: 'Node ' + newNodeAddress
-                }
-            }));
-
+            addNodesTemplateToTree({ value: 'Node ' + newNodeAddress}, $(currentTreeUl), newNodeAddress);
             initializeTreeNode(newNodeAddress,'Node ' + newNodeAddress);
 
             console.log('nodeAddress: ', nodeAddress);
@@ -350,10 +347,7 @@ define([
             e.preventDefault();
             e.stopPropagation();
 
-            //TODO check MainObj if exist information
-            //TODO write this info in #saveNode | #treeNodeInfo | #treeValue | #treeEN | #treeAR
             nodeOptions = readTreeNode(nodeAddress);
-            //nodeOptions = $(treeDiv).find('#nodeName' + nodeAddress).text();
 
             $(treeDiv).find('#saveNode').attr('data-hash', nodeAddress);
             $(treeDiv).find('#treeValue').val(nodeOptions.value);
@@ -365,19 +359,15 @@ define([
 
         treeAddNodeItem: function (e) {
             var el = $(e.currentTarget);
-            //var treeUl = $('#treeList');
-            //console.dir($($(el.parent()[0]).parents("ul"))[0]);
             var newTreeUl = $("<ul> </ul>");
             var nodeAddress = $(el.parent()[0]).attr('data-hash');
             var treeNodeAddress = nodeAddress.split('_');
-            var lastNodeAddress;
             var newNodeAddress;
             var currentNodeCount = treeNodeCounts[treeNodeAddress.length];
-            var newTreeNodeAddress;
-            // check if olredy has <ul>
-
             var searchChildrenUl = $(el.parent()[0]).parent().children("ul");
             //console.log('searchChildrenUl.length: ', searchChildrenUl.length);
+            e.preventDefault();
+            e.stopPropagation();
 
             if (treeNodeAddress.length === 5) {
                 alert('Available only 5 steps in depth!');
@@ -388,20 +378,11 @@ define([
                 newTreeUl = $(searchChildrenUl[0]);
             }
 
-            e.preventDefault();
-            e.stopPropagation();
-
             treeNodeAddress[treeNodeAddress.length] = currentNodeCount;
             treeNodeCounts[treeNodeAddress.length - 1]++;
             newNodeAddress = treeNodeAddress.join('_');
 
-            //currentTreeUl.find('#nodeLi' + lastNodeAddress).after(_.template(treeNodeTemplate)({
-            newTreeUl.append(_.template(treeNodeTemplate)({
-                node: {
-                    address: newNodeAddress,
-                    value: 'Node ' + newNodeAddress
-                }
-            }));
+            addNodesTemplateToTree({ value: 'Node ' + newNodeAddress}, newTreeUl, newNodeAddress);
 
             if (!searchChildrenUl.length) {
                 el.parent().parent().append(newTreeUl);
@@ -590,8 +571,6 @@ define([
             var el = this.$el;
             var item = $(e.target).attr('data-hash');
             var mobilePage = $(e.target).attr('data-page');
-            //var testEl = el.find('#page' + mobilePage +'itemBlock' + item + '  .treeBtn');
-            //console.dir(testEl);
 
             if (e.target.value === 'tree') {
                 el.find('#page' + mobilePage + 'itemBlock' + item + '  .showTreeBtn').show();
@@ -623,8 +602,6 @@ define([
             var err = [];
             var infoIndex = '#page' + currentPage + 'inputDataSource' + item;
 
-
-            // TODO validate if there are empty fields
             for (var i = currentNodeValues.length - 1; i >= 0; i --){
                 if (currentNodeValues[i]) {
                     recursionValidateNodeObj(currentNodeValues[i], err)
@@ -635,7 +612,6 @@ define([
                 return;
             }
 
-            // TODO Normalize currentNodeValues
             currentNodeValues =_.compact(currentNodeValues);
 
             for (var i = currentNodeValues.length - 1; i >= 0; i --){
@@ -645,7 +621,6 @@ define([
             sendParams[infoIndex] = currentNodeValues;
 
             treeNodeCounts = [1, 0, 0, 0, 0];
-            //TODO change this to {}
             currentNodeValues = [returnNewTreeNodeObject('Node 0')];
 
             $(treeList).empty();
@@ -670,40 +645,28 @@ define([
 
             $(treeList).empty();
 
-
-
             for(var i = 0, len = currentNodeValues.length - 1; i <= len; i ++ ){
                 recursionBildTree(currentNodeValues[i], treeList, i);
-                //addNodesToTreeByObj(currentNodeValues[i], treeList, i);
             }
+            treeNodeMaxIndex = currentNodeValues.length > treeNodeMaxIndex ? currentNodeValues.length : treeNodeMaxIndex;
+            treeNodeCounts = [treeNodeMaxIndex, treeNodeMaxIndex, treeNodeMaxIndex, treeNodeMaxIndex, treeNodeMaxIndex];
 
             el.find('#treeDiv').attr('data-item',item).attr('data-page',currentPage).show();
         },
 
 
-
-
         hideTreeBlock: function (e) {
-            //TODO make block empty
             var el = this.$el;
             var item = $(e.target).attr('data-item');
-            //var mobilePage = $(e.target).attr('data-page');
             var tree = el.find('#treeDiv');
-            ////tree.
-            //    empty().
-            //    remove();
-
             tree.hide();
         },
-
 
         showMobileDisplay: function () {
             var el = this.$el;
             var data = this.readInputsAndValidate();
             var display = el.find('#mobileDisplay');
             var displayContent = "";
-            var tempObj;
-            var tempOrder;
             var inputElements;
             el.find('#currentPage').text(' Page[' + currentMobilePage + '] ');
 
@@ -762,7 +725,6 @@ define([
                 displayContent += '</div>';
             }
             displayContent += '</div>';
-
 
             el.find('#mobilePhone').css({
                 "background": "url('../img/mobile.jpg')",
@@ -908,6 +870,7 @@ define([
             data.method = el.find('#POST')[0].checked ? 'POST' : 'GET';
             data.url = el.find('#url').val();
             data.needAuth = el.find('#needAuth')[0].checked;
+            data.params = {};
 
 
             if (el.find('#uriSpecQuery')[0].checked) {
@@ -970,7 +933,7 @@ define([
 
                     if (!tempText || !tempText2) {
                         alert('Fields in profile cant be Empty !!!');
-                        return;
+                        return 'error';
                     }
 
                     data.profile[tempText] = {EN: tempText2};
@@ -983,7 +946,7 @@ define([
 
                     if (!tempText || !tempText2) {
                         alert('Fields in profile cant be Empty !!!');
-                        return;
+                        return 'error';
                     }
 
                     data.profile[tempText].AR = tempText2;
