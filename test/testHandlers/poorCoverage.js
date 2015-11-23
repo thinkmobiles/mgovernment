@@ -69,7 +69,8 @@ describe('Poor Coverage test', function () {
                             return done(err)
                         }
 
-                        console.dir(res.body);
+                        expect(res.body).to.have.deep.property('success');
+                        expect(res.body.success).to.equal('Success');
 
                         done();
                     });
@@ -97,8 +98,10 @@ describe('Poor Coverage test', function () {
                             return done(err)
                         }
 
+                        expect(res.body).instanceOf(Array);
+                        expect(res.body).not.empty;
+
                         deletePoorCoverageId = res.body[0]._id;
-                        console.dir(res.body);
 
                         done();
                     });
@@ -126,7 +129,8 @@ describe('Poor Coverage test', function () {
                             return done(err)
                         }
 
-                        console.dir(res.body);
+                        expect(res.body).to.have.deep.property('count');
+                        expect(res.body.count).to.be.above(0);
 
                         done();
                     });
@@ -154,7 +158,8 @@ describe('Poor Coverage test', function () {
                             return done(err)
                         }
 
-                        console.dir(res.body);
+                        expect(res.body).to.have.deep.property('success');
+                        expect(res.body.success).to.equal('Success');
 
                         done();
                     });

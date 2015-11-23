@@ -40,7 +40,7 @@ var HelpSalim = function (db) {
                     return next(err);
                 }
 
-                res.status(200).send({'delete': 'success'});
+                res.status(200).send({success: 'Success'});
             })
 
     };
