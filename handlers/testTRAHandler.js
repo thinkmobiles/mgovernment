@@ -13,6 +13,7 @@ var TestTRAHandler = function (db) {
     var validation = require('../helpers/validation');
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
     var Attachment = db.model(CONST.MODELS.ATTACHMENT);
+    var PoorCoverage = db.model(CONST.MODELS.POOR_COVERAGE);
 
     function emailReportAndAttachmentSave (res, emailReport, errMail) {
 
@@ -30,7 +31,6 @@ var TestTRAHandler = function (db) {
                         console.error('err on Mail: ', errMail);
                         return res.status(500).send({error: errMail});
                     }
-
                     return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         };
@@ -84,6 +84,8 @@ var TestTRAHandler = function (db) {
             title: title
         };
 
+
+
         mailer.sendReport(mailOptions, function (errMail, data) {
 
             var emailReport = new EmailReport({
@@ -134,23 +136,33 @@ var TestTRAHandler = function (db) {
             }
         };
 
-        mailer.sendReport(mailOptions, function (errMail, data) {
+        var poorCoverage = new PoorCoverage({
+            address: address,
+            location: location,
+            signalLevel: signalLevel
+        });
 
-            //TODO remove console.logs
-
-            var emailReport = new EmailReport({
-                address: address,
-                location: location,
-                signalLevel: signalLevel,
-                title: title,
-                serviceType: serviceType,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
+        poorCoverage
+            .save(function(err,reportModel){
+                if (err){
+                    return next(err);
+                }
+                mailer.sendReport(mailOptions, function (errMail, data) {
+                    //TODO remove console.logs
+                    var emailReport = new EmailReport({
+                        address: address,
+                        location: location,
+                        signalLevel: signalLevel,
+                        title: title,
+                        serviceType: serviceType,
+                        mailTo: mailTo,
+                        user: userId,
+                        response: data || errMail
+                    });
+                    emailReportAndAttachmentSave(res, emailReport, errMail);
+                });
             });
 
-            emailReportAndAttachmentSave(res, emailReport, errMail);
-        });
     };
 
     this.sendHelpSalim = function (req, res, next) {

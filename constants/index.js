@@ -27,7 +27,8 @@ module.exports = {
         FEEDBACK: 'Feedback',
         INNOVATION: 'Innovation',
         EMAIL_REPORT: 'emailReport',
-        ANNOUNCEMENT: 'Announcement'
+        ANNOUNCEMENT: 'Announcement',
+        POOR_COVERAGE: 'PoorCoverage'
     },
 
     ACTION: {
