@@ -64,6 +64,7 @@ define([
             var sortBy = this.paginationView.stateModel.toJSON().data.order;
             var filter = this.paginationView.stateModel.toJSON().data.filter;
             var searchTerm =  e.target.value;
+            $(searchTerm).next().addClass('active');
 
             App.searchTerm = searchTerm;
 
