@@ -28,7 +28,8 @@ module.exports = {
         INNOVATION: 'Innovation',
         EMAIL_REPORT: 'emailReport',
         ANNOUNCEMENT: 'Announcement',
-        POOR_COVERAGE: 'PoorCoverage'
+        POOR_COVERAGE: 'PoorCoverage',
+        HELP_SALIM: 'HelpSalim'
     },
 
     ACTION: {

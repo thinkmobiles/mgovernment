@@ -16,4 +16,5 @@ module.exports = function(db) {
     require('./emailReport')(db);
     require('./announcement')(db);
     require('./poorCoverage')(db);
+    require('./helpSalim')(db);
 };

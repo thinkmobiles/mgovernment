@@ -14,6 +14,7 @@ var TestTRAHandler = function (db) {
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
     var Attachment = db.model(CONST.MODELS.ATTACHMENT);
     var PoorCoverage = db.model(CONST.MODELS.POOR_COVERAGE);
+    var HelpSalim = db.model(CONST.MODELS.HELP_SALIM);
 
     function emailReportAndAttachmentSave (res, emailReport, errMail) {
 
@@ -176,6 +177,7 @@ var TestTRAHandler = function (db) {
 
         var serviceType = 'Help Salim';
         var title = 'Complain to site: ' + req.body.url;
+        var url = req.body.url;
         var description = req.body.description;
         var mailTo = TRA.EMAIL_HELP_SALIM;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
@@ -195,19 +197,28 @@ var TestTRAHandler = function (db) {
             title: title
         };
 
-        mailer.sendReport(mailOptions, function (errMail, data) {
-
-            var emailReport = new EmailReport({
-                serviceType: serviceType,
-                title: title,
-                description: description,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
-            });
-
-            emailReportAndAttachmentSave(res, emailReport, errMail);
+        var helpSalim = new HelpSalim({
+            url: url,
+            description: description
         });
+
+        helpSalim
+            .save(function(err, reportModel){
+                if (err) {
+                    return next(err);
+                }
+                mailer.sendReport(mailOptions, function (errMail, data) {
+                    var emailReport = new EmailReport({
+                        serviceType: serviceType,
+                        title: title,
+                        description: description,
+                        mailTo: mailTo,
+                        user: userId,
+                        response: data || errMail
+                    });
+                    emailReportAndAttachmentSave(res, emailReport, errMail);
+                });
+            });
     };
 };
 
