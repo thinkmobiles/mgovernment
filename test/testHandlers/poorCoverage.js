@@ -90,7 +90,7 @@ describe('Poor Coverage test', function () {
                 }
 
                 agent
-                    .get('/cms/poorCoverage?page=0&count=10')
+                    .get('/cms/poorCoverage?page=1&count=10')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
