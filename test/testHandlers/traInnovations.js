@@ -64,7 +64,7 @@ describe('User Innovations', function () {
                             return done(err)
                         }
 
-                        console.dir(res.body);
+                        expect(res.body).not.to.empty;
 
                         done();
                     });
@@ -101,6 +101,8 @@ describe('User Innovations', function () {
                         if (err) {
                             return done(err)
                         }
+
+                        expect(res.body).to.be.empty;
 
                         done();
                     });

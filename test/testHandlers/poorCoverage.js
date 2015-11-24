@@ -208,8 +208,6 @@ describe('Poor Coverage test', function () {
                         expect(res.body).instanceOf(Array);
                         expect(res.body).not.empty;
 
-                        console.log(res.body);
-
                         done();
                     });
             });

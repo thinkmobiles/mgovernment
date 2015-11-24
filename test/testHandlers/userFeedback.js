@@ -63,7 +63,10 @@ describe('Feedback tests - Create, Get ,', function () {
                             return done(err)
                         }
                         serviceCollection = res.body;
-                        console.dir(res.body);
+
+                        expect(res.body).instanceOf(Array);
+                        expect(res.body).not.to.empty;
+
                         done()
                     });
             });
@@ -96,10 +99,12 @@ describe('Feedback tests - Create, Get ,', function () {
                     .send(feedback)
                     .expect(201)
                     .end(function (err, res) {
-                        console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
+
+                        expect(res.body).not.to.empty;
+
                         done();
                     });
             });
@@ -135,6 +140,8 @@ describe('Feedback tests - Create, Get ,', function () {
                         if (err) {
                             return done(err)
                         }
+
+
                         done();
                     });
             });
@@ -167,10 +174,12 @@ describe('Feedback tests - Create, Get ,', function () {
                     .send(feedback)
                     .expect(201)
                     .end(function (err, res) {
-                        console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
+
+                        expect(res.body).not.be.empty;
+
                         done();
                     });
             });
@@ -196,8 +205,10 @@ describe('Feedback tests - Create, Get ,', function () {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
                         deletedFeedbackId = res.body[0]._id;
+
+                        expect(res.body).instanceOf(Array);
+                        expect(res.body).not.to.empty;
 
                         done();
                     });
@@ -250,7 +261,6 @@ describe('Feedback tests - Create, Get ,', function () {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
                         expect(res.body).to.not.empty;
                         for (var i = 0; res.body.length > i; i++){
                             expect(res.body[i]).to.satisfy(function(data){
@@ -284,7 +294,6 @@ describe('Feedback tests - Create, Get ,', function () {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
                         expect(res.body).to.empty;
 
                         done();
@@ -322,7 +331,6 @@ describe('Feedback tests - Create, Get ,', function () {
                                 }
 
                                 expect(res.body).to.be.empty;
-                                console.log(res.body);
 
                                 done();
                             });

@@ -44,7 +44,6 @@ describe('User Announcements', function () {
                     return done(err)
                 }
 
-                console.dir(res.body);
                 expect(res.body).to.have.property('announcements');
                 expect(res.body.announcements).to.be.instanceof(Array);
 
@@ -73,7 +72,6 @@ describe('User Announcements', function () {
                     return done(err)
                 }
 
-                console.dir(res.body);
                 expect(res.body).to.have.property('announcements');
                 expect(res.body.announcements).to.be.instanceof(Array);
                 expect(res.body.announcements).to.have.length.above(0);
@@ -95,7 +93,6 @@ describe('User Announcements', function () {
                     return done(err)
                 }
 
-                console.dir(res.body);
                 expect(res.body).to.have.property('announcements');
                 expect(res.body.announcements).to.be.instanceof(Array);
                 expect(res.body.announcements).to.have.length.above(0);
@@ -125,7 +122,6 @@ describe('User Announcements', function () {
                     return done(err)
                 }
 
-                console.dir(res.body);
                 expect(res.body).to.have.property('announcements');
                 expect(res.body.announcements).to.be.instanceof(Array);
                 expect(res.body.announcements).to.be.empty;

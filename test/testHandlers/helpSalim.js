@@ -128,9 +128,6 @@ describe('Help Salim test', function () {
 
                         expect(res.body).instanceOf(Array);
                         expect(res.body).not.empty;
-                        console.log(res.body);
-
-                        deleteHelpSalimId = res.body[0]._id;
 
                         done();
                     });
