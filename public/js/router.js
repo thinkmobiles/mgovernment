@@ -54,8 +54,8 @@ define([
             "users(/p=:page)(/c=:countPerPage)(/s=:searchTerm)": "toUsersView",
             "createUser": "toCreateUserView",
             "updateUser": "toUpdateUserView",
-            "poorCoverage": "toPoorCoverageView",
-            "helpSalim" : "toHelpSalimView"
+            "poorCoverage(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)(/s=:searchTerm)": "toPoorCoverageView",
+            "helpSalim(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)(/s=:searchTerm)" : "toHelpSalimView"
         },
 
         initialize: function () {

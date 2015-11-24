@@ -113,6 +113,45 @@ describe('Poor Coverage test', function () {
             });
     });
 
+    it('SEND Poor Coverage with Address by client_0', function (done) {
+
+        var loginData ={
+            login: 'client_0',
+            pass: 'pass12340'
+        } ;
+
+        var data = {
+            address: 'Madrid',
+            signalLevel: 3
+        };
+
+        agent
+            .post('/user/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/sendPoorCoverage')
+                    .set(USER_AGENT.ANDROID_DEVICE)
+                    .send(data)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        expect(res.body).to.have.deep.property('success');
+                        expect(res.body.success).to.equal('Success');
+                        done();
+                    });
+            });
+    });
+
     it('Get all Poor Coverage by Admin', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
@@ -147,7 +186,7 @@ describe('Poor Coverage test', function () {
     it('Get SEARCHED Poor Coverage by Admin', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
-        var search = 'Uzhgorod';
+        var search = 'Madrid';
 
         agent
             .post('/user/adminSignIn')

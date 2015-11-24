@@ -55,6 +55,7 @@ define([
             var target$ = $(e.target);
             var previousOrderBy = this.paginationView.stateModel.toJSON().data.orderBy;
             var previousOrder = this.paginationView.stateModel.toJSON().data.order;
+            var searchTerm = this.paginationView.stateModel.toJSON().data.searchTerm;
             var sortOrder = 1;
             var sortBy;
 
@@ -73,7 +74,7 @@ define([
             } else {
                 target$.find(".sortUP").show()
             }
-            this.paginationView.setData({orderBy: sortBy, order: sortOrder});
+            this.paginationView.setData({orderBy: sortBy, order: sortOrder, searchTerm: searchTerm});
         },
 
         render: function(){

@@ -119,7 +119,7 @@ var TestTRAHandler = function (db) {
             ? ('Location.latitude: ' + location.latitude + ', location.longitude: ' + location.longitude + ' Signal level: ' + signalLevel)
             :  "Address: " + address + ' Signal level: ' + signalLevel;
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
-        var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
         var from = 'TRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
@@ -140,7 +140,8 @@ var TestTRAHandler = function (db) {
         var poorCoverage = new PoorCoverage({
             address: address,
             location: location,
-            signalLevel: signalLevel
+            signalLevel: signalLevel,
+            user: userId
         });
 
         poorCoverage
@@ -199,7 +200,8 @@ var TestTRAHandler = function (db) {
 
         var helpSalim = new HelpSalim({
             url: url,
-            description: description
+            description: description,
+            user: userId
         });
 
         helpSalim

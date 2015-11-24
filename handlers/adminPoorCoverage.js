@@ -56,8 +56,17 @@ var PoorCoverage = function (db) {
 
     this.getCount = function (req, res, next) {
 
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
+
+        if (searchTerm) {
+            searchQuery = {
+                $and:[{ $or: [ { 'address':  { $regex: searchTerm, $options: 'i' }}]}]
+            };
+        }
+
         poorCoverage
-            .count(function (err, count) {
+            .count(searchQuery, function (err, count) {
                 if (err) {
                     return next(err);
                 }

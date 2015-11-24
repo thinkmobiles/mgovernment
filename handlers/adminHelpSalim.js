@@ -20,7 +20,7 @@ var HelpSalim = function (db) {
 
         if (searchTerm) {
             searchQuery = {
-                $and:[{ $or: [ { 'url':  { $regex: searchTerm, $options: 'i' }}]}]
+                $and:[{ $or: [ { 'url':  { $regex: searchTerm, $options: 'i' }}, { 'description':  { $regex: searchTerm, $options: 'i' }}]}]
             };
         }
 
@@ -56,8 +56,17 @@ var HelpSalim = function (db) {
 
     this.getCount = function (req, res, next) {
 
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
+
+        if (searchTerm) {
+            searchQuery = {
+                $and:[{ $or: [ { 'url':  { $regex: searchTerm, $options: 'i' }}, { 'description':  { $regex: searchTerm, $options: 'i' }}]}]
+            };
+        }
+
         helpSalim
-            .count(function (err, count) {
+            .count(searchQuery, function (err, count) {
                 if (err) {
                     return next(err);
                 }
