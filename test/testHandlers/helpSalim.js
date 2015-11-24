@@ -104,6 +104,39 @@ describe('Help Salim test', function () {
             });
     });
 
+    it('Get SEARCHED Help Salim by Admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+        var searchTerm = 'google';
+
+        agent
+            .post('/user/adminSignIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/cms/helpSalim?page=1&count=10&searchTerm='+searchTerm)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        expect(res.body).instanceOf(Array);
+                        expect(res.body).not.empty;
+                        console.log(res.body);
+
+                        deleteHelpSalimId = res.body[0]._id;
+
+                        done();
+                    });
+            });
+    });
+
     it('Get Count of Help Salim by Admin', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
