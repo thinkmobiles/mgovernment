@@ -21,6 +21,7 @@
     </div>
 
     <table class="tableView table">
+        <thead>
         <tr>
             <th class="oe_sortable" data-sort="serviceType">serviceType<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
             <th class="oe_sortable" data-sort="serviceProvider">serviceProvider<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
@@ -33,7 +34,8 @@
             <th class="oe_sortable" data-sort="response">response<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
 
         </tr>
-
+        </thead>
+        <tbody>
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
@@ -56,6 +58,7 @@
 
         <% } %>
         <% } %>
+        </tbody>
 
     </table>
 
