@@ -22,12 +22,12 @@ module.exports = function(db){
     var session = new SessionHandler(db);
     var imageHandler = new ImageHandler(db);
 
-       router.route('/')
+       /*router.route('/')
         .post(session.isAdminBySession,users.createAccount)
-        .get(session.isAdminBySession,users.getUserProfiles);
+        .get(session.isAdminBySession,users.getUserProfiles);*/
 
-    router.route('/getCount/')
-        .get(session.isAdminBySession, users.getCount);
+    /*router.route('/getCount/')
+        .get(session.isAdminBySession, users.getCount);*/
 
     router.post('/signIn', users.signInClient);
     router.post('/register', users.registerClient);
@@ -63,10 +63,10 @@ module.exports = function(db){
         .get(imageHandler.getImage)
         .delete(imageHandler.removeImage);
 
-    router.route('/:id')
+    /*router.route('/:id')
         .get(session.isAdminBySession, users.getUserProfileByIdForAdmin)
         .put(session.isAdminBySession,users.updateAccount)
-        .delete(session.isAdminBySession, users.deleteUserProfileByIdForAdmin);
+        .delete(session.isAdminBySession, users.deleteUserProfileByIdForAdmin);*/
 
     return router;
 };

@@ -235,7 +235,7 @@ define([
             this.contentView = new UserUpdateView();
         },
 
-        toPoorCoverageView: function (page, countPerPage, orderBy, order) {
+        toPoorCoverageView: function (page, countPerPage, orderBy, order, searchTerm) {
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             orderBy = orderBy || 'createdAt';
@@ -249,11 +249,12 @@ define([
                 page: page,
                 countPerPage: countPerPage,
                 orderBy: orderBy,
-                order: order
+                order: order,
+                searchTerm: searchTerm
             });
         },
 
-        toHelpSalimView: function (page, countPerPage, orderBy, order) {
+        toHelpSalimView: function (page, countPerPage, orderBy, order, searchTerm) {
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             orderBy = orderBy || 'createdAt';
@@ -267,7 +268,8 @@ define([
                 page: page,
                 countPerPage: countPerPage,
                 orderBy: orderBy,
-                order: order
+                order: order,
+                searchTerm: searchTerm
             });
         }
 

@@ -233,10 +233,10 @@ define([
                 icon = iconsCollection[i];
                 iconId = icon._id;
                 iconDiv = $("#DbList" + iconId);
-                textContent = '<img src ="' + icon['@3x'] + '" style="float:left;height: 70px; width: 70px">' + icon.title;
+                textContent = '<td><img src ="' + icon['@3x'] + '" style="float:left;height: 70px; width: 70px"></td><td>' + icon.title + '</td>';
 
                 if (!iconDiv.length) {
-                    $("<div> </div>").
+                    $('<tr> </tr>').
                         attr("id", "DbList" + iconId).
                         attr("class", "iconList").
                         attr("data-hash", "" + i).

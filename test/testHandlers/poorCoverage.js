@@ -81,8 +81,8 @@ describe('Poor Coverage test', function () {
         var loginData = USERS.CLIENT;
 
         var data = {
-            address: 'Some location',
-            signalLevel: 4
+            address: 'Uzhgorod',
+            signalLevel: 1
         };
 
         agent
@@ -138,6 +138,38 @@ describe('Poor Coverage test', function () {
                         expect(res.body).not.empty;
 
                         deletePoorCoverageId = res.body[0]._id;
+
+                        done();
+                    });
+            });
+    });
+
+    it('Get SEARCHED Poor Coverage by Admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+        var search = 'Uzhgorod';
+
+        agent
+            .post('/user/adminSignIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/cms/poorCoverage?page=1&count=10&searchTerm='+search)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        expect(res.body).instanceOf(Array);
+                        expect(res.body).not.empty;
+
+                        console.log(res.body);
 
                         done();
                     });

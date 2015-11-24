@@ -13,11 +13,19 @@ var PoorCoverage = function (db) {
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
         var sortOrder = {};
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
 
         sortOrder[sortField] = sortDirection;
 
+        if (searchTerm) {
+            searchQuery = {
+                $and:[{ $or: [ { 'address':  { $regex: searchTerm, $options: 'i' }}]}]
+            };
+        }
+
         poorCoverage
-            .find()
+            .find(searchQuery)
             .sort(sortOrder)
             .skip(skipCount)
             .limit(limitCount)
