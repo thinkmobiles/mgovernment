@@ -8,6 +8,7 @@
     </div>
 
     <table class="tableView table">
+        <thead>
         <tr>
             <th class="oe_sortable" data-sort="serviceName">ServiceName<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
             <th class="oe_sortable" data-sort="serviceProvider" >ServiceProvider<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
@@ -16,7 +17,8 @@
             <th class="oe_sortable" data-sort="feedback" >feedback<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
             <th class="oe_sortable" data-sort="createdAt" >createdAt<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
         </tr>
-
+        </thead>
+        <tbody>
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
@@ -27,15 +29,15 @@
             <td><%= collection[i].feedback %></td>
             <td><%= collection[i].createdAt %></td>
         </tr>
-
         <% } %>
         <% } %>
+        </tbody>
 
         </table>
 
     <div style="clear:both; "></div>
 
-    <div id="paginationDiv" style="">
+    <div id="paginationDiv" class="paginationDiv">
     </div>
 
 </div>
