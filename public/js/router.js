@@ -12,9 +12,27 @@ define([
     'views/feedbacksView',
     'views/emailReportsView',
     'views/adminHistoryLogView',
-    'views/userHistoryLogView'
+    'views/userHistoryLogView',
+    'views/poorCoverageView',
+    'views/helpSalimView'
 
-], function (Backbone, MainView, LoginView, ServiceCreateView,ServiceUpdateView, ServicesView,IconsView, UsersView, UserCreateView, UserUpdateView, FeedbacksView, EmailReportsView, AdminHistoryLogView, UserHistoryLogView ) {
+], function (Backbone,
+             MainView,
+             LoginView,
+             ServiceCreateView,
+             ServiceUpdateView,
+             ServicesView,
+             IconsView,
+             UsersView,
+             UserCreateView,
+             UserUpdateView,
+             FeedbacksView,
+             EmailReportsView,
+             AdminHistoryLogView,
+             UserHistoryLogView,
+             PoorCoverageView,
+             HelpSalimView
+) {
 
     var Router = Backbone.Router.extend({
 
@@ -35,7 +53,9 @@ define([
             "cloneService": "toUpdateServiceViewWithCloneKey",
             "users(/p=:page)(/c=:countPerPage)(/s=:searchTerm)": "toUsersView",
             "createUser": "toCreateUserView",
-            "updateUser": "toUpdateUserView"
+            "updateUser": "toUpdateUserView",
+            "poorCoverage": "toPoorCoverageView",
+            "helpSalim" : "toHelpSalimView"
         },
 
         initialize: function () {
@@ -213,7 +233,44 @@ define([
                 this.contentView.undelegateEvents();
             }
             this.contentView = new UserUpdateView();
+        },
+
+        toPoorCoverageView: function (page, countPerPage, orderBy, order) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+            orderBy = orderBy || 'createdAt';
+            order = order || 1;
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+
+            this.contentView = new PoorCoverageView({
+                page: page,
+                countPerPage: countPerPage,
+                orderBy: orderBy,
+                order: order
+            });
+        },
+
+        toHelpSalimView: function (page, countPerPage, orderBy, order) {
+            page = parseInt(page) || 1;
+            countPerPage = parseInt(countPerPage) || 10;
+            orderBy = orderBy || 'createdAt';
+            order= order || 1;
+
+            if(this.contentView) {
+                this.contentView.undelegateEvents();
+            }
+
+            this.contentView = new HelpSalimView({
+                page: page,
+                countPerPage: countPerPage,
+                orderBy: orderBy,
+                order: order
+            });
         }
+
     });
 
     return Router;
