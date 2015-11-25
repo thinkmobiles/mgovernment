@@ -49,6 +49,17 @@ table {
       color: @tableViewTextColor;
     }
   }
+  .iconList {
+    td {
+      &:first-child {
+        width: 15%;
+      }
+    }
+    &:hover, &:focus, &:active {
+      background: lighten(@tableViewBgColor, 10%);
+      font-weight: 700;
+    }
+  }
 }
 .tableFilter {
   height: 48px;
