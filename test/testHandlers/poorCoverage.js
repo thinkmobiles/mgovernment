@@ -13,7 +13,7 @@ var PreparingBd = require('./preparingDB');
 var app = require('../../app');
 
 describe('Poor Coverage test', function () {
-    this.timeout(10000);
+    this.timeout(100000);
 
     var agent = request.agent(app);
     var deletePoorCoverageId;
@@ -236,6 +236,34 @@ describe('Poor Coverage test', function () {
 
                         expect(res.body).to.have.deep.property('count');
                         expect(res.body.count).to.be.above(0);
+
+                        done();
+                    });
+            });
+    });
+
+    it('Export Poor Coverage by Admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+
+        agent
+            .post('/user/adminSignIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/cms/poorCoverage/exportCSV')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        console.log(res.body);
 
                         done();
                     });

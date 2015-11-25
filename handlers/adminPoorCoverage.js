@@ -1,10 +1,12 @@
 var CONST = require('../constants');
+var ExportsCSV = require('../helpers/exportCSV');
 
 var PoorCoverage = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
     var poorCoverage = db.model(CONST.MODELS.POOR_COVERAGE);
+    var exportCSV = new ExportsCSV();
 
     this.getAllCoverage = function (req, res, next) {
 
@@ -52,6 +54,58 @@ var PoorCoverage = function (db) {
                 res.status(200).send({success: 'Success'});
             })
 
+    };
+
+    this.generateCsvData = function (req, res, next) {
+
+        poorCoverage
+            .find()
+            .populate({path: 'user', select: 'login profile.firstName profile.lastName'})
+            .exec(function (err, collection) {
+                if (err) {
+                    return next(err);
+                }
+
+                var exportData = [];
+                for (var i in collection) {
+                    exportData.push({
+                        address: collection[i].address ? collection[i].address : '',
+                        latitude: collection[i].location.latitude ? collection[i].location.latitude : '',
+                        longitude: collection[i].location.latitude ? collection[i].location.latitude : '',
+                        user: (collection[i].user && collection[i].user.login) ? collection[i].user.login : '',
+                        firstName: (collection[i].user && collection[i].user.firstName) ? collection[i].user.firstName : '',
+                        lastName: (collection[i].user && collection[i].user.lastName) ? collection[i].user.lastName : '',
+                        createdAt: collection[i].createdAt ? collection[i].createdAt.toString() : ''
+                    });
+                }
+
+                /*var cvsParams = {
+                    columns: 'address latitude longitude user firstName lastName createdAt',
+                    rows: exportData
+                };
+
+                var fileName = 'test3';
+
+                exportCSV.generateCsvData(cvsParams, function(err, csvData){
+                    if (err) {
+                        next(err);
+                    } else {
+                        exportCSV.sendCsvFile(res, fileName, csvData, function(err) {
+                            if (err) {
+                                next(err);
+                            }
+                        });
+                    }
+                });*/
+
+                var fileName = 'poorCoverage' + new Date().toDateString();
+                var regFileName = fileName.replace(/\s+/g, '');
+
+                console.log(regFileName);
+
+                exportCSV.tempCSVGenerator(res, exportData, regFileName);
+
+            });
     };
 
     this.getCount = function (req, res, next) {

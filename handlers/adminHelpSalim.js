@@ -1,10 +1,12 @@
 var CONST = require('../constants');
+var ExportCSV = require('../helpers/exportCSV');
 
 var HelpSalim = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
     var helpSalim = db.model(CONST.MODELS.HELP_SALIM);
+    var exportCSV = new ExportCSV();
 
     this.getAllSalim = function (req, res, next) {
 
@@ -52,6 +54,57 @@ var HelpSalim = function (db) {
                 res.status(200).send({success: 'Success'});
             })
 
+    };
+
+    this.generateCsvData = function (req, res, next) {
+
+        helpSalim
+            .find()
+            .populate({path: 'user', select: 'login profile.firstName profile.lastName'})
+            .exec(function (err, collection) {
+                if (err) {
+                    return next(err);
+                }
+
+                var exportData = [];
+                for (var i in collection) {
+                    exportData.push({
+                        url: collection[i].url ? collection[i].url : '',
+                        description: collection[i].description ? collection[i].description : '',
+                        user: (collection[i].user && collection[i].user.login) ? collection[i].user.login : '',
+                        firstName: (collection[i].user && collection[i].user.firstName) ? collection[i].user.firstName : '',
+                        lastName: (collection[i].user && collection[i].user.lastName) ? collection[i].user.lastName : '',
+                        createdAt: collection[i].createdAt ? collection[i].createdAt.toString() : ''
+                    });
+                }
+
+                /*var cvsParams = {
+                 columns: 'address latitude longitude user firstName lastName createdAt',
+                 rows: exportData
+                 };
+
+                 var fileName = 'test3';
+
+                 exportCSV.generateCsvData(cvsParams, function(err, csvData){
+                 if (err) {
+                 next(err);
+                 } else {
+                 exportCSV.sendCsvFile(res, fileName, csvData, function(err) {
+                 if (err) {
+                 next(err);
+                 }
+                 });
+                 }
+                 });*/
+
+                var fileName = 'helpSalim' + new Date().toDateString();
+                var regFileName = fileName.replace(/\s+/g, '');
+
+                console.log(regFileName);
+
+                exportCSV.tempCSVGenerator(res, exportData, regFileName);
+
+            });
     };
 
     this.getCount = function (req, res, next) {

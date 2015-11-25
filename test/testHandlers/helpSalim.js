@@ -163,6 +163,34 @@ describe('Help Salim test', function () {
             });
     });
 
+    it('Export Help Salim by Admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+
+        agent
+            .post('/user/adminSignIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/cms/helpSalim/exportCSV')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        console.log(res.body);
+
+                        done();
+                    });
+            });
+    });
+
     it('Delete Help Salim by Admin', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
