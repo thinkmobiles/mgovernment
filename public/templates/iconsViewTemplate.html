@@ -10,102 +10,76 @@
             <label for="searchTerm">Search</label>
         </div>
     </div>
+
     <div class="row noMargin">
         <div class="headerPage extraSmall-1">
             <span>List of Icons</span>
         </div>
-                <table class="table tableView" >
-                    <thead>
-                    <tr>
-                        <th>Icon</th>
-                        <th>Title</th>
-                    </tr>
-                    </thead>
-                    <tbody  id="databaseList">
-                    <!--<tr>-->
-                        <!--<td>icon</td>-->
-                        <!--<td>Smile</td>-->
-                    <!--</tr>-->
-                    </tbody>
-                </table>
+        <table class="table tableView" >
+            <thead>
+            <tr>
+                <th>Icon</th>
+                <th>Title</th>
+            </tr>
+            </thead>
+            <tbody  id="databaseList">
 
-        </div>
+            </tbody>
+        </table>
     </div>
 
-
-    <div class="popupWindow">
-
-
-        <div id="propertyList" style="display: none;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="2" class="alignCenter">
-                            <b>Title: </b><input id="iconTitle" type="text" size="70" maxlength="70">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="height: 300px; background-image: url('../img/appleAluminum.png'); background-size: 100% 100%; ">
-                            <div class="iconDiv">
-                                <span>@3x: </span>
-                                <img id="i3x" style="width: 90px; height: 90px;" >
-                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="i3x">
-                            </div>
-                            <div class="iconDiv">
-                                <span>@2x: </span>
-                                <img id="i2x" style="width: 70px; height: 70px;">
-                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="i2x"></div>
-                        </td>
-                        <td style=" height: 300px;background-image: url('../img/android.png'); background-size: 100% 100%">
-                            <div class="iconDiv">
-                                <span>xxxhdpi: </span>
-                                <img id="ixxxhdpi" style="width: 90px; height: 90px;">
-                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixxxhdpi">
-                            </div>
-                            <div class="iconDiv">
-                                <span>xxhdpi: </span>
-                                <img id="ixxhdpi" style="width: 70px; height: 70px;">
-                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixxhdpi">
-                            </div>
-                            <div class="iconDiv">
-                                <span>xhdpix: </span>
-                                <img id="ixhdpi" style="width: 48px; height: 48px;">
-                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixhdpi">
-                            </div>
-                            <div class="iconDiv">
-                                <span>hdpi: </span>
-                                <img id="ihdpi" style="width: 36px; height: 36px;">
-                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ihdpi">
-                            </div>
-                            <div class="iconDiv">
-                                <span>mdpi: </span>
-                                <img id="imdpi" style="width: 22px; height: 22px;">
-                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="imdpi">
-                            </div>
-
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="2" class="alignCenter">
-                            <div id="save" onmouseover="this.style.cursor='pointer'">
-                                <span>Save icons in DB</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-
-
+    <div id="propertyList" class="iconContainer" style="display: none">
+        <div class="iconEdit row">
+            <div class="extraSmall-6 column indentExtraSmall-3">
+                <b>Title: </b><input id="iconTitle" type="text" size="70" maxlength="70" />
+            </div>
+            <div class="extraSmall-10 column indentExtraSmall-1">
+                <div class="extraSmall-2 ios">
+                    <div class="iconDiv extraSmall-3">
+                        <span>@3x: </span>
+                        <img id="i3x" style="width: 90px; height: 90px;" >
+                        <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="i3x">
+                    </div>
+                    <div class="iconDiv extraSmall-3">
+                        <span>@2x: </span>
+                        <img id="i2x" style="width: 70px; height: 70px;">
+                        <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="i2x">
+                    </div>
+                </div>
+                <div class="extraSmall-2 android">
+                    <div class="iconDiv extraSmall-3">
+                        <span>xxxhdpi: </span>
+                        <img id="ixxxhdpi" style="width: 90px; height: 90px;">
+                        <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixxxhdpi">
+                    </div>
+                    <div class="iconDiv extraSmall-3">
+                        <span>xxhdpi: </span>
+                        <img id="ixxhdpi" style="width: 70px; height: 70px;">
+                        <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixxhdpi">
+                    </div>
+                    <div class="iconDiv extraSmall-3">
+                        <span>xhdpix: </span>
+                        <img id="ixhdpi" style="width: 48px; height: 48px;">
+                        <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixhdpi">
+                    </div>
+                    <div class="iconDiv extraSmall-3">
+                        <span>hdpi: </span>
+                        <img id="ihdpi" style="width: 36px; height: 36px;">
+                        <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ihdpi">
+                    </div>
+                    <div class="iconDiv extraSmall-3">
+                        <span>mdpi: </span>
+                        <img id="imdpi" style="width: 22px; height: 22px;">
+                        <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="imdpi">
+                    </div>
+                </div>
+                <div class="extarSmall-1 alignCenter">
+                    <div id="save" onmouseover="this.style.cursor='pointer'">
+                        <span>Save icons in DB</span>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
 
     <div id="paginationDiv" class="paginationDiv"></div>
