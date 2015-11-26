@@ -63,7 +63,6 @@ describe('Admin Innovations', function () {
 
                         expect(res.body).not.be.empty;
 
-                        console.dir(res.body);
 
                         done();
                     });

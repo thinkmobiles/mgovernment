@@ -17,5 +17,8 @@ module.exports = function(db){
     router.route('/getCount')
         .get(poorCoverage.getCount);
 
+    router.route('/exportCSV')
+        .get(poorCoverage.generateCsvData);
+
     return router;
 };

@@ -26,13 +26,13 @@
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
-            <td><%= collection[i].address ? collection[i].address : '-  ' %></td>
+            <td><%= collection[i].address ? collection[i].address : ' - ' %></td>
             <% if (collection[i].location) { %>
             <td><%= collection[i].location.latitude %></td>
             <td><%= collection[i].location.longitude %></td>
             <% } else { %>
-            <td>-</td>
-            <td>-</td>
+            <td> - </td>
+            <td> - </td>
             <% } %>
             <td><%= collection[i].signalLevel %></td>
             <td><%= collection[i].user ? collection[i].user.login : 'UnAuthorized' %></td>

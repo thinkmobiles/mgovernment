@@ -62,10 +62,11 @@ describe('Admin Email Report tests', function () {
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
-                        console.dir(res.body);
                         if (err) {
                             return done(err)
                         }
+                        expect(res.body).to.have.deep.property('success');
+                        expect(res.body.success).to.equal('Success');
 
                         done();
                     });
@@ -94,7 +95,9 @@ describe('Admin Email Report tests', function () {
                         }
 
                         deleteEmailReportId = res.body[0]._id;
-                        console.log(deleteEmailReportId);
+
+                        expect(res.body).instanceOf(Array);
+                        expect(res.body).not.to.empty;
 
                         done();
                     });
@@ -121,6 +124,9 @@ describe('Admin Email Report tests', function () {
                        if (err) {
                            return done(err);
                        }
+
+                        expect(res.body).to.have.deep.property('success');
+                        expect(res.body.success).to.equal('Success');
 
                         done();
                     });

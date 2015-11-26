@@ -17,5 +17,8 @@ module.exports = function(db){
     router.route('/getCount')
         .get(helpSalim.getCount);
 
+    router.route('/exportCSV')
+        .get(helpSalim.generateCsvData);
+
     return router;
 };

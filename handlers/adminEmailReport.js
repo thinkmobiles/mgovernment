@@ -78,7 +78,7 @@ var EmailReport = function (db) {
                 };
                 adminHistoryHandler.pushlog(log);
 
-                return res.status(200).send(model);
+                return res.status(200).send({success: 'Success'});
             });
     };
 

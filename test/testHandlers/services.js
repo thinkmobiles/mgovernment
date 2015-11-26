@@ -61,7 +61,8 @@ describe('Service CRUD by admin,', function () {
                             return done(err)
                         }
                         serviceId = res.body._id;
-                        console.log(serviceId);
+
+                        expect(res.body).not.to.empty;
 
                         done();
                     });
@@ -92,7 +93,9 @@ describe('Service CRUD by admin,', function () {
                             return done(err)
                         }
                         serviceNotHomeScreen = res.body._id;
-                        console.log(serviceNotHomeScreen);
+
+                        expect(res.body).not.to.empty;
+                        expect(res.body).to.have.deep.property('homeScreen');
 
                         done();
                     });
@@ -123,7 +126,9 @@ describe('Service CRUD by admin,', function () {
                             return done(err)
                         }
                         serviceNotEnable = res.body._id;
-                        console.log(serviceNotEnable);
+
+                        expect(res.body).not.to.empty;
+                        expect(res.body).to.have.deep.property('homeScreen');
 
                         done();
                     });
@@ -150,7 +155,7 @@ describe('Service CRUD by admin,', function () {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
+                        expect(res.body._id).to.equal(serviceId);
 
                         done();
                     });
@@ -171,7 +176,6 @@ describe('Service CRUD by admin,', function () {
                     return done(err)
                 }
                 serviceId = res.body._id;
-                console.log(serviceId);
 
                 agent
                     .put('/cms/adminService/' + serviceId)
@@ -181,7 +185,8 @@ describe('Service CRUD by admin,', function () {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
+
+                        expect(res.body).not.to.empty;
 
                         done();
                     });
@@ -201,7 +206,6 @@ describe('Service CRUD by admin,', function () {
                     return done(err)
                 }
                 serviceId = res.body._id;
-                console.log('id for delete: ', serviceId);
 
                 agent
                     .delete('/cms/adminService/' + serviceId)
@@ -210,7 +214,10 @@ describe('Service CRUD by admin,', function () {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
+
+                        expect(res.body).to.have.deep.property('success');
+                        expect(res.body.success).to.equal('Success');
+
                         done();
                     });
             });
@@ -226,8 +233,9 @@ describe('Service CRUD by admin,', function () {
                 if (err) {
                     return done(err)
                 }
-                console.log('GET ALL Services with Query:');
-                console.dir(res.body);
+
+                expect(res.body).not.to.empty;
+
                 done();
             });
     });
@@ -241,8 +249,9 @@ describe('Service CRUD by admin,', function () {
                 if (err) {
                     return done(err)
                 }
-                console.log('GET Count of Services:');
-                console.dir(res.body);
+
+                expect(res.body).to.have.deep.property('count');
+                expect(res.body.count).to.be.above(0);
 
                 done();
             });
@@ -269,8 +278,6 @@ describe('Service CRUD by admin,', function () {
                         if (err) {
                             return done(err)
                         }
-                        console.log('GET ALL Services with Query:');
-                        console.dir(res.body);
 
                         expect(res.body).to.be.instanceof(Array);
                         expect(res.body).to.have.length.above(0);
@@ -288,7 +295,6 @@ describe('Service CRUD by admin,', function () {
                                     return done(err)
                                 }
                                 serviceHubId = res.body._id;
-                                console.log(serviceHubId);
 
                                 done();
                             });
@@ -316,7 +322,6 @@ describe('Service CRUD by admin,', function () {
                             return done(err)
                         }
 
-                        console.dir(res.body);
                         expect(res.body).to.be.instanceof(Array);
                         expect(res.body).to.have.length.above(0);
 

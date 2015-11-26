@@ -55,6 +55,7 @@ define([
             var target$ = $(e.target);
             var previousOrderBy = this.paginationView.stateModel.toJSON().data.orderBy;
             var previousOrder = this.paginationView.stateModel.toJSON().data.order;
+            var searchTerm = this.paginationView.stateModel.toJSON().data.searchTerm;
             var sortOrder = 1;
             var sortBy;
 
@@ -73,13 +74,14 @@ define([
             } else {
                 target$.find(".sortUP").show()
             }
-            this.paginationView.setData({orderBy: sortBy, order: sortOrder});
+
+            this.paginationView.setData({orderBy: sortBy, order: sortOrder, searchTerm: searchTerm});
         },
 
         render: function(){
             var el = this.$el;
 
-            console.log('poorCoveragesView render');
+            console.log('poorCoverageView render');
             el.html(this.template({collection: this.poorCoveragesCollections.toJSON()}));
             el.find("#paginationDiv").html(this.paginationView.render().$el);
             el.find("#searchTerm").val(App.searchTerm ? App.searchTerm:'').focus();
@@ -87,7 +89,6 @@ define([
 
             return this;
         }
-
     });
 
     return poorCoveragesView;

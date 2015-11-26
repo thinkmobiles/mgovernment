@@ -128,9 +128,6 @@ describe('Help Salim test', function () {
 
                         expect(res.body).instanceOf(Array);
                         expect(res.body).not.empty;
-                        console.log(res.body);
-
-                        deleteHelpSalimId = res.body[0]._id;
 
                         done();
                     });
@@ -160,6 +157,34 @@ describe('Help Salim test', function () {
 
                         expect(res.body).to.have.deep.property('count');
                         expect(res.body.count).to.be.above(0);
+
+                        done();
+                    });
+            });
+    });
+
+    it('Export Help Salim by Admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+
+        agent
+            .post('/user/adminSignIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/cms/helpSalim/exportCSV')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        console.log(res.body);
 
                         done();
                     });
