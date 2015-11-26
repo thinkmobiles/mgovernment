@@ -117,7 +117,7 @@ var HelpSalim = function (db) {
                  }
                  });*/
 
-                var fileName = 'helpSalim' + moment().format('MMM Do YYYY');
+                var fileName = 'poorCoverage' + moment().format('MMM Do YYYY') + (searchTerm ? searchTerm : '');
                 var regFileName = fileName.replace(/\s+/g, '');
 
                 exportCSV.tempCSVGenerator(res, exportData, regFileName);
