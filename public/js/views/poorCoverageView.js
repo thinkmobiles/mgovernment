@@ -1,9 +1,10 @@
 define([
     'text!templates/poorCoveragesViewTemplate.html',
     'collections/poorCoverages',
+    'models/csv',
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
-], function (content, PoorCoveragesCollection, paginationTemplate, PaginationView) {
+], function (content, PoorCoveragesCollection, CsvModel, paginationTemplate, PaginationView) {
     'use strict';
 
     var poorCoveragesView = Backbone.View.extend({
@@ -12,7 +13,8 @@ define([
         template: _.template(content),
         events: {
             "click .oe_sortable": "goSort",
-            'keyup #searchTerm': "searchByTerm"
+            'keyup #searchTerm': "searchByTerm",
+            "click #exportCsv": "toExportCsv"
         },
 
         initialize: function(options){
@@ -76,6 +78,19 @@ define([
             }
 
             this.paginationView.setData({orderBy: sortBy, order: sortOrder, searchTerm: searchTerm});
+        },
+
+        toExportCsv: function(e){
+            var csv = new CsvModel();
+            csv.urlRoot += 'poorCoverage/exportCSV?searchTerm=' + App.searchTerm;
+            csv.fetch({
+                success: function(model,res) {
+                    window.location.href = res.path;
+                },
+                error: function(){
+                    alert('Export error');
+                }
+            });
         },
 
         render: function(){

@@ -121,8 +121,9 @@ var PoorCoverage = function (db) {
                 var fileName = 'poorCoverage' + moment().format('MMM Do YYYY') + (searchTerm ? searchTerm : '');
                 var regFileName = fileName.replace(/\s+/g, '');
 
-                exportCSV.tempCSVGenerator(res, exportData, regFileName);
+                //return res.send(exportData);
 
+                exportCSV.tempCSVGenerator(res, exportData, regFileName);
             });
     };
 
