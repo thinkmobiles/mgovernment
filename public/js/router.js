@@ -59,7 +59,9 @@ define([
         },
 
         initialize: function () {
-            this.mainView = new MainView();
+            //this.mainView = new MainView();
+            //this.mainView = new LoginView();
+            //console.log('router initialize')
         },
 
         toMainView: function () {
@@ -67,6 +69,7 @@ define([
                 this.mainView.undelegateEvents();
             }
             this.mainView = new MainView();
+            //this.mainView = new LoginView()();
         },
 
         toLoginView: function () {
@@ -77,6 +80,9 @@ define([
         },
 
         toCreateServiceView: function () {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
 
             if(this.contentView){
                 this.contentView.undelegateEvents();
@@ -87,6 +93,10 @@ define([
 
         toUpdateServiceView: function () {
 
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             if(this.contentView){
                 this.contentView.undelegateEvents();
             }
@@ -94,6 +104,9 @@ define([
         },
 
         toUpdateServiceViewWithCloneKey: function () {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
 
             if(this.contentView){
                 this.contentView.undelegateEvents();
@@ -102,6 +115,10 @@ define([
         },
 
         toServicesView: function (page, countPerPage) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
 
@@ -116,6 +133,10 @@ define([
         },
 
         toIconsView: function (page, countPerPage) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
 
@@ -130,6 +151,10 @@ define([
         },
 
         toFeedbacksView: function (page, countPerPage, orderBy, order) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             orderBy = orderBy || 'createdAt';
@@ -148,6 +173,10 @@ define([
         },
 
         toAdminHistoryLogView: function (page, countPerPage, orderBy, order) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             orderBy = orderBy || 'createdAt';
@@ -166,6 +195,10 @@ define([
         },
 
         toUserHistoryLogView: function (page, countPerPage, orderBy, order) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             orderBy = orderBy || 'createdAt';
@@ -184,6 +217,10 @@ define([
         },
 
         toEmailReportsView: function (page, countPerPage, filter, orderBy, order, searchTerm) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             filter = filter || '';
@@ -205,6 +242,10 @@ define([
         },
 
         toUsersView: function (page, countPerPage, searchTerm) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
 
@@ -236,6 +277,10 @@ define([
         },
 
         toPoorCoverageView: function (page, countPerPage, orderBy, order, searchTerm) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             orderBy = orderBy || 'createdAt';
@@ -255,6 +300,10 @@ define([
         },
 
         toHelpSalimView: function (page, countPerPage, orderBy, order, searchTerm) {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
             page = parseInt(page) || 1;
             countPerPage = parseInt(countPerPage) || 10;
             orderBy = orderBy || 'createdAt';

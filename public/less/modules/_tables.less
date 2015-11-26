@@ -28,7 +28,15 @@ table {
   overflow-x: auto;
 }
 .tableView {
-  background: @tableViewBgColor;
+  //background: @tableViewBgColor;
+  background: rgba(254,243,230,0.6);
+  background: -moz-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(254,243,230,0.6)), color-stop(35%, rgba(254,243,230,0.8)), color-stop(100%, rgba(254,243,230,1)));
+  background: -webkit-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -o-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -ms-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: linear-gradient(to bottom, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3e6', endColorstr='#fef3e6', GradientType=0 );
   tr {
     border: none;
     td, th {
@@ -47,6 +55,17 @@ table {
     }
     td {
       color: @tableViewTextColor;
+    }
+  }
+  .iconList {
+    td {
+      &:first-child {
+        width: 15%;
+      }
+    }
+    &:hover, &:focus, &:active {
+      background: lighten(@tableViewBgColor, 10%);
+      font-weight: 700;
     }
   }
 }
