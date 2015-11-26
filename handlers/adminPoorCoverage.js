@@ -5,6 +5,7 @@ var PoorCoverage = function (db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var moment = require('moment');
     var poorCoverage = db.model(CONST.MODELS.POOR_COVERAGE);
     var exportCSV = new ExportsCSV();
 
@@ -58,8 +59,27 @@ var PoorCoverage = function (db) {
 
     this.generateCsvData = function (req, res, next) {
 
+        var sortField = req.query.orderBy || 'createdAt';
+        var sortDirection = +req.query.order || 1;
+        var skipCount = ((req.query.page - 1) * req.query.count) || 0;
+        var limitCount = req.query.count || 20;
+        var sortOrder = {};
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
+
+        sortOrder[sortField] = sortDirection;
+
+        if (searchTerm) {
+            searchQuery = {
+                $and:[{ $or: [ { 'address':  { $regex: searchTerm, $options: 'i' }}]}]
+            };
+        }
+
         poorCoverage
-            .find()
+            .find(searchQuery)
+            .sort(sortOrder)
+            .skip(skipCount)
+            .limit(limitCount)
             .populate({path: 'user', select: 'login profile.firstName profile.lastName'})
             .exec(function (err, collection) {
                 if (err) {
@@ -75,7 +95,7 @@ var PoorCoverage = function (db) {
                         user: (collection[i].user && collection[i].user.login) ? collection[i].user.login : '',
                         firstName: (collection[i].user && collection[i].user.firstName) ? collection[i].user.firstName : '',
                         lastName: (collection[i].user && collection[i].user.lastName) ? collection[i].user.lastName : '',
-                        createdAt: collection[i].createdAt ? collection[i].createdAt.toString() : ''
+                        createdAt: collection[i].createdAt ? (moment(collection[i].createdAt).format('l HH:mm')).toString() : ''
                     });
                 }
 
@@ -98,10 +118,8 @@ var PoorCoverage = function (db) {
                     }
                 });*/
 
-                var fileName = 'poorCoverage' + new Date().toDateString();
+                var fileName = 'poorCoverage' + moment().format('MMM Do YYYY') + (searchTerm ? searchTerm : '');
                 var regFileName = fileName.replace(/\s+/g, '');
-
-                console.log(regFileName);
 
                 exportCSV.tempCSVGenerator(res, exportData, regFileName);
 

@@ -270,6 +270,35 @@ describe('Poor Coverage test', function () {
             });
     });
 
+    it('Export SEARCHED Poor Coverage by Admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+        var search = 'Uzhgorod';
+
+        agent
+            .post('/user/adminSignIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/cms/poorCoverage/exportCSV?page=1&count=10&searchTerm='+search)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        console.log(res.body);
+
+                        done();
+                    });
+            });
+    });
+
     it('Delete Poor Coverage by Admin', function (done) {
 
         var loginData = USERS.ADMIN_DEFAULT;
