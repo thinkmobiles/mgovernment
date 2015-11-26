@@ -91,7 +91,7 @@ var HelpSalim = function (db) {
                     exportData.push({
                         url: collection[i].url ? collection[i].url : '',
                         description: collection[i].description ? collection[i].description : '',
-                        user: (collection[i].user && collection[i].user.login) ? collection[i].user.login : '',
+                        user: (collection[i].user && collection[i].user.login) ? collection[i].user.login : 'UnAuthorized',
                         firstName: (collection[i].user && collection[i].user.firstName) ? collection[i].user.firstName : '',
                         lastName: (collection[i].user && collection[i].user.lastName) ? collection[i].user.lastName : '',
                         createdAt: collection[i].createdAt ? (moment(collection[i].createdAt).format('l HH:mm')).toString() : ''
