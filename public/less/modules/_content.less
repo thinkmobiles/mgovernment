@@ -76,7 +76,6 @@
   font-weight: bold;
 }
 
-
 .mobileBtn {
   border: 1px solid grey;
   color: black;
@@ -372,4 +371,118 @@ th.oe_sortable_sub .arrow {
   background: @headerPageBgColor;
   padding: 15px 40px;
   .clearfix();
+}
+
+.iconContainer {
+  background: rgba(254,243,230,0.6);
+  background: -moz-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(254,243,230,0.6)), color-stop(35%, rgba(254,243,230,0.8)), color-stop(100%, rgba(254,243,230,1)));
+  background: -webkit-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -o-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -ms-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: linear-gradient(to bottom, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3e6', endColorstr='#fef3e6', GradientType=0 );
+}
+
+.iconEdit {
+  .iconInput {
+    padding-bottom: 28px;
+
+    input[type='text'] {
+      background: @iconsBorderColor-1;
+      color: @iconsTextColor;
+      width: 85%;
+      padding: 5px 20px;
+      margin-left: 40px;
+      margin-bottom: 0;
+      border: none;
+    }
+    label {
+      color: @iconsTextColor;
+      top: 0.65rem;
+    }
+  }
+  .ios {
+    padding-right: 28px;
+  }
+  .android {
+    border-left: 1px solid @iconsBorderColor;
+    padding-left: 28px;
+  }
+  .iconIos,
+  .iconAndroid {
+    padding-bottom: 24px;
+    margin-bottom: 35px;
+    border-bottom: 1px solid @iconsBorderColor;
+  }
+  .iconImg {
+    margin: auto;
+    width: 70px;
+    height: 80px;
+  }
+  .iconDiv {
+    display: table;
+    height: 152px;
+    margin-bottom: 5px;
+    text-align: center;
+
+    .iconTitle {
+      display: block;
+      color: @iconsTextColor;
+      text-align: center;
+      line-height: 20px;
+      margin-bottom: 5px;
+      .fontSize(16);
+    }
+    .fileInput {
+      + label {
+        width: 100%;
+        display: table-row;
+        vertical-align: bottom;
+      }
+    }
+    .icon-3x {
+      margin: auto;
+      width: 88px;
+      height: 88px;
+    }
+    .icon-2x {
+      margin: auto;
+      width: 68px;
+      height: 68px;
+    }
+    .icon-1x {
+      margin: auto;
+      width: 48px;
+      height: 48px;
+    }
+    .icon-075x {
+      margin: auto;
+      width: 36px;
+      height: 36px;
+    }
+    .icon-05x {
+      margin: auto;
+      width: 23px;
+      height: 23px;
+    }
+    *[class*="icon-"],
+    *[class^="icon-"] {
+      margin-bottom: 5px;
+      border: 1px solid @iconsBorderColor;
+    }
+  }
+  .iconDivSmall {
+    height: 100px;
+  }
+  .iconBtnSave {
+    padding-bottom: 20px;
+    margin-top: 30px;
+
+    div {
+      display: inline;
+      cursor: pointer;
+      margin: auto;
+    }
+  }
 }
