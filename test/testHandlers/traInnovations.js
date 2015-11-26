@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
 var url = 'http://localhost:80';
@@ -41,6 +42,7 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -50,6 +52,7 @@ describe('User Innovations', function () {
 
                 agent
                     .post('/innovation')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send({
                         title: 'test',
                         message: 'some message',
@@ -61,7 +64,7 @@ describe('User Innovations', function () {
                             return done(err)
                         }
 
-                        console.dir(res.body);
+                        expect(res.body).not.to.empty;
 
                         done();
                     });
@@ -77,6 +80,7 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.IPAD_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -86,6 +90,7 @@ describe('User Innovations', function () {
 
                 agent
                     .post('/innovation')
+                    .set(USER_AGENT.IPAD_DEVICE)
                     .send({
                         title: 'test',
                         message: 'some message',
@@ -96,6 +101,8 @@ describe('User Innovations', function () {
                         if (err) {
                             return done(err)
                         }
+
+                        expect(res.body).to.be.empty;
 
                         done();
                     });
@@ -111,6 +118,7 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.IPHONE_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -120,6 +128,7 @@ describe('User Innovations', function () {
 
                 agent
                     .get('/innovation')
+                    .set(USER_AGENT.IPHONE_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -143,6 +152,7 @@ describe('User Innovations', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -152,6 +162,7 @@ describe('User Innovations', function () {
 
                 agent
                     .get('/innovation?offset=0&limit=5')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {

@@ -1,44 +1,38 @@
 'use strict';
 
 var request = require('supertest');
+var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var async = require('async');
-
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var PreparingBd = require('./preparingDb');
 
-var url = 'http://localhost:7791';
+var app = require('../../app');
 
 describe('Service User: GET options, POST send request', function () {
 
     var serviceCollection;
-    var agent = request.agent(url);
+    var agent = request.agent(app);
 
     before(function (done) {
+        this.timeout(30000);
+
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
 
         async.series([
             preparingDb.dropCollection(CONST.MODELS.USER + 's'),
-            preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
-            preparingDb.toFillUsers(3),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_GET),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_COMMUNICATIONS_POST),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.GUEST, CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT]),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.CLIENT, CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT]),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.COMPANY, CONST.USER_TYPE.GOVERNMENT]),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_GOLD_BANCOMAT_FOR_UPDATE,[CONST.USER_TYPE.GOVERNMENT]),
-            preparingDb.createServiceByTemplate(SERVICES.SERVICE_TMA_TRA_CHECK_MOBILE_VERIFICATION),
-            preparingDb.createUsersByTemplate(USERS.CLIENT),
-            preparingDb.createUsersByTemplate(USERS.GOVERNMENT),
-            preparingDb.createUsersByTemplate(USERS.COMPANY)
+            preparingDb.toFillUsers(2),
+            preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_DOMAIN_WHOIS),
+            preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_COMPLAIN_TRA),
+            preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_DOMAIN_WHOIS_TEST),
+            preparingDb.createUsersByTemplate(USERS.CLIENT)
 
-        ], function (err,results)   {
+        ], function (err, results) {
             if (err) {
                 return done(err)
             }
@@ -46,10 +40,11 @@ describe('Service User: GET options, POST send request', function () {
         });
     });
 
-    it('Unauthorized GET serviceList', function (done) {
+    it('Unauthorized GET ServiceList', function (done) {
 
         agent
-            .post('/user/signOut')
+            .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -58,27 +53,36 @@ describe('Service User: GET options, POST send request', function () {
                 }
 
                 agent
-                    .get('/service/')
-                    .send({})
+                    .get('/service')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
-                        serviceCollection = res.body;
+
                         console.dir(res.body);
+                        expect(res.body).to.be.instanceof(Array);
+                        expect(res.body).to.have.length.above(0);
+                        expect(res.body[0]).to.have.deep.property('serviceName.EN');
+                        expect(res.body[0]).to.have.deep.property('serviceName.AR');
+                        expect(res.body[0]).to.have.property('icon');
+                        expect(res.body[0]).to.have.property('needAuth');
+
+                        serviceCollection = res.body;
                         done()
 
                     });
             });
     });
 
-    it('Unauthorized GET and POST ALLOWED service', function (done) {
+    it('Unauthorized GET Service Info', function (done) {
 
-        var data = serviceCollection[0];
+        var data = serviceCollection[1];
 
         agent
             .get('/service/' + data._id)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send()
             .expect(200)
             .end(function (err, res) {
@@ -89,33 +93,35 @@ describe('Service User: GET options, POST send request', function () {
             });
     });
 
-    it('Unauthorized POST TRA_CHECK_MOBILE_VERIFICATION', function (done) {
+    it('Unauthorized POST DYNAMIC_DOMAIN_WHOIS', function (done) {
 
-        var data = serviceCollection[8];
+        var data = serviceCollection[0];
         var userRequestBody = {
-            'IMEI': '351957053969065'
+            'checkUrl': 'google.ae'
         };
-
 
         agent
             .post('/service/' + data._id)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(userRequestBody)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
                     return done(err)
                 }
+
                 console.dir(res.body);
                 done()
             });
     });
 
-    it('Unauthorized GET and POST FORBIDDEN service', function (done) {
+    it('Unauthorized POST DYNAMIC_DOMAIN_WHOIS without required field', function (done) {
 
-        var data = serviceCollection[5];
+        var data = serviceCollection[0];
 
         agent
             .get('/service/' + data._id)
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send()
             .expect(200)
             .end(function (err, res) {
@@ -125,8 +131,9 @@ describe('Service User: GET options, POST send request', function () {
 
                 agent
                     .post('/service/' + data._id)
-                    .send()
-                    .expect(403)
+                    .set(USER_AGENT.ANDROID_DEVICE)
+                    .send({})
+                    .expect(400)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
@@ -136,13 +143,51 @@ describe('Service User: GET options, POST send request', function () {
             });
     });
 
-    it('Authorized GET and POST  CAPALABA service (with signIn)', function (done) {
+    it('Unauthorized POST DYNAMIC_COMPLAIN_TRA', function (done) {
 
-        var data = serviceCollection[1];
-        var loginData = USERS.CLIENT;
+        var serviceData = serviceCollection[1];
+
+        var methodData = {
+            title: 'TRA services has pretty developers teem',
+            description: 'TRA services has pretty developers teem. Its design, its fast work are great result of developers work'
+        };
 
         agent
-            .post('/user/signIn')
+            .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
+            .send({})
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/service/' + serviceData._id)
+                    .set(USER_AGENT.ANDROID_DEVICE)
+                    .send(methodData)
+                    .expect(401)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        done();
+                    });
+            });
+    });
+
+    it('Authorized POST DYNAMIC_COMPLAIN_TRA', function (done) {
+
+        var serviceData = serviceCollection[1];
+        var methodData = {
+            title: 'TRA services has pretty developers teem',
+            description: 'TRA services has pretty developers teem. Its design, its fast work are great result of developers work'
+        };
+        var loginData = USERS.CLIENT_REGISTER_DATA;
+
+        agent
+            .post('/crm/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -151,81 +196,17 @@ describe('Service User: GET options, POST send request', function () {
                 }
 
                 agent
-                    .get('/service/' + data._id)
-                    .send()
+                    .post('/service/' + serviceData._id)
+                    .send(methodData)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
 
-                        agent
-                            .post('/service/' + data._id)
-                            .send({text : 'Hello Capalaba' })
-                            .expect(200)
-                            .end(function (err, res) {
-                                if (err) {
-                                    return done(err)
-                                }
-                                done();
-                            });
+                        done();
                     });
             });
     });
 
-    it('Authorized Send Request to CAPALABA for get Riteils (using  Users Cookies)', function (done) {
-
-        var data = serviceCollection[1];
-        var loginData = USERS.CLIENT;
-
-        agent
-            .post('/service/' + data._id)
-            .send({text : 'Hello Capalaba' })
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                done();
-            });
-    });
-
-    it('Authorized Send Request to CAPALABA for GET Communication (using  Users Cookies)', function (done) {
-
-        var data = serviceCollection[2];
-        var loginData = USERS.CLIENT;
-
-        agent
-            .post('/service/' + data._id)
-            .send({text : 'Hello Capalaba' })
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                done();
-            });
-    });
-
-    it('Authorized Send Request to CAPALABA for POST Communication', function (done) {
-
-        var data = serviceCollection[3];
-        var sendData = {
-            distance: null,
-            end_datetime: "2019-01-02T14:24:46.834Z",
-            message: 'WTF ...PILESOS TOLKEN',
-            start_datetime: null
-        };
-
-        agent
-            .post('/service/' + data._id)
-            .send(sendData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-                done();
-            });
-    });
 });

@@ -1,5 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
+var HistoryHandler = require('./adminHistoryLog');
 
 var EmailReport = function (db) {
     'use strict';
@@ -7,6 +8,7 @@ var EmailReport = function (db) {
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
+    var adminHistoryHandler = new HistoryHandler(db);
 
     this.getAllEmailReports = function (req, res, next) {
 
@@ -53,6 +55,30 @@ var EmailReport = function (db) {
                 }
 
                 return res.status(200).send(collection);
+            });
+    };
+
+    this.deleteEmailReport = function (req, res, next) {
+
+        var id = req.params.id;
+
+        EmailReport
+            .findByIdAndRemove({_id: id})
+            .exec(function (err, model) {
+               if (err) {
+                   return next(err);
+               }
+
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: req.params.id,
+                    description: 'Delete Innovation'
+                };
+                adminHistoryHandler.pushlog(log);
+
+                return res.status(200).send({success: 'Success'});
             });
     };
 

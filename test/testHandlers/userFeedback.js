@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDB');
 
@@ -17,8 +18,10 @@ describe('Feedback tests - Create, Get ,', function () {
     var agent = request.agent(app);
     var serviceCollection;
 
+    var deletedFeedbackId;
+
     before(function (done) {
-        this.timeout(40000);
+        this.timeout(30000);
         console.log('>>> before');
 
         var preparingDb = new PreparingBd();
@@ -26,11 +29,10 @@ describe('Feedback tests - Create, Get ,', function () {
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
-                //preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
                 preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
+                preparingDb.createServiceByTemplate(SERVICES.DYNAMIC_DOMAIN_WHOIS)
             ],
             function (err, results) {
                 if (err) {
@@ -44,6 +46,7 @@ describe('Feedback tests - Create, Get ,', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -53,86 +56,23 @@ describe('Feedback tests - Create, Get ,', function () {
 
                 agent
                     .get('/service/')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
                         serviceCollection = res.body;
-                        console.dir(res.body);
+
+                        expect(res.body).instanceOf(Array);
+                        expect(res.body).not.to.empty;
+
                         done()
                     });
             });
     });
 
-    //it('SEND Good feedback', function (done) {
-    //
-    //    var service = serviceCollection[0];
-    //    var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
-    //    var feedback = {
-    //        serviceName: service.serviceName,
-    //        serviceId: service._id,
-    //        rate: 3,
-    //        feedback: 'awesome, max rate'
-    //    };
-    //
-    //    agent
-    //        .post('/crm/signIn')
-    //        .send(loginData)
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //
-    //            agent
-    //                .post('/feedback')
-    //                .send(feedback)
-    //                .expect(201)
-    //                .end(function (err, res) {
-    //                    console.dir(res.body);
-    //                    if (err) {
-    //                        return done(err)
-    //                    }
-    //                    done();
-    //                });
-    //        });
-    //});
-    //
-    //it('SEND  feedback with BAD values', function (done) {
-    //
-    //    var service = serviceCollection[0];
-    //    var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
-    //    var feedback = {
-    //        serviceName: service.serviceName,
-    //        rate: 5,
-    //        feedback: 'the worst one'
-    //    };
-    //
-    //    agent
-    //        .post('/crm/signIn')
-    //        .send(loginData)
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //
-    //            agent
-    //                .post('/feedback')
-    //                .send(feedback)
-    //                .expect(201)
-    //                .end(function (err, res) {
-    //                    console.dir(res.body);
-    //                    if (err) {
-    //                        return done(err)
-    //                    }
-    //                    done();
-    //                });
-    //        });
-    //});
-
-    it('SEND GOOD feedback UnAuthorized', function (done) {
+    it('SEND Good feedback', function (done) {
 
         var service = serviceCollection[0];
         var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
@@ -140,11 +80,12 @@ describe('Feedback tests - Create, Get ,', function () {
             serviceName: service.serviceName,
             serviceId: service._id,
             rate: 3,
-            feedback: 'pretty nice'
+            feedback: 'awesome, max rate'
         };
 
         agent
-            .post('/crm/signOut')
+            .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -154,6 +95,44 @@ describe('Feedback tests - Create, Get ,', function () {
 
                 agent
                     .post('/feedback')
+                    .set(USER_AGENT.ANDROID_DEVICE)
+                    .send(feedback)
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        expect(res.body).not.to.empty;
+
+                        done();
+                    });
+            });
+    });
+
+    it('SEND  feedback with BAD values', function (done) {
+
+        var service = serviceCollection[0];
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+        var feedback = {
+            serviceName: service.serviceName,
+            rate: 5,
+            feedback: 'the worst one'
+        };
+
+        agent
+            .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/feedback')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(feedback)
                     .expect(201)
                     .end(function (err, res) {
@@ -161,6 +140,46 @@ describe('Feedback tests - Create, Get ,', function () {
                         if (err) {
                             return done(err)
                         }
+
+
+                        done();
+                    });
+            });
+    });
+
+    it('SEND GOOD feedback UnAuthorized', function (done) {
+
+        var service = serviceCollection[0];
+        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+        var feedback = {
+            //serviceName: service.serviceName,
+            serviceId: service._id,
+            rate: '3',
+            feedback: 'pretty nice'
+        };
+
+        agent
+            .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .post('/feedback')
+                    .set(USER_AGENT.ANDROID_DEVICE)
+                    .send(feedback)
+                    .expect(201)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+
+                        expect(res.body).not.be.empty;
+
                         done();
                     });
             });
@@ -171,7 +190,7 @@ describe('Feedback tests - Create, Get ,', function () {
         var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/user/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -180,24 +199,54 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback')
+                    .get('/cms/feedback')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
+                        deletedFeedbackId = res.body[0]._id;
+
+                        expect(res.body).instanceOf(Array);
+                        expect(res.body).not.to.empty;
+
                         done();
                     });
             });
     });
 
-    it('GET ALL feedback by NOT Admin', function (done) {
+    //it('GET ALL feedback by NOT Admin', function (done) {
+    //
+    //    var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+    //
+    //    agent
+    //        .post('/crm/signIn')
+    //        .send(loginData)
+    //        .expect(200)
+    //        .end(function (err, res) {
+    //            if (err) {
+    //                return done(err)
+    //            }
+    //
+    //            agent
+    //                .get('/feedback')
+    //                .expect(403)
+    //                .end(function (err, res) {
+    //                    if (err) {
+    //                        return done(err)
+    //                    }
+    //                    console.dir(res.body);
+    //                    done();
+    //                });
+    //        });
+    //});
 
-        var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
+    it('GET SEARCHED feedback by Admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
 
         agent
-            .post('/crm/signIn')
+            .post('/user/adminSignIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -206,14 +255,85 @@ describe('Feedback tests - Create, Get ,', function () {
                 }
 
                 agent
-                    .get('/feedback')
-                    .expect(403)
+                    .get('/cms/feedback?search=pretty')
+                    .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
-                        console.dir(res.body);
+                        expect(res.body).to.not.empty;
+                        for (var i = 0; res.body.length > i; i++){
+                            expect(res.body[i]).to.satisfy(function(data){
+                                var indexFeedback = data.feedback.toLowerCase().indexOf('pretty');
+                                return indexFeedback > -1
+                            })
+                        }
+
                         done();
+                    });
+            });
+    });
+
+    it('GET SEARCHED feedback with WRONG key by Admin', function(done){
+
+        var loginData = USERS.ADMIN_DEFAULT;
+
+        agent
+            .post('/user/adminSignIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .get('/cms/feedback?search=query1223')
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err)
+                        }
+                        expect(res.body).to.empty;
+
+                        done();
+                    });
+            });
+    });
+
+    it('DELETED feedback by admin', function (done) {
+
+        var loginData = USERS.ADMIN_DEFAULT;
+
+        agent
+            .post('/user/adminSignIn')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                agent
+                    .delete('/cms/feedback/'+deletedFeedbackId)
+                    .expect(200)
+                    .end(function (err, res) {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        agent
+                            .get('/cms/feedback?search=pretty')
+                            .expect(200)
+                            .end(function (err, res) {
+                                if (err) {
+                                    return done(err);
+                                }
+
+                                expect(res.body).to.be.empty;
+
+                                done();
+                            });
                     });
             });
     });

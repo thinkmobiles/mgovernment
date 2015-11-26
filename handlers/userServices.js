@@ -1,3 +1,4 @@
+var request = require('request');
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var UserHistoryHandler = require('./userHistoryLog');
@@ -18,13 +19,55 @@ var UserService = function(db) {
     var User = db.model(CONST.MODELS.USER);
 
     var serviceWrappers =  {};
-    serviceWrappers[CONST.SERVICE_PROVIDERS.CAPALABA] = new Capalaba(db);
-    serviceWrappers[CONST.SERVICE_PROVIDERS.TMA_TRA_SERVICES] = new TmaTraServices(db);
-    serviceWrappers[CONST.SERVICE_PROVIDERS.TMA_TRA_SERVICES_VIA_SOCKET] = new tmaTraServicesViaSocket(db);
+    serviceWrappers[CONST.SERVICE_PROVIDERS.DEFAULT_REST] = new TmaTraServices(db);
+    serviceWrappers[CONST.SERVICE_PROVIDERS.TEST_TRA_SOCKET] = new tmaTraServicesViaSocket(db);
 
     var userHistoryHandler = new UserHistoryHandler(db);
 
     this.getServiceOptions = function (req, res, next) {
+
+        Service
+            .findOne({_id: req.params.serviceId})
+            .select('_id enable serviceName pages needAuth icon buttonTitle initialRequest dataContent')
+            .lean()
+            .exec(function (err, model) {
+
+                if (err || !model) {
+                    return res.status(400).send({error: 'Service Option not found'});
+                }
+
+                model.icon = model.icon ? '/icon/' + model.icon : null;
+
+                if (model.initialRequest) {
+                    request(model.initialRequest.url, {
+                        method: model.initialRequest.method,
+                        json: true
+                    }, function(err, result, body){
+                        if (!err || result.statusCode == 200) {
+                            prepareDataContent(model, body);
+                        }
+
+                        return res.status(200).send(model);
+                    });
+                } else {
+
+                    return res.status(200).send(model);
+                }
+            });
+    };
+
+    function prepareDataContent(model, data) {
+        if (data) {
+            for (var i in model.pages) {
+                for (var j in model.pages[i].inputItems) {
+                    var key = model.pages[i].inputItems[j].name;
+                    model.pages[i].inputItems[j].dataContent = data[key] ? data[key] : null;
+                }
+            }
+        }
+    };
+
+    this.getServiceOptionsCms = function (req, res, next) {
 
         var searchQuery = {
             _id: req.params.serviceId
@@ -32,21 +75,10 @@ var UserService = function(db) {
 
         getServiceOptionsById(searchQuery, function (err, model) {
 
-            var log = {
-                user: req.session.uId || null,
-                action: CONST.ACTION.GET,
-                model: CONST.MODELS.SERVICE,
-                modelId: searchQuery._id,
-                req: {params: req.params, body: req.params},
-                res: model,
-                description: 'getServiceOptions'
-            };
-
-            userHistoryHandler.pushlog(log);
-
             if (err) {
                 return res.status(400).send({error: 'Service Option not found'});
             }
+
             return res.status(200).send(model);
         })
     };
@@ -117,17 +149,14 @@ var UserService = function(db) {
     };
 
     this.getServices = function (req, res, next) {
-        // TODO check this when session.language will be implemented
-
-        var language = req.query.lang ? req.query.lang : (req.session.language ? req.session.language : 'EN');
-
-        if (req.query.lang) {
-            req.session.language = req.query.lang;
-        }
 
         Service
-            .find()
-            .select('_id serviceName.' + language +' icon ')
+            .find({homeScreen: true, enable: true})
+            .select('_id serviceName icon needAuth items initialRequest')
+            .populate({
+                path: 'items',
+                match: {enable: true},
+                select: '_id serviceName icon needAuth items initialRequest'})
             .lean()
             .exec(function (err, collection) {
                 var log;
@@ -137,21 +166,8 @@ var UserService = function(db) {
                     return res.status(500).send({error: err});
                 }
 
-                log = {
-                    user: req.session.uId || null,
-                    action: CONST.ACTION.GET,
-                    model: CONST.MODELS.SERVICE,
-                    modelId: '',
-                    req: {params: req.params, body: req.params},
-                    res: collection,
-                    description: 'Get Services'
-                };
-
-                userHistoryHandler.pushlog(log);
-
                 for (var i = responseCollection.length - 1; i >= 0; i --){
                     responseCollection[i].icon = responseCollection[i].icon ? '/icon/' + responseCollection[i].icon : null;
-                    responseCollection[i].serviceName = responseCollection[i].serviceName[language];
                 }
 
                 return res.status(200).send(responseCollection);
@@ -250,11 +266,11 @@ var UserService = function(db) {
 
                     serviceOptions = model.toJSON();
 
-                    if (serviceOptions.params.needUserAuth) {
+                    if (serviceOptions.needAuth) {
                         console.log('serviceOptions.params.needUserAuth= ',serviceOptions.params.needUserAuth)
 
                     }
-                    return callback(null, serviceOptions.params.needUserAuth);
+                    return callback(null, serviceOptions.needAuth);
                 })
             };
         }

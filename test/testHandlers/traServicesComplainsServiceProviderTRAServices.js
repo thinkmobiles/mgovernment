@@ -5,14 +5,14 @@ var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
-var url = 'http://localhost:80';
 
 var app = require('../../app');
 
-describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function () {
-    this.timeout(35000);
+describe('TRA Services Complain Service Provider, Complain TRA Services', function () {
+    this.timeout(30000);
 
     var agent = request.agent(app);
     var serviceCollection;
@@ -29,8 +29,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
-                preparingDb.createUsersByTemplate(USERS.COMPANY),
-                preparingDb.createServiceByTemplate(SERVICES.SERVICE_CAPALABA_RITEILS)
+                preparingDb.createUsersByTemplate(USERS.COMPANY)
             ],
             function (err, results) {
                 if (err) {
@@ -54,6 +53,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -62,7 +62,8 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 }
 
                 agent
-                    .post('/complainServiceProvider')
+                    .post('/crm/complainServiceProvider')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -87,6 +88,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -95,7 +97,8 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 }
 
                 agent
-                    .post('/complainServiceProvider')
+                    .post('/crm/complainServiceProvider')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(401)
                     .end(function (err, res) {
@@ -118,6 +121,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -126,7 +130,8 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 }
 
                 agent
-                    .post('/complainTRAService')
+                    .post('/crm/complainTRAService')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -150,6 +155,7 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -158,7 +164,8 @@ describe('TRA Services tests Complains ServiceProvider_TRAServices.js', function
                 }
 
                 agent
-                    .post('/complainTRAService')
+                    .post('/crm/complainTRAService')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(401)
                     .end(function (err, res) {

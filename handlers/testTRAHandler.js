@@ -11,159 +11,10 @@ var TestTRAHandler = function (db) {
     var ObjectId = mongoose.Types.ObjectId;
     var mailer = require('../helpers/mailer');
     var validation = require('../helpers/validation');
-    var session = new SessionHandler(db);
     var EmailReport = db.model(CONST.MODELS.EMAIL_REPORT);
     var Attachment = db.model(CONST.MODELS.ATTACHMENT);
-
-    //TODO remove
-    /* little script to get data about services from TRA site
-    findData();
-    findData('ar');
-
-    function findData(lang) {
-        var request = require('request');
-        var j = request.jar();
-        var request = request.defaults({jar:j});
-
-        if(!lang) {
-            lang = 'en';
-        }
-
-        request('http://www.tra.gov.ae/' + lang + '/?r=1', function (error, response, body) {
-            request('http://www.tra.gov.ae/services/individuals.html', function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-
-                    var reg = /<a href="(.+)" class="list-group-item">(.+)?<\/a>/g;
-
-                    var results = {};
-                    var count = 0;
-
-                    body.replace(reg, function (allreg, hrefGroup, nameGroup) {
-
-                        var servName = nameGroup.trim();
-                        results[servName] = {
-                            url: hrefGroup,
-                            name: servName
-                        };
-                        count++;
-                        return '';
-                    });
-
-                    for (var elemName in results) {
-                        (function () {
-                            var elem = results[elemName];
-                            var url = elem.url;
-                            var name = elem.name;
-
-                            request(url, function (error, response, bodyService) {
-                                if (!error && response.statusCode == 200) {
-
-                                    var regPanel = /<div class="panel-body"(.|\n)+?<h2 style=".+?">(.+)?<\/h2>((.|\n)*?)<\/div>/gm;
-
-                                    bodyService.replace(regPanel, function (allreg, some, nameGroup, infoGroup) {
-                                        results[name][nameGroup.trim()] = infoGroup.trim();
-                                        return '';
-                                    });
-                                }
-
-                                count--;
-                                if (count <= 0) {
-                                    console.dir(results);
-
-                                    var fs = require('fs');
-
-                                    var str = JSON.stringify(results, null, '\t\r\n');
-
-                                    fs.writeFile('servicesInfo_' + lang + '.txt', str, function (err) {
-                                        if (err) {
-                                            console.log('err on save: ' + err);
-                                        }
-                                        console.log('It\'s saved!');
-                                    });
-                                }
-                            });
-                        })();
-                    }
-
-                }
-            })
-        })
-    }
-*/
-
-    /*
-    //findNews();
-
-    function findNews(lang) {
-        var request = require('request');
-        var j = request.jar();
-        var request = request.defaults({jar: j});
-
-        if (!lang) {
-            lang = 'en';
-        }
-
-        request('http://www.tra.gov.ae/' + lang + '/?r=1', function (error, response, body) {
-            request('http://www.tra.gov.ae/press-releases.html', function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                    // ajax - http://www.tra.gov.ae/ajax/ajax_news_categories.php
-
-                    var reg = /<a href="(.+)" class="list-group-item serviceicon">(.+)?<\/a>/g;
-
-                    var results = {};
-                    var count = 0;
-
-                    body.replace(reg, function (allreg, hrefGroup, monthNameGroup) {
-
-                        var servName = monthNameGroup.trim();
-                        results[servName] = {
-                            url: hrefGroup,
-                            name: servName
-                        };
-                        count++;
-                        return '';
-                    });
-
-                    for (var elemName in results) {
-                        (function () {
-                            var elem = results[elemName];
-                            var url = elem.url;
-                            var name = elem.name;
-
-                            request(url, function (error, response, bodyService) {
-                                if (!error && response.statusCode == 200) {
-
-                                    var regPanel = /<div class="media"(.|\n)+?<h2 style=".+?">(.+)?<\/h2>((.|\n)*?)<\/div>/gm;
-
-                                    bodyService.replace(regPanel, function (allreg, some, nameGroup, infoGroup) {
-                                        results[name][nameGroup.trim()] = infoGroup.trim();
-                                        return '';
-                                    });
-                                }
-
-                                count--;
-                                if (count <= 0) {
-                                    console.dir(results);
-
-                                    var fs = require('fs');
-
-                                    var str = JSON.stringify(results, null, '\t\r\n');
-
-                                    fs.writeFile('servicesInfo_' + lang + '.txt', str, function (err) {
-                                        if (err) {
-                                            console.log('err on save: ' + err);
-                                        }
-                                        console.log('It\'s saved!');
-                                    });
-                                }
-                            });
-                        })();
-                    }
-                }
-            })
-        })
-    }
-*/
+    var PoorCoverage = db.model(CONST.MODELS.POOR_COVERAGE);
+    var HelpSalim = db.model(CONST.MODELS.HELP_SALIM);
 
     function emailReportAndAttachmentSave (res, emailReport, errMail) {
 
@@ -181,7 +32,6 @@ var TestTRAHandler = function (db) {
                         console.error('err on Mail: ', errMail);
                         return res.status(500).send({error: errMail});
                     }
-
                     return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
                 });
         };
@@ -215,6 +65,7 @@ var TestTRAHandler = function (db) {
         var phoneProvider = req.body.phoneProvider;
         var providerType = req.body.providerType;
         var description = req.body.description + ' / phoneProvider: ' + phoneProvider + ' / providerType: ' + providerType + ' /';
+
         var title = 'Block SMS Spam From ' + phoneSpam;
         var mailTo = TRA.EMAIL_COMPLAINSMSSPAM;
         var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
@@ -234,9 +85,9 @@ var TestTRAHandler = function (db) {
             title: title
         };
 
-        mailer.sendReport(mailOptions, function (errMail, data) {
 
-            //TODO remove console.logs
+
+        mailer.sendReport(mailOptions, function (errMail, data) {
 
             var emailReport = new EmailReport({
                 serviceType: serviceType,
@@ -268,7 +119,7 @@ var TestTRAHandler = function (db) {
             ? ('Location.latitude: ' + location.latitude + ', location.longitude: ' + location.longitude + ' Signal level: ' + signalLevel)
             :  "Address: " + address + ' Signal level: ' + signalLevel;
         var mailTo = TRA.EMAIL_COMPLAIN_POOR_COVERAGE;
-        var userId = null; //(req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
+        var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
         var templateName = 'public/templates/mail/poorCoverage.html';
         var from = 'TRA  <' + TRA.EMAIL_COMPLAIN_FROM + '>';
 
@@ -286,29 +137,48 @@ var TestTRAHandler = function (db) {
             }
         };
 
-        mailer.sendReport(mailOptions, function (errMail, data) {
+        var poorCoverage = new PoorCoverage({
+            address: address,
+            location: location,
+            signalLevel: signalLevel,
+            user: userId
+        });
 
-            //TODO remove console.logs
-
-            var emailReport = new EmailReport({
-                address: address,
-                location: location,
-                signalLevel: signalLevel,
-                title: title,
-                serviceType: serviceType,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
+        poorCoverage
+            .save(function(err,reportModel){
+                if (err){
+                    return next(err);
+                }
+                mailer.sendReport(mailOptions, function (errMail, data) {
+                    //TODO remove console.logs
+                    var emailReport = new EmailReport({
+                        address: address,
+                        location: location,
+                        signalLevel: signalLevel,
+                        title: title,
+                        serviceType: serviceType,
+                        mailTo: mailTo,
+                        user: userId,
+                        response: data || errMail
+                    });
+                    emailReportAndAttachmentSave(res, emailReport, errMail);
+                });
             });
 
-            emailReportAndAttachmentSave(res, emailReport, errMail);
-        });
     };
 
     this.sendHelpSalim = function (req, res, next) {
 
+        var errors = [];
+
+        validation.checkSimpleUrlField(errors, true, req.body.url, 'url');
+        if (errors.length) {
+            return res.status(400).send({error: errors});
+        }
+
         var serviceType = 'Help Salim';
-        var title = 'Complaint to site: ' + req.body.url;
+        var title = 'Complain to site: ' + req.body.url;
+        var url = req.body.url;
         var description = req.body.description;
         var mailTo = TRA.EMAIL_HELP_SALIM;
         var userId = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
@@ -328,21 +198,29 @@ var TestTRAHandler = function (db) {
             title: title
         };
 
-        mailer.sendReport(mailOptions, function (errMail, data) {
-
-            //TODO remove console.logs
-
-            var emailReport = new EmailReport({
-                serviceType: serviceType,
-                title: title,
-                description: description,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
-            });
-
-            emailReportAndAttachmentSave(res, emailReport, errMail);
+        var helpSalim = new HelpSalim({
+            url: url,
+            description: description,
+            user: userId
         });
+
+        helpSalim
+            .save(function(err, reportModel){
+                if (err) {
+                    return next(err);
+                }
+                mailer.sendReport(mailOptions, function (errMail, data) {
+                    var emailReport = new EmailReport({
+                        serviceType: serviceType,
+                        title: title,
+                        description: description,
+                        mailTo: mailTo,
+                        user: userId,
+                        response: data || errMail
+                    });
+                    emailReportAndAttachmentSave(res, emailReport, errMail);
+                });
+            });
     };
 };
 

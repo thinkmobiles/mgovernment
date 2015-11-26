@@ -5,12 +5,13 @@ var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
 
 var app = require('../../app');
 
-describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function () {
+describe('TRA Services Complains SMSSpam, HelpSalim, PoorCoverage', function () {
     this.timeout(35000);
 
     var agent = request.agent(app);
@@ -24,7 +25,6 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
                 preparingDb.dropCollection(CONST.MODELS.FEEDBACK + 's'),
-                preparingDb.dropCollection(CONST.MODELS.SERVICE + 's'),
                 preparingDb.dropCollection(CONST.MODELS.EMAIL_REPORT + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT),
@@ -39,31 +39,6 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
             });
     });
 
-    //it('Unauthorized GET serviceList', function (done) {
-    //    console.log('GET serviceList: ');
-    //    agent
-    //        .post('/user/signOut')
-    //        .send({})
-    //        .expect(200)
-    //        .end(function (err, res) {
-    //            if (err) {
-    //                return done(err)
-    //            }
-    //
-    //            agent
-    //                .get('/service/')
-    //                .expect(200)
-    //                .end(function (err, res) {
-    //                    if (err) {
-    //                        return done(err)
-    //                    }
-    //                    serviceCollection = res.body;
-    //                    console.log('serviceCollection :',res.body);
-    //                    done()
-    //                });
-    //        });
-    //});
-
     it('SEND data to ComplainSmsBlock', function (done) {
 
         var loginData = USERS.CLIENT;
@@ -76,6 +51,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         agent
             .post('/user/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -85,6 +61,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
                 agent
                     .post('/complainSmsBlock')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -108,6 +85,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         agent
             .post('/complainSmsBlock')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(data)
             .expect(400)
             .end(function (err, res) {
@@ -132,6 +110,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         agent
             .post('/user/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -141,6 +120,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
                 agent
                     .post('/complainSmsBlock')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -163,6 +143,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         agent
             .post('/user/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -172,6 +153,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
                 agent
                     .post('/sendHelpSalim')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -187,12 +169,13 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
     it('SEND data to Help Salim with BAD values', function (done) {
 
         var data = {
-            url: 'blabla.',
+            url: 'blabla',
             description: 1221212
         };
 
         agent
             .post('/sendHelpSalim')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(data)
             .expect(400)
             .end(function (err, res) {
@@ -214,6 +197,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         agent
             .post('/user/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -223,6 +207,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
                 agent
                     .post('/sendHelpSalim')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -248,6 +233,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         agent
             .post('/sendPoorCoverage')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(data)
             .expect(200)
             .end(function (err, res) {
@@ -271,6 +257,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         agent
             .post('/sendPoorCoverage')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(data)
             .expect(400)
             .end(function (err, res) {
@@ -293,6 +280,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
         agent
             .post('/user/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -302,6 +290,7 @@ describe('TRA Services tests Complains SMSSpam_HelpSalim_PoorCoverage', function
 
                 agent
                     .post('/sendPoorCoverage')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {

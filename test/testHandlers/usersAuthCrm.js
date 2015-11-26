@@ -6,12 +6,13 @@ var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
 
 var app = require('../../app');
 
-describe('User CRM register/ logIn / logOut', function () {
+describe('User CRM Register / LogIn / LogOut', function () {
     this.timeout(10000);
 
     var agent = request.agent(app);
@@ -33,7 +34,6 @@ describe('User CRM register/ logIn / logOut', function () {
     });
 
     it('Login with GOOD credentials', function (done) {
-        this.timeout(20000);
 
         var loginData = {
             login: USERS.CLIENT_CRM_LOGIN_TAREK.login,
@@ -42,6 +42,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -75,6 +76,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(400)
             .end(function (err, res) {
@@ -86,12 +88,13 @@ describe('User CRM register/ logIn / logOut', function () {
     });
 
     it('Register crm user', function (done) {
-        this.timeout(60000);
+        this.timeout(30000);
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -101,6 +104,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
                 agent
                     .post('/crm/register')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(registerData)
                     .expect(200)
                     .end(function (err, res) {
@@ -130,7 +134,7 @@ describe('User CRM register/ logIn / logOut', function () {
     });
 
     it('Register crm user with Same Email', function (done) {
-        this.timeout(60000);
+        this.timeout(30000);
 
         var registerData = {
             login: USERS.CLIENT_REGISTER_DATA.login + 'newLogin',
@@ -145,6 +149,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -154,6 +159,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
                 agent
                     .post('/crm/register')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(registerData)
                     .expect(400)
                     .end(function (err, res) {
@@ -176,6 +182,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -184,6 +191,7 @@ describe('User CRM register/ logIn / logOut', function () {
                 }
                 agent
                     .post('/crm/signIn')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(loginData)
                     .expect(200)
                     .end(function (err, res) {
@@ -210,12 +218,13 @@ describe('User CRM register/ logIn / logOut', function () {
     });
 
     it('Register same user', function (done) {
-        this.timeout(60000);
+        this.timeout(30000);
 
         var registerData = USERS.CLIENT_REGISTER_DATA;
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -225,6 +234,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
                 agent
                     .post('/crm/register')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(registerData)
                     .expect(400)
                     .end(function (err, res) {
@@ -237,7 +247,7 @@ describe('User CRM register/ logIn / logOut', function () {
     });
 
     it('Register user with BAD values', function (done) {
-        this.timeout(60000);
+        this.timeout(30000);
 
         var registerData = {
             login: 555,
@@ -251,6 +261,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
         agent
             .post('/crm/signOut')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send({})
             .expect(200)
             .end(function (err, res) {
@@ -260,6 +271,7 @@ describe('User CRM register/ logIn / logOut', function () {
 
                 agent
                     .post('/crm/register')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(registerData)
                     .expect(400)
                     .end(function (err, res) {
@@ -271,6 +283,5 @@ describe('User CRM register/ logIn / logOut', function () {
                     });
             });
     });
-
 
 });

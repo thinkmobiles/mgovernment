@@ -1,5 +1,6 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
+var HistoryHandler = require('./adminHistoryLog');
 
 var Feedback = function(db) {
     'use strict';
@@ -7,6 +8,7 @@ var Feedback = function(db) {
     var mongoose = require('mongoose');
     var ObjectId = mongoose.Types.ObjectId;
     var Feedback = db.model(CONST.MODELS.FEEDBACK);
+    var adminHistoryHandler = new HistoryHandler(db);
 
     this.createFeedback = function (req, res, next) {
         var body = req.body;
@@ -18,7 +20,7 @@ var Feedback = function(db) {
 
         var validation = require('../helpers/validation');
         var userRef = (req.session && req.session.uId) ? new ObjectId(req.session.uId) : null;
-        var serviceRef = new ObjectId(body.serviceId);
+        var serviceRef = (body.serviceId) ? new ObjectId(body.serviceId) : null;
         var rate = body.rate;
         var errors = [];
 
@@ -57,11 +59,22 @@ var Feedback = function(db) {
         var sortOrder = {};
         sortOrder[sortField] = sortDirection;
 
+        var findParams = {};
+        var search = req.query.search ? req.query.search : null;
+        if (search) {
+            findParams = {
+                $or: [
+                    {feedback: new RegExp(search, 'i')}
+                ]
+            };
+
+        }
+
         var skipCount = ((req.query.page - 1) * req.query.count) || 0;
         var limitCount = req.query.count || 20;
 
         Feedback
-            .find({})
+            .find(findParams)
             .sort(sortOrder)
             .skip(skipCount)
             .limit(limitCount)
@@ -73,6 +86,36 @@ var Feedback = function(db) {
                 }
 
                 return res.status(200).send(collection);
+            });
+    };
+
+    this.deleteFeedback = function (req, res, next) {
+
+        var searchQuery = {
+            '_id': req.params.id
+        };
+
+        if (!searchQuery._id) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        Feedback
+            .findByIdAndRemove(searchQuery)
+            .exec(function (err, model) {
+               if (err) {
+                   return next(err);
+               }
+
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.DELETE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: req.params.id,
+                    description: 'Delete Feedback'
+                };
+                adminHistoryHandler.pushlog(log);
+
+                return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
             });
     };
 

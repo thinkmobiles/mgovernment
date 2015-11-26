@@ -31,11 +31,35 @@ describe('User TDA Services', function () {
         });
     });
 
-    it('Request for supplier of telecom devices', function (done) {
+    it('Request for supplier of telecom devices (register dealer)', function (done) {
 
         var loginData = {
-            login: USERS.CLIENT_REGISTER_DATA.login,
-            pass: USERS.CLIENT_REGISTER_DATA.pass
+            username: USERS.CLIENT_TDA_DATA.username,
+            password: USERS.CLIENT_TDA_DATA.password,
+            userType: USERS.CLIENT_TDA_DATA.userType
+        };
+
+        agent
+            .post('/tda/register')
+            .send(loginData)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                console.dir(res.body);
+
+                done();
+            });
+    });
+
+    it('Renew for supplier of telecom devices (renew dealer certification)', function (done) {
+
+        var loginData = {
+            username: USERS.CLIENT_TDA_DATA.username,
+            password: USERS.CLIENT_TDA_DATA.password,
+            userType: USERS.CLIENT_TDA_DATA.userType
         };
 
         agent
@@ -48,47 +72,9 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .post('/tda/')
+                    .post('/tda/renewCert')
                     .send({
-                        title: 'test',
-                        message: 'some message',
-                        type: 1
-                    })
-                    .expect(200)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err)
-                        }
-
-                        console.dir(res.body);
-
-                        done();
-                    });
-            });
-    });
-
-    it('Renew for supplier of telecom devices', function (done) {
-
-        var loginData = {
-            login: USERS.CLIENT_REGISTER_DATA.login,
-            pass: USERS.CLIENT_REGISTER_DATA.pass
-        };
-
-        agent
-            .post('/crm/signIn')
-            .send(loginData)
-            .expect(200)
-            .end(function (err, res) {
-                if (err) {
-                    return done(err)
-                }
-
-                agent
-                    .post('/innovation')
-                    .send({
-                        title: 'test',
-                        message: 'some message',
-                        type: 66
+                        cert: '12123'
                     })
                     .expect(400)
                     .end(function (err, res) {
@@ -101,15 +87,16 @@ describe('User TDA Services', function () {
             });
     });
 
-    it('Update info of supplier of telecom devices', function (done) {
+    it('Update info of supplier of telecom devices (modify dealer profile)', function (done) {
 
         var loginData = {
-            login: USERS.CLIENT_REGISTER_DATA.login,
-            pass: USERS.CLIENT_REGISTER_DATA.pass
+            username: USERS.CLIENT_TDA_DATA.username,
+            password: USERS.CLIENT_TDA_DATA.password,
+            userType: USERS.CLIENT_TDA_DATA.userType
         };
 
         agent
-            .post('/crm/signIn')
+            .post('/tda/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -118,30 +105,32 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .get('/innovation')
+                    .put('/tda/profile')
+                    .send({
+
+                    })
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
                         console.dir(res.body);
-
-                        expect(res.body).to.be.instanceof(Array);
 
                         done();
                     });
             });
     });
 
-    it('Request for registeration of telecom devices', function (done) {
+    it('Request for registration of telecom devices (Equipment registration)', function (done) {
 
         var loginData = {
-            login: USERS.CLIENT_REGISTER_DATA.login,
-            pass: USERS.CLIENT_REGISTER_DATA.pass
+            username: USERS.CLIENT_TDA_DATA.username,
+            password: USERS.CLIENT_TDA_DATA.password,
+            userType: USERS.CLIENT_TDA_DATA.userType
         };
 
         agent
-            .post('/crm/signIn')
+            .post('/tda/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -150,29 +139,32 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .get('/innovation?offset=0&limit=5')
+                    .post('/tda/equipment')
+                    .send({
+
+                    })
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
                         console.dir(res.body);
-                        expect(res.body).to.be.instanceof(Array);
 
                         done();
                     });
             });
     });
 
-    it('Renew for registeration of telecom devices', function (done) {
+    it('Renew for registration of telecom devices (Renew Equipment registration)', function (done) {
 
         var loginData = {
-            login: USERS.CLIENT_REGISTER_DATA.login,
-            pass: USERS.CLIENT_REGISTER_DATA.pass
+            username: USERS.CLIENT_TDA_DATA.username,
+            password: USERS.CLIENT_TDA_DATA.password,
+            userType: USERS.CLIENT_TDA_DATA.userType
         };
 
         agent
-            .post('/crm/signIn')
+            .put('/tda/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -181,14 +173,16 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .get('/innovation?offset=0&limit=5')
+                    .put('/tda/equipment')
+                    .send({
+
+                    })
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
                         console.dir(res.body);
-                        expect(res.body).to.be.instanceof(Array);
 
                         done();
                     });
@@ -198,12 +192,13 @@ describe('User TDA Services', function () {
     it('Customs clearance', function (done) {
 
         var loginData = {
-            login: USERS.CLIENT_REGISTER_DATA.login,
-            pass: USERS.CLIENT_REGISTER_DATA.pass
+            username: USERS.CLIENT_TDA_DATA.username,
+            password: USERS.CLIENT_TDA_DATA.password,
+            userType: USERS.CLIENT_TDA_DATA.userType
         };
 
         agent
-            .post('/crm/signIn')
+            .post('/tda/signIn')
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -212,12 +207,13 @@ describe('User TDA Services', function () {
                 }
 
                 agent
-                    .get('/innovation?offset=0&limit=5')
+                    .get('/tda/customClearance')
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
                             return done(err)
                         }
+
                         console.dir(res.body);
                         expect(res.body).to.be.instanceof(Array);
 

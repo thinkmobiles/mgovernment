@@ -39,6 +39,7 @@ define([
                     e.preventDefault();
                     e.stopPropagation();
                     e.stopImmediatePropagation();
+                    $('body').removeClass('loginForm');
 
                     App.authorized = true;
                     Backbone.history.fragment = '';
@@ -54,6 +55,7 @@ define([
         },
 
         render: function () {
+            $('body').addClass('loginForm');
             this.$el.html(this.template());
             return this;
         }

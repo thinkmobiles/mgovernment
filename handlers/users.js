@@ -8,7 +8,6 @@ var User = function(db) {
 
     var mongoose = require('mongoose');
     var session = new SessionHandler(db);
-
     var lodash = require('lodash');
     var async = require('async');
     var User = db.model(CONST.MODELS.USER);

@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
 var SERVICES = require('./../testHelpers/servicesTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async = require ('async');
 var PreparingBd = require('./preparingDb');
 
@@ -37,6 +38,7 @@ describe('Get About Services Info', function () {
 
         agent
             .get('/service/about?name=Complain about Service Provider')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -54,6 +56,7 @@ describe('Get About Services Info', function () {
 
         agent
             .get('/service/about?name=Suggestion&lang=EN')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -71,6 +74,7 @@ describe('Get About Services Info', function () {
 
         agent
             .get('/service/about?name=Complain about Service Provider&lang=AR')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -88,6 +92,7 @@ describe('Get About Services Info', function () {
 
         agent
             .get('/service/serviceNames')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {
@@ -105,6 +110,7 @@ describe('Get About Services Info', function () {
 
         agent
             .get('/service/serviceNames?lang=AR')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .expect(200)
             .end(function (err, res) {
                 if (err) {

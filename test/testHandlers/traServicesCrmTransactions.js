@@ -4,12 +4,13 @@ var request = require('supertest');
 var expect = require('chai').expect;
 var CONST = require('../../constants/index');
 var USERS = require('./../testHelpers/usersTemplates');
+var USER_AGENT = require('./../testHelpers/userAgentTemplates');
 var async =  require('async');
 var PreparingDB = require('./preparingDB');
 
 var app = require('../../app');
 
-describe('TRA CRM Services tests SMSSpam', function () {
+describe('TRA CRM Services GET Transactions, Pagination, Search', function () {
     this.timeout(30000);
 
     var agent = request.agent(app);
@@ -40,6 +41,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -49,6 +51,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
                 agent
                     .get('/crm/transactions')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -69,6 +72,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -78,6 +82,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
                 agent
                     .get('/crm/transactions?page=2&count=5&orderAsc=1')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -98,6 +103,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -107,6 +113,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
                 agent
                     .get('/crm/transactions?page=1&count=5')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {
@@ -121,7 +128,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
             });
     });
 
-    /*it('SEND Suggestion AND Get Transactions', function (done) {
+    it('SEND Suggestion AND Get Transactions', function (done) {
 
         var loginData = USERS.CLIENT_CRM_LOGIN_DIGI;
         var data = {
@@ -131,6 +138,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -139,7 +147,8 @@ describe('TRA CRM Services tests SMSSpam', function () {
                 }
 
                 agent
-                    .post('/sendSuggestion')
+                    .post('/crm/sendSuggestion')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -150,6 +159,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
                         agent
                             .get('/crm/transactions')
+                            .set(USER_AGENT.ANDROID_DEVICE)
                             .expect(200)
                             .end(function (err, res) {
                                 if (err) {
@@ -161,7 +171,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
                             });
                     });
             });
-    });*/
+    });
 
     it('Get Transactions SEARCH=work Page 1 Count 5', function (done) {
 
@@ -169,6 +179,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
         agent
             .post('/crm/signIn')
+            .set(USER_AGENT.ANDROID_DEVICE)
             .send(loginData)
             .expect(200)
             .end(function (err, res) {
@@ -178,6 +189,7 @@ describe('TRA CRM Services tests SMSSpam', function () {
 
                 agent
                     .get('/crm/transactions?page=1&count=5&search=work')
+                    .set(USER_AGENT.ANDROID_DEVICE)
                     .expect(200)
                     .end(function (err, res) {
                         if (err) {

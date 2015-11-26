@@ -1,0 +1,64 @@
+.searchBlock {
+  position: relative;
+  input[type="text"] {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid @inputBorderColor;
+    border-radius: 0;
+    outline: none;
+    height: 42px;
+    width: 100%;
+
+    margin: 0 0 25px 0;
+    padding: 0 @gutter-width 0 @gutter-width / 2;
+    box-shadow: none;
+    .box-sizing(border-box);
+    transition: all .3s;
+
+    &::-webkit-input-placeholder {
+      color: lighten(@inputBorderColor, 20%);
+    }
+
+    &:-moz-placeholder { /* Firefox 18- */
+      color: lighten(@inputBorderColor, 20%);
+    }
+
+    &::-moz-placeholder {  /* Firefox 19+ */
+      color: lighten(@inputBorderColor, 20%);
+    }
+
+    &:-ms-input-placeholder {
+      color: lighten(@inputBorderColor, 20%);
+    }
+    &:focus {
+      + label {
+        .fontSize(16);
+        .translateY(-140%);
+      }
+    }
+  }
+  &:after {
+    position: absolute;
+    content: '';
+    width: 12px;
+    height: 14px;
+    display: block;
+    top: 50%;
+    right: @gutter-width / 2;
+    margin-top: -19px;
+    background: url('../img/ic_search.png') no-repeat center center;
+  }
+  label {
+    color: @inputBorderColor;
+    position: absolute;
+    top: 0.8rem;
+    left: @gutter-width / 2;
+    font-size: 1rem;
+    cursor: text;
+    .transition(.2s ease-out);
+  }
+  label.active {
+    .fontSize(16);
+    .translateY(-140%);
+  }
+}

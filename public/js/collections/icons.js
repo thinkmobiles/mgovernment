@@ -3,7 +3,7 @@ define([
 ], function(iconModel){
     var IconsCollection = Backbone.Collection.extend({
         model: iconModel,
-        url: '/icon/'
+        url: '/cms/icon/'
     });
     return IconsCollection;
 });

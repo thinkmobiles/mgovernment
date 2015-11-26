@@ -1,14 +1,14 @@
-<div style=" padding-bottom: 5px;margin-left: 5px; margin-right: 5px; vertical-align: top">
+<div class="content">
 
      <!--<div style="clear: both; margin: 1%">-->
     <!--</div>-->
 
-    <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
-        <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
-            <span style="font-size: 22px; "><b>List of Feedbacks</b></span></div>
-            </div>
+    <div class="headerPage">
+        <span>List of Feedbacks</span>
+    </div>
 
-    <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
+    <table class="tableView table">
+        <thead>
         <tr>
             <th class="oe_sortable" data-sort="serviceName">ServiceName<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
             <th class="oe_sortable" data-sort="serviceProvider" >ServiceProvider<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
@@ -17,7 +17,8 @@
             <th class="oe_sortable" data-sort="feedback" >feedback<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
             <th class="oe_sortable" data-sort="createdAt" >createdAt<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
         </tr>
-
+        </thead>
+        <tbody>
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
@@ -28,15 +29,15 @@
             <td><%= collection[i].feedback %></td>
             <td><%= collection[i].createdAt %></td>
         </tr>
-
         <% } %>
         <% } %>
+        </tbody>
 
         </table>
 
     <div style="clear:both; "></div>
 
-    <div id="paginationDiv" style="">
+    <div id="paginationDiv" class="paginationDiv">
     </div>
 
 </div>

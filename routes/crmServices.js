@@ -6,14 +6,12 @@
  */
 var express = require('express');
 var router = express.Router();
-var UserHandler = require('../handlers/users');
 var SessionHandler = require('../handlers/sessions');
 var TraCrmHandler = require('../handlers/traCrmHandler');
 
 module.exports = function(db) {
     'use strict';
 
-    var users = new UserHandler(db);
     var session = new SessionHandler(db);
     var traCrmHandler = new TraCrmHandler(db);
 
@@ -59,7 +57,7 @@ module.exports = function(db) {
      * @for crmServices
      * @memberOf crmServices
      */
-    router.post('/crm/register', traCrmHandler.registerClient);
+    router.post('/register', traCrmHandler.registerClient);
 
     /**
      * This __method__  for user sign in CRM
@@ -87,7 +85,7 @@ module.exports = function(db) {
      * @memberOf crmServices
      *
      */
-    router.post('/crm/signIn', traCrmHandler.signInClient);
+    router.post('/signIn', traCrmHandler.signInClient);
 
     /**
      * This __method__ for user sign out from CRM
@@ -106,7 +104,7 @@ module.exports = function(db) {
      * @for crmServices
      * @memberOf crmServices
      */
-    router.post('/crm/signOut', traCrmHandler.signOutClient);
+    router.post('/signOut', traCrmHandler.signOutClient);
 
     /**
      * This __method__  for user change profile CRM
@@ -144,17 +142,17 @@ module.exports = function(db) {
      * @memberOf crmServices
      *
      */
-    router.put('/crm/profile', session.isAuthenticatedUser, traCrmHandler.setProfile);
+    router.put('/profile', session.isAuthenticatedUser, traCrmHandler.setProfile);
 
-    router.get('/crm/profile', session.isAuthenticatedUser, traCrmHandler.getProfile);
+    router.get('/profile', session.isAuthenticatedUser, traCrmHandler.getProfile);
 
-    router.get('/crm/profileImage', session.isAuthenticatedUser, traCrmHandler.getProfileImage);
+    router.get('/profileImage', session.isAuthenticatedUser, traCrmHandler.getProfileImage);
 
-    router.put('/crm/changePass', session.isAuthenticatedUser, traCrmHandler.changePass);
+    router.put('/changePass', session.isAuthenticatedUser, traCrmHandler.changePass);
 
-    router.post('/crm/forgotPass', traCrmHandler.forgotPass);
+    router.post('/forgotPass', traCrmHandler.forgotPass);
 
-    router.get('/crm/transactions', session.isAuthenticatedUser, traCrmHandler.getTransactions);
+    router.get('/transactions', session.isAuthenticatedUser, traCrmHandler.getTransactions);
 
     /**
      * This __method__ create SMS Spam Report

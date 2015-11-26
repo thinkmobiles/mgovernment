@@ -1,36 +1,28 @@
-<div style=" padding-bottom: 5px;margin-left: 5px; margin-right: 5px; vertical-align: top">
+<div class="content">
 
-    <div style=" width: 100%; margin-top: 5px; margin-bottom: 5px">
-        <div style="width: 79%;margin-right: 7px; background-color: lightsteelblue;  float: left; text-align: center; opacity: 0.8;">
-            <span style="font-size: 22px; "><b>List of emailReports</b></span>
-        </div>
-        <div style="text-align: right">
-            <input id="searchTerm" style="border-color: #595959; width: 200px; height: 30px;"
-                   class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" type="text" placeholder="Search a Report">
+    <div class="row noMargin">
+        <div class="searchBlock extraSmall-3 column indentExtraSmall-9 noPadding">
+            <input id="searchTerm"
+                   class="form-control input-field ng-valid ng-dirty ng-valid-parse ng-touched" type="text" />
+            <label for="searchTerm" class="">Search</label>
         </div>
     </div>
-    <div class = "tableFilter"><b> Show: </b>
-        <b> <input type="checkbox" class="filterServiceType" id="filterHelpSalim"
-                   value="Help Salim"<%= filter.length ? ( filter.match(/Help Salim/) ? '' : 'checked') : 'checked' %>> Help Salim </b>
-        <!--(filter.match(/helpSalim/) ? '' : 'checked') : 'checked' %> >helpSalim </b>-->
-        <b> <input type="checkbox" class="filterServiceType" id="filterSMSSpam"
-                   value="SMS Spam" <%= filter.length ? ( filter.match(/SMS Spam/) ? '' : 'checked') : 'checked' %>> SMS Spam</b>
-        <b> <input type="checkbox" class="filterServiceType" id="filterSMSBlock"
-                   value="SMS Block" <%= filter.length ? ( filter.match(/SMS Block/) ? '' : 'checked') : 'checked' %>> SMS Block</b>
-        <b> <input type="checkbox" class="filterServiceType" id="filterServiceProvider"
-                   value="Service Provider"<%= filter.length ? ( filter.match(/Service Provider/) ? '' : 'checked') : 'checked' %>> Service Provider </b>
-        <b> <input type="checkbox" class="filterServiceType" id="filterTRAService"
-                   value="TRA Service" <%= filter.length ? ( filter.match(/TRA Service/) ? '' : 'checked') : 'checked' %>> TRA Service</b>
-        <b> <input type="checkbox" class="filterServiceType" id="filterEnquiries"
-                   value="Enquiries" <%= filter.length ? ( filter.match(/Enquiries/) ? '' : 'checked') : 'checked' %>> Enquiries</b>
-        <b> <input type="checkbox" class="filterServiceType" id="filterSuggestion"
-                   value="Suggestion"<%= filter.length ? ( filter.match(/Suggestion/) ? '' : 'checked') : 'checked' %>> Suggestion </b>
-        <b> <input type="checkbox" class="filterServiceType" id="filterPoorCoverage"
-                   value="Poor Coverage" <%= filter.length ? ( filter.match(/Poor Coverage/) ? '' : 'checked') : 'checked' %>> Poor Coverage</b>
+    <div class="headerPage">
+        <span>List of emailReports</span>
+    </div>
+    <div class="tableFilter"><b> Show: </b>
+        <b> <input type="checkbox" class="filterServiceType filledIn" id="filterHelpSalim"
+                   value="Help Salim"<%= filter.length ? ( filter.match(/Help Salim/) ? '' : 'checked') : 'checked' %>> <label for="filterHelpSalim">Help Salim</label> </b>
+        <b> <input type="checkbox" class="filterServiceType filledIn" id="filterSMSBlock"
+                   value="SMS Block" <%= filter.length ? ( filter.match(/SMS Block/) ? '' : 'checked') : 'checked' %>> <label for="filterSMSBlock">SMS Block</label></b>
+        <b> <input type="checkbox" class="filterServiceType filledIn" id="filterPoorCoverage"
+                   value="Poor Coverage" <%= filter.length ? ( filter.match(/Poor Coverage/) ? '' : 'checked') : 'checked' %>> <label for="filterPoorCoverage">Poor Coverage</label></b>
 
     </div>
+    <div class="tableResponsive">
 
-    <table class="tableView" style="border: 1px solid black; width: 100%; text-align: center">
+    <table class="tableView table">
+        <thead>
         <tr>
             <th class="oe_sortable" data-sort="serviceType">serviceType<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
             <th class="oe_sortable" data-sort="serviceProvider">serviceProvider<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
@@ -43,7 +35,8 @@
             <th class="oe_sortable" data-sort="response">response<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span>
 
         </tr>
-
+        </thead>
+        <tbody>
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
         <tr>
@@ -53,25 +46,26 @@
             <!--<td><%= collection[i].user %></td>-->
             <td><%= collection[i].title %></td>
             <td><%= collection[i].description %></td>
-            <td style="text-align: center"><% if (collection[i].attachment) {%>
+            <td><% if (collection[i].attachment) {%>
             <!--<a href="<%= collection[i].attachment %>" target="_blank"> <img src="<%= collection[i].attachment %>" style=" height: 40px"></a>-->
 
                 <a href="/image/<%= collection[i].attachment %>" target="_blank"> <img src="../../img/attachment.png" style=" height: 40px" alt = "attachment"></a>
                 <% } %>
             </td>
-            <td style=" word-break: break-all;"><%= collection[i].mailTo %></td>
-            <td style=" word-break: break-all;"><%= collection[i].createdAt %></td>
-            <td  style=" word-break: break-all;"><%= collection[i].response ?  ( collection[i].response.message ? collection[i].response.message : collection[i].response) : '' %></td>
+            <td><%= collection[i].mailTo %></td>
+            <td><%= collection[i].createdAt %></td>
+            <td ><%= collection[i].response ?  ( collection[i].response.message ? collection[i].response.message : collection[i].response) : '' %></td>
         </tr>
 
         <% } %>
         <% } %>
+        </tbody>
 
     </table>
-
+    </div>
     <div style="clear:both; "></div>
 
-    <div id="paginationDiv" style="">
+    <div id="paginationDiv" class="paginationDiv">
     </div>
 
 </div>

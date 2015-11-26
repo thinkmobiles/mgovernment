@@ -1,0 +1,74 @@
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+.table {
+  width: 100%;
+  max-width: 100%;
+  tr {
+    th, td {
+      padding: 8px;
+    }
+    th {
+      font-weight: 300;
+      font-family: @fontFamily-3;
+      .fontSize(18);
+      line-height: 24px;
+    }
+    td {
+      font-family: @fontFamily-1;
+      .fontSize(14);
+    }
+  }
+}
+.tableResponsive {
+  width: 100%;
+  min-height: 0.01%;
+  overflow-x: auto;
+}
+.tableView {
+  background: @tableViewBgColor;
+  tr {
+    border: none;
+    td, th {
+      border: none;
+      text-align: left;
+      &:first-child {
+        padding-left: 40px;
+      }
+      &:last-child {
+        padding-right: 20px;
+      }
+    }
+    th {
+      background: @tableViewThBgColor;
+      color: @tableViewThTextColor;
+    }
+    td {
+      color: @tableViewTextColor;
+    }
+  }
+}
+.tableFilter {
+  height: 48px;
+  line-height: 48px;
+  background: @tableFilterBgColor;
+  color: @tableFilterTextColor;
+  font-family: @fontFamily-3;
+  padding: 0 20px 0 40px;
+  .clearfix();
+  b {
+    margin-right: 5px;
+  }
+  &> div {
+    float: left;
+    position: relative;
+    &:first-child {
+      width: 7%;
+    }
+    &:last-child {
+      width: 93%;
+    }
+  }
+}

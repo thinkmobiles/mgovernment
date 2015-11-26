@@ -27,7 +27,7 @@ define([
                 collection   : this.servicesCollection,
                 countPerPage : options.countPerPage,
                 url          : 'services',
-                urlGetCount  : '/adminService/getCount',
+                urlGetCount  : this.servicesCollection.url + 'getCount',
                 padding      : 2,
                 page         : options.page,
                 ends         : true,
@@ -95,7 +95,7 @@ define([
         },
 
         showServicesInfo: function(e){
-            var id = $(e.target).attr('data-hash');
+            var id = $(e.currentTarget ).attr('data-hash');
             var selectedService = this.servicesCollection.toJSON()[id];
             var str = "";
             var property;
@@ -130,20 +130,23 @@ define([
                 service = servicesCollection[i];
                 serviceId = service._id;
                 serviceDiv = $("#DbList" + serviceId);
-                textContent = service.serviceProvider + ', ' + service.serviceName.EN;
+                textContent = '<td><img src ="/icon/' + service.icon + '/@3x" style="float:left;height: 70px; width: 70px"></td>' +
+                    '<td>' + service.profile.Name.EN + '</td>' +
+                    '<td>' + service.serviceProvider + '</td>';
+
 
                 if (!serviceDiv.length) {
-                    $("<div> </div>").
+                    $("<tr> </tr>").
                         attr("id", "DbList" + serviceId).
                         attr("class", "DbList").
                         attr("data-hash", "" + i).
-                        text(textContent).
+                        html(textContent).
                         appendTo("#databaseList");
                 } else {
                     $("#DbList" + serviceId).
                         attr("class", "DbList").
                         attr("data-hash", "" + i).
-                        text(textContent);
+                        html(textContent);
                 }
             }
         },

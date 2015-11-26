@@ -11,7 +11,7 @@ var PreparingDB = require('./preparingDB');
 var app = require('../../app');
 
 describe('CRUD  icons for services', function () {
-    this.timeout(55000);
+    this.timeout(30000);
 
     var agent = request.agent(app);
     var lastServiceIconId;
@@ -23,7 +23,7 @@ describe('CRUD  icons for services', function () {
 
         async.series([
                 preparingDb.dropCollection(CONST.MODELS.USER + 's'),
-                //preparingDb.dropCollection(CONST.MODELS.SERVICES_ICON + 's'),
+                preparingDb.dropCollection(CONST.MODELS.SERVICES_ICON + 's'),
                 preparingDb.toFillUsers(1),
                 preparingDb.createUsersByTemplate(USERS.CLIENT)
             ],
@@ -60,7 +60,7 @@ describe('CRUD  icons for services', function () {
                 }
 
                 agent
-                    .post('/icon')
+                    .post('/cms/icon')
                     .send(data)
                     .expect(200)
                     .end(function (err, res) {
@@ -68,6 +68,7 @@ describe('CRUD  icons for services', function () {
                         if (err) {
                             return done(err)
                         }
+
                         done();
                     });
             });
@@ -81,24 +82,25 @@ describe('CRUD  icons for services', function () {
         };
 
         agent
-            .post('/icon')
+            .post('/cms/icon')
             .send(data)
             .expect(500)
             .end(function (err, res) {
-                console.dir(res.body);
                 if (err) {
                     return done(err)
                 }
+                console.dir(res.body);
+
                 done();
             });
 
     });
 
-    it('Get all  "@3x" type servicesIcons', function (done) {
+    it('Get all "@3x" type servicesIcons', function (done) {
         var resp =[];
 
         agent
-            .get('/icon/?type=@3x')
+            .get('/cms/icon/?type=@3x')
             .expect(200)
             .end(function (err, res) {
                 resp = res.body;
@@ -108,20 +110,21 @@ describe('CRUD  icons for services', function () {
                     return done(err)
                 }
                 lastServiceIconId = resp[resp.length - 1]._id;
+
                 done();
             });
     });
 
     it('Get servicesIcon  by id', function (done) {
-            agent
-            .get('/icon/' + lastServiceIconId )
+        agent
+            .get('/cms/icon/' + lastServiceIconId)
             .expect(200)
             .end(function (err, res) {
-                console.dir( res.body);
-
                 if (err) {
                     return done(err)
                 }
+
+                console.dir(res.body);
                 done();
             });
     });
@@ -131,14 +134,13 @@ describe('CRUD  icons for services', function () {
             .get('/icon/' + lastServiceIconId + '/mdpi')
             .expect(200)
             .end(function (err, res) {
-                console.dir( res.body);
-
                 if (err) {
-                    return done(err)
+                    return done(err);
                 }
+                console.dir(res.body);
+
                 done();
             });
     });
-
 
 });

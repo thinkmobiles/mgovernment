@@ -1,0 +1,43 @@
+<div class="content">
+
+    <!--<div style="clear: both; margin: 1%">-->
+    <!--</div>-->
+
+    <div class="row noMargin">
+        <div class="searchBlock extraSmall-3 column indentExtraSmall-9 noPadding">
+            <input id="searchTerm"
+                   class="form-control input-field ng-valid ng-dirty ng-valid-parse ng-touched" type="text" />
+            <label for="searchTerm" class="">Search</label>
+        </div>
+    </div>
+    <div class="headerPage">
+        <span>List of Help Salim</span>
+    </div>
+    <table class="tableView table">
+        <tr>
+            <th class="oe_sortable" data-sort="url">Address<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+            <th class="oe_sortable" data-sort="description" >Description<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+            <th class="oe_sortable" data-sort="user" >User<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+            <th class="oe_sortable" data-sort="createdAt" >CreatedAt<span class="sortDN">&#x25bc</span><span class="sortUP">&#x25b2</span></th>
+        </tr>
+
+        <% if (collection.length) { %>
+        <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
+        <tr>
+            <td><%= collection[i].url %></td>
+            <td><%= collection[i].description %></td>
+            <td><%= collection[i].user ? collection[i].user.login : 'UnAuthorized' %></td>
+            <td><%= collection[i].createdAt %></td>
+        </tr>
+
+        <% } %>
+        <% } %>
+
+    </table>
+
+    <div style="clear:both; "></div>
+
+    <div id="paginationDiv" style="">
+    </div>
+
+</div>

@@ -48,10 +48,6 @@ module.exports = function(db) {
      */
     router.route('/')
         .post(userFeedback.createFeedback)
-        .get(session.isAdminBySession, userFeedback.getAllFeedback);
-
-    router.route('/getCount/')
-        .get(session.isAdminBySession, userFeedback.getCount);
 
     return router;
 };

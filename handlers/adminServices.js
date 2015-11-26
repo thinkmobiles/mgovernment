@@ -11,19 +11,24 @@ var Service = function(db) {
     var adminHistoryHandler = new HistoryHandler(db);
     var validation = require('../helpers/validation');
 
-    function checkRecivedParamsFieldNamesWithItemsNames(recivedArray,arrayTocompareName){
+    function checkReceivedParamsFieldNamesWithItemsNames(receivedArray, arrayToCompareName) {
         var foundEqualFieldName = false;
 
-        for (var i = recivedArray.length - 1; i >= 0; i--) {
-            for (var j = arrayTocompareName.length -1; j >= 0; j --) {
-                if (recivedArray[i] === arrayTocompareName[j].name){
-                    foundEqualFieldName = true;
+        for (var i = receivedArray.length - 1; i >= 0; i--) {
+            foundEqualFieldName = false;
+
+            for (var j = arrayToCompareName.length - 1; j >= 0; j--) {
+
+                for (var m = arrayToCompareName[j].inputItems.length - 1; m >= 0; m--) {
+
+                    if (receivedArray[i] === arrayToCompareName[j].inputItems[m].name) {
+                        foundEqualFieldName = true;
+                    }
                 }
             }
             if (!foundEqualFieldName) {
                 return false;
             }
-            foundEqualFieldName = false;
         }
         return true;
     }
@@ -40,24 +45,23 @@ var Service = function(db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        validation.checkUrlField(errors, true, body.baseUrl, 'Base Url');
+        validation.checkUrlField(errors, true, body.url, 'Url');
 
         if (errors.length) {
             return res.status(400).send({error: errors});
         }
 
+        if (body.params.body && !checkReceivedParamsFieldNamesWithItemsNames(body.params.body, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.query && !checkReceivedParamsFieldNamesWithItemsNames(body.params.query, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.uriSpecQuery && !checkReceivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
 
-        if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-        if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-        if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
-            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
-        }
-
-        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
+        body.url = body.url.charAt(body.url.length-1) === '/' ? body.url : body.url + '/';
         body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
@@ -90,23 +94,23 @@ var Service = function(db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        validation.checkUrlField(errors, true, body.baseUrl, 'Base Url');
+        validation.checkUrlField(errors, true, body.url, 'url');
 
         if (errors.length) {
             return res.status(400).send({error: errors});
         }
 
-        if (body.params.body && !checkRecivedParamsFieldNamesWithItemsNames(body.params.body, body.inputItems)) {
+        if (body.params.body && !checkReceivedParamsFieldNamesWithItemsNames(body.params.body, body.pages)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-        if (body.params.query && !checkRecivedParamsFieldNamesWithItemsNames(body.params.query, body.inputItems)) {
+        if (body.params.query && !checkReceivedParamsFieldNamesWithItemsNames(body.params.query, body.pages)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
-        if (body.params.uriSpecQuery && !checkRecivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.inputItems)) {
+        if (body.params.uriSpecQuery && !checkReceivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.pages)) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
         }
 
-        body.baseUrl = body.baseUrl.charAt(body.baseUrl.length-1) === '/' ? body.baseUrl : body.baseUrl + '/';
+        body.url = body.url.charAt(body.url.length-1) === '/' ? body.url : body.url + '/';
         body.url = body.url.replace(/^\/+|\/+$/g,'');
 
         body.updatedAt = new Date();
@@ -127,12 +131,13 @@ var Service = function(db) {
                     description: 'Create new Service'
                 };
                 adminHistoryHandler.pushlog(log);
-                res.status(200).send(model.toJSON());
+
+                res.status(201).send(model.toJSON());
             })
     };
 
     this.getServiceById = function (req, res, next) {
-        var id = req.params.id
+        var id = req.params.id;
 
         if (!id) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
@@ -244,6 +249,58 @@ var Service = function(db) {
                 return callback(null, model);
             });
     }
+
+    this.createServiceHub = function (req, res, next) {
+
+        var body = req.body;
+        var service;
+        var errors =[];
+
+        if (!body) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        /*validation.checkUrlField(errors, true, body.url, 'url');
+
+        if (errors.length) {
+            return res.status(400).send({error: errors});
+        }
+
+        if (body.params.body && !checkReceivedParamsFieldNamesWithItemsNames(body.params.body, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.query && !checkReceivedParamsFieldNamesWithItemsNames(body.params.query, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+        if (body.params.uriSpecQuery && !checkReceivedParamsFieldNamesWithItemsNames(body.params.uriSpecQuery, body.pages)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
+
+        body.url = body.url.charAt(body.url.length-1) === '/' ? body.url : body.url + '/';
+        body.url = body.url.replace(/^\/+|\/+$/g,'');*/
+
+        body.updatedAt = new Date();
+        service = new Service(body);
+
+        service
+            .save(function (err, model) {
+
+                if (err) {
+                    return next(err);
+                }
+
+                var log = {
+                    user: req.session.uId,
+                    action: CONST.ACTION.CREATE,
+                    model: CONST.MODELS.SERVICE,
+                    modelId: model._id,
+                    description: 'Create new Service Hub'
+                };
+                adminHistoryHandler.pushlog(log);
+
+                res.status(201).send(model.toJSON());
+            })
+    };
 };
 
 module.exports = Service;

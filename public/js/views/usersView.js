@@ -29,7 +29,7 @@ define([
                 collection   : this.usersCollection,
                 countPerPage : options.countPerPage,
                 url          : 'users',
-                urlGetCount  : '/user/getCount',
+                urlGetCount  : this.usersCollection.url + 'getCount',
                 padding      : 2,
                 page         : options.page,
                 ends         : true,

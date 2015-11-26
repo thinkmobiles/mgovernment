@@ -19,6 +19,7 @@ define([
            console.log('Main View Initialized');
             this.render();
         },
+        //TODO LogOut - перенесено на топ бар Вієв. переробити логіку
 
         SignOutAdmin: function(e) {
             var model = new adminSignOut();

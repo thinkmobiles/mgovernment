@@ -1,106 +1,113 @@
-<div style=" padding-bottom: 5px; margin-left: 5px">
+<div class="content">
 
-    <div style="clear: both; margin: 5px">
+    <div class="row noMargin">
+        <div class="btnGroup column extraSmall-8 noPadding">
+            <a href="#createIcon" id="createIcon" data-hash="create" class="btn btnCreate extraSmall-3">Create</a>
+            <a id="deleteIcon" data-hash="delete" class="btn btnDelete extraSmall-3">Delete</a>
+        </div>
+        <div class="extraSmall-3 column indentExtraSmall-1 noPadding searchBlock">
+            <input id="searchTerm" class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" type="text" />
+            <label for="searchTerm">Search</label>
+        </div>
+    </div>
+    <div class="row noMargin">
+        <div class="headerPage extraSmall-1">
+            <span>List of Icons</span>
+        </div>
+                <table class="table tableView" >
+                    <thead>
+                    <tr>
+                        <th>Icon</th>
+                        <th>Title</th>
+                    </tr>
+                    </thead>
+                    <tbody  id="databaseList">
+                    <!--<tr>-->
+                        <!--<td>icon</td>-->
+                        <!--<td>Smile</td>-->
+                    <!--</tr>-->
+                    </tbody>
+                </table>
+
+        </div>
     </div>
 
-    <div style=" width: 30%; min-height: 100px; float: left;  padding-bottom: 5px;">
-        <div style=" background-color: lightsteelblue;  float: none; text-align: center; opacity: 0.8;">
-            <span style="font-size: 22px; "><b>List of Icons</b></span>
-        </div>
-        <div id="databaseList" style=" width: auto; height: auto;   opacity: 0.8;">
-        </div>
-    </div>
 
-    <div style=" margin-left:0.5%; width:69%;  min-height: 30px; float: left;  padding-bottom: 5px">
-        <div style=" width: 100%;">
+    <div class="popupWindow">
 
-            <div style="width: 70%;background-color: lightsteelblue; text-align: center ; float: left">
-                <span id="properties" style="font-size: 22px; font-weight: bold">Icons properties</span>
-                <a href="#createIcon" id="createIcon" data-hash="create" class="actionButtonWhite"
-                   style="text-decoration: none">&nbspcreate&nbsp</a>
-                <a id="deleteIcon" data-hash="delete" class="actionButtonWhite" style="text-decoration: none">&nbspdelete&nbsp</a>
-            </div>
 
-            <div style="text-align: center; float: right; margin-top: 2px">
-                <input id="searchTerm" style="border-color: #595959; width: 200px; height: 30px;"
-                       class="form-control ng-valid ng-dirty ng-valid-parse ng-touched" type="text" placeholder="Search a Report">
-            </div>
-        </div>
-
-        <div id="propertyList"
-             style=" background-color: #FAF5F5;   font-size:11pt; word-break: break-all; display: none; clear: both">
-            <table style="width: 100%; height: 400px;">
-                <th style="width: 50%"></th>
-                <th style="width: 50%"></th>
-                <tr>
-                    <td colspan="2" style="vertical-align: middle; text-align: center; height:30px ">
-                        <b>Title: </b><input id="iconTitle" type="text" size="70" maxlength="70">
-                    </td>
-                </tr>
-                <tr>
-                    <td style=" height: 300px;background-image: url('../img/appleAluminum.png'); background-size: 100% 100%; ">
-                        <div class="iconDiv">
-                            <span>@3x: </span>
-                            <img id="i3x" style="width: 90px; height: 90px;" >
-                            <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="i3x">
-                        </div>
-                        <div class="iconDiv">
-                            <span>@2x: </span>
-                            <img id="i2x" style="width: 70px; height: 70px;">
-                            <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="i2x"></div>
-                    </td>
-                    <td style=" height: 300px;background-image: url('../img/android.png'); background-size: 100% 100%">
-                        <div class="iconDiv">
-                            <span>xxxhdpi: </span>
-                            <img id="ixxxhdpi" style="width: 90px; height: 90px;">
-                            <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixxxhdpi">
-                        </div>
-                        <div class="iconDiv">
-                            <span>xxhdpi: </span>
-                            <img id="ixxhdpi" style="width: 70px; height: 70px;">
-                            <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixxhdpi">
-                        </div>
-                        <div class="iconDiv">
-                            <span>xhdpix: </span>
-                            <img id="ixhdpi" style="width: 48px; height: 48px;">
-                            <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixhdpi">
-                        </div>
-                        <div class="iconDiv">
-                            <span>hdpi: </span>
-                            <img id="ihdpi" style="width: 36px; height: 36px;">
-                            <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ihdpi">
-                        </div>
-                        <div class="iconDiv">
-                            <span>mdpi: </span>
-                            <img id="imdpi" style="width: 22px; height: 22px;">
-                            <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="imdpi">
-                        </div>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center">
-                        <div style="border:1px solid black; width: 320px;  height: 25px; line-height:25px; margin:auto; border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:  rgba(0, 0, 0, 0.1)">
-                            <div id="save" onmouseover="this.style.cursor='pointer'">
-        <span style="font-family:Arial ;font-size:20px;font-weight:bold; color:#000000; text-shadow: 1px 1px white;">
-        Save icons in DB
-        </span>
+        <div id="propertyList" style="display: none;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2" class="alignCenter">
+                            <b>Title: </b><input id="iconTitle" type="text" size="70" maxlength="70">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="height: 300px; background-image: url('../img/appleAluminum.png'); background-size: 100% 100%; ">
+                            <div class="iconDiv">
+                                <span>@3x: </span>
+                                <img id="i3x" style="width: 90px; height: 90px;" >
+                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="i3x">
                             </div>
-                        </div>
-                    </td>
-                </tr>
+                            <div class="iconDiv">
+                                <span>@2x: </span>
+                                <img id="i2x" style="width: 70px; height: 70px;">
+                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="i2x"></div>
+                        </td>
+                        <td style=" height: 300px;background-image: url('../img/android.png'); background-size: 100% 100%">
+                            <div class="iconDiv">
+                                <span>xxxhdpi: </span>
+                                <img id="ixxxhdpi" style="width: 90px; height: 90px;">
+                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixxxhdpi">
+                            </div>
+                            <div class="iconDiv">
+                                <span>xxhdpi: </span>
+                                <img id="ixxhdpi" style="width: 70px; height: 70px;">
+                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixxhdpi">
+                            </div>
+                            <div class="iconDiv">
+                                <span>xhdpix: </span>
+                                <img id="ixhdpi" style="width: 48px; height: 48px;">
+                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ixhdpi">
+                            </div>
+                            <div class="iconDiv">
+                                <span>hdpi: </span>
+                                <img id="ihdpi" style="width: 36px; height: 36px;">
+                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="ihdpi">
+                            </div>
+                            <div class="iconDiv">
+                                <span>mdpi: </span>
+                                <img id="imdpi" style="width: 22px; height: 22px;">
+                                <input type="file" accept="image/png" style="display: inline;" class="inputIcon" data-hash="imdpi">
+                            </div>
+
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2" class="alignCenter">
+                            <div id="save" onmouseover="this.style.cursor='pointer'">
+                                <span>Save icons in DB</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
 
 
         </div>
 
-
-        <div style="clear:both; "></div>
     </div>
 
-    <div style="clear:both; "></div>
-
-    <div id="paginationDiv" style="">
-    </div>
+    <div id="paginationDiv" class="paginationDiv"></div>
 
 </div>
