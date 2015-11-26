@@ -373,6 +373,29 @@ th.oe_sortable_sub .arrow {
   .clearfix();
 }
 
+.iconsList {
+  padding: 0 5px 0 25px;
+  background: @iconsBorderColor-2;
+  .iconList {
+    text-align: center;
+    color: @iconsTextColor-1;
+    width: 10%;
+    float: left;
+    padding: 0 15px;
+  }
+  .iconPreview {
+    padding: 5px 0;
+    display: block;
+    background: rgba(255,255,255,.45);
+    cursor: pointer;
+  }
+  .iconImg {
+    display: block;
+    margin: auto;
+    width: 45px;
+    height: 45px;
+  }
+}
 .iconContainer {
   background: rgba(254,243,230,0.6);
   background: -moz-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
@@ -383,7 +406,6 @@ th.oe_sortable_sub .arrow {
   background: linear-gradient(to bottom, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3e6', endColorstr='#fef3e6', GradientType=0 );
 }
-
 .iconEdit {
   .iconInput {
     padding-bottom: 28px;
