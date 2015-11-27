@@ -3,6 +3,7 @@ module.exports = {
     EN: {
         'coverage': {
             'Name': 'Coverage',
+            'About the service': '.',
             'Service Package': '.',
             'Expected time': 'Immediate',
             'Officer in charge of this service': 'ICT Analyst',
@@ -95,6 +96,7 @@ module.exports = {
     AR:{
         'coverage': {
             'Name': 'التغطية',
+            'About the service': '.',
             'Service Package': '.',
             'Expected time': '????',
             'Officer in charge of this service': '??? ??? ?????????',

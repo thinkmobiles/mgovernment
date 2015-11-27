@@ -15,6 +15,7 @@ module.exports = function(db) {
     var poorCoverageRouter = require('./cmsPoorCoverage')(db);
     var helpSalimRouter = require('./cmsHelpSalim')(db);
     var usersRouter = require('./cmsUsers')(db);
+    var staticServiceInfoRouter = require('./cmsStaticServicesInfo')(db);
 
     router.use('/feedback', userFeedbackRouter);
     router.use('/adminService', adminServicesRouter);
@@ -27,6 +28,7 @@ module.exports = function(db) {
     router.use('/poorCoverage', poorCoverageRouter);
     router.use('/helpSalim', helpSalimRouter);
     router.use('/user', usersRouter);
+    router.use('/staticServicesInfo', staticServiceInfoRouter);
 
     return router;
 };

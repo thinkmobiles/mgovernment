@@ -5,6 +5,7 @@ var request = require('supertest');
 var USERS = require('./../testHelpers/usersTemplates');
 //var SERVICES = require('./../testHelpers/servicesTemplates');
 
+var STATIC_SERVICES_INFO = require('../../constants/traServicesInfo');
 
 PreparingDb = function (){
 
@@ -174,6 +175,9 @@ PreparingDb = function (){
                 callback();
             });
     }
+
+    this.fiil
+
 };
 
 module.exports = PreparingDb;
