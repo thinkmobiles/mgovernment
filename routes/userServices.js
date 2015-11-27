@@ -1,4 +1,5 @@
 /**
+/**
  * Provides ability for getting Services, information about services
  *
  * @class userServices

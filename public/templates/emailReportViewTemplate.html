@@ -39,7 +39,7 @@
         <tbody>
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
-        <tr>
+        <tr class = "trClicked" data-hash="<%= collection[i]._id %>">
             <td><%= collection[i].serviceType %></td>
             <td><%= collection[i].serviceProvider %></td>
             <td><%= collection[i].user ? collection[i].user.login : '' %></td>
