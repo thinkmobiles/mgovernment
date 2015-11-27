@@ -100,6 +100,9 @@ define([
             var str = "";
             var property;
 
+            $(e.currentTarget).parent().children().removeClass('DbListSelected');
+            $(e.currentTarget).addClass('DbListSelected');
+
             for(var k in selectedService) {
                 property = selectedService[k];
 
@@ -113,7 +116,6 @@ define([
 
             propertyList.text("").append(str);
             properties.text( selectedService.serviceName);
-
         },
 
         updateServiceList: function(){
