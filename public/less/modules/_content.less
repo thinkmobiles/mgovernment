@@ -1,5 +1,4 @@
 .treeNode {
-  /*margin-left: 18px;*/
   zoom: 1;
   background-image: url("../img/line.gif");
   background-position: top left;
@@ -334,7 +333,6 @@ th.oe_sortable_sub .arrow {
   padding: 15px 40px;
   .clearfix();
 }
-
 .iconsList {
   padding: 0 5px 0 25px;
   background: @iconsBorderColor-2;
@@ -467,6 +465,28 @@ th.oe_sortable_sub .arrow {
       display: inline;
       cursor: pointer;
       margin: auto;
+    }
+  }
+}
+.usersList {
+  background: rgba(254,243,230,0.6);
+  background: -moz-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(254,243,230,0.6)), color-stop(35%, rgba(254,243,230,0.8)), color-stop(100%, rgba(254,243,230,1)));
+  background: -webkit-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -o-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: -ms-linear-gradient(top, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  background: linear-gradient(to bottom, rgba(254,243,230,0.6) 0%, rgba(254,243,230,0.8) 35%, rgba(254,243,230,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fef3e6', endColorstr='#fef3e6', GradientType=0 );
+  .clearfix();
+
+  .DbList {
+    padding: 5px 5px 5px 25px;
+    color: @tableViewTextColor;
+    cursor: pointer;
+
+    &:hover, &:focus, &:active {
+      background: lighten(@tableViewBgColor, 10%);
+      font-weight: 700;
     }
   }
 }
