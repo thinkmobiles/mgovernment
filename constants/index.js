@@ -29,7 +29,8 @@ module.exports = {
         EMAIL_REPORT: 'emailReport',
         ANNOUNCEMENT: 'Announcement',
         POOR_COVERAGE: 'PoorCoverage',
-        HELP_SALIM: 'HelpSalim'
+        HELP_SALIM: 'HelpSalim',
+        STATIC_SERVICE_INFO: 'StaticServicesInfo'
     },
 
     ACTION: {

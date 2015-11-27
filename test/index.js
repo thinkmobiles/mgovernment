@@ -17,6 +17,7 @@ var app = require('../app');
 
 //require('./testHandlers/poorCoverage');
 //require('./testHandlers/helpSalim');
+require('./testHandlers/staticServicesInfo');
 
 //require('./testHandlers/userFeedback');
 require('./testHandlers/traNewsAnnouncements');
