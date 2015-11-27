@@ -17,7 +17,7 @@ module.exports = function(db) {
     var session = new SessionHandler(db);
 
     /**
-     * This __method__ get information about all announcements or searched current announcement
+     * This __method__ get information about all announcements or searched current announcement, also get
      *
      * __URI:__ ___`/announcement`___
      *
@@ -26,6 +26,7 @@ module.exports = function(db) {
      *  ## Request
      *     Query:  offset, limit, search
      *     Example: /announcement?offset=5&limit=10
+     *     Example: /announcement?offset=5&limit=10&lang=AR
      *     Example: /announcement?offset=0&limit=10&search=season
      *
      *  ## Response
