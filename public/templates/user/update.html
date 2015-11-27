@@ -1,100 +1,98 @@
-<div style="align-content: center; margin-top: 5px; padding-bottom: 5px">
+<div class="content">
+    <div class="row noMargin">
+        <div class="btnGroup column extraSmall-8 noPadding"></div>
+        <div class="extraSmall-3 column indentExtraSmall-1 noPadding"></div>
+    </div>
 
-    <form>
+    <form class="formView">
 
-        <table class="tableView" style="width: 100%">
-            <tr>
-                <th>List of properties</th>
-                <th>Input, set properties</th>
-                <th>Description of properties</th>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>login:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="login" size="20" maxlength="40"
-                                                   value="<%= user.login%>"></td>
-                <td class="hiddenByDefault"> Input login.</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>pasword:</b></td>
-                <td class="hiddenByDefault"><input type="password" name="name" id="pass" size="20" maxlength="40" value="">
-                </td>
-                <td class="hiddenByDefault"> Input password</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>gender:</b></td>
-                <td class="hiddenByDefault">
-                    <input type="radio" name="gender" id="gender" value="male" <%= (user.profile.gender == 'male') ? 'checked' : ''%>> male
-                    <input type="radio" name="gender" id="genderFemale" value="female" <%= (user.profile.gender == 'male') ? '' : 'checked'%>> female
-                </td>
-                <td class="hiddenByDefault"> Input gender</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>phone:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="phone" size="15" maxlength="20" value="<%=  user.profile ? user.profile.phone: '' %>" ></td>
-                <td class="hiddenByDefault"> Input phone</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>user has </b></td>
-                <td class="hiddenByDefault"> <b>Accounts on services:</b></td>
-                <td class="hiddenByDefault"></td>
-            </tr>
-
-            <% if (user.accounts.length){ %>
-
-            <% for (var i= 0, len = user.accounts.length - 1; i <= len; i ++){ %>
-            <tr><td class = "hiddenByDefault"><b>serviceProvider:</b></td>  <td class = "hiddenByDefault" style="color: #003eff"> <%= user.accounts[i].serviceProvider %></td><td class = "hiddenByDefault"> </td></tr>
-           <% } %>
-           <% } %>
-
-            <tr>
-                <td class="hiddenByDefault"><b>first name</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="firstName" size="20" maxlength="40"
-                                                   value="<%= user.profile ? user.profile.firstName || '' : ''%>"></td>
-                <td class="hiddenByDefault"> Input first name:</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>last name</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="lastName" size="20" maxlength="40"
-                                                   value="<%= user.profile ? user.profile.lastName || '' : ''%>"></td>
-                <td class="hiddenByDefault"> Input last name.</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>email</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="email" size="20" maxlength="40" value ="<%= user.profile ? user.profile.email || '' : ''%>"></td>
-                <td class="hiddenByDefault"> Input email.</td>
-            </tr>
-            <tr>
-                <td class="hiddenByDefault"><b>user type</b></td>
-                <td class="hiddenByDefault">
-                    <input type="radio" name="userType" id="client" value="client" <%= user.userType == 'client' ?
-                    'checked':''%>>client
-                    <input type="radio" name="userType" id="admin" value="admin" <%= user.userType == 'admin' ? 'checked':''
-                    %>> admin <br>
-                    <input type="radio" name="userType" id="company" value="company" <%= user.userType == 'company' ?
-                    'checked':'' %>>company
-                    <input type="radio" name="userType" id="government" value="government" <%= user.userType == 'government'
-                    ? 'checked':''%>> government <br>
-                </td>
-                <td class="hiddenByDefault">Choose user type, it check when service access</td>
-            </tr>
-
+        <table class="tableForm table">
+            <thead>
+                <tr>
+                    <th>List of properties</th>
+                    <th>Input, set properties</th>
+                    <th>Description of properties</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="hiddenByDefault">login:</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="login" size="20" maxlength="40" value="<%= user.login%>" /></td>
+                    <td class="hiddenByDefault">Input login.</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">pasword:</td>
+                    <td class="hiddenByDefault"><input type="password" name="name" id="pass" size="20" maxlength="40" value="" /></td>
+                    <td class="hiddenByDefault">Input password</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">gender:</td>
+                    <td class="hiddenByDefault">
+                        <input type="radio" name="gender" id="gender" value="male" <%= (user.profile.gender == 'male') ? 'checked' : ''%> />
+                        <label for="gender">male</label>
+                        <input type="radio" name="gender" id="genderFemale" value="female" <%= (user.profile.gender == 'male') ? '' : 'checked'%> />
+                        <label for="genderFemale">femail</label>
+                    </td>
+                    <td class="hiddenByDefault">Input gender</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">phone:</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="phone" size="15" maxlength="20" value="<%=  user.profile ? user.profile.phone: '' %>" /></td>
+                    <td class="hiddenByDefault">Input phone</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">user has</td>
+                    <td class="hiddenByDefault">Accounts on services:</td>
+                    <td class="hiddenByDefault"></td>
+                </tr>
+                <% if (user.accounts.length){ %>
+                <% for (var i= 0, len = user.accounts.length - 1; i <= len; i ++){ %>
+                    <tr>
+                        <td class="hiddenByDefault">serviceProvider:</td>
+                        <td class="hiddenByDefault" style="color: #003eff"> <%= user.accounts[i].serviceProvider %></td>
+                        <td class="hiddenByDefault"></td>
+                    </tr>
+                <% } %>
+                <% } %>
+                <tr>
+                    <td class="hiddenByDefault">first name</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="firstName" size="20" maxlength="40" value="<%= user.profile ? user.profile.firstName || '' : ''%>" /></td>
+                    <td class="hiddenByDefault">Input first name:</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">last name</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="lastName" size="20" maxlength="40" value="<%= user.profile ? user.profile.lastName || '' : ''%>" /></td>
+                    <td class="hiddenByDefault">Input last name.</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">email</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="email" size="20" maxlength="40" value ="<%= user.profile ? user.profile.email || '' : ''%>"></td>
+                    <td class="hiddenByDefault">Input email.</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">user type</td>
+                    <td class="hiddenByDefault">
+                        <input type="radio" name="userType" id="client" value="client" <%= user.userType == 'client' ? 'checked':''%>>
+                        <label for="client">client</label>
+                        <input type="radio" name="userType" id="admin" value="admin" <%= user.userType == 'admin' ? 'checked':''%>>
+                        <label for="admin">admin</label>
+                        <input type="radio" name="userType" id="company" value="company" <%= user.userType == 'company' ? 'checked':'' %>>
+                        <label for="company">company</label>
+                        <input type="radio" name="userType" id="government" value="government" <%= user.userType == 'government' ? 'checked':''%>>
+                        <label for="government">government</label>
+                    </td>
+                    <td class="hiddenByDefault">Choose user type, it check when service access</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="alignCenter">
+                        <div id="updateBtn" class="btn btnDefault" onmouseover="this.style.cursor='pointer'">
+                            <span>Save updated User</span>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
         </table>
-
-        <div style=" text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;
-    border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8">
-            <div id="updateBtn" onmouseover="this.style.cursor='pointer'">
-        <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
-        Save updated User
-        </span>
-            </div>
-        </div>
-
     </form>
 </div>

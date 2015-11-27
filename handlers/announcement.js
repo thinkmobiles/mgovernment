@@ -1,15 +1,23 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var SCHEDULE_JOB;
-var RSS_FEED_URL = 'http://www.forbes.com/technology/index.xml';
+
+//var RSS_FEED_URL = 'http://www.forbes.com/technology/index.xml';
+var RSS_FEED_URL_EN = 'https://www.tra.gov.ae/handlers/public/tra/rss.aspx?lang=1';
+var RSS_FEED_URL_AR = 'https://www.tra.gov.ae/handlers/public/tra/rss.aspx?lang=2';
 var MAX_NEWS_COUNT = 200;
 
-var REGULAR_EXPRESSION_ITEM = '<item>\n+([^]+?)<\/item>';
+var REGULAR_EXPRESSION_ITEM = '<item>\n*([^]+?)<\/item>';
 var REGULAR_EXPRESSION_LINK = '<link>([^]+?)<\/link>';
 var REGULAR_EXPRESSION_TITLE = '<title>([^]+?)<\/title>';
 var REGULAR_EXPRESSION_DESCRIPTION = '<description>([^]+?)<\/description>';
 var REGULAR_EXPRESSION_PUB_DATE = '<pubDate>([^]+?)<\/pubDate>';
 var REGULAR_EXPRESSION_MEDIA_CONTENT = '<media:content url="([^]+?)"';
+
+var LANG = {
+    EN: 'EN',
+    AR: 'AR'
+};
 
 var AnnouncementHandler = function(db) {
     'use strict';
@@ -41,14 +49,36 @@ var AnnouncementHandler = function(db) {
     }
 
     function UpdateNews() {
-        request(RSS_FEED_URL, {json: true}, function (err, res, body) {
+        request(RSS_FEED_URL_EN, {json: true}, function (err, res, body) {
 
             if (err) {
                 console.log('Get News error: ' + err);
                 return;
             }
 
-            var newsItems = parserXml(body);
+            var newsItems = parserXml(body, LANG.EN);
+
+            for (var i = 0; i < newsItems.length; i++) {
+                findOrCreateAnnouncement(newsItems[i], function (err) {
+                    if (err) {
+                        if (!isDuplicateIndexError(err)) {
+                            console.log('Error on create announcement: ' + err);
+                        }
+                    }
+                });
+            }
+
+            removeOldNews();
+        });
+
+        request(RSS_FEED_URL_AR, {json: true}, function (err, res, body) {
+
+            if (err) {
+                console.log('Get News error: ' + err);
+                return;
+            }
+
+            var newsItems = parserXml(body, LANG.AR);
 
             for (var i = 0; i < newsItems.length; i++) {
                 findOrCreateAnnouncement(newsItems[i], function (err) {
@@ -64,7 +94,7 @@ var AnnouncementHandler = function(db) {
         });
     }
 
-    function parserXml(xmlBody) {
+    function parserXml(xmlBody, lang) {
 
         var regexp = new RegExp(REGULAR_EXPRESSION_ITEM,'gm');
         var regexpLink = new RegExp(REGULAR_EXPRESSION_LINK,'m');
@@ -81,12 +111,25 @@ var AnnouncementHandler = function(db) {
             parsedXmlObject.push({
                 link: regexpLink.exec(parsedXml)[1],
                 title: regexpTitle.exec(parsedXml)[1],
-                description: regexpDescription.exec(parsedXml)[1],
+                description: trimHtmlTags(regexpDescription.exec(parsedXml)[1]),
                 pubDate: new Date(Date.parse(regexpPubDate.exec(parsedXml)[1])),
-                image: (regexpMediaContent.exec(parsedXml)) ? regexpMediaContent.exec(parsedXml)[1] : null
+                image: (regexpMediaContent.exec(parsedXml)) ? regexpMediaContent.exec(parsedXml)[1] : null,
+                lang: lang
             });
         }
         return parsedXmlObject;
+    }
+
+    function trimHtmlTags(text) {
+
+        text = text.replace('&lt;![CDATA[', '');
+        text = text.replace(']]&gt;', '');
+
+        text = text.replace(/&lt;/gm, '<');
+        text = text.replace(/&gt;/gm, '>');
+        text = text.replace(/<([^>]+?)>/gm, '');
+
+        return text;
     }
 
     function isDuplicateIndexError(err) {
@@ -162,10 +205,12 @@ var AnnouncementHandler = function(db) {
 
         var skipCount = req.query.offset || 0;
         var limitCount = req.query.limit || 20;
+        var lang = req.query.lang ? req.query.lang : LANG.EN;
 
         var findParams = {};
 
         var search = req.query.search ? req.query.search : null;
+
         if (search) {
             findParams = {
                 $or: [
@@ -173,6 +218,10 @@ var AnnouncementHandler = function(db) {
                     {description: new RegExp(search, 'i')}
                 ]
             };
+        } else {
+            findParams = {
+                lang: lang
+            }
         }
 
         Announcement

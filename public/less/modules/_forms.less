@@ -22,7 +22,7 @@ textarea {
   margin: 0 0 15px 0;
   padding: 0;
   box-shadow: none;
-  .box-sizing(content-box);
+  .box-sizing(border-box);
   transition: all .3s;
 
   &:disabled, &[readonly="readonly"] {
@@ -230,5 +230,19 @@ form p:last-child {
     color: @input-text-color;
     background: @radioFillColor;
     .fontSize(14);
+  }
+}
+.tableForm {
+  input[type='text'],
+  input[type='password'],
+  input[type='email'] {
+    background: @iconsBorderColor-1;
+    color: @iconsTextColor;
+    width: 100%;
+    padding: 0 20px;
+    height: 42px;
+    line-height: 42px;
+    margin-bottom: 0;
+    border: none;
   }
 }
