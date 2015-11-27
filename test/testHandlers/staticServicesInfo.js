@@ -17,6 +17,7 @@ describe('Static Services Info test', function () {
 
     var agent = request.agent(app);
     var serviceId;
+    var serviceName;
 
     before(function (done) {
         this.timeout(40000);
@@ -196,6 +197,49 @@ describe('Static Services Info test', function () {
                                 });
                         });
                     });
+            });
+    });
+
+    it('Unauthorized get service names', function (done) {
+
+        agent
+            .get('/service/serviceNames/')
+            .set(USER_AGENT.ANDROID_DEVICE)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                expect(res.body).to.instanceof(Array);
+                expect(res.body).not.empty;
+
+                serviceName = res.body[0];
+
+                console.log(res.body);
+                done()
+            });
+    });
+
+    it('Unauthorized get service about by serviceName', function (done) {
+
+        agent
+            .get('/service/about/?name=' + serviceName)
+            .set(USER_AGENT.ANDROID_DEVICE)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                expect(res.body).to.instanceof(Object);
+                expect(res.body).not.to.empty;
+                expect(res.body).to.have.deep.property('Name');
+                expect(res.body).to.have.deep.property('About the service');
+                expect(res.body).to.have.deep.property('Service Package');
+
+                console.log(res.body);
+                done()
             });
     });
 
