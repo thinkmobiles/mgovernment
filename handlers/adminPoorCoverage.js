@@ -92,7 +92,8 @@ var PoorCoverage = function (db) {
                         address: collection[i].address ? collection[i].address : '',
                         latitude: collection[i].location.latitude ? collection[i].location.latitude : '',
                         longitude: collection[i].location.latitude ? collection[i].location.latitude : '',
-                        user: (collection[i].user && collection[i].user.login) ? collection[i].user.login : '',
+                        signalLevel: collection[i].signalLevel ? collection[i].signalLevel : '',
+                        user: (collection[i].user && collection[i].user.login) ? collection[i].user.login : 'UnAuthorized',
                         firstName: (collection[i].user && collection[i].user.firstName) ? collection[i].user.firstName : '',
                         lastName: (collection[i].user && collection[i].user.lastName) ? collection[i].user.lastName : '',
                         createdAt: collection[i].createdAt ? (moment(collection[i].createdAt).format('l HH:mm')).toString() : ''
@@ -121,8 +122,9 @@ var PoorCoverage = function (db) {
                 var fileName = 'poorCoverage' + moment().format('MMM Do YYYY') + (searchTerm ? searchTerm : '');
                 var regFileName = fileName.replace(/\s+/g, '');
 
-                exportCSV.tempCSVGenerator(res, exportData, regFileName);
+                //return res.send(exportData);
 
+                exportCSV.tempCSVGenerator(res, exportData, regFileName);
             });
     };
 
