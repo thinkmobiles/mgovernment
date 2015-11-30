@@ -86,20 +86,24 @@ var TestTRAHandler = function (db) {
         };
 
 
+        if (process.env.SEND_MAIL_REPORTS) {
+            mailer.sendReport(mailOptions, function (errMail, data) {
 
-        mailer.sendReport(mailOptions, function (errMail, data) {
+                var emailReport = new EmailReport({
+                    serviceType: serviceType,
+                    title: title,
+                    description: description,
+                    mailTo: mailTo,
+                    user: userId,
+                    response: data || errMail
+                });
 
-            var emailReport = new EmailReport({
-                serviceType: serviceType,
-                title: title,
-                description: description,
-                mailTo: mailTo,
-                user: userId,
-                response: data || errMail
+                emailReportAndAttachmentSave(res, emailReport, errMail);
             });
+        } else {
 
-            emailReportAndAttachmentSave(res, emailReport, errMail);
-        });
+            return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+        }
     };
 
     this.sendPoorCoverage = function (req, res, next) {
@@ -149,20 +153,26 @@ var TestTRAHandler = function (db) {
                 if (err){
                     return next(err);
                 }
-                mailer.sendReport(mailOptions, function (errMail, data) {
-                    //TODO remove console.logs
-                    var emailReport = new EmailReport({
-                        address: address,
-                        location: location,
-                        signalLevel: signalLevel,
-                        title: title,
-                        serviceType: serviceType,
-                        mailTo: mailTo,
-                        user: userId,
-                        response: data || errMail
+
+                if (process.env.SEND_MAIL_REPORTS) {
+                    mailer.sendReport(mailOptions, function (errMail, data) {
+                        //TODO remove console.logs
+                        var emailReport = new EmailReport({
+                            address: address,
+                            location: location,
+                            signalLevel: signalLevel,
+                            title: title,
+                            serviceType: serviceType,
+                            mailTo: mailTo,
+                            user: userId,
+                            response: data || errMail
+                        });
+                        emailReportAndAttachmentSave(res, emailReport, errMail);
                     });
-                    emailReportAndAttachmentSave(res, emailReport, errMail);
-                });
+                } else {
+
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+                }
             });
 
     };
@@ -209,17 +219,22 @@ var TestTRAHandler = function (db) {
                 if (err) {
                     return next(err);
                 }
-                mailer.sendReport(mailOptions, function (errMail, data) {
-                    var emailReport = new EmailReport({
-                        serviceType: serviceType,
-                        title: title,
-                        description: description,
-                        mailTo: mailTo,
-                        user: userId,
-                        response: data || errMail
+                if(process.env.SEND_MAIL_REPORTS) {
+                    mailer.sendReport(mailOptions, function (errMail, data) {
+                        var emailReport = new EmailReport({
+                            serviceType: serviceType,
+                            title: title,
+                            description: description,
+                            mailTo: mailTo,
+                            user: userId,
+                            response: data || errMail
+                        });
+                        emailReportAndAttachmentSave(res, emailReport, errMail);
                     });
-                    emailReportAndAttachmentSave(res, emailReport, errMail);
-                });
+                } else {
+
+                    return res.status(200).send({success: RESPONSE.ON_ACTION.SUCCESS});
+                }
             });
     };
 };
