@@ -5,7 +5,7 @@ var SCHEDULE_JOB;
 //var RSS_FEED_URL = 'http://www.forbes.com/technology/index.xml';
 var RSS_FEED_URL_EN = 'https://www.tra.gov.ae/handlers/public/tra/rss.aspx?lang=1';
 var RSS_FEED_URL_AR = 'https://www.tra.gov.ae/handlers/public/tra/rss.aspx?lang=2';
-var MAX_NEWS_COUNT = 20;
+var MAX_NEWS_COUNT = 400;
 
 var REGEXP_ITEM = new RegExp('<item>\n*([^]+?)<\/item>','gm');
 var REGEXP_LINK = new RegExp('<link>([^]+?)<\/link>','m');
