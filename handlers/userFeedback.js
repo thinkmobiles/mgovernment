@@ -1,14 +1,17 @@
 var CONST = require('../constants');
 var RESPONSE = require('../constants/response');
 var HistoryHandler = require('./adminHistoryLog');
+var ExportCSV = require('../helpers/exportCSV');
 
 var Feedback = function(db) {
     'use strict';
 
     var mongoose = require('mongoose');
+    var moment = require('moment');
     var ObjectId = mongoose.Types.ObjectId;
     var Feedback = db.model(CONST.MODELS.FEEDBACK);
     var adminHistoryHandler = new HistoryHandler(db);
+    var exportCSV = new ExportCSV();
 
     this.createFeedback = function (req, res, next) {
         var body = req.body;
@@ -129,6 +132,77 @@ var Feedback = function(db) {
                 return res.status(200).send({count: count});
             });
     };
+
+    this.generateCsvData = function (req, res, next) {
+
+        var sortField = req.query.orderBy || 'createdAt';
+        var sortDirection = +req.query.order || 1;
+        var skipCount = ((req.query.page - 1) * req.query.count) || 0;
+        var limitCount = req.query.count || 20;
+        var sortOrder = {};
+        var searchQuery = {};
+        var searchTerm = req.query.searchTerm;
+
+        sortOrder[sortField] = sortDirection;
+
+        if (searchTerm) {
+            searchQuery = {
+                $and:[{ $or: [ { 'url':  { $regex: searchTerm, $options: 'i' }}, { 'description':  { $regex: searchTerm, $options: 'i' }}]}]
+            };
+        }
+
+        Feedback
+            .find(searchQuery)
+            .sort(sortOrder)
+            .skip(skipCount)
+            .limit(limitCount)
+            .populate({path: 'user', select: 'login profile.firstName profile.lastName'})
+            .exec(function (err, collection) {
+                if (err) {
+                    return next(err);
+                }
+
+                var exportData = [];
+                for (var i in collection) {
+                    exportData.push({
+                        serviceName: collection[i].serviceName ? collection[i].serviceName : '',
+                        serviceProvider: collection[i].serviceProvider ? collection[i].serviceProvider : '',
+                        user: (collection[i].user && collection[i].user.login) ? collection[i].user.login : 'UnAuthorized',
+                        firstName: (collection[i].user && collection[i].user.firstName) ? collection[i].user.firstName : '',
+                        lastName: (collection[i].user && collection[i].user.lastName) ? collection[i].user.lastName : '',
+                        rate: collection[i].rate ? collection[i].rate : '',
+                        feedback: collection[i].feedback ? collection[i].feedback : '',
+                        createdAt: collection[i].createdAt ? (moment(collection[i].createdAt).format('l HH:mm')).toString() : ''
+                    });
+                }
+
+                /*var cvsParams = {
+                 columns: 'address latitude longitude user firstName lastName createdAt',
+                 rows: exportData
+                 };
+
+                 var fileName = 'test3';
+
+                 exportCSV.generateCsvData(cvsParams, function(err, csvData){
+                 if (err) {
+                 next(err);
+                 } else {
+                 exportCSV.sendCsvFile(res, fileName, csvData, function(err) {
+                 if (err) {
+                 next(err);
+                 }
+                 });
+                 }
+                 });*/
+
+                var fileName = 'feedback' + moment().format('MMM Do YYYY') + (searchTerm ? searchTerm : '');
+                var regFileName = fileName.replace(/\s+/g, '');
+
+                exportCSV.tempCSVGenerator(res, exportData, regFileName);
+
+            });
+    };
+
 };
 
 module.exports = Feedback;

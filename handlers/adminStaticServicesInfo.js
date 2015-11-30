@@ -143,6 +143,17 @@ var StaticServicesInfo = function(db) {
             })
     };
 
+    this.getCount = function(req, res, next){
+
+        StaticServicesInfo
+            .count(function (err, count) {
+                if (err) {
+                    return next(err);
+                }
+                res.status(200).send({count: count});
+            })
+    };
+
 };
 
 module.exports = StaticServicesInfo;

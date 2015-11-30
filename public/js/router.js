@@ -14,7 +14,9 @@ define([
     'views/adminHistoryLogView',
     'views/userHistoryLogView',
     'views/poorCoverageView',
-    'views/helpSalimView'
+    'views/helpSalimView',
+    'views/servicesInfoView',
+    'views/serviceInfo/updateView'
 
 ], function (Backbone,
              MainView,
@@ -31,7 +33,9 @@ define([
              AdminHistoryLogView,
              UserHistoryLogView,
              PoorCoverageView,
-             HelpSalimView
+             HelpSalimView,
+             ServicesInfoView,
+             ServiceInfoUpdateView
 ) {
 
     var Router = Backbone.Router.extend({
@@ -55,7 +59,9 @@ define([
             "createUser": "toCreateUserView",
             "updateUser": "toUpdateUserView",
             "poorCoverage(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)(/s=:searchTerm)": "toPoorCoverageView",
-            "helpSalim(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)(/s=:searchTerm)" : "toHelpSalimView"
+            "helpSalim(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)(/s=:searchTerm)" : "toHelpSalimView",
+            "servicesInfo" : "toServicesInfoView",
+            "updateServiceInfo"  : "toUpdateServiceInfoView"
         },
 
         initialize: function () {
@@ -320,6 +326,30 @@ define([
                 order: order,
                 searchTerm: searchTerm
             });
+        },
+
+        toServicesInfoView: function () {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+
+            this.contentView = new ServicesInfoView();
+        },
+
+        toUpdateServiceInfoView: function() {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
+
+            if(this.contentView){
+                this.contentView.undelegateEvents();
+            }
+
+            this.contentView = new ServiceInfoUpdateView();
         }
 
     });

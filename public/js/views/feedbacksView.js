@@ -1,16 +1,18 @@
 define([
     'text!templates/feedbacksViewTemplate.html',
     'collections/feedbacks',
+    'models/csv',
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
-], function (content, FeedbacksCollection, paginationTemplate, PaginationView) {
+], function (content, FeedbacksCollection, CsvModel, paginationTemplate, PaginationView) {
     'use strict';
 
     var feedbacksView = Backbone.View.extend({
 
         el: '#dataBlock',
         events: {
-            "click .oe_sortable": "goSort"
+            "click .oe_sortable": "goSort",
+            'click #exportCsv': 'toExportCsv'
         },
 
         template: _.template(content),
@@ -58,6 +60,19 @@ define([
                 target$.find(".sortUP").show()
             }
             this.paginationView.setData({orderBy: sortBy, order: sortOrder});
+        },
+
+        toExportCsv: function(e){
+            var csv = new CsvModel();
+            csv.urlRoot += 'feedback/exportCSV?searchTerm=' + App.searchTerm;
+            csv.fetch({
+                success: function(model,res) {
+                    window.location.href = res.path;
+                },
+                error: function(){
+                    alert('Export error');
+                }
+            });
         },
 
         render: function () {

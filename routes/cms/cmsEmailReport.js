@@ -24,5 +24,8 @@ module.exports = function(db) {
     router.route('/getCount/')
         .get(emailReport.getCount);
 
+    router.route('/exportCSV')
+        .get(emailReport.generateCsvData);
+
     return router;
 };

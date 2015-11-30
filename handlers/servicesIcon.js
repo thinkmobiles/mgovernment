@@ -19,13 +19,18 @@ var ServiceIcon = function(db) {
     this.getServicesIconByIdAndType = function (req, res, next) {
         var id = req.params.id;
         var name = req.params.type;
-        console.log('name: ', name,' id: ',id);
+        console.log('name: ', name, ' id: ', id);
+
+        if (!id || !name || !ObjectId.isValid(id)) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS});
+        }
 
         if (!(/(^)(@2x|@3x|xxxhdpi|xxhdpi|xhdpi|hdpi|mdpi)($)/).test(name)) {
             return res.status(404).send({error: 'Bad icon name'})
         }
+
         ServiceIcons
-            .findById(id, name )
+            .findById(id, name)
             .exec(function (err, model) {
                 var srcBase64;
 
@@ -38,8 +43,8 @@ var ServiceIcon = function(db) {
                 srcBase64 = model.toJSON()[name];
                 //res.status(200).send(' <img src ="' + srcBase64 +'">');
 
-                encodeFromBase64(srcBase64, function (err,imageData){
-                    if (err){
+                encodeFromBase64(srcBase64, function (err, imageData) {
+                    if (err) {
                         console.log('Error when encode image', err);
                     }
 
