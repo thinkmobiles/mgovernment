@@ -61,7 +61,8 @@ define([
             "poorCoverage(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)(/s=:searchTerm)": "toPoorCoverageView",
             "helpSalim(/p=:page)(/c=:countPerPage)(/ob=:orderBy)(/o=:order)(/s=:searchTerm)" : "toHelpSalimView",
             "servicesInfo" : "toServicesInfoView",
-            "updateServiceInfo"  : "toUpdateServiceInfoView"
+            "updateServiceInfo"  : "toUpdateServiceInfoView",
+            "*path":  "toMainView"
         },
 
         initialize: function () {
@@ -267,6 +268,9 @@ define([
         },
 
         toCreateUserView: function () {
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
 
             if(this.contentView){
                 this.contentView.undelegateEvents();
@@ -275,6 +279,10 @@ define([
         },
 
         toUpdateUserView: function () {
+
+            if(!this.mainView) {
+                this.mainView = new MainView();
+            }
 
             if(this.contentView){
                 this.contentView.undelegateEvents();
