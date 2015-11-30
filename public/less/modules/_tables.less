@@ -55,6 +55,7 @@ table {
     }
     td {
       color: @tableViewTextColor;
+      font-weight: 300;
     }
   }
   .iconList {
@@ -129,5 +130,12 @@ table {
       border-bottom: 1px solid lighten(@tableFormBorderColor, 50%);
 
     }
+  }
+}
+.rowSelected {
+  background: lighten(@tableViewBgColor, 10%);
+  td {
+    color: darken(@tableViewTextColor, 10%) !important;
+    font-weight: 700 !important;
   }
 }

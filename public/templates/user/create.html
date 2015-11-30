@@ -26,10 +26,14 @@
                 <tr>
                     <td class="hiddenByDefault">gender:</td>
                     <td class="hiddenByDefault">
-                        <input type="radio" name="gender" id="gender" value="male" checked="checked">
-                        <label for="gender">male</label>
-                        <input type="radio" name="gender" id="genderFemale" value="female">
-                        <label for="genderFemale">female</label>
+                        <span class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="gender" id="gender" value="male" checked="checked">
+                            <label for="gender">male</label>
+                        </span>
+                        <span class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="gender" id="genderFemale" value="female">
+                            <label for="genderFemale">female</label>
+                        </span>
                     </td>
                     <td class="hiddenByDefault">Choose gender</td>
                 </tr>
@@ -56,14 +60,22 @@
                 <tr>
                     <td class="hiddenByDefault">user type</td>
                     <td class="hiddenByDefault">
-                        <input type="radio" name="userType" id="client" value="client" checked="checked">
-                        <label for="client">client</label>
-                        <input type="radio" name="userType" id="admin" value="admin">
-                        <label for="admin">admin</label>
-                        <input type="radio" name="userType" id="company" value="company">
-                        <label for="company">company</label>
-                        <input type="radio" name="userType" id="government" value="government">
-                        <label for="government">government</label>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="client" value="client" checked="checked">
+                            <label for="client">client</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="admin" value="admin">
+                            <label for="admin">admin</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="company" value="company">
+                            <label for="company">company</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="government" value="government">
+                            <label for="government">government</label>
+                        </div>
                     </td>
                     <td class="hiddenByDefault">Choose user type, it check when service access</td>
                 </tr>

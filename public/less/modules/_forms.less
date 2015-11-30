@@ -215,6 +215,99 @@ form p:last-child {
   }
 }
 
+[type="radio"]:not(:checked),
+[type="radio"]:checked {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+}
+[type="radio"]:not(:checked) + label,
+[type="radio"]:checked + label {
+  position: relative;
+  padding-left: 45px;
+  cursor: pointer;
+  display: inline-block;
+  height: 35px;
+  line-height: 30px;
+  .fontSize(16);
+  .transition(.28s ease);
+
+  -webkit-user-select: none;
+   -khtml-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+}
+[type="radio"] + label:before,
+[type="radio"] + label:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  width: 35px;
+  height: 35px;
+  z-index: 0;
+  .transition(.28s ease);
+}
+[type="radio"]:not(:checked) + label:before {
+  border-radius: 50%;
+  border: 3px solid @radio-empty-color;
+}
+[type="radio"]:not(:checked) + label:after {
+  border-radius: 50%;
+  border: 3px solid @radio-empty-color;
+  z-index: -1;
+  .scale(0);
+}
+[type="radio"]:checked + label:before {
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+[type="radio"]:checked + label:after {
+  border-radius: 50%;
+  border: 3px solid @radioFillColor;
+  background-color: @radioFillColor;
+  z-index: 0;
+  .scale(1.02);
+}
+
+[type="radio"].with-gap:checked + label:before {
+  border-radius: 50%;
+  border: 3px solid @radioFillColor;
+}
+[type="radio"].with-gap:checked + label:after {
+  border-radius: 50%;
+  border: 3px solid @radioFillColor;
+  background-color: @radioFillColor;
+  z-index: 0;
+  .scale(.35);
+}
+
+[type="radio"].with-gap:disabled:checked + label:before {
+  border: 3px solid @inputDisabledColor;
+}
+[type="radio"].with-gap:disabled:checked + label:after {
+  border: none;
+  background-color: @inputDisabledColor;
+}
+[type="radio"]:disabled:not(:checked) + label:before,
+[type="radio"]:disabled:checked + label:before {
+  background-color: transparent;
+  border-color: @inputDisabledColor;
+}
+[type="radio"]:disabled + label {
+  color: @inputDisabledColor;
+}
+[type="radio"]:disabled:not(:checked) + label:before {
+  border-color: @inputDisabledColor;
+}
+[type="radio"]:disabled:checked + label:after {
+  background-color: @inputDisabledColor;
+  border-color: @inputDisabledColor;
+}
+.radioBtnBox {
+  padding: 0 10px 5px 0;
+}
 .fileInput {
   position: absolute;
   left: -9999px;
