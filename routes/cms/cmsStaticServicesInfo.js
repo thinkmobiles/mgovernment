@@ -10,6 +10,9 @@ module.exports = function(db) {
     router.route('/')
         .get(staticServicesInfo.getAllServicesInfo);
 
+    router.route('/getCount')
+        .get(staticServicesInfo.getCount);
+
     router.route('/:id')
         .get(staticServicesInfo.getServiceById)
         .put(staticServicesInfo.updateServiceByEdit);
