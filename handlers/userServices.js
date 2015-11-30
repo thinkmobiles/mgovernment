@@ -17,7 +17,7 @@ var UserService = function(db) {
     var Service = db.model(CONST.MODELS.SERVICE);
     var session = new SessionHandler(db);
     var User = db.model(CONST.MODELS.USER);
-    var SaticService = db.model(CONST.MODELS.STATIC_SERVICE_INFO);
+    var StaticService = db.model(CONST.MODELS.STATIC_SERVICE_INFO);
 
     var serviceWrappers =  {};
     serviceWrappers[CONST.SERVICE_PROVIDERS.DEFAULT_REST] = new TmaTraServices(db);
@@ -183,7 +183,7 @@ var UserService = function(db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
         }
 
-        SaticService
+        StaticService
             .find()
             .select('profile.Name')
             .exec(function(err, collection){
@@ -216,26 +216,22 @@ var UserService = function(db) {
 
         serviceName = serviceName.toLowerCase();
 
-        SaticService
-            .findOne({serviceName: serviceName}, function(err, model){
-               if (err) {
-                   return next(err);
-               }
+        StaticService
+            .findOne({serviceName: serviceName}, function (err, model) {
+                if (err) {
+                    return next(err);
+                }
 
-                var serviceInfo = {
-                    'Name': model.profile['Name'][lang],
-                    'About the service': model.profile['About the service'][lang],
-                    'Service Package': model.profile['Service Package'][lang],
-                    'Expected time': model.profile['Expected time'][lang],
-                    'Officer in charge of this service': model.profile['Officer in charge of this service'][lang],
-                    'Required documents': model.profile['Required documents'][lang],
-                    'Service fee': model.profile['Service fee'][lang],
-                    'Terms and conditions': model.profile['Terms and conditions'][lang]
-                };
+                var serviceInfo = {};
+
+                var profile = model._doc.profile;
+
+                for (var key in profile) {
+                    serviceInfo[key] = profile[key][lang];
+                }
 
                 return res.status(200).send(serviceInfo);
             });
-
     };
 
     this.sendServiceRequest = function (req, res, next) {

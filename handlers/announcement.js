@@ -19,6 +19,25 @@ var LANG = {
     AR: 'AR'
 };
 
+var HtmlChars = {
+    '&amp;': '&',
+    '&nbsp;': ' ',
+    '&cent;': '¢',
+    '&pound;': '£',
+    '&yen;': '¥',
+    '&euro;': '€',
+    '&copy;': '©',
+    '&reg;': '®',
+    '&ldquo;': '“',
+    '&rdquo;': '”',
+    '&lsquo;': '‘',
+    '&rsquo;': '’',
+    '&laquo;': '«',
+    '&raquo;': '»',
+    '&lsaquo;': '‹',
+    '&rsaquo;': '›'
+};
+
 var AnnouncementHandler = function(db) {
     'use strict';
 
@@ -129,6 +148,15 @@ var AnnouncementHandler = function(db) {
         text = text.replace(/&gt;/gm, '>');
         text = text.replace(/<([^>]+?)>/gm, '');
 
+        text = replaceHtmlChars(text);
+
+        return text;
+    }
+
+    function replaceHtmlChars(text) {
+        for (var prop in HtmlChars) {
+            text = text.replace(new RegExp(prop, 'gm'), HtmlChars[prop]);
+        }
         return text;
     }
 
@@ -205,7 +233,11 @@ var AnnouncementHandler = function(db) {
 
         var skipCount = req.query.offset || 0;
         var limitCount = req.query.limit || 20;
-        var lang = req.query.lang ? req.query.lang : LANG.EN;
+        var lang = req.query.lang ? req.query.lang.toUpperCase() : LANG.EN;
+
+        if (!(lang === 'EN' || lang === 'AR')) {
+            return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
+        }
 
         var findParams = {};
 
@@ -213,9 +245,14 @@ var AnnouncementHandler = function(db) {
 
         if (search) {
             findParams = {
-                $or: [
-                    {title: new RegExp(search, 'i')},
-                    {description: new RegExp(search, 'i')}
+                $and: [
+                    {lang: lang},
+                    {
+                        $or: [
+                            {title: new RegExp(search, 'i')},
+                            {description: new RegExp(search, 'i')}
+                        ]
+                    }
                 ]
             };
         } else {

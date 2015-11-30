@@ -13,7 +13,8 @@ define([
         events: {
             'change .filterServiceType': 'changeCollectionFilter',
             "click .oe_sortable": "goSort",
-            'keyup #searchTerm': "searchByTerm"
+            'keyup #searchTerm': "searchByTerm",
+            'click .trClicked': 'selectRow'
         },
 
         template: _.template(content),
@@ -29,6 +30,15 @@ define([
             filter = filter.replace(/\,$/, '');
             console.log('filter: ', filter);
             this.paginationView.setData({filter: filter});
+        },
+
+        selectRow: function(e){
+            var id = $(e.currentTarget ).attr('data-hash');
+
+            $(e.currentTarget).parent().children().removeClass('rowSelected');
+            $(e.currentTarget).addClass('rowSelected');
+
+            this.selectedElementId = id;
         },
 
         initialize: function (options) {
