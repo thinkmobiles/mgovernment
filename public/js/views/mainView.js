@@ -45,8 +45,9 @@ define([
         },
 
         render: function () {
-
+            $('body').removeClass('loginForm');
             this.$el.html(this.template());
+
             new topBarView();
 
             return this;

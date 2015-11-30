@@ -28,8 +28,20 @@
 .btnUpdate {
   background: @bgBtnUpdate;
 }
+.btnExportCsv {
+  background: @bgBtnUpdate;
+}
 .btnDelete {
   background: @bgBtnDelete;
+}
+
+.btnDefault {
+  padding: 0 40px;
+  background: @bgBtnDefault;
+  &:hover, &:active, &:focus {
+    background: @bgBtnHover;
+    font-weight: 300;
+  }
 }
 .btnGroup {
   margin-bottom: 25px !important;

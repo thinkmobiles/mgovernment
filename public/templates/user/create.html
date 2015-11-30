@@ -1,83 +1,94 @@
-<div style="align-content: center; margin-top: 5px; padding-bottom: 50px">
-
-    <form>
-
-        <table class="tableView" style="width: 100%">
+<div class="content">
+    <div class="row noMargin">
+        <div class="btnGroup column extraSmall-8 noPadding"></div>
+        <div class="extraSmall-3 column indentExtraSmall-1 noPadding"></div>
+    </div>
+    <form class="formView">
+        <table class="tableForm table">
+            <thead>
+                <tr>
+                    <th>List of properties</th>
+                    <th>Input, set properties</th>
+                    <th>Description of properties</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="hiddenByDefault">login:</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="login" size="20" maxlength="40" /></td>
+                    <td class="hiddenByDefault">Input login.</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">password:</td>
+                    <td class="hiddenByDefault"><input type="password" name="name" id="pass" size="20" maxlength="40" /></td>
+                    <td class="hiddenByDefault">Input password</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">gender:</td>
+                    <td class="hiddenByDefault">
+                        <span class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="gender" id="gender" value="male" checked="checked">
+                            <label for="gender">male</label>
+                        </span>
+                        <span class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="gender" id="genderFemale" value="female">
+                            <label for="genderFemale">female</label>
+                        </span>
+                    </td>
+                    <td class="hiddenByDefault">Choose gender</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">phone:</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="phone" size="15" maxlength="20" /></td>
+                    <td class="hiddenByDefault">Input phone</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">first name</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="firstName" size="20" maxlength="40" /></td>
+                    <td class="hiddenByDefault">Input first name:</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">last name</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="lastName" size="20" maxlength="40"></td>
+                    <td class="hiddenByDefault">Input last name.</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">email</td>
+                    <td class="hiddenByDefault"><input type="text" name="name" id="email" size="20" maxlength="40"></td>
+                    <td class="hiddenByDefault">Input email.</td>
+                </tr>
+                <tr>
+                    <td class="hiddenByDefault">user type</td>
+                    <td class="hiddenByDefault">
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="client" value="client" checked="checked">
+                            <label for="client">client</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="admin" value="admin">
+                            <label for="admin">admin</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="company" value="company">
+                            <label for="company">company</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="government" value="government">
+                            <label for="government">government</label>
+                        </div>
+                    </td>
+                    <td class="hiddenByDefault">Choose user type, it check when service access</td>
+                </tr>
+            </tbody>
+            <tfoot>
             <tr>
-                <th>List of properties</th>
-                <th>Input, set properties</th>
-                <th>Description of properties</th>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>login:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="login" size="20" maxlength="40"></td>
-                <td class="hiddenByDefault"> Input login.</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>pasword:</b></td>
-                <td class="hiddenByDefault"><input type="password" name="name" id="pass" size="20" maxlength="40"></td>
-                <td class="hiddenByDefault"> Input password</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>gender:</b></td>
-                <td class="hiddenByDefault">
-                    <input type="radio" name="gender" id="gender" value="male" checked="checked"> male
-                    <input type="radio" name="gender" id="genderFemale" value="female"> female</td>
-                <td class="hiddenByDefault"> Choose gender</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>phone:</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="phone" size="15" maxlength="20"></td>
-                <td class="hiddenByDefault"> Input phone</td>
-            </tr>
-
-
-            <tr>
-                <td class="hiddenByDefault"><b>first name</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="firstName" size="20" maxlength="40"></td>
-                <td class="hiddenByDefault"> Input first name:</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>last name</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="lastName" size="20" maxlength="40"></td>
-                <td class="hiddenByDefault"> Input last name.</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>email</b></td>
-                <td class="hiddenByDefault"><input type="text" name="name" id="email" size="20" maxlength="40"></td>
-                <td class="hiddenByDefault"> Input email.</td>
-            </tr>
-
-            <tr>
-                <td class="hiddenByDefault"><b>user type</b></td>
-                <td class="hiddenByDefault">
-                    <input type="radio" name="userType" id="client" value="client" checked="checked">client
-                    <input type="radio" name="userType" id="admin" value="admin"> admin <br>
-                    <input type="radio" name="userType" id="company" value="company">company
-                    <input type="radio" name="userType" id="government" value="government"> government <br>
-
+                <td colspan="3" class="alignCenter">
+                    <div id="saveBtn" class="btn btnDefault" onmouseover="this.style.cursor='pointer'">
+                        <span>Save created User</span>
+                    </div>
                 </td>
-                <td class="hiddenByDefault">Choose user type, it check when service access</td>
             </tr>
-
-
+            </tfoot>
         </table>
-
-        <div style=" text-align:center; border:2px solid #000000;width: 320px;  height: 25px; line-height:25px; margin-left: 5px;
-
-    border-radius:6px; -moz-border-radius:5px; -khtml-border-radius:10px; background-color:yellow; opacity: 0.8">
-            <div id="saveBtn" onmouseover="this.style.cursor='pointer'">
-        <span style="font-family:Arial;font-size:20px;font-weight:bold;color:#000000; text-shadow: 1px 1px white;">
-        Save created User
-        </span>
-            </div>
-        </div>
-
     </form>
 </div>

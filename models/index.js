@@ -17,4 +17,5 @@ module.exports = function(db) {
     require('./announcement')(db);
     require('./poorCoverage')(db);
     require('./helpSalim')(db);
+    require('./staticServicesInfo')(db);
 };

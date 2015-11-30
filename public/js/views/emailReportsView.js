@@ -1,9 +1,10 @@
 define([
     'text!templates/emailReportViewTemplate.html',
     'collections/emailReports',
+    'models/csv',
     'text!templates/pagination/paginationTemplate.html',
     'views/customElements/paginationView'
-], function (content, EmailReportsCollecion, paginationTemplate, PaginationView) {
+], function (content, EmailReportsCollecion, CsvModel, paginationTemplate, PaginationView) {
     'use strict';
 
     var filterCheckbox;
@@ -13,7 +14,9 @@ define([
         events: {
             'change .filterServiceType': 'changeCollectionFilter',
             "click .oe_sortable": "goSort",
-            'keyup #searchTerm': "searchByTerm"
+            'keyup #searchTerm': "searchByTerm",
+            'click .trClicked': 'selectRow',
+            'click #exportCsv': 'toExportCsv'
         },
 
         template: _.template(content),
@@ -29,6 +32,15 @@ define([
             filter = filter.replace(/\,$/, '');
             console.log('filter: ', filter);
             this.paginationView.setData({filter: filter});
+        },
+
+        selectRow: function(e){
+            var id = $(e.currentTarget ).attr('data-hash');
+
+            $(e.currentTarget).parent().children().removeClass('rowSelected');
+            $(e.currentTarget).addClass('rowSelected');
+
+            this.selectedElementId = id;
         },
 
         initialize: function (options) {
@@ -99,6 +111,19 @@ define([
             }
 
             this.paginationView.setData({orderBy: sortBy, order: sortOrder, filter: filter,  searchTerm: searchTerm});
+        },
+
+        toExportCsv: function(e){
+            var csv = new CsvModel();
+            csv.urlRoot += 'emailReport/exportCSV?searchTerm=' + App.searchTerm;
+            csv.fetch({
+                success: function(model,res) {
+                    window.location.href = res.path;
+                },
+                error: function(){
+                    alert('Export error');
+                }
+            });
         },
 
         render: function () {

@@ -1,3 +1,48 @@
+// Text inputs
+input[type=text],
+input[type=password],
+input[type=email],
+input[type=url],
+input[type=time],
+input[type=date],
+input[type=datetime-local],
+input[type=tel],
+input[type=number],
+input[type=search],
+textarea {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid @input-border-color;
+  border-radius: 0;
+  outline: none;
+  height: 2rem;
+  width: 100%;
+
+  font-size: 1rem;
+  margin: 0 0 15px 0;
+  padding: 0;
+  box-shadow: none;
+  .box-sizing(border-box);
+  transition: all .3s;
+
+  &:disabled, &[readonly="readonly"] {
+    color: @inputDisabledColor;
+    border-bottom: 1px dotted @inputDisabledColor;
+  }
+  // Disabled label style
+  &:disabled+label, &[readonly="readonly"]+label {
+    color: @inputDisabledColor;
+  }
+  & + label:after {
+    display: block;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 65px;
+    opacity: 0;
+    transition: .2s opacity ease-out, .2s color ease-out;
+  }
+}
 .input-field {
   position: relative;
   margin-top: 1rem;
@@ -167,5 +212,130 @@ form p:last-child {
   &:disabled:checked + label:after {
     background-color: @inputDisabledSolidColor;
     border-color: @inputDisabledSolidColor;
+  }
+}
+
+[type="radio"]:not(:checked),
+[type="radio"]:checked {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+}
+[type="radio"]:not(:checked) + label,
+[type="radio"]:checked + label {
+  position: relative;
+  padding-left: 45px;
+  cursor: pointer;
+  display: inline-block;
+  height: 35px;
+  line-height: 30px;
+  .fontSize(16);
+  .transition(.28s ease);
+
+  -webkit-user-select: none;
+   -khtml-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+}
+[type="radio"] + label:before,
+[type="radio"] + label:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: 0;
+  width: 35px;
+  height: 35px;
+  z-index: 0;
+  .transition(.28s ease);
+}
+[type="radio"]:not(:checked) + label:before {
+  border-radius: 50%;
+  border: 3px solid @radio-empty-color;
+}
+[type="radio"]:not(:checked) + label:after {
+  border-radius: 50%;
+  border: 3px solid @radio-empty-color;
+  z-index: -1;
+  .scale(0);
+}
+[type="radio"]:checked + label:before {
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+[type="radio"]:checked + label:after {
+  border-radius: 50%;
+  border: 3px solid @radioFillColor;
+  background-color: @radioFillColor;
+  z-index: 0;
+  .scale(1.02);
+}
+
+[type="radio"].with-gap:checked + label:before {
+  border-radius: 50%;
+  border: 3px solid @radioFillColor;
+}
+[type="radio"].with-gap:checked + label:after {
+  border-radius: 50%;
+  border: 3px solid @radioFillColor;
+  background-color: @radioFillColor;
+  z-index: 0;
+  .scale(.35);
+}
+
+[type="radio"].with-gap:disabled:checked + label:before {
+  border: 3px solid @inputDisabledColor;
+}
+[type="radio"].with-gap:disabled:checked + label:after {
+  border: none;
+  background-color: @inputDisabledColor;
+}
+[type="radio"]:disabled:not(:checked) + label:before,
+[type="radio"]:disabled:checked + label:before {
+  background-color: transparent;
+  border-color: @inputDisabledColor;
+}
+[type="radio"]:disabled + label {
+  color: @inputDisabledColor;
+}
+[type="radio"]:disabled:not(:checked) + label:before {
+  border-color: @inputDisabledColor;
+}
+[type="radio"]:disabled:checked + label:after {
+  background-color: @inputDisabledColor;
+  border-color: @inputDisabledColor;
+}
+.radioBtnBox {
+  padding: 0 10px 5px 0;
+}
+.fileInput {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+
+  + label {
+    position: relative;
+    cursor: pointer;
+    display: block;
+    padding: 0 5px;
+    height: 30px;
+    line-height: 30px;
+    color: @input-text-color;
+    background: @radioFillColor;
+    .fontSize(14);
+  }
+}
+.tableForm {
+  input[type='text'],
+  input[type='password'],
+  input[type='email'] {
+    background: @iconsBorderColor-1;
+    color: @iconsTextColor;
+    width: 100%;
+    padding: 0 20px;
+    height: 42px;
+    line-height: 42px;
+    margin-bottom: 0;
+    border: none;
   }
 }

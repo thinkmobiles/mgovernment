@@ -1,14 +1,16 @@
 .loginBlock {
-  height: 380px;
-  margin: 65px auto 60px;
-  padding: 70px 85px;
+  height: 330px;
+  margin: 45px auto 40px;
+  padding: 60px 85px;
   background: @loginFormBgColor;
 
   input[type='text'],
   input[type='password'],
   input[type='email'] {
     width: 100%;
+    background: rgba(255,255,255,.75);
     border: 1px solid @loginInputBorderColor;
+    box-sizing: border-box;
     padding: 5px 10px;
     height: 34px;
   }
@@ -42,7 +44,7 @@
     padding: 0;
   }
   .header {
-    height: 165px;
+    height: 135px;
     position: relative;
     width: 100%;
     background-image: url('../img/signin_login.png') !important;

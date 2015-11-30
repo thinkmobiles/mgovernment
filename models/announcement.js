@@ -13,6 +13,7 @@ module.exports = function (db) {
         image: {type: String, default: null},
         pubDate: {type: Date, default: Date.now},
         link: String,
+        lang: String,
         createdAt: {type: Date, default: Date.now}
     }, {
         collection: CONST.MODELS.ANNOUNCEMENT + 's'

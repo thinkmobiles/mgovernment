@@ -1,7 +1,10 @@
 <div class="content">
 
     <div class="row noMargin">
-        <div class="searchBlock extraSmall-3 column indentExtraSmall-9 noPadding">
+        <div class="btnGroup column extraSmall-8 noPadding">
+            <a id="exportCsv" data-hash="exportCsv" class="btn btnExportCsv extraSmall-4">Export Csv</a>
+        </div>
+        <div class="searchBlock extraSmall-3 column indentExtraSmall-1 noPadding">
             <input id="searchTerm"
                    class="form-control input-field ng-valid ng-dirty ng-valid-parse ng-touched" type="text" />
             <label for="searchTerm" class="">Search</label>
@@ -39,7 +42,7 @@
         <tbody>
         <% if (collection.length) { %>
         <% for (var i = 0, len = collection.length - 1; i <= len; i++) { %>
-        <tr>
+        <tr class = "trClicked" data-hash="<%= collection[i]._id %>">
             <td><%= collection[i].serviceType %></td>
             <td><%= collection[i].serviceProvider %></td>
             <td><%= collection[i].user ? collection[i].user.login : '' %></td>
@@ -64,7 +67,6 @@
     </table>
     </div>
     <div style="clear:both; "></div>
-
     <div id="paginationDiv" class="paginationDiv">
     </div>
 

@@ -17,6 +17,7 @@ var UserService = function(db) {
     var Service = db.model(CONST.MODELS.SERVICE);
     var session = new SessionHandler(db);
     var User = db.model(CONST.MODELS.USER);
+    var StaticService = db.model(CONST.MODELS.STATIC_SERVICE_INFO);
 
     var serviceWrappers =  {};
     serviceWrappers[CONST.SERVICE_PROVIDERS.DEFAULT_REST] = new TmaTraServices(db);
@@ -182,14 +183,22 @@ var UserService = function(db) {
             return res.status(400).send({error: RESPONSE.NOT_ENOUGH_PARAMS + ' language: AR or EN'});
         }
 
-        var serviceNames = [];
-        var serviceInfos = SERVICES_INFO[lang];
+        StaticService
+            .find()
+            .select('profile.Name')
+            .exec(function(err, collection){
+               if (err) {
+                   return next(err);
+               }
 
-        for(var serviceInfo in serviceInfos) {
-            serviceNames.push(serviceInfos[serviceInfo].Name);
-        }
+                var serviceInfos = [];
 
-        return res.status(200).send(serviceNames);
+                for(var i in collection) {
+                    serviceInfos.push(collection[i].profile.Name[lang]);
+                }
+
+                return res.status(200).send(serviceInfos);
+            });
     };
 
     this.getServiceAbout = function(req, res, next) {
@@ -207,13 +216,22 @@ var UserService = function(db) {
 
         serviceName = serviceName.toLowerCase();
 
-        var serviceInfo = SERVICES_INFO[lang][serviceName];
+        StaticService
+            .findOne({serviceName: serviceName}, function (err, model) {
+                if (err) {
+                    return next(err);
+                }
 
-        if (!serviceInfo) {
-            return res.status(404).send({error: RESPONSE.NOT_FOUND});
-        }
+                var serviceInfo = {};
 
-        return res.status(200).send(serviceInfo);
+                var profile = model._doc.profile;
+
+                for (var key in profile) {
+                    serviceInfo[key] = profile[key][lang];
+                }
+
+                return res.status(200).send(serviceInfo);
+            });
     };
 
     this.sendServiceRequest = function (req, res, next) {

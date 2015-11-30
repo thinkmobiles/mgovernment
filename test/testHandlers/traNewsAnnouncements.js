@@ -60,6 +60,35 @@ describe('User Announcements', function () {
             });
     });
 
+    it('User Get News on Arab', function (done) {
+        this.timeout(20000);
+
+        agent
+            .get('/announcement?lang=AR')
+            .set(USER_AGENT.ANDROID_DEVICE)
+            .expect(200)
+            .end(function (err, res) {
+                if (err) {
+                    return done(err)
+                }
+
+                expect(res.body).to.have.property('announcements');
+                expect(res.body.announcements).to.be.instanceof(Array);
+
+                expect(res.body.announcements).to.have.length.least(1);
+                for (var i = 0; res.body.announcements.length > i ; i++){
+                    expect(res.body.announcements).to.have.deep.property(i + '.title');
+                    expect(res.body.announcements[i].title).to.match(/^[^a-z]+$/i);
+                    expect(res.body.announcements).to.have.deep.property(i + '.description');
+                    expect(res.body.announcements).to.have.deep.property(i + '.link');
+                    expect(res.body.announcements).to.have.deep.property(i + '.pubDate');
+                    expect(res.body.announcements).to.have.deep.property(i + '.image');
+                }
+
+                done();
+            });
+    });
+
     it('User Get News offset=5 limit=10', function (done) {
         this.timeout(20000);
 
@@ -81,11 +110,13 @@ describe('User Announcements', function () {
             });
     });
 
-    it('User Get News search=security offset=0 limit=10', function (done) {
+    it('User Get News search=uae offset=0 limit=10', function (done) {
         this.timeout(20000);
 
+        var searchWorld = 'uae';
+
         agent
-            .get('/announcement?offset=0&limit=10&search=season')
+            .get('/announcement?offset=0&limit=10&search=' + searchWorld)
             .set(USER_AGENT.IPAD_DEVICE)
             .expect(200)
             .end(function (err, res) {
@@ -100,8 +131,8 @@ describe('User Announcements', function () {
                 expect(res.body.announcements).to.have.length.of.at.most(10);
                 for (var i = 0; res.body.announcements.length > i ; i++){
                     expect(res.body.announcements[i]).to.satisfy(function(data){
-                        var indexTitle = data.title.toLowerCase().indexOf('season');
-                        var indexDescription = data.description.toLowerCase().indexOf('season');
+                        var indexTitle = data.title.toLowerCase().indexOf(searchWorld);
+                        var indexDescription = data.description.toLowerCase().indexOf(searchWorld);
                         return (indexTitle > -1 || indexDescription > -1)
                     });
                 }

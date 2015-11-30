@@ -5,7 +5,7 @@ define([],function () {
         url =  Backbone.history.fragment || Backbone.history.getFragment();
 
         if ((url === '')) {
-            url = 'index';
+            url = 'login';
         }
 
         if (Backbone.history.fragment) {
