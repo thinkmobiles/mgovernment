@@ -28,10 +28,14 @@
                 <tr>
                     <td class="hiddenByDefault">gender:</td>
                     <td class="hiddenByDefault">
-                        <input type="radio" name="gender" id="gender" value="male" <%= (user.profile.gender == 'male') ? 'checked' : ''%> />
-                        <label for="gender">male</label>
-                        <input type="radio" name="gender" id="genderFemale" value="female" <%= (user.profile.gender == 'male') ? '' : 'checked'%> />
-                        <label for="genderFemale">femail</label>
+                        <span class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="gender" id="gender" value="male" <%= (user.profile.gender == 'male') ? 'checked' : ''%> />
+                            <label for="gender">male</label>
+                        </span>
+                        <span class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="gender" id="genderFemale" value="female" <%= (user.profile.gender == 'male') ? '' : 'checked'%> />
+                            <label for="genderFemale">femail</label>
+                        </span>
                     </td>
                     <td class="hiddenByDefault">Input gender</td>
                 </tr>
@@ -72,14 +76,22 @@
                 <tr>
                     <td class="hiddenByDefault">user type</td>
                     <td class="hiddenByDefault">
-                        <input type="radio" name="userType" id="client" value="client" <%= user.userType == 'client' ? 'checked':''%>>
-                        <label for="client">client</label>
-                        <input type="radio" name="userType" id="admin" value="admin" <%= user.userType == 'admin' ? 'checked':''%>>
-                        <label for="admin">admin</label>
-                        <input type="radio" name="userType" id="company" value="company" <%= user.userType == 'company' ? 'checked':'' %>>
-                        <label for="company">company</label>
-                        <input type="radio" name="userType" id="government" value="government" <%= user.userType == 'government' ? 'checked':''%>>
-                        <label for="government">government</label>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="client" value="client" <%= user.userType == 'client' ? 'checked':''%>>
+                            <label for="client">client</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="admin" value="admin" <%= user.userType == 'admin' ? 'checked':''%>>
+                            <label for="admin">admin</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="company" value="company" <%= user.userType == 'company' ? 'checked':'' %>>
+                            <label for="company">company</label>
+                        </div>
+                        <div class="radioBtnBox">
+                            <input type="radio" class="with-gap" name="userType" id="government" value="government" <%= user.userType == 'government' ? 'checked':''%>>
+                            <label for="government">government</label>
+                        </div>
                     </td>
                     <td class="hiddenByDefault">Choose user type, it check when service access</td>
                 </tr>
